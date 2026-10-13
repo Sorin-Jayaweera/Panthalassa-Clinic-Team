@@ -1,0 +1,8 @@
+10:56:46 start; saved readings 10037 blocks done ['analyzer_floor', 'close_in', 'close_lines', 'fine_steps', 'harmonics', 'if_band_map', 'if_band_scale', 'leak_vs_level', 'low_level', 'low_more', 'map_scale0p5', 'map_scale1p0', 'map_scale1p0_redo', 'offset_more', 'retune_repeat', 'settling', 'state_dump', 'tone_offset', 'tone_scale', 'tune_step', 'two_tone', 'wide_search']
+10:56:51 Pluto not answering: Unable to create IIO context ip:192.168.2.1: Unknown error (10060) (try 1 )
+10:59:16 Pluto answering again after 6 tries
+10:59:17 analyzer error: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+10:59:39 start pulse
+11:00:26 done pulse 0.8 min
+11:00:26 start drift
+11:00:36 analyzer error: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).

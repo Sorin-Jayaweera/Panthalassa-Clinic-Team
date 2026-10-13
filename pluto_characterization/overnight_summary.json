@@ -1,8 +1,8 @@
 {
- "readings": 10182,
- "traces": 175,
+ "readings": 10412,
+ "traces": 227,
  "first": "2026-10-12T21:44:33",
- "last": "2026-10-12T23:50:54",
+ "last": "2026-10-13T11:05:27",
  "floor": [
   [
    "10",
@@ -3793,82 +3793,84 @@
  },
  "ref": {
   "1000 att20": {
-   "n": 14,
+   "n": 16,
    "first": -19.31,
-   "mean": -19.36,
-   "span": 0.069,
-   "sd": 0.017,
-   "last_minus_first": -0.049
+   "mean": -19.31,
+   "span": 0.425,
+   "sd": 0.126,
+   "last_minus_first": 0.297
   },
   "1000 att0": {
-   "n": 14,
+   "n": 16,
    "first": 0.03,
-   "mean": -0.01,
-   "span": 0.058,
-   "sd": 0.015,
-   "last_minus_first": -0.039
+   "mean": 0.03,
+   "span": 0.415,
+   "sd": 0.117,
+   "last_minus_first": 0.254
   },
   "1100 att20": {
-   "n": 14,
+   "n": 16,
    "first": -19.42,
-   "mean": -19.47,
-   "span": 0.073,
-   "sd": 0.021,
-   "last_minus_first": -0.049
+   "mean": -19.4,
+   "span": 0.561,
+   "sd": 0.168,
+   "last_minus_first": 0.415
   },
   "1100 att0": {
-   "n": 14,
+   "n": 16,
    "first": -0.47,
-   "mean": -0.51,
-   "span": 0.058,
-   "sd": 0.015,
-   "last_minus_first": -0.039
+   "mean": -0.43,
+   "span": 0.635,
+   "sd": 0.203,
+   "last_minus_first": 0.577
   },
   "1200 att20": {
-   "n": 14,
+   "n": 16,
    "first": -19.43,
-   "mean": -19.48,
-   "span": 0.079,
-   "sd": 0.019,
-   "last_minus_first": -0.04
+   "mean": -19.42,
+   "span": 0.494,
+   "sd": 0.152,
+   "last_minus_first": 0.4
   },
   "1200 att0": {
-   "n": 14,
+   "n": 16,
    "first": -0.31,
-   "mean": -0.36,
-   "span": 0.073,
-   "sd": 0.017,
-   "last_minus_first": -0.054
+   "mean": -0.31,
+   "span": 0.498,
+   "sd": 0.149,
+   "last_minus_first": 0.366
   },
   "freq_ppm": {
-   "n": 16,
+   "n": 19,
    "first": -12.618,
-   "last": -12.957,
+   "last": -10.315,
    "min": -13.164,
-   "max": -12.618
+   "max": -9.43
   },
   "temp_c": {
    "first": 31.6,
-   "last": 34.2,
-   "min": 31.6,
+   "last": 30.7,
+   "min": 23.7,
    "max": 36.0
   },
-  "hours": 2.11
+  "hours": 13.35
  },
  "drift": {
-  "n": 2,
-  "mean": -19.474,
-  "sd": 0.0145,
-  "span": 0.029
+  "n": 3,
+  "mean": -19.279,
+  "sd": 0.2767,
+  "span": 0.601
  },
  "hourly": {
   "tags": [
+   "11:00",
+   "11:04",
    "22:38",
    "23:44",
    "23:49"
   ],
-  "att_table_worst_span_db": 0.131,
-  "freq_sweep_worst_span_db": 0.391,
+  "att_table_worst_span_db": 0.791,
+  "freq_sweep_worst_span_db": 4.023,
   "tonefreq_ppm": [
    -13.2,
    -13.14,
@@ -3885,7 +3887,13 @@
    -12.92,
    -12.9,
    -12.89,
-   -12.88
+   -12.88,
+   -10.43,
+   -10.29,
+   -10.23,
+   -10.2,
+   -10.18,
+   -10.17
   ]
  },
  "leak": [
@@ -6232,9 +6240,367 @@
    0.1
   ]
  ],
+ "pulse": [
+  [
+   0.0,
+   0.25,
+   -5.58,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   0.0,
+   0.25,
+   -55.27,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   0.0,
+   0.25,
+   -55.01,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ],
+  [
+   0.0,
+   0.5,
+   0.28,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   0.0,
+   0.5,
+   -54.6,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   0.0,
+   0.5,
+   -48.44,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ],
+  [
+   0.0,
+   1.0,
+   5.64,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   0.0,
+   1.0,
+   -54.9,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   0.0,
+   1.0,
+   -43.26,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ],
+  [
+   20.0,
+   0.25,
+   -24.66,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   20.0,
+   0.25,
+   -55.66,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   20.0,
+   0.25,
+   -72.84,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ],
+  [
+   20.0,
+   0.5,
+   -18.71,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   20.0,
+   0.5,
+   -55.42,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   20.0,
+   0.5,
+   -68.12,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ],
+  [
+   20.0,
+   1.0,
+   -12.56,
+   "500 us pulse every 2 ms: level during the pulse"
+  ],
+  [
+   20.0,
+   1.0,
+   -55.53,
+   "500 us pulse every 2 ms: level between pulses (300 kHz bandwidth)"
+  ],
+  [
+   20.0,
+   1.0,
+   -61.77,
+   "500 us pulse every 2 ms: 1 kHz bandwidth, 20th percentile (average-like)"
+  ]
+ ],
+ "pulse_width": [
+  [
+   100,
+   98.0,
+   null,
+   0.31,
+   -52.3,
+   1.0
+  ],
+  [
+   20,
+   18.0,
+   400.0,
+   0.31,
+   -52.3,
+   1.0
+  ],
+  [
+   10,
+   9.0,
+   199.5,
+   0.19,
+   -51.9,
+   1.0
+  ],
+  [
+   5,
+   4.0,
+   200.0,
+   -1.88,
+   -52.2,
+   1.0
+  ],
+  [
+   2,
+   2.0,
+   199.5,
+   -11.33,
+   -52.2,
+   1.0
+  ],
+  [
+   1,
+   2.0,
+   199.5,
+   -19.84,
+   -52.4,
+   1.0
+  ]
+ ],
+ "pulse_peak": [
+  [
+   5000.0,
+   154,
+   5013.0,
+   0.5,
+   -4.75,
+   -4.78,
+   -0.78
+  ],
+  [
+   2000.0,
+   61,
+   1985.7,
+   0.5,
+   -12.0,
+   -12.03,
+   0.01
+  ],
+  [
+   1200.0,
+   37,
+   1204.4,
+   0.5,
+   -16.59,
+   -16.62,
+   -0.24
+  ],
+  [
+   1200.0,
+   37,
+   1204.4,
+   1.0,
+   -11.26,
+   -11.29,
+   null
+  ],
+  [
+   1000.0,
+   31,
+   1009.1,
+   0.5,
+   -17.89,
+   -17.92,
+   0.0
+  ],
+  [
+   500.0,
+   15,
+   488.3,
+   0.5,
+   -24.16,
+   -24.19,
+   0.03
+  ],
+  [
+   300.0,
+   9,
+   293.0,
+   0.5,
+   -28.61,
+   -28.65,
+   0.02
+  ],
+  [
+   200.0,
+   6,
+   195.3,
+   0.5,
+   -31.85,
+   -31.89,
+   0.3
+  ],
+  [
+   130.0,
+   4,
+   130.2,
+   0.5,
+   -34.81,
+   -34.84,
+   0.87
+  ],
+  [
+   100.0,
+   3,
+   97.7,
+   0.5,
+   -37.12,
+   -37.15,
+   1.05
+  ],
+  [
+   100.0,
+   3,
+   97.7,
+   1.0,
+   -32.45,
+   -32.49,
+   null
+  ],
+  [
+   65.0,
+   2,
+   65.1,
+   0.5,
+   -40.22,
+   -40.25,
+   1.48
+  ],
+  [
+   32.5,
+   1,
+   32.6,
+   0.5,
+   -43.43,
+   -43.47,
+   4.27
+  ]
+ ],
+ "pulse_cw_ref": 0.03,
+ "pulse_spectrum": [
+  [
+   "5000",
+   -4.75,
+   null,
+   null
+  ],
+  [
+   "2000",
+   -12.0,
+   1.55,
+   1.49
+  ],
+  [
+   "1200",
+   -16.59,
+   0.91,
+   0.8
+  ],
+  [
+   "1000",
+   -17.89,
+   1.01,
+   1.01
+  ],
+  [
+   "500",
+   -24.16,
+   1.97,
+   2.13
+  ],
+  [
+   "300",
+   -28.61,
+   3.25,
+   3.63
+  ],
+  [
+   "200",
+   -31.85,
+   10.93,
+   9.49
+  ],
+  [
+   "130",
+   -34.81,
+   null,
+   8.37
+  ],
+  [
+   "100",
+   -37.12,
+   null,
+   20.16
+  ],
+  [
+   "65",
+   -40.22,
+   null,
+   19.63
+  ],
+  [
+   "32",
+   -43.43,
+   16.64,
+   null
+  ]
+ ],
+ "pulse_check": [
+  [
+   -18.82,
+   "tone generator after the pulse tests"
+  ],
+  [
+   -18.99,
+   "tone generator after the second pulse test"
+  ]
+ ],
  "blocks": {
-  "ref": 84,
-  "ref_freq": 14,
+  "ref": 96,
+  "ref_freq": 16,
   "analyzer_floor": 60,
   "fine_steps": 335,
   "low_level": 345,
@@ -6249,11 +6615,11 @@
   "wide_search": 204,
   "map": 1584,
   "map_scale1": 213,
-  "hourly_att": 189,
-  "hourly_freq": 108,
-  "hourly_tonefreq": 18,
-  "drift": 2,
-  "drift_freq": 2,
+  "hourly_att": 289,
+  "hourly_freq": 144,
+  "hourly_tonefreq": 25,
+  "drift": 3,
+  "drift_freq": 3,
   "leak_vs_level": 378,
   "close_in_find": 6,
   "close_in": 24,
@@ -6264,8 +6630,10 @@
   "if_band": 4221,
   "map_s1": 213,
   "map_edge": 18,
-  "pulse": 0,
-  "pulse_width": 0,
-  "pulse_check": 0
+  "pulse": 18,
+  "pulse_width": 12,
+  "pulse_spectrum": 12,
+  "pulse_check": 2,
+  "pulse_spectrum_peak": 27
  }
 }

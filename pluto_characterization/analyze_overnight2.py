@@ -138,9 +138,43 @@ def run(B, S, TR, HERE, save, r2):
     # ---------------------------------------------------------------- pulses
     if B["pulse"]:
         S["pulse"] = [[r["att_db"], r["scale"], r2(r["level_dbm"]), r["note"].split(";")[0]] for r in B["pulse"]]
-    if B["pulse_width"]:
-        S["pulse_width"] = [[r["note"].split(";")[0], r2(r["freq_meas_hz"], 0), r2(r["level_dbm"]), r["note"].split(";")[2].strip()] for r in B["pulse_width"]]
-    sp = sorted(TR.glob("pulse_spectrum_w*_span40MHz.csv"), key=lambda q: -float(q.stem.split("_w")[1].split("ns")[0]))
+    S["pulse_width"] = []
+    for wd in (100, 20, 10, 5, 2, 1):
+        c = sorted(TR.glob(f"pulse_w{wd}us_swt*us.csv"), key=lambda q: float(q.stem.split("swt")[1][:-2]))
+        if not c:
+            continue
+        d = np.genfromtxt(c[0], delimiter=",", skip_header=1)
+        t, y = d[:, 0], d[:, 1]
+        k = int(np.argmax(y[20:200])) + 20 if wd < 100 else int(np.argmax(y[:200]))      # the second pulse in the trace (the first is cut by the trigger)
+        if wd == 100:
+            k = 20
+        hi = y[k]
+        a = k
+        while a > 0 and y[a - 1] > hi - 6:
+            a -= 1
+        b_ = k
+        while b_ < len(y) - 1 and y[b_ + 1] > hi - 6:
+            b_ += 1
+        pk = np.where(y > y.max() - 6)[0]
+        gaps = np.diff(t[pk][np.r_[True, np.diff(pk) > 5]])
+        S["pulse_width"].append([wd, r2(t[b_] - t[a] + (t[1] - t[0]), 1), r2(float(np.median(gaps)), 1) if len(gaps) else None, r2(y.max()), r2(np.median(y[y < y.max() - 30]), 1), r2(t[1] - t[0], 2)])
+    if not S["pulse_width"]:
+        del S["pulse_width"]
+    if B["pulse_spectrum_peak"]:
+        cw = [r["level_dbm"] for r in B["pulse_spectrum_peak"] if r["note"].startswith("continuous")]
+        S["pulse_peak"] = []
+        for r in B["pulse_spectrum_peak"]:
+            if "span 40 MHz" not in r["note"]:
+                continue
+            w = float(r["note"].split("asked ")[1].split(" ns")[0])
+            samples = int(r["note"].split("width_samples=")[1].split()[0])
+            S["pulse_peak"].append([w, samples, r2(samples / 30.72e6 * 1e9, 1), r["scale"], r2(r["level_dbm"]), r2(r["level_dbm"] - (cw[0] if cw else 0)), None])
+        ref = next((x for x in S["pulse_peak"] if x[0] == 1000.0 and x[3] == 0.5), None)
+        for x in S["pulse_peak"]:
+            if ref and x[3] == 0.5:
+                x[6] = r2(x[4] - ref[4] - 20 * np.log10(x[2] / ref[2]))
+        S["pulse_cw_ref"] = r2(cw[0]) if cw else None
+    sp = sorted(TR.glob("pulsepk_w*_amp0.5_span40MHz.csv"), key=lambda q: -float(q.stem.split("_w")[1].split("ns")[0]))
     if sp:
         S["pulse_spectrum"] = []
         fig, ax = plt.subplots(figsize=(12, 5))
@@ -150,16 +184,18 @@ def run(B, S, TR, HERE, save, r2):
 
             def first_null(idx):
                 y = d[idx, 1]
-                for i in range(3, len(y) - 3):
-                    if y[i] < y[0] - 8 and y[i] == y[max(0, i - 6):i + 7].min():
+                ys = np.convolve(y, np.ones(5) / 5, mode="same")            # light smoothing; the peak-detector trace is already steady
+                for i in range(6, len(ys) - 6):
+                    if ys[i] < ys[0] - 10 and ys[i] == ys[i - 6:i + 7].min() and ys[i + 6] > ys[i] + 2:
                         return abs(d[idx[i], 0] - d[k0, 0])
                 return None
             up = first_null(np.arange(k0, len(d)))
             dn = first_null(np.arange(k0, -1, -1))
             w = p_.stem.split("_w")[1].split("ns")[0]
             S["pulse_spectrum"].append([w, r2(d[k0, 1]), None if up is None else r2(up / 1e6, 2), None if dn is None else r2(dn / 1e6, 2)])
-            ax.plot((d[:, 0] - 1.1e9) / 1e6, d[:, 1], lw=0.9, label=f"asked {w} ns")
-        ax.set(xlabel="Offset from 1100 MHz (MHz)", ylabel="Level in 100 kHz bandwidth (dBm)", title="Pulse spectrum, one pulse every 100 us, attenuation 0 dB, amplitude 0.5")
+            if w in ("2000", "1200", "500", "200", "100", "32"):
+                ax.plot((d[:, 0] - 1.1e9) / 1e6, d[:, 1], lw=0.9, label=f"asked {w} ns")
+        ax.set(xlabel="Offset from 1100 MHz (MHz)", ylabel="Level in 100 kHz bandwidth (dBm)", title="Pulse spectrum, one pulse every 100 us, attenuation 0 dB, amplitude 0.5 (peak detector, 3 s sweep)")
         ax.grid(alpha=0.3)
         ax.legend(fontsize=8)
         save(fig, "pluto_pulse_spectrum")

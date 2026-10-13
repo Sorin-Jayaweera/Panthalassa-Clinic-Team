@@ -1,0 +1,4 @@
+11:02:26 start; saved readings 10181 blocks done ['analyzer_floor', 'close_in', 'close_lines', 'fine_steps', 'harmonics', 'if_band_map', 'if_band_scale', 'leak_vs_level', 'low_level', 'low_more', 'map_scale0p5', 'map_scale1p0', 'map_scale1p0_redo', 'offset_more', 'pulse', 'retune_repeat', 'settling', 'state_dump', 'tone_offset', 'tone_scale', 'tune_step', 'two_tone', 'wide_search']
+11:02:34 start pulse_spectrum_peak
+11:04:54 done pulse_spectrum_peak 2.3 min
+11:04:54 start drift

@@ -25,8 +25,12 @@ def learned_rows(N):
     if "close_in" in N:
         rows.append(["Noise close to the tone", "30 to 45 kHz from the tone the noise is about &minus;96 dBc/Hz, and 300 to 450 kHz away about &minus;107 dBc/Hz. One pair of lines 1.4 kHz either side of the 1000 MHz tone, 59 dB under it; none at 1100 or 1200 MHz.",
                      "This is near what the spectrum analyzer itself contributes, so the Pluto is at least this good. It is not a limit for the planned tests."])
-    if "pulse_check" not in N:
-        rows.append(["Pulsed output", "Not measured. The pulse script <code>sdr\\pluto_pulse.py</code> is written but the Pluto dropped off USB before the pulse block ran.", "Run the pulse block the next time the Pluto is on the spectrum analyzer or, better, on the SM200B."])
+    if "pulse_peak" in N:
+        rows.append(["Pulsed output", "Works. Level during a pulse equals the continuous-tone level. Width and spacing are correct for pulses from 100 &micro;s down to 300 ns (checked from the spectrum nulls). "
+                     "Below about 100 ns the pulse comes out wider and lower than asked, because the RF bandwidth setting is 18 MHz. Between pulses only the LO leakage remains (about 60 dB under the pulse at 0 dB attenuation).",
+                     "Use <code>sdr\\pluto_pulse.py</code> for pulse tests of 300 ns and longer. For 50 ns pulses the sample rate and bandwidth must be raised and rechecked. The spectrum analyzer cannot show pulse shape under 10 &micro;s; use a detector and the oscilloscope."])
+    rows.append(["Warm-up", "Just plugged in (chip at 24 &deg;C) the output was 0.4 dB higher and the frequency 9.2 ppm low. After hours of running (33 &deg;C) it was 12.8 ppm low.",
+                 "Let it run 30 minutes before a level-critical test, or take the reference reading at the same time as the test."])
     rows.append(["USB, second dropout", "Dropped off USB a second time at 23:51 on 12 Oct, after 2 h 20 min of continuous use. Both times it stopped answering during a frequency change and then disappeared from Windows.",
                  "Any long run needs someone able to replug it, or a powered USB hub that can be switched from the computer."])
     return rows
@@ -88,15 +92,42 @@ def night2(N):
                 math(r"L(\Delta f) = P_\text{noise} - P_\text{tone} - 10\log_{10}(B)"),
                 p("\\(B\\) = analyzer bandwidth in Hz. The black trace is the analyzer with the tone off: its noise floor, but not its phase noise, which only appears when a signal is present. "
                   "The Siglent's own phase noise is specified near &minus;98 dBc/Hz at 10 kHz, so these numbers are an upper limit on the Pluto, not its true value.")]
-    if "pulse" in N or "pulse_width" in N:
-        out += [h("Pulsed output")]
-        if "pulse" in N:
-            out += [table(["Attenuation (dB)", "Amplitude", "Level (dBm)", "What"], [[n(r[0], 0), r[1], n(r[2]), r[3]] for r in N["pulse"]], left=(3,))]
-        if "pulse_width" in N:
-            out += [fig("pluto_pulse_time.png", "Pulses of 100 to 1 microsecond seen in zero span"),
-                    table(["Asked", "Width between &minus;6 dB points (ns)", "Peak (dBm)", "Sweep"], N["pulse_width"], left=(0, 3))]
-        if "pulse_spectrum" in N:
-            out += [fig("pluto_pulse_spectrum.png", "Spectrum of pulses from 1200 ns down to 33 ns"),
-                    table(["Asked width (ns)", "Peak (dBm)", "First null above (MHz)", "First null below (MHz)"], [[r[0], n(r[1]), n(r[2]), n(r[3])] for r in N["pulse_spectrum"]], left=()),
-                    math(r"\tau = \frac{1}{\Delta f_\text{null}}")]
+    if "pulse" in N:
+        on = {(r[0], r[1]): r[2] for r in N["pulse"] if "during" in r[3]}
+        off = [r[2] for r in N["pulse"] if "between pulses (300" in r[3]]
+        out += [h("Pulsed output, 13 Oct"),
+                p("Script <code>sdr\\pluto_pulse.py</code>. The Pluto is sent a repeating block of samples: a constant value for the pulse, zeros between pulses. "
+                  "The RF is at the LO frequency during the pulse. Sample rate 30.72 MS/s, so the width is a whole number of 32.55 ns samples. Same wiring: Pluto TX straight into the spectrum analyzer. 1100 MHz."),
+                h("Level during the pulse"),
+                table(["Attenuation (dB)", "Amplitude", "Level during the pulse (dBm)", "Continuous tone at the same setting (dBm)"],
+                      [[n(k[0], 0), k[1], n(v), {(0.0, 0.5): "0.10", (0.0, 1.0): "4.7 (warm)", (20.0, 0.5): "&minus;18.93", (20.0, 1.0): "&minus;13.3 (warm)"}.get(k, D)] for k, v in on.items()], left=()),
+                ul(["500 &micro;s pulse every 2 ms, read in zero span with a 300 kHz bandwidth.",
+                    "The pulse level matches the continuous tone within 0.2 dB where both were read cold (amplitude 0.5). &ldquo;Warm&rdquo; values are from the night before with the Pluto 9 &deg;C hotter, when it put out 0.4 to 0.9 dB less.",
+                    f"Between pulses the reading is {n(max(off), 1)} to {n(min(off), 1)} dBm, which is the analyzer's noise in this bandwidth. The pulse is at least 55 dB above it. "
+                    "The LO leakage (about &minus;60 dBm at 0 dB attenuation, from the continuous-tone tests) is still there between pulses, so the true on/off ratio at 0 dB attenuation is about 60 dB."])]
+    if "pulse_width" in N:
+        out += [h("Pulse shape in time"), fig("pluto_pulse_time.png", "Pulses of 100 to 1 microsecond at 1100 MHz seen in zero span"),
+                table(["Asked width (&micro;s)", "Measured width between &minus;6 dB points (&micro;s)", "Time between pulses (&micro;s)", "Peak reading (dBm)", "Level between pulses (dBm)"],
+                      [[r[0], n(r[1], 0), n(r[2], 0), n(r[3]), n(r[4], 1)] for r in N["pulse_width"]], left=()),
+                ul(["Analyzer zero span, 1 MHz bandwidth (its widest), video trigger. Its shortest sweep is 900 &micro;s, which is one point every 1.2 &micro;s.",
+                    "Pulses of 10 &micro;s and longer are shown correctly: right width, right spacing (400 &micro;s for the 20 &micro;s pulse, 200 &micro;s for the others), flat top at +0.2 to +0.3 dBm.",
+                    "Pulses of 5 &micro;s and shorter read low (&minus;1.9, &minus;11.3, &minus;19.8 dBm). That is the analyzer: one point every 1.2 &micro;s and a 1 MHz filter cannot follow them. It is not the Pluto; see the spectrum below.",
+                    "This analyzer cannot show the shape of the 50 ns to 1.2 &micro;s pulses the design uses. That needs a detector and the oscilloscope, or the SM200B."])]
+    if "pulse_peak" in N:
+        nulls = {r[0]: r for r in N.get("pulse_spectrum", [])}
+        out += [h("Pulse spectrum"), fig("pluto_pulse_spectrum.png", "Spectrum of pulses from 2000 ns down to 32 ns"),
+                table(["Asked width (ns)", "Samples", "Actual width (ns)", "Peak in 100 kHz bandwidth (dBm)", "Relative to a continuous tone (dB)", "Departure from 20 log10(width) (dB)", "First null, measured (MHz)", "First null, expected 1/width (MHz)"],
+                      [[n(r[0], 0 if r[0] >= 100 else 1), r[1], n(r[2], 1), n(r[4]), n(r[5]), n(r[6]),
+                        (n((nulls[str(int(r[0]))][2] + nulls[str(int(r[0]))][3]) / 2) if str(int(r[0])) in ("1200", "1000", "500", "300") and None not in nulls[str(int(r[0]))][2:] else D),
+                        n(1e3 / r[2])] for r in N["pulse_peak"] if r[3] == 0.5], left=()),
+                ol(["One pulse every 100 &micro;s, attenuation 0 dB, amplitude 0.5. Analyzer: 100 kHz bandwidth, positive-peak detector, 3 s sweep, so each point of the trace sees about 40 pulses and keeps the largest.",
+                    "A first attempt with a normal fast sweep gave a ragged trace (each point either caught a pulse or missed it). Those traces are saved as <code>pulse_spectrum_*</code> and are not used.",
+                    "The spectrum of a rectangular pulse of width &tau; has nulls at multiples of 1/&tau; from the centre. The null positions were found from the trace and compared with 1/&tau;.",
+                    "In a bandwidth narrower than 1/&tau; the peak reading falls 20 dB for each tenfold drop in width. The departure column is the reading minus that rule, taking the 1000 ns pulse as the reference."]),
+                math(r"\Delta f_\text{null} = \frac{1}{\tau} \qquad P_\text{peak}(\tau) = P_\text{peak}(\tau_0) + 20\log_{10}\!\left(\frac{\tau}{\tau_0}\right)"),
+                ul(["The 5000 ns pulse is wider than the analyzer filter can treat as short, so the 20 log rule does not apply to it.", "From 2000 ns down to 300 ns the nulls are where 1/&tau; says and the peak follows the 20 log rule within 0.3 dB. The Pluto makes these pulses with the right width and full amplitude.",
+                    "For 200 ns the first null (5.1 MHz expected) can be seen in the plot near 5 MHz.",
+                    "Below about 130 ns the departure grows (+0.9 dB at 130 ns, +1.5 dB at 65 ns, +4.3 dB at one sample). The spectrum is cut off beyond about &plusmn;10 MHz: the Pluto's RF bandwidth setting is 18 MHz. A pulse shorter than about 100 ns comes out wider and lower than asked.",
+                    "To make the 50 ns pulses the design calls for, the Pluto's sample rate and RF bandwidth would have to be raised. That has not been tried and would need its own check.",
+                    "After each pulse test the normal tone generator was switched back on and read: &minus;18.82 and &minus;18.99 dBm at 20 dB, as before."])]
     return "".join(out)
