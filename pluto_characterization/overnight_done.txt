@@ -1,2 +1,12 @@
 state_dump
 analyzer_floor
+fine_steps
+low_level
+tone_scale
+tone_offset
+two_tone
+close_lines
+harmonics
+retune_repeat
+settling
+wide_search

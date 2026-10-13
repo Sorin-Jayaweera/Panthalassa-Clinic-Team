@@ -4,6 +4,7 @@ from pathlib import Path
 
 from content import table, ul, ol, p, h, link, math, fig, D
 from content_parts import part_tab, steps_table
+import content_pluto_night as NIGHT
 
 SUM = Path(__file__).resolve().parent.parent.parent / "pluto_characterization" / "summary.json"
 S = json.loads(SUM.read_text()) if SUM.exists() else {}
@@ -48,6 +49,8 @@ def results():
     for k, name in (("B", "B. Output against frequency"), ("C", "C. Output against tone scale"), ("D", "D. Frequency error"), ("E", "E. Spectrum"),
                     ("F", "F. Stability"), ("G", "G. Analyzer check and repeat"), ("H", "H. Tone off")):
         summary.append([name, RES.get(k, "done, see below") if done[k] else "not run", "12 Oct" if done[k] else ""])
+    out.append(NIGHT.learned())
+    out.append(h("First run, tests A to H"))
     out.append(table(["Test", "Result", "Date"], summary, left=(0, 1, 2)))
 
     # ---- A
@@ -154,17 +157,7 @@ def results():
     out.append(p("Folder <code>clinic\\claude\\pluto_characterization\\</code>: <code>readings.csv</code> (every reading, with time, settings, measured frequency and level), "
                  "<code>characterize_pluto.py</code> (takes the readings), <code>analyze_pluto.py</code> (tables and plots), <code>summary.json</code>, "
                  "<code>pluto_tx_calibration.csv</code>, <code>spectrum_*.csv</code> (traces, test E), <code>run_log.txt</code>."))
-    out.append(h("Overnight run, 12 to 13 Oct"))
-    out.append(p("Started 21:44 on 12 Oct, stops itself at 07:20 on 13 Oct. Same wiring. Script <code>overnight.py</code>; readings in <code>overnight_readings.csv</code>; traces in <code>traces\\</code>. Results will be added here."))
-    out.append(table(["Block", "What it measures"],
-                     [["Reference check", "six fixed readings, the tone frequency and the Pluto temperature, every 10 minutes"], ["Analyzer floor", "analyzer reading with the tone off, at each analyzer setting used"],
-                      ["Fine steps", "0.25 dB attenuation steps from 0 to 12 dB, down and up"], ["Low level", "output down to the 89.75 dB setting, with the preamp and a narrow bandwidth"],
-                      ["Tone scale", "scale 0.02 to 1.0 at five frequencies, with the spectrum at each scale"], ["Tone offset", "tone 0.1 to 14 MHz from the LO, either side: level, LO leakage, other sideband"],
-                      ["Two tones", "two tones 1 MHz apart and their third-order products"], ["Close lines", "LO leakage and other sideband at every 50 MHz, 350 to 2100 MHz"],
-                      ["Harmonics", "second and third harmonic for tones from 350 to 1050 MHz"], ["Retune repeat", "leave a frequency and come back, 30 times; same for attenuation"],
-                      ["Settling", "level against time while retuning or changing attenuation"], ["Wide search", "0 to 2.1 GHz at each 100 MHz: the five largest other lines"],
-                      ["Full map", "every 10 MHz from 350 to 2100 MHz at nine attenuation settings; again at tone scale 1.0"],
-                      ["Drift", "level and frequency every 30 s for the rest of the night; hourly repeat of the level table"]], left=(0, 1)))
+    out.append(NIGHT.night())
     return "".join(out)
 
 
