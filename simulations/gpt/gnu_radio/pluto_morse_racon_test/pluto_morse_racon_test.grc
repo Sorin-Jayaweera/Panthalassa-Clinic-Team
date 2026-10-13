@@ -1,0 +1,52 @@
+options:
+  parameters:
+    title: Pluto Morse RACON IF Test
+    author: GPT generated from JACON draft
+    description: >
+      GNU Radio Companion starting point for transmitting a keyed '. - .' tone
+      from an ADALM-Pluto at the 1.0-1.2 GHz IF/VCO test point.
+variables:
+  samp_rate: 2e6
+  center_freq: 1.1e9
+  tone_offset: 100e3
+  tx_atten_db: 40
+  amplitude: 0.25
+  wpm: 18
+blocks:
+  - id: analog_sig_source_x
+    label: Complex tone, 100 kHz offset
+    parameters:
+      type: complex
+      sample_rate: samp_rate
+      waveform: cosine
+      frequency: tone_offset
+      amplitude: 1.0
+  - id: blocks_vector_source_x
+    label: Repeating Morse envelope . - .
+    parameters:
+      type: float
+      repeat: true
+      notes: Build samples for dot, dash, dot using dot=1.2/wpm seconds.
+  - id: blocks_float_to_complex
+    label: Envelope to complex
+  - id: blocks_multiply_xx
+    label: Key tone with Morse envelope
+    parameters:
+      type: complex
+  - id: iio_fmcomms2_sink
+    label: ADALM-Pluto TX
+    parameters:
+      uri: ip:192.168.2.1
+      frequency: center_freq
+      samplerate: samp_rate
+      bandwidth: samp_rate
+      attenuation: tx_atten_db
+connections:
+  - [Complex tone, 100 kHz offset, 0, Key tone with Morse envelope, 0]
+  - [Repeating Morse envelope . - ., 0, Envelope to complex, 0]
+  - [Envelope to complex, 0, Key tone with Morse envelope, 1]
+  - [Key tone with Morse envelope, 0, ADALM-Pluto TX, 0]
+notes: >
+  If GNU Radio Companion rejects this metadata-only .grc skeleton, recreate the
+  same block graph manually or run the included Python flowgraph directly. The
+  Python file is the authoritative runnable flowgraph.

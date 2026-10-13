@@ -1,0 +1,67 @@
+<title>VCO and Phase Detector Bench Notes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a bench notebook. Sticky contents rail on the left, one reading column on the right;
+   every figure is a "plate" with the same three parts: what I did, the math, the code. */
+:root {
+  --bg: #f3f6f4; --surface: #ffffff; --fg: #15262a; --muted: #56686b; --rule: #cfd9d6;
+  --accent: #0b7a57; --accent-soft: #dcefe7; --warn: #a2560a; --warn-soft: #f6e8d3;
+  --code-bg: #e8eeec; --plot-bg: #ffffff;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1719; --surface: #152124; --fg: #dde8e5; --muted: #93a6a5; --rule: #2a3a3d;
+  --accent: #45d19c; --accent-soft: #143429; --warn: #f0b060; --warn-soft: #3a2b12;
+  --code-bg: #1b2a2d; --plot-bg: #ffffff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1719; --surface: #152124; --fg: #dde8e5; --muted: #93a6a5; --rule: #2a3a3d;
+  --accent: #45d19c; --accent-soft: #143429; --warn: #f0b060; --warn-soft: #3a2b12;
+  --code-bg: #1b2a2d; --plot-bg: #ffffff; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6; }
+.page { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 3rem; max-width: 78rem; margin: 0 auto; padding-inline: 1.25rem; padding-block: 2.5rem 5rem; }
+nav { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; max-height: 100vh; overflow-y: auto; padding-block: 0.5rem; font-size: 0.86rem; }
+nav .navhead { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 1.1rem 0 0.3rem; }
+nav a { display: block; color: var(--fg); text-decoration: none; padding: 0.16rem 0 0.16rem 0.7rem; border-left: 2px solid var(--rule); }
+nav a:hover, nav a:focus-visible { border-left-color: var(--accent); color: var(--accent); outline: none; }
+main { min-width: 0; display: flex; flex-direction: column; gap: 3.2rem; }
+header h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.05; margin: 0 0 0.8rem; text-wrap: balance; }
+header p { max-width: 42rem; margin: 0 0 0.7rem; }
+.meta { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+h2 { font-family: var(--display); font-weight: 700; font-size: 1.75rem; line-height: 1.15; margin: 0 0 0.4rem; padding-top: 1rem; border-top: 3px solid var(--fg); text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 500; font-size: 1.25rem; margin: 0; text-wrap: balance; }
+section { display: flex; flex-direction: column; gap: 2.2rem; }
+section > p, .lede { max-width: 42rem; margin: 0; }
+.chain { font-family: var(--mono); font-size: 0.85rem; background: var(--surface); border: 1px solid var(--rule); padding: 0.9rem 1rem; overflow-x: auto; white-space: pre; }
+.plate { display: flex; flex-direction: column; gap: 0.9rem; }
+.plate .tag { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.plate figure { margin: 0; background: var(--plot-bg); border: 1px solid var(--rule); padding: 0.4rem; }
+.plate figure img { display: block; width: 100%; height: auto; }
+.plate figure a { display: block; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 1.2rem 2rem; }
+.notes > div { min-width: 0; }
+.notes h4 { font-family: var(--mono); font-weight: 500; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 0.3rem; }
+.notes p, .notes ul { margin: 0 0 0.55rem; }
+.notes ul { padding-left: 1.1rem; }
+.math { overflow-x: auto; padding: 0.2rem 0; }
+pre.code { font-family: var(--mono); font-size: 0.8rem; line-height: 1.5; background: var(--code-bg); padding: 0.8rem 0.9rem; margin: 0; overflow-x: auto; }
+details { font-size: 0.92rem; }
+details summary { cursor: pointer; font-family: var(--mono); font-size: 0.78rem; color: var(--accent); padding: 0.2rem 0; }
+details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.caution { background: var(--warn-soft); border-left: 4px solid var(--warn); padding: 0.7rem 0.9rem; max-width: 46rem; }
+.caution strong { color: var(--warn); }
+.result { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 0.7rem 0.9rem; max-width: 46rem; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 0.3rem 0.8rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-family: var(--mono); font-weight: 500; font-size: 0.74rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { text-align: left; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.05em 0.3em; }
+pre.code code { background: none; padding: 0; font-size: inherit; }
+@media (max-width: 54rem) { .page { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; } nav { position: static; max-height: none; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; } }
+</style>
+<script>window.MathJax = { tex: { inlineMath: [["\\(", "\\)"]] }, svg: { fontCache: "global" } };</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+

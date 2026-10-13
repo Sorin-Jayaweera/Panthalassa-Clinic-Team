@@ -1,0 +1,170 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\Sorin\AppData\Local\Temp\jacon_lt\dld_q90_ideal\dld_q90_ideal.cir
+Start Time: Sun Sep 13 19:25:57 2026
+Options:plotwinsize=0
+
+.step freq=1000000000
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1010000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1020000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1030000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1040000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1050000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1060000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1070000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1080000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1090000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1100000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1110000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1120000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1130000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1140000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1150000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1160000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1170000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1180000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1190000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1200000000
+.OP point found by inspection.
+.OP point found by inspection.
+Total elapsed time: 3.529 seconds.
+
+Files loaded:
+C:\Users\Sorin\AppData\Local\Temp\jacon_lt\dld_q90_ideal\dld_q90_ideal.cir
+
+
+Measurement: vout
+  step	AVG(V(vout) )	FROM	TO
+     1	0.00177541061838	3e-08	4e-08
+     2	0.00159948251658	3e-08	4e-08
+     3	0.00142322912333	3e-08	4e-08
+     4	0.00124669245651	3e-08	4e-08
+     5	0.00106989685986	3e-08	4e-08
+     6	0.000892887648403	3e-08	4e-08
+     7	0.000713383068737	3e-08	4e-08
+     8	0.000535209054134	3e-08	4e-08
+     9	0.000357245378903	3e-08	4e-08
+    10	0.000179447551185	3e-08	4e-08
+    11	1.78568816039e-06	3e-08	4e-08
+    12	-0.000175878304001	3e-08	4e-08
+    13	-0.000353502675204	3e-08	4e-08
+    14	-0.000531060461691	3e-08	4e-08
+    15	-0.000708558847173	3e-08	4e-08
+    16	-0.000885930719119	3e-08	4e-08
+    17	-0.00106312766296	3e-08	4e-08
+    18	-0.00124010019992	3e-08	4e-08
+    19	-0.00141682248984	3e-08	4e-08
+    20	-0.00159328611481	3e-08	4e-08
+    21	-0.00176942541001	3e-08	4e-08
+
+Measurement: theory
+  step	{(APK/2)**2/2*cos(2*pi*FREQ*DT)}
+     1	0.0124961180104
+     2	0.0124960399865
+     3	0.0124959611865
+     4	0.0124958816102
+     5	0.0124958012578
+     6	0.0124957201292
+     7	0.0124956382244
+     8	0.0124955555434
+     9	0.0124954720863
+    10	0.012495387853
+    11	0.0124953028436
+    12	0.0124952170581
+    13	0.0124951304964
+    14	0.0124950431585
+    15	0.0124949550445
+    16	0.0124948661544
+    17	0.0124947764882
+    18	0.0124946860459
+    19	0.0124945948275
+    20	0.0124945028329
+    21	0.0124944100623
+
+Measurement: phase_deg
+  step	{360*FREQ*DT}
+     1	81.8170244201
+     2	82.6351946643
+     3	83.4533649085
+     4	84.2715351527
+     5	85.0897053969
+     6	85.9078756411
+     7	86.7260458853
+     8	87.5442161295
+     9	88.3623863737
+    10	89.1805566179
+    11	89.9987268621
+    12	90.8168971063
+    13	91.6350673505
+    14	92.4532375947
+    15	93.2714078389
+    16	94.0895780831
+    17	94.9077483273
+    18	95.7259185715
+    19	96.5440888157
+    20	97.3622590599
+    21	98.1804293041

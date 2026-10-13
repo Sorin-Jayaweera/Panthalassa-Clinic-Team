@@ -1,0 +1,22 @@
+  offset 1.875 mV/code, amplitude 1.400 mV/code (pk-pk)
+0.20<->0.40 V rise: mixer 35.8->54.7 mV, f 753.0->763.2 MHz | rise 10-90: drive 144 ns, mixer 140 ns, freq 127 ns | t50 lag 35 ns | 418 edges
+0.20<->0.40 V fall: mixer 54.7->35.8 mV, f 763.2->753.1 MHz | rise 10-90: drive 145 ns, mixer 93 ns, freq 125 ns | t50 lag 15 ns | 419 edges
+0.20<->0.60 V rise: mixer 36.0->75.2 mV, f 753.3->771.1 MHz | rise 10-90: drive 143 ns, mixer 124 ns, freq 119 ns | t50 lag 28 ns | 417 edges
+0.20<->0.60 V fall: mixer 75.1->36.0 mV, f 771.1->753.3 MHz | rise 10-90: drive 144 ns, mixer 102 ns, freq 132 ns | t50 lag 62 ns | 420 edges
+0.20<->0.80 V rise: mixer 36.2->97.7 mV, f 753.6->777.9 MHz | rise 10-90: drive 145 ns, mixer 131 ns, freq 119 ns | t50 lag 66 ns | 417 edges
+0.20<->0.80 V fall: mixer 97.6->36.2 mV, f 777.9->753.5 MHz | rise 10-90: drive 146 ns, mixer 108 ns, freq 134 ns | t50 lag 61 ns | 420 edges
+0.20<->1.00 V rise: mixer 36.4->115.3 mV, f 753.8->783.5 MHz | rise 10-90: drive 145 ns, mixer 108 ns, freq 111 ns | t50 lag 63 ns | 417 edges
+0.20<->1.00 V fall: mixer 115.2->36.3 mV, f 783.5->753.7 MHz | rise 10-90: drive 146 ns, mixer 114 ns, freq 143 ns | t50 lag 65 ns | 420 edges
+0.20<->1.15 V rise: mixer 36.1->121.1 mV, f 753.4->787.2 MHz | rise 10-90: drive 143 ns, mixer 89 ns, freq 112 ns | t50 lag 58 ns | 417 edges
+0.20<->1.15 V fall: mixer 121.1->36.0 mV, f 787.1->753.3 MHz | rise 10-90: drive 149 ns, mixer 116 ns, freq 149 ns | t50 lag 69 ns | 420 edges
+0.30<->0.40 V rise: mixer 44.1->54.8 mV, f 758.8->763.3 MHz | rise 10-90: drive 145 ns, mixer 126 ns, freq 124 ns | t50 lag 26 ns | 417 edges
+0.30<->0.40 V fall: mixer 54.8->44.1 mV, f 763.3->758.8 MHz | rise 10-90: drive 145 ns, mixer 122 ns, freq 132 ns | t50 lag 24 ns | 420 edges
+0.50<->0.60 V rise: mixer 66.0->75.4 mV, f 767.6->771.2 MHz | rise 10-90: drive 142 ns, mixer 126 ns, freq 121 ns | t50 lag 62 ns | 417 edges
+0.50<->0.60 V fall: mixer 75.4->66.0 mV, f 771.2->767.6 MHz | rise 10-90: drive 143 ns, mixer 125 ns, freq 125 ns | t50 lag 23 ns | 420 edges
+0.70<->0.80 V rise: mixer 87.1->98.0 mV, f 775.0->778.0 MHz | rise 10-90: drive 141 ns, mixer 122 ns, freq 121 ns | t50 lag 25 ns | 417 edges
+0.70<->0.80 V fall: mixer 98.0->87.1 mV, f 778.0->775.0 MHz | rise 10-90: drive 142 ns, mixer 127 ns, freq 124 ns | t50 lag 62 ns | 420 edges
+0.90<->1.00 V rise: mixer 108.0->114.9 mV, f 780.9->783.4 MHz | rise 10-90: drive 140 ns, mixer 116 ns, freq 120 ns | t50 lag 20 ns | 417 edges
+0.90<->1.00 V fall: mixer 114.9->108.0 mV, f 783.4->780.9 MHz | rise 10-90: drive 140 ns, mixer 128 ns, freq 126 ns | t50 lag 65 ns | 420 edges
+1.00<->1.10 V rise: mixer 115.4->119.8 mV, f 783.6->785.9 MHz | rise 10-90: drive 139 ns, mixer 97 ns, freq 105 ns | t50 lag 16 ns | 417 edges
+1.00<->1.10 V fall: mixer 119.8->115.4 mV, f 785.9->783.6 MHz | rise 10-90: drive 141 ns, mixer 124 ns, freq 117 ns | t50 lag 68 ns | 420 edges
+Saved C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\phase_detector_calibration\step_response\20261010_182707

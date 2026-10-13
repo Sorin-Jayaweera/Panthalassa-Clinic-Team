@@ -1,0 +1,16 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\Sorin\AppData\Local\Temp\jacon_run\T03_rx_downconversion\T03_rx_downconversion.net
+Start Time: Sun Sep 13 19:45:55 2026
+Options:plotwinsize=0
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.883 seconds.
+
+Files loaded:
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T03_rx_downconversion\T03_rx_downconversion.net
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T03_rx_downconversion\jacon_blocks.inc
+

@@ -1,0 +1,170 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\Sorin\AppData\Local\Temp\jacon_lt\dld_q270_ideal\dld_q270_ideal.cir
+Start Time: Sun Sep 13 19:26:02 2026
+Options:plotwinsize=0
+
+.step freq=1000000000
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1010000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1020000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1030000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1040000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1050000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1060000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1070000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1080000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1090000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1100000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1110000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1120000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1130000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1140000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1150000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1160000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1170000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1180000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1190000000
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step freq=1200000000
+.OP point found by inspection.
+.OP point found by inspection.
+Total elapsed time: 3.182 seconds.
+
+Files loaded:
+C:\Users\Sorin\AppData\Local\Temp\jacon_lt\dld_q270_ideal\dld_q270_ideal.cir
+
+
+Measurement: vout
+  step	AVG(V(vout) )	FROM	TO
+     1	-0.00516716451787	3e-08	4e-08
+     2	-0.00467841154904	3e-08	4e-08
+     3	-0.00418109286144	3e-08	4e-08
+     4	-0.00367610394351	3e-08	4e-08
+     5	-0.00316436021054	3e-08	4e-08
+     6	-0.00264680509671	3e-08	4e-08
+     7	-0.00212438446697	3e-08	4e-08
+     8	-0.00159806381328	3e-08	4e-08
+     9	-0.00106693164556	3e-08	4e-08
+    10	-0.000533996880973	3e-08	4e-08
+    11	-1.30580176224e-06	3e-08	4e-08
+    12	0.000531212002552	3e-08	4e-08
+    13	0.00106310532658	3e-08	4e-08
+    14	0.00159361423667	3e-08	4e-08
+    15	0.00212227588761	3e-08	4e-08
+    16	0.0026447932304	3e-08	4e-08
+    17	0.00316245309899	3e-08	4e-08
+    18	0.00367429247881	3e-08	4e-08
+    19	0.00417937294634	3e-08	4e-08
+    20	0.00467676228121	3e-08	4e-08
+    21	0.00516555263741	3e-08	4e-08
+
+Measurement: theory
+  step	{(APK/2)**2/2*cos(2*pi*FREQ*DT)}
+     1	0.0124650753197
+     2	0.0124643736672
+     3	0.0124636650465
+     4	0.012462949458
+     5	0.0124622269019
+     6	0.0124614973788
+     7	0.012460760889
+     8	0.0124600174329
+     9	0.012459267011
+    10	0.0124585096237
+    11	0.0124577452714
+    12	0.0124569739545
+    13	0.0124561956735
+    14	0.0124554104288
+    15	0.0124546182208
+    16	0.0124538190501
+    17	0.0124530129169
+    18	0.0124521998218
+    19	0.0124513797652
+    20	0.0124505527477
+    21	0.0124497187696
+
+Measurement: phase_deg
+  step	{360*FREQ*DT}
+     1	245.45543056
+     2	247.909984866
+     3	250.364539172
+     4	252.819093477
+     5	255.273647783
+     6	257.728202088
+     7	260.182756394
+     8	262.6373107
+     9	265.091865005
+    10	267.546419311
+    11	270.000973616
+    12	272.455527922
+    13	274.910082228
+    14	277.364636533
+    15	279.819190839
+    16	282.273745144
+    17	284.72829945
+    18	287.182853756
+    19	289.637408061
+    20	292.091962367
+    21	294.546516672

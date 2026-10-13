@@ -1,0 +1,23 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\jacon_full_system_top.cir
+Start Time: Sun Sep 13 19:13:55 2026
+Options:plotwinsize=0 numdgt=7
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+Laplace(xif_lpf:Ebuf): Window=680ns Nfft=32768
+Laplace(xenv_lp:Ebuf): Window=228.90841ns Nfft=16384
+Laplace(xphase_lpf:Ebuf): Window=160.30994ns Nfft=16384
+Laplace(ximage:Ebuf): Window=680ns Nfft=32768
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 29.319 seconds.
+
+Files loaded:
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\jacon_full_system_top.cir
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\jacon_common_models.lib
+
+held_phase_avg: AVG(V(held_phase) )=0.000912958121264 FROM 8e-08 TO 9.5e-08
+tune_avg: AVG(V(vco_tune) )=8.00547774872 FROM 8e-08 TO 9.5e-08
+tx_peak_pp: PP(V(tx_ant) )=5.25600199653 FROM 1e-07 TO 3.1e-07

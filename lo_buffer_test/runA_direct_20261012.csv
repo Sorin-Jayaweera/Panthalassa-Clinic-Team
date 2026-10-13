@@ -1,0 +1,6 @@
+run,freq_set_hz,att_db,freq_hz,level_dbm
+A_direct,1.1e9,off,1103947000,-63.1
+A_direct,1.1e9,60,1099989300,-59.93
+A_direct,1.1e9,50,1099990700,-49.13
+A_direct,1.1e9,40,1099990700,-39.39
+A_direct,1.1e9,31,1099990700,-30.41

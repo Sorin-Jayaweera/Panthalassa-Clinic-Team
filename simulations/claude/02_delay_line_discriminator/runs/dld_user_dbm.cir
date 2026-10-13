@@ -1,0 +1,78 @@
+* =====================================================================
+*  JACON  -  Delay-line frequency discriminator, 1.0 - 1.2 GHz
+*  (stand-alone bench model of the "Limiter -> 50R splitter -> delay line ->
+*   phase detector" section, matching the planned Pluto SDR bench test)
+*
+*  CW tone (Pluto TX) --feed cable--> resistive 2-way splitter
+*        arm A : reference cable, length L_REF
+*        arm B : reference cable + DL_IN extra inches  (delay dt)
+*  mixer multiplies A*B = (a*b/2)[ cos(2 pi f dt)  +  cos(2 pi (2f) t + ...) ]
+*  low-pass removes the 2f (f0+f1) term, f0-f1 = 0 -> DC:
+*        Vout = K * cos(2 pi f dt)
+*
+*  Run:  LTspice -> Simulate.  Stepped over FREQ.  Plot V(vout).
+*  Measurements (per step) land in the .log  (use View > SPICE Error Log)
+* =====================================================================
+
+* ---------------- USER PARAMETERS ------------------------------------
+* frequency sweep is set on the .step line at the bottom (LTspice needs literal numbers there)
+.param P_DBM=0            ; tone power delivered into the splitter input (dBm)
+.param VF=0.70            ; cable velocity factor (PTFE RG-316 / .086 semi-rigid ~0.70, foam ~0.8x)
+.param L_FEED_IN=12       ; feed cable Pluto -> splitter (inches), sets only a common delay
+.param L_REF_IN=6         ; reference arm length (inches)
+.param DL_IN=4.5          ; EXTRA length of delayed arm (inches)  <-- the design variable
+.param MIXMODE=1          ; 0 = ideal multiplier   1 = switching double-balanced mixer (ZX05-30W-S+ like)
+.param CL_DB=5.5          ; conversion loss used when MIXMODE=1 (dB)
+.param VSW=0.05           ; LO-port switching softness for MIXMODE=1 (V)
+.param F_LPF=50e6         ; post-mixer low-pass corner (removes 2f term)
+
+* ---------------- DERIVED -------------------------------------------
+.param C0=299792458
+.param TD_FEED={L_FEED_IN*0.0254/(VF*C0)}
+.param TD_A={L_REF_IN*0.0254/(VF*C0)}
+.param TD_B={(L_REF_IN+DL_IN)*0.0254/(VF*C0)}
+.param DT={DL_IN*0.0254/(VF*C0)}
+.param APK={sqrt(2*50*1e-3*10**(P_DBM/10))}   ; peak volts at splitter input
+.param KDBM={10**(-CL_DB/20)*pi/2}
+.param LLPF={2*50/(2*pi*F_LPF)}  CLPF={1/(2*pi*F_LPF*50)}
+.param FREQ=1.1e9
+
+* ================= [1] SIGNAL SOURCE (Pluto TX, 50 ohm) ===============
+V_SRC src_open 0 SINE(0 {2*APK} {FREQ})
+R_SRC src_open src 50
+
+* ================= [2] FEED CABLE ======================================
+T_FEED src 0 split_in 0 Td={TD_FEED} Z0=50
+
+* ================= [3] RESISTIVE 2-WAY SPLITTER (ZFRSC-42-S+) ==========
+R_S1 split_in ctr 16.667
+R_S2 ctr arm_a_in 16.667
+R_S3 ctr arm_b_in 16.667
+
+* ================= [4] DELAY LINES =====================================
+T_A arm_a_in 0 arm_a 0 Td={TD_A} Z0=50
+T_B arm_b_in 0 arm_b 0 Td={TD_B} Z0=50
+R_TA arm_a 0 50      ; mixer RF port input impedance
+R_TB arm_b 0 50      ; mixer LO port input impedance
+
+* ================= [5] PHASE DETECTOR (MIXER) =========================
+* x2 makes up for the 50 ohm source / 50 ohm load divider of the LPF
+B_MIX mix_open 0 V=2*if(MIXMODE==0, V(arm_a)*V(arm_b), KDBM*V(arm_a)*tanh(V(arm_b)/VSW))
+R_MIX mix_open mix 50
+* raw (unfiltered) product for viewing:
+B_RAW mix_raw 0 V=V(mix_open)/2
+
+* ================= [6] LOW-PASS FILTER (kills 2f = 2.0-2.4 GHz) ========
+C_L1 mix 0 {CLPF}
+L_L2 mix vout {LLPF}
+C_L3 vout 0 {CLPF}
+R_LOAD vout 0 50
+
+* ================= ANALYSIS ============================================
+.step param FREQ 1.00e9 1.20e9 10e6
+.tran 0 40n 0 5p
+.meas tran VOUT  AVG V(vout) FROM 30n TO 40n
+.meas tran THEORY PARAM {(APK/2)**2/2*cos(2*pi*FREQ*DT)}
+.meas tran PHASE_DEG PARAM {360*FREQ*DT}
+.options plotwinsize=0
+.end

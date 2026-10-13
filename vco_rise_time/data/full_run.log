@@ -1,0 +1,14 @@
+CGR: *Syscomp CircuitGear MKII V1.1 FPGA 0x02 | scope: Siglent Technologies,SDS1104X-E,SDSMMFCQ5R6888,8.1.6.1.35R2
+Calibrating drive levels on CH1...
+  offset 1.875 mV/code, amplitude 1.333 mV/code (pk-pk)
+V_hi=0.75 V: drive 0.501->0.755 V (rise 147 ns) | f 764.9->769.9 MHz (SA table 751.4->764.8) | freq rise 131 +/- 2 ns, t50 -3 ns | 1112 edges, band 221-245 MHz lag 8
+V_hi=1.00 V: drive 0.490->1.001 V (rise 148 ns) | f 764.8->774.7 MHz (SA table 751.4->778.1) | freq rise 125 +/- 5 ns, t50 3 ns | 1112 edges, band 214-245 MHz lag 8
+V_hi=1.25 V: drive 0.500->1.248 V (rise 146 ns) | f 765.0->780.5 MHz (SA table 751.4->788.8) | freq rise 145 +/- 2 ns, t50 3 ns | 1112 edges, band 206-245 MHz lag 8
+V_hi=1.50 V: drive 0.507->1.491 V (rise 145 ns) | f 765.1->791.5 MHz (SA table 751.4->799.5) | freq rise 176 +/- 1 ns, t50 23 ns | 1112 edges, band 189-247 MHz lag 8
+V_hi=1.75 V: drive 0.498->1.752 V (rise 143 ns) | f 765.2->816.6 MHz (SA table 751.4->813.5) | freq rise 166 +/- 1 ns, t50 53 ns | 1112 edges, band 169-249 MHz lag 6
+V_hi=2.00 V: drive 0.504->1.996 V (rise 144 ns) | f 765.3->836.9 MHz (SA table 751.4->827.5) | freq rise 149 +/- 0 ns, t50 42 ns | 1112 edges, band 144-249 MHz lag 4
+V_hi=2.25 V: drive 0.509->2.260 V (rise 144 ns) | f 765.3->850.1 MHz (SA table 751.4->841.2) | freq rise 120 +/- 0 ns, t50 26 ns | 1112 edges, band 121-249 MHz lag 3
+V_hi=2.50 V: drive 0.495->2.502 V (rise 145 ns) | f 765.5->859.0 MHz (SA table 751.4->854.5) | freq rise 108 +/- 0 ns, t50 16 ns | 1112 edges, band 111-249 MHz lag 3
+V_hi=2.75 V: drive 0.499->2.758 V (rise 145 ns) | f 765.9->866.9 MHz (SA table 751.4->868.2) | freq rise 101 +/- 0 ns, t50 8 ns | 1112 edges, band 104-249 MHz lag 3
+V_hi=3.00 V: drive 0.505->2.997 V (rise 145 ns) | f 766.3->875.0 MHz (SA table 751.4->884.4) | freq rise 104 +/- 0 ns, t50 2 ns | 1112 edges, band 89-249 MHz lag 3
+Saved: C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\vco_rise_time\data\20261010_155415

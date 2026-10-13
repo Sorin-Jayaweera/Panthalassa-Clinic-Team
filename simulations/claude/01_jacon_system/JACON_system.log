@@ -1,0 +1,17 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\claude\01_jacon_system\JACON_system.net
+Start Time: Mon Sep 14 13:14:57 2026
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+
+Simulation stopped by user.
+Total elapsed time: 39.751 seconds.
+
+Files loaded:
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\claude\01_jacon_system\JACON_system.net
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\claude\01_jacon_system\jacon_blocks.inc
+

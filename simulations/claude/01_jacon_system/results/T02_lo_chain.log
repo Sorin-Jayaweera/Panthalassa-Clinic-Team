@@ -1,0 +1,16 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\Sorin\AppData\Local\Temp\jacon_run\T02_lo_chain\T02_lo_chain.net
+Start Time: Sun Sep 13 19:45:46 2026
+Options:plotwinsize=0
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.668 seconds.
+
+Files loaded:
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T02_lo_chain\T02_lo_chain.net
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T02_lo_chain\jacon_blocks.inc
+

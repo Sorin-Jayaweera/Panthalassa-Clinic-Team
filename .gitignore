@@ -1,0 +1,19 @@
+# generated or temporary
+__pycache__/
+*.pyc
+~$*
+_patch*.py
+
+# LTspice waveform output: up to 235 MB each, over GitHub's 100 MB file limit. Re-run the simulation to regenerate.
+*.raw
+
+# third-party files: get them from the vendor (links in README.md)
+datasheets/
+documentation/datasheets/
+documentation/racon_docs/*.pdf
+signal_hound/smdevice/*.dll
+signal_hound/smdevice/*.lib
+
+# older dated copies of the site; the current copy is JACON_notes_backup.html and docs/
+site_backups/
+phase_detector_calibration/site/JACON_notes_standalone.html

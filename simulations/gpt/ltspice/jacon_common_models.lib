@@ -1,0 +1,49 @@
+* JACON / RACON draft common LTspice helper models
+* These are behavioral/first-order models intended for architecture checks,
+* not vendor-accurate S-parameter replacement models.
+
+.param pi=3.141592653589793
+.param c0=299792458
+.param z0=50
+
+* dBm into 50 ohm -> sine peak voltage.
+.func dbm_to_vpk(dbm) sqrt(2*z0*1m*pow(10, dbm/10))
+
+* One-pole low-pass and high-pass approximations.
+* Usage:
+*   XLP in out lpf_1pole PARAMS: fc=2e9
+*   XHP in out hpf_1pole PARAMS: fc=8.4e9
+.subckt lpf_1pole in out PARAMS: fc=1e9
+Ebuf out 0 LAPLACE {V(in)} {1/(1+s/(2*pi*fc))}
+.ends lpf_1pole
+
+.subckt hpf_1pole in out PARAMS: fc=1e9
+Ebuf out 0 LAPLACE {V(in)} {(s/(2*pi*fc))/(1+s/(2*pi*fc))}
+.ends hpf_1pole
+
+* Voltage gain block with optional soft limiting.
+* limit_v=0 disables tanh limiting in practical terms by making the limit huge.
+.subckt gain_limit in out PARAMS: gain_db=0 limit_v=1e6
+Bout out 0 V={limit_v*tanh(pow(10,gain_db/20)*V(in)/limit_v)}
+.ends gain_limit
+
+* Ideal multiplier. Output is scale * Va * Vb.
+.subckt ideal_multiplier a b out PARAMS: scale=1
+Bmul out 0 V={scale*V(a)*V(b)}
+.ends ideal_multiplier
+
+* Behavioral sample-and-hold. Gate > 0.5 tracks input, otherwise holds C.
+.subckt sample_hold in gate out PARAMS: ron=10 roff=1e12 chold=100p
+Ssh in out gate 0 sw_sample
+Chold out 0 {chold}
+Rleak out 0 10G
+.model sw_sample SW(Ron={ron} Roff={roff} Vt=0.5 Vh=0.05)
+.ends sample_hold
+
+* Ideal voltage-controlled oscillator output:
+* V(t) = amp * sin(2*pi*(fmin + kvco*V(tune))*time)
+* This ignores phase continuity during fast tuning transients; good enough for
+* narrow architecture checks.
+.subckt simple_vco tune out PARAMS: fmin=1e9 kvco=50e6 amp=0.316
+Bvco out 0 V={amp*sin(2*pi*(fmin+kvco*V(tune))*time)}
+.ends simple_vco

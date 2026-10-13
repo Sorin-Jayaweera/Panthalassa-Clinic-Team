@@ -1,0 +1,13 @@
+Version 4
+SymbolType CELL
+RECTANGLE Normal 0 0 176 112
+TEXT 88 20 Center 2 THRESHOLD DAC
+TEXT 88 44 Center 0 nanoDAC
+WINDOW 0 88 -8 Bottom 2
+WINDOW 39 88 152 Top 1
+SYMATTR Prefix X
+SYMATTR SpiceModel DAC
+SYMATTR Description JACON block: THRESHOLD DAC - nanoDAC
+PIN 176 64 RIGHT 8
+PINATTR PinName out
+PINATTR SpiceOrder 1

@@ -1,0 +1,161 @@
+<p class="fragment-note">This file is one piece of the JACON notes. <a href="../index.html">Open the full site</a> to see it with the other tabs.</p>
+<section id="plan-intro">
+  <h2>Test plan</h2>
+  <p class="lede">Every test still to run, grouped by part of the JACON. Each one says how to wire it, who does what, and what comes out. Mark them validated as they get done.</p>
+  <div class="caution"><strong>Before any of it:</strong> read the maximum input power printed on the Signal Hound SM200B and never exceed it. Put a fixed attenuator in front of it whenever an amplifier is in the path. Use a DC block if the part under test can put DC on its output. Never cable the Furuno radar to anything: it is 2.2 kW peak. Radar tests are over the air only.</div>
+  <h3>What I can control from the computer</h3>
+  <div class="tablewrap"><table>
+    <tr><th class="l">Gear</th><th class="l">How it connects</th><th class="l">What I can do</th><th class="l">Status</th></tr>
+    <tr><td class="l">Signal Hound SM200B</td><td class="l">USB 3.0, with Signal Hound&rsquo;s Spike software and SM API installed</td><td class="l">sweeps to 20 GHz, peak and channel power, capture pulses (160 MHz wide)</td><td class="l">not set up yet. Needs the install, and your OK for it</td></tr>
+    <tr><td class="l">Siglent SSA3021X</td><td class="l">USB</td><td class="l">sweeps to 2.1 GHz, peak frequency and power</td><td class="l">working</td></tr>
+    <tr><td class="l">Siglent SDS1104X-E</td><td class="l">USB</td><td class="l">DC levels, waveforms to 100 MHz, stacked edges</td><td class="l">working</td></tr>
+    <tr><td class="l">Syscomp CGR-201</td><td class="l">USB (COM12)</td><td class="l">DC to 3.52 V, square waves to a few MHz</td><td class="l">working</td></tr>
+    <tr><td class="l">ADALM-Pluto</td><td class="l">USB</td><td class="l">a tone or a pulse at 1.0 to 1.2 GHz, level stepped</td><td class="l">not driven by me yet. You have GNU Radio flowgraphs</td></tr>
+    <tr><td class="l">ADF5355 PLL</td><td class="l">depends on the board</td><td class="l">set the LO frequency</td><td class="l">unknown. Tell me the board</td></tr>
+    <tr><td class="l">Bench supplies</td><td class="l">by hand</td><td class="l">nothing. You set them and tell me</td><td class="l">manual</td></tr>
+  </table></div>
+  <div class="caution"><strong>Open question, blocks the RX tests:</strong> what makes the 9.3 to 9.5 GHz test signal? Three choices. One: the ADF5355 set to 9.4 GHz, if there is a second one or we borrow the LO for a while. Two: Pluto at 1.0 to 1.2 GHz into the TX mixer with the 8.3 GHz LO, which is the TX chain doing its real job. Three: the Furuno radar over the air. I recommend two, because it sweeps and I can control it.</div>
+</section>
+
+<section id="plan-rx">
+  <h2>RX chain</h2>
+  <p class="lede">Antenna, limiter, LNA, mixer, IF amp, splitter. Test each part alone first, then stack them one at a time.</p>
+  <div class="cards">
+    <div class="card" id="t-rx0"><h4>RX-0. The source and the cables</h4><div class="part">do this first</div>
+      <p><strong>Wire:</strong> 9.4 GHz source &rarr; cable &rarr; SM200B. Then swap in each cable you plan to use, one at a time.</p>
+      <p><strong>You:</strong> connect, tell me which cable is in.</p>
+      <p><strong>I:</strong> sweep 9.3 to 9.5 GHz, read level and frequency.</p>
+      <p><strong>You get:</strong> source power and frequency across the band, its spurs, and the loss of every cable at 9.4 GHz. Everything later is subtracted from this.</p></div>
+    <div class="card" id="t-rx1"><h4>RX-1. Horn antennas</h4><div class="part">8.2&ndash;12.4 GHz horns</div>
+      <p><strong>Wire:</strong> source &rarr; horn A, facing horn B &rarr; SM200B. Measure the gap. At least 1 m, more is better.</p>
+      <p><strong>You:</strong> set the gap, then turn one horn 90&deg; when I ask.</p>
+      <p><strong>I:</strong> sweep and read received power both ways round.</p>
+      <p><strong>You get:</strong> gain of the horns in dBi across the band (drawing says 10 to 15), and how much a crossed polarization costs.</p>
+      <div class="math">\[ G_\text{dBi} = \tfrac{1}{2}\left( P_r - P_t + 20\log_{10}\frac{4\pi d f}{c} \right) \]</div></div>
+    <div class="card" id="t-rx2"><h4>RX-2. Power limiter</h4><div class="part">whichever limiter is picked</div>
+      <p><strong>Wire:</strong> source &rarr; limiter &rarr; SM200B.</p>
+      <p><strong>You:</strong> add or remove attenuators to step the input power.</p>
+      <p><strong>I:</strong> read output at each step.</p>
+      <p><strong>You get:</strong> its small-signal loss at 9.3 to 9.5 GHz, and the level where it starts clamping. Pass if the output never tops +15 dBm, the LNA&rsquo;s limit. We may not have enough power to reach clamping; I will say so if not.</p></div>
+    <div class="card" id="t-rx3"><h4>RX-3. LNA</h4><div class="part">ZX60-5123LN+, 12 V</div>
+      <p><strong>Wire:</strong> source &rarr; 30 dB attenuator &rarr; LNA &rarr; 20 dB attenuator &rarr; SM200B. Then again with a 50 &Omega; load on the LNA input instead of the source.</p>
+      <p><strong>You:</strong> power the LNA, read me the current, swap attenuators for the power sweep.</p>
+      <p><strong>I:</strong> sweep frequency, then step input power, then read the noise floor with the input terminated.</p>
+      <p><strong>You get:</strong> gain across the band (expect +22 dB), where it compresses (expect +17 dBm out), and a rough noise figure (expect 1.4 dB, mine will be good to about 1 dB).</p>
+      <div class="math">\[ NF \approx N_\text{out}\,[\text{dBm/Hz}] + 174 - G \]</div></div>
+    <div class="card" id="t-rx4"><h4>RX-4. LO chain</h4><div class="part">ADF5355 &rarr; ZX60-14012L-S+ &rarr; ZX10-2-1252-S+</div>
+      <p><strong>Wire:</strong> PLL &rarr; SM200B. Then add the buffer amp. Then the splitter, reading each output with the other terminated.</p>
+      <p><strong>You:</strong> set the PLL to 8.3 GHz, add one part at a time.</p>
+      <p><strong>I:</strong> read frequency, power, close-in spurs at each stage.</p>
+      <p><strong>You get:</strong> the real LO frequency, and the power arriving at each mixer. The mixers want +10 dBm. If it is short, we know before blaming the mixer.</p></div>
+    <div class="card" id="t-rx5"><h4>RX-5. RX mixer</h4><div class="part">ZX05-14LH-S+</div>
+      <p><strong>Wire:</strong> source at &minus;20 dBm &rarr; RF port. LO chain &rarr; LO port. IF port &rarr; SM200B.</p>
+      <p><strong>You:</strong> connect, confirm the LO level from RX-4.</p>
+      <p><strong>I:</strong> step the RF from 9.3 to 9.5 GHz and read the IF at 1.0 to 1.2 GHz. Then look for the 8.3 GHz LO leaking out of the IF port.</p>
+      <p><strong>You get:</strong> conversion loss across the band (expect 6.7 dB), LO leakage at the IF port, and how flat the 200 MHz band comes out.</p></div>
+    <div class="card" id="t-rx6"><h4>RX-6. IF amp</h4><div class="part">ZX60-P162LN+ (and the other two)</div>
+      <p><strong>Wire:</strong> Pluto &rarr; 30 dB attenuator &rarr; amp &rarr; 20 dB attenuator &rarr; SSA3021X or SM200B.</p>
+      <p><strong>You:</strong> power the amp, swap attenuators.</p>
+      <p><strong>I:</strong> step the Pluto across 1.0 to 1.2 GHz and up in level, read the output.</p>
+      <p><strong>You get:</strong> gain across the band (expect 22.5 dB) and the most power it can put out. That last number matters: the phase-detector mixer dies at +17 dBm.</p></div>
+    <div class="card" id="t-rx7"><h4>RX-7. IF splitter</h4><div class="part">ZFRSC-42-S+</div>
+      <p><strong>Wire:</strong> Pluto &rarr; splitter. One output &rarr; analyzer, the other &rarr; 50 &Omega; load. Then swap.</p>
+      <p><strong>You:</strong> swap the outputs.</p>
+      <p><strong>I:</strong> step 1.0 to 1.2 GHz, read both.</p>
+      <p><strong>You get:</strong> loss on each side (expect 6.0 to 6.5 dB) and how well they match.</p></div>
+    <div class="card" id="t-rx8"><h4>RX-8. The whole RX chain, cabled</h4><div class="part">limiter &rarr; LNA &rarr; mixer &rarr; IF amp &rarr; splitter</div>
+      <p><strong>Wire:</strong> source &rarr; attenuators &rarr; limiter &rarr; LNA &rarr; mixer &rarr; IF amp &rarr; splitter &rarr; SM200B. Add one part per run.</p>
+      <p><strong>You:</strong> add the next part, set the attenuators I ask for.</p>
+      <p><strong>I:</strong> sweep frequency and input level from &minus;50 to &minus;10 dBm.</p>
+      <p><strong>You get:</strong> total gain against the sum of the parts, the input level where the chain starts to compress, and the IF level at each splitter output for a weak and a strong radar.</p></div>
+    <div class="card" id="t-rx9"><h4>RX-9. Over the air, then the real radar</h4><div class="part">horn in front, radar far away</div>
+      <p><strong>Wire:</strong> horn &rarr; limiter &rarr; attenuator &rarr; SM200B first, with no LNA. Only then the full chain.</p>
+      <p><strong>You:</strong> place the horn, run the radar, keep people out of the beam.</p>
+      <p><strong>I:</strong> capture pulses with the SM200B.</p>
+      <p><strong>You get:</strong> the radar&rsquo;s real frequency, pulse width, repetition rate and received power at that distance. Then the same pulse as it leaves the splitter at 1.0 to 1.2 GHz.</p></div>
+  </div>
+</section>
+
+<section id="plan-pd">
+  <h2>Phase detector</h2>
+  <p class="lede">Done once already, in the wrong band and at one power. These redo it properly.</p>
+  <div class="cards">
+    <div class="card" id="t-pd1"><h4>PD-1. Calibration in the real band</h4>
+      <p><strong>Wire:</strong> Pluto &rarr; splitter &rarr; two cables &rarr; mixer &rarr; scope CH2. Tee to the analyzer.</p>
+      <p><strong>I:</strong> step 1.0 to 1.2 GHz in 1 MHz steps, read voltage and true frequency.</p>
+      <p><strong>You get:</strong> mV against MHz in the band that matters, and whether it goes one way across all 200 MHz.</p></div>
+    <div class="card" id="t-pd2"><h4>PD-2. Power sensitivity</h4>
+      <p><strong>Wire:</strong> same as PD-1.</p>
+      <p><strong>I:</strong> repeat the sweep at five power levels.</p>
+      <p><strong>You get:</strong> how many MHz of error each dB of power change causes. This sets how good the limiting amp must be.</p></div>
+    <div class="card" id="t-pd3"><h4>PD-3. Delay length</h4>
+      <p><strong>Wire:</strong> same, swapping the extra cable: none, 1.5 in, 4.5 in, longer.</p>
+      <p><strong>You:</strong> swap the cable.</p>
+      <p><strong>You get:</strong> which length gives a one-way curve over 1.0 to 1.2 GHz with the steepest slope. Also tests my reflection guess.</p></div>
+    <div class="card" id="t-pd4"><h4>PD-4. With the limiting amp</h4>
+      <p><strong>Wire:</strong> Pluto &rarr; attenuators &rarr; limiting amp &rarr; splitter &rarr; mixer.</p>
+      <p><strong>You get:</strong> the same curve for inputs from &minus;37 to +3 dBm, if the limiter works. Check the amp&rsquo;s output is under +23.5 dBm first.</p></div>
+    <div class="card" id="t-pd5"><h4>PD-5. Speed with a real pulse</h4>
+      <p><strong>Wire:</strong> Pluto pulsed, 50 ns to 1.2 &micro;s &rarr; chain &rarr; scope.</p>
+      <p><strong>You get:</strong> how long after the pulse starts the voltage is good enough to sample. The racon has 0.7 &micro;s in total.</p></div>
+  </div>
+</section>
+
+<section id="plan-env">
+  <h2>Envelope detector and comparator</h2>
+  <div class="cards">
+    <div class="card" id="t-env1"><h4>ENV-1. Detector curve</h4><div class="part">ADL5511</div>
+      <p><strong>Wire:</strong> Pluto &rarr; attenuators &rarr; detector &rarr; scope.</p>
+      <p><strong>I:</strong> step the level, read the output voltage.</p>
+      <p><strong>You get:</strong> volts out against dBm in at 1.0 to 1.2 GHz.</p></div>
+    <div class="card" id="t-env2"><h4>ENV-2. Pulse response</h4>
+      <p><strong>Wire:</strong> Pluto pulsed &rarr; detector &rarr; scope.</p>
+      <p><strong>You get:</strong> rise and fall time of the detector. It must be well under 50 ns to see the shortest radar pulse.</p></div>
+    <div class="card" id="t-env3"><h4>ENV-3. Comparator and DAC</h4><div class="part">ADCMP600 + nanoDAC</div>
+      <p><strong>Wire:</strong> detector &rarr; comparator, DAC sets the threshold, scope on both.</p>
+      <p><strong>You get:</strong> the delay from pulse edge to comparator edge, and the weakest pulse that still trips it at each DAC setting.</p></div>
+  </div>
+</section>
+
+<section id="plan-tx">
+  <h2>TX chain</h2>
+  <div class="cards">
+    <div class="card" id="t-tx1"><h4>TX-1. VCO in the real band</h4>
+      <p><strong>Wire:</strong> tuning source that reaches 8 V &rarr; VCO &rarr; attenuator &rarr; analyzer.</p>
+      <p><strong>You:</strong> build the op-amp stage, or drive it from a supply by hand.</p>
+      <p><strong>You get:</strong> the tuning table from 4.8 to 7.8 V, in its final wiring.</p></div>
+    <div class="card" id="t-tx2"><h4>TX-2. Sample and hold</h4><div class="part">ADG1211 + 100 pF + ADA4622-1</div>
+      <p><strong>Wire:</strong> Syscomp step &rarr; sample and hold &rarr; scope.</p>
+      <p><strong>You get:</strong> how fast it grabs, and how much it droops while holding. The VCO needs it steady to &plusmn;22 mV.</p></div>
+    <div class="card" id="t-tx3"><h4>TX-3. Keying switch</h4><div class="part">ADG901</div>
+      <p><strong>Wire:</strong> Pluto tone &rarr; switch &rarr; SM200B. Syscomp square wave on the control pin.</p>
+      <p><strong>You get:</strong> loss when on, leakage when off, and switching time.</p></div>
+    <div class="card" id="t-tx4"><h4>TX-4. TX mixer</h4><div class="part">ZX05-14LH-S+</div>
+      <p><strong>Wire:</strong> Pluto 1.0&ndash;1.2 GHz &rarr; IF port, LO 8.3 GHz &rarr; LO port, RF port &rarr; SM200B.</p>
+      <p><strong>You get:</strong> power at 9.3 to 9.5 GHz, the unwanted image at 7.1 to 7.3 GHz, and LO leakage at 8.3 GHz. This also becomes the test source for the RX chain.</p></div>
+    <div class="card" id="t-tx5"><h4>TX-5. Image filter</h4><div class="part">VHF-8400+</div>
+      <p><strong>Wire:</strong> TX-4 output &rarr; filter &rarr; SM200B.</p>
+      <p><strong>You get:</strong> loss at 9.3 to 9.5 GHz (expect 1.4 to 1.6 dB) and how far the image and LO are pushed down (expect 24 to 28 dB at 7.1 to 7.3 GHz).</p></div>
+    <div class="card" id="t-tx6"><h4>TX-6. Power amp</h4><div class="part">not picked</div>
+      <p><strong>Wire:</strong> filter &rarr; amp &rarr; 30 dB attenuator rated for the power &rarr; SM200B.</p>
+      <p><strong>You get:</strong> gain and maximum output. Do not run it without the attenuator.</p></div>
+  </div>
+</section>
+
+<section id="plan-ctl">
+  <h2>Oscillators, keying and control</h2>
+  <div class="cards">
+    <div class="card" id="t-ctl1"><h4>CTL-1. PLL</h4><div class="part">ADF5355</div>
+      <p><strong>Wire:</strong> PLL &rarr; SM200B.</p>
+      <p><strong>You get:</strong> frequency error at 8.3 GHz, output power, spurs, and how long it takes to lock after a change. Any LO error passes straight through to the reply.</p></div>
+    <div class="card" id="t-ctl2"><h4>CTL-2. Round-trip frequency</h4>
+      <p><strong>Wire:</strong> the whole thing, cabled through attenuators. Source in at 9.3 to 9.5 GHz, SM200B on the output.</p>
+      <p><strong>You get:</strong> reply frequency minus input frequency, across the band and across input levels. Pass is &plusmn;1.5 MHz for long pulses, &plusmn;3.5 MHz for short ones.</p></div>
+    <div class="card" id="t-ctl3"><h4>CTL-3. Reply delay</h4><div class="part">FPGA timing</div>
+      <p><strong>Wire:</strong> scope on the comparator output and on the keying line.</p>
+      <p><strong>You get:</strong> time from radar pulse to start of reply. Pass is 0.7 &micro;s or less.</p></div>
+    <div class="card" id="t-ctl4"><h4>CTL-4. Morse and blocking</h4>
+      <p><strong>Wire:</strong> SM200B capturing the output, repeated input pulses.</p>
+      <p><strong>You get:</strong> the keyed letter with dash equal to three dots, and no reply for 100 &micro;s after the previous one ends.</p></div>
+  </div>
+</section>

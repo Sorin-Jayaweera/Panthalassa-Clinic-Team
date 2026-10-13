@@ -1,0 +1,94 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\if_delay_splitter_1p0_1p2GHz.cir
+Start Time: Sun Sep 13 19:13:13 2026
+Options:plotwinsize=0 numdgt=7
+
+.step fin=1000000000 delay_mode=0
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1050000000 delay_mode=0
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1100000000 delay_mode=0
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1150000000 delay_mode=0
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1200000000 delay_mode=0
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1000000000 delay_mode=1
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1050000000 delay_mode=1
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1100000000 delay_mode=1
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1150000000 delay_mode=1
+.OP point found by inspection.
+.OP point found by inspection.
+
+.step fin=1200000000 delay_mode=1
+.OP point found by inspection.
+.OP point found by inspection.
+Total elapsed time: 7.808 seconds.
+
+Files loaded:
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\if_delay_splitter_1p0_1p2GHz.cir
+C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\simulations\gpt\ltspice\jacon_common_models.lib
+
+
+Measurement: mix_lpf_avg
+  step	AVG(V(mix_lpf) )	FROM	TO
+     1	-0.00156197976998	2.4e-08	3e-08
+     2	-0.00138732055384	2.4e-08	3e-08
+     3	-0.00116674680851	2.4e-08	3e-08
+     4	-0.000907678163638	2.4e-08	3e-08
+     5	-0.000618978968617	2.4e-08	3e-08
+     6	0.000255307318204	2.4e-08	3e-08
+     7	0.000129284204745	2.4e-08	3e-08
+     8	2.27346927365e-06	2.4e-08	3e-08
+     9	-0.000124902341246	2.4e-08	3e-08
+    10	-0.000251233434498	2.4e-08	3e-08
+
+Measurement: a_rms
+  step	RMS(V(out_a) )	FROM	TO
+     1	0.047423197384	2.4e-08	3e-08
+     2	0.0469114109326	2.4e-08	3e-08
+     3	0.0471050854489	2.4e-08	3e-08
+     4	0.0477365079012	2.4e-08	3e-08
+     5	0.0479173620185	2.4e-08	3e-08
+     6	0.047423197384	2.4e-08	3e-08
+     7	0.0469114109326	2.4e-08	3e-08
+     8	0.0471050854489	2.4e-08	3e-08
+     9	0.0477365079012	2.4e-08	3e-08
+    10	0.0479173620185	2.4e-08	3e-08
+
+Measurement: b_rms
+  step	RMS(V(out_b) )	FROM	TO
+     1	0.0474231990364	2.4e-08	3e-08
+     2	0.0475550937615	2.4e-08	3e-08
+     3	0.0475750129734	2.4e-08	3e-08
+     4	0.0472143847834	2.4e-08	3e-08
+     5	0.047018723596	2.4e-08	3e-08
+     6	0.0474231990351	2.4e-08	3e-08
+     7	0.0479604016107	2.4e-08	3e-08
+     8	0.0477391756319	2.4e-08	3e-08
+     9	0.0471206447739	2.4e-08	3e-08
+    10	0.0469559613486	2.4e-08	3e-08

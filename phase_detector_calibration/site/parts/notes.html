@@ -1,0 +1,185 @@
+<p class="fragment-note">This file is one piece of the JACON notes. <a href="../index.html">Open the full site</a> to see it with the other tabs.</p>
+<section id="schematic">
+  <h2>The JACON, clickable</h2>
+  <p class="lede">Jason&rsquo;s draft design, redrawn. Click a block to jump to that part. Green blocks are the ones tested on the bench so far.</p>
+  <div class="schematic">{{SCHEMATIC}}</div>
+  <p><span class="pill tested">tested</span> measured on the bench &nbsp; <span class="pill">have spec</span> numbers from the drawing or datasheet only &nbsp; <span class="pill">dashed = not picked</span></p>
+</section>
+
+<section id="numbers">
+  <h2>The numbers</h2>
+  <p class="lede">Limits and losses. &ldquo;Worst case&rdquo; is the worst the datasheet allows inside the band we use, 1.0 to 1.2 GHz for the IF parts.</p>
+  <div class="math">\[ P_\text{dBm} = 10\log_{10}\!\left(\frac{P_\text{mW}}{1\ \text{mW}}\right), \qquad P_\text{mW} = 10^{P_\text{dBm}/10} \]</div>
+
+  <h3>Frequency-identification chain (1.0 to 1.2 GHz)</h3>
+  <div class="tablewrap"><table>
+    <tr><th class="l">Part</th><th>Max in (dBm)</th><th>Max in (mW)</th><th class="l">Loss, worst case in band</th><th class="l">Typical</th><th class="l">We measured</th><th class="l">Doc</th></tr>
+    <tr><td class="l">Splitter<br><span class="src">ZFRSC-42-S+</span></td><td>28.8</td><td>750</td><td class="l">6.5 dB per output<br><span class="src">6.0 split + 0.5 max, 100&ndash;2100 MHz</span></td><td class="l">6.0 dB</td><td class="l">6.7 dB at 1.04 GHz<br><span class="src">6 Oct, with connectors</span></td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZFRSC-42+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">Mixer, RF port<br><span class="src">ZX05-30W-S+</span></td><td>17.0</td><td>50</td><td class="l">9.0 dB conversion loss<br><span class="src">mid-band max, 600&ndash;2000 MHz</span></td><td class="l">6.2 to 6.5 dB<br><span class="src">0.94&ndash;1.27 GHz</span></td><td class="l">not as a mixer.<br>As phase detector: 30 to 146 mV DC</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZX05-30W-S+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">Mixer, LO port</td><td>+7 wanted</td><td>5.0 wanted</td><td class="l">LO&ndash;RF isolation 17 dB min<br>LO&ndash;IF isolation 7 dB min</td><td class="l">35 dB / 16 dB</td><td class="l">it got about +0.6 dBm</td><td class="l"></td></tr>
+    <tr><td class="l">VCO output<br><span class="src">CVCO55BE-0800-1600</span></td><td>&mdash;</td><td>&mdash;</td><td class="l">+4 dBm out (2.5 mW)<br><span class="src">listed 6 &plusmn; 2 dBm</span></td><td class="l">+6 dBm (4.0 mW)</td><td class="l">+4.8 to +7.4 dBm<br><span class="src">6 Oct, 1.0&ndash;1.2 GHz</span></td><td class="l"><a class="doc" href="https://www.digikey.com/en/products/detail/crystek-corporation/CVCO55BE-0800-1600/1643988">DigiKey page</a></td></tr>
+    <tr><td class="l">SMA jumper cables</td><td>&mdash;</td><td>&mdash;</td><td class="l">&mdash;</td><td class="l">&mdash;</td><td class="l">0.04, 0.09, 0.21 dB each<br><span class="src">6 Oct, 1.04 GHz</span></td><td class="l"></td></tr>
+    <tr><td class="l">Pluto SDR output<br><span class="src">ADALM-PLUTO</span></td><td>&mdash;</td><td>&mdash;</td><td class="l">11 dBm out max (12.6 mW)<br><span class="src">from your notes</span></td><td class="l"></td><td class="l"></td><td class="l"><a class="doc" href="https://wiki.analog.com/university/tools/pluto/users/transmit">ADI wiki</a></td></tr>
+  </table></div>
+
+  <h3>What actually flowed on the bench</h3>
+  <div class="tablewrap"><table>
+    <tr><th class="l">Point</th><th>dBm</th><th>mW</th><th class="l">Note</th></tr>
+    <tr><td class="l">VCO out, 1.04 GHz</td><td>+7.3</td><td>5.4</td><td class="l">measured 6 Oct</td></tr>
+    <tr><td class="l">After splitter, each side</td><td>+0.6</td><td>1.15</td><td class="l">measured 6 Oct</td></tr>
+    <tr><td class="l">Mixer damage limit</td><td>+17.0</td><td>50</td><td class="l">16.4 dB of room</td></tr>
+    <tr><td class="l">Mixer LO drive it wants</td><td>+7.0</td><td>5.0</td><td class="l">we were 6.4 dB short</td></tr>
+  </table></div>
+  <div class="result">Nothing on this bench can hurt the mixer. The VCO tops out near 6 mW and the Pluto near 13 mW. After the splitter that is 3 mW or less per port, against a 50 mW limit.</div>
+
+  <h3>Rest of the design</h3>
+  <p>These come from the design drawing. I have not checked them against the datasheets.</p>
+  <div class="tablewrap"><table>
+    <tr><th class="l">Part</th><th class="l">Band</th><th>Max in (dBm)</th><th>Max in (mW)</th><th class="l">Gain or loss</th><th class="l">Doc</th></tr>
+    <tr><td class="l">LNA <span class="src">ZX60-5123LN+</span></td><td class="l">5.5&ndash;12.5 GHz</td><td>+15</td><td>31.6</td><td class="l">+22 dB, P1dB +17 dBm</td><td class="l"><a class="doc" href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX60-5123LN%2B">product page</a></td></tr>
+    <tr><td class="l">RX / TX mixer <span class="src">ZX05-14LH-S+</span></td><td class="l">3.7&ndash;10 GHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">6.7 dB conversion loss, LO +10 dBm</td><td class="l"><a class="doc" href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX05-14LH-S%2B">product page</a></td></tr>
+    <tr><td class="l">LO splitter <span class="src">ZX10-2-1252-S+</span></td><td class="l">1.8&ndash;12.5 GHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">0.7 dB insertion loss</td><td class="l"><a class="doc" href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX10-2-1252-S%2B">product page</a></td></tr>
+    <tr><td class="l">LO buffer <span class="src">ZX60-14012L-S+</span></td><td class="l">0.3 MHz&ndash;14 GHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">+12 dB</td><td class="l"><a class="doc" href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX60-14012L-S%2B">product page</a></td></tr>
+    <tr><td class="l">IF amp <span class="src">ZX60-P162LN+</span></td><td class="l">700&ndash;1600 MHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">+22.5 dB</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZX60-P162LN+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">IF amp <span class="src">ZX60-P103LN+</span></td><td class="l">50&ndash;3000 MHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">+13 dB</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZX60-P103LN+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">IF amp <span class="src">ZX60-2534MA-S+</span></td><td class="l">500&ndash;2500 MHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">+43 dB</td><td class="l"><a class="doc" href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX60-2534MA-S%2B">product page</a></td></tr>
+    <tr><td class="l">Image filter <span class="src">VHF-8400+</span></td><td class="l">pass above 8.4 GHz</td><td>&mdash;</td><td>&mdash;</td><td class="l">1.4&ndash;1.6 dB at 9.3&ndash;9.5 GHz; 24&ndash;28 dB rejection at 7.1&ndash;7.3 GHz</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/VHF-8400+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">Limiter <span class="src">VLM-33-S+</span></td><td class="l">&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="l">not written down yet</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/VLM-33-S+.pdf">datasheet</a></td></tr>
+  </table></div>
+  <div class="caution"><strong>Gaps:</strong> max input power for the IF amps and the RX mixer is not filled in. Those datasheets need a read before the limiting-amp chain is powered. The mixer after it dies at +17 dBm, so the last amp must put out less than +23.5 dBm before the 6.5 dB splitter.</div>
+</section>
+
+<section id="components">
+  <h2>Parts tested on the bench</h2>
+
+  <div class="comp" id="c-vco">
+    <h3>VCO <span class="pill tested">tested</span></h3>
+    <div class="part">Crystek CVCO55BE-0800-1600 on a CEVAL-055 board &middot; Vcc 11.5 V</div>
+    <p>Turns a voltage into a frequency. In the JACON it retransmits at the frequency the phase detector measured.</p>
+    <figure><a href="img/comp_vco_tuning.png"><img src="img/comp_vco_tuning.png" alt="VCO frequency against tuning voltage, 0 to 10 V"></a></figure>
+    <figure><a href="img/comp_vco_power.png"><img src="img/comp_vco_power.png" alt="VCO output power against frequency"></a></figure>
+    <div class="notes">
+      <div><h4>What the plots are</h4>
+        <p>Grey squares: 4 October, set by hand with a bench supply, VCO straight into the analyzer. Green line: 10 October, automated, 176 points, with the splitter and mixer attached.</p>
+        <p>Power plot: 6 October, ten points read off the analyzer.</p></div>
+      <div><h4>Numbers</h4>
+        <ul>
+          <li>Range seen: 733 MHz at 0 V to 1360 MHz at 10.1 V.</li>
+          <li>For 1.0 to 1.2 GHz it needs 4.8 to 7.8 V.</li>
+          <li>Slope in that band: about 68 MHz/V.</li>
+          <li>Output in band: +4.8 to +7.4 dBm, falling as frequency rises.</li>
+          <li>The &ldquo;0.8 GHz + 60 MHz/V&rdquo; line reads 48 to 97 MHz too high.</li>
+          <li>Listed: 0.5 to 19 V tuning, 6 &plusmn; 2 dBm out, pushing 2 MHz/V, 30 mA max.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="https://www.digikey.com/en/products/detail/crystek-corporation/CVCO55BE-0800-1600/1643988">DigiKey listing</a> <a href="#n-vco">nuances &rarr;</a> <a href="#p-vco">how I measured it &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="c-delaysplit">
+    <h3>Delay-line splitter <span class="pill tested">tested</span></h3>
+    <div class="part">Mini-Circuits ZFRSC-42-S+ &middot; resistive, DC to 4200 MHz</div>
+    <p>Splits the signal in two. One copy takes a longer cable. The phase detector compares them.</p>
+    <div class="notes">
+      <div><h4>Numbers</h4>
+        <ul>
+          <li>Max input 0.75 W (28.8 dBm). It can burn 0.375 W inside.</li>
+          <li>Loss per output: 6.0 dB typical, 6.5 dB worst case in our band.</li>
+          <li>Measured 6.7 dB each side at 1.04 GHz.</li>
+          <li>Isolation between outputs: about 6 dB. That is low.</li>
+          <li>Outputs match within 0.2 dB and 3 degrees.</li>
+          <li>Extra cable on one side: 4.5 in, about 0.55 ns.</li>
+        </ul></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ \tau = \frac{\Delta L}{v} = \frac{0.114\ \text{m}}{0.7 \times 3\times10^{8}\ \text{m/s}} \approx 0.55\ \text{ns} \]</div>
+        <div class="math">\[ \Delta\phi = 2\pi f \tau \approx 216^\circ\ \text{at}\ 1.1\ \text{GHz} \]</div>
+        <p>The drawing asks for 0.2 ns (3 to 4 cm) to sit at 90&deg;.</p></div>
+    </div>
+    <div class="links"><a href="https://www.minicircuits.com/pdfs/ZFRSC-42+.pdf">datasheet</a> <a href="#n-splitter">nuances &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="c-phasedet">
+    <h3>Phase detector <span class="pill tested">tested</span></h3>
+    <div class="part">Mini-Circuits ZX05-30W-S+ &middot; level 7 double-balanced mixer, 300 to 4000 MHz</div>
+    <p>Both splitter outputs go into the mixer, one on LO, one on RF. Same frequency on both, so the IF port gives a DC voltage that depends on the phase between them. Phase depends on frequency, so voltage tells you frequency.</p>
+    <figure><a href="img/comp_phase_detector.png"><img src="img/comp_phase_detector.png" alt="Phase detector output against frequency, Pluto and VCO sources"></a></figure>
+    <div class="notes">
+      <div><h4>What the plots are</h4>
+        <p>Left: September, Pluto SDR as the source at four power settings, voltage read on a multimeter. Right: 10 October, the VCO as the source, voltage read on the scope.</p>
+        <p>Different bands, different sources, different power. They are not the same curve.</p></div>
+      <div><h4>Numbers</h4>
+        <ul>
+          <li>Max RF power 50 mW (17 dBm). Max IF current 40 mA.</li>
+          <li>Wants +7 dBm on LO. Got about +0.6 dBm.</li>
+          <li>Pluto, &minus;12.25 dBm setting: one-way from 1.03 to 1.20 GHz, 5 to 33 mV.</li>
+          <li>VCO: one-way from 744 to 788 MHz, 30 to 121 mV, about 2.7 mV/MHz.</li>
+          <li>At 1.08 GHz the output was 46, 26, 12 and 8 mV for &minus;2, &minus;6, &minus;11 and &minus;12.25 dBm. Power matters a lot.</li>
+          <li>RF port VSWR about 2.8 to 3.5 near 1 GHz. LO port 1.7 to 2.0.</li>
+        </ul></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ V_\text{out} \approx V_0 + A(P)\,\cos(2\pi f \tau) \]</div>
+        <p>\(A\) grows with input power and \(V_0\) is a DC offset. So the map from voltage to frequency only holds at one power.</p></div>
+    </div>
+    <div class="links"><a href="https://www.minicircuits.com/pdfs/ZX05-30W-S+.pdf">datasheet</a> <a href="https://markimicrowave.com/technical-resources/white-papers/mixer-basics-primer/">Marki mixer primer</a> <a href="https://www.rfwireless-world.com/tutorials/rf-mixer-basics">RF mixer basics</a> <a href="#n-mixer">nuances &rarr;</a> <a href="#p-mixer">how I measured it &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="c-syscomp">
+    <h3>Test gear</h3>
+    <div class="cards">
+      <div class="card" id="c-cgr"><h4>Syscomp CGR-201</h4><div class="part">drives the VCO tuning pin</div>
+        <p>Output reaches about &minus;4.0 to +3.52 V. Step size 1.875 mV. Edge takes about 145 ns and has a spike on it.</p>
+        <div class="links"><a href="https://www.saelig.com/supplier/syscomp/CGR201-Datasheet.pdf">datasheet</a> <a href="#n-syscomp">nuances &rarr;</a></div></div>
+      <div class="card" id="c-scope"><h4>Siglent SDS1104X-E</h4><div class="part">oscilloscope</div>
+        <p>100 MHz, 8 bit. 1 GSa/s, or 500 MSa/s when CH1 and CH2 are both on. Inputs are 1 M&Omega; only.</p>
+        <div class="links"><a href="#n-scope">nuances &rarr;</a></div></div>
+      <div class="card" id="c-sa"><h4>Siglent SSA3021X</h4><div class="part">spectrum analyzer</div>
+        <p>Reads the VCO&rsquo;s real frequency. In a 2 MHz span the marker steps are 2.7 kHz.</p>
+        <div class="links"><a href="#n-sa">nuances &rarr;</a></div></div>
+      <div class="card" id="c-pluto"><h4>ADALM-Pluto SDR</h4><div class="part">signal source in September</div>
+        <p>Transmits 1.0 to 1.2 GHz for the phase detector tests. Max output 11 dBm (12.6 mW) per your notes.</p>
+        <div class="links"><a href="https://wiki.analog.com/university/tools/pluto/users/transmit">ADI wiki</a></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="others">
+  <h2>Parts not tested yet</h2>
+  <p class="lede">What the drawing says about each. Nothing here is measured.</p>
+  <div class="cards">
+    <div class="card" id="c-rxant"><h4>RX antenna</h4><div class="part">horn, 8.2&ndash;12.4 GHz, 10&ndash;15 dBi</div><p>Picks up the ship&rsquo;s radar at 9.3 to 9.5 GHz. Expect &minus;50 dBm from far away to &minus;10 dBm up close.</p></div>
+    <div class="card" id="c-limiter"><h4>Power limiter</h4><div class="part">not picked &middot; VLM-33-S+ on hand</div><p>Protects the LNA. If it lets more than +15 dBm through, add an attenuator.</p><div class="links"><a href="https://www.minicircuits.com/pdfs/VLM-33-S+.pdf">VLM-33-S+ datasheet</a></div></div>
+    <div class="card" id="c-lna"><h4>LNA</h4><div class="part">ZX60-5123LN+</div><p>+22 dB, noise figure 1.4 dB, 5.5 to 12.5 GHz. Max input +15 dBm. 12 V supply.</p><div class="links"><a href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX60-5123LN%2B">product page</a></div></div>
+    <div class="card" id="c-rxmixer"><h4>RX mixer</h4><div class="part">ZX05-14LH-S+</div><p>Brings 9.3&ndash;9.5 GHz down to 1.0&ndash;1.2 GHz with an 8.3 GHz LO. 6.7 dB conversion loss. Wants +10 dBm LO.</p><div class="links"><a href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX05-14LH-S%2B">product page</a></div></div>
+    <div class="card" id="c-ifamp"><h4>IF amp</h4><div class="part">ZX60-P162LN+ / P103LN+ / 2534MA</div><p>Lifts the 1.0&ndash;1.2 GHz signal, which arrives at &minus;37 to +3 dBm. Gains 22.5, 13 or 43 dB.</p><div class="links"><a href="https://www.minicircuits.com/pdfs/ZX60-P162LN+.pdf">P162LN</a> <a href="https://www.minicircuits.com/pdfs/ZX60-P103LN+.pdf">P103LN</a></div></div>
+    <div class="card" id="c-ifsplit"><h4>IF splitter</h4><div class="part">ZFRSC-42-S+</div><p>Same part as the delay-line splitter. Feeds the limiting amp and the envelope detector. Same 6.0 to 6.5 dB loss.</p><div class="links"><a href="#c-delaysplit">see the tested one &rarr;</a></div></div>
+    <div class="card" id="c-limamp"><h4>RF limiting amp</h4><div class="part">three gain blocks in a row</div><p>Squashes the input to one fixed level so the phase detector always sees the same power. This is what fixes the power problem in the phase detector.</p><div class="links"><a href="#n-mixer">why it matters &rarr;</a></div></div>
+    <div class="card" id="c-env"><h4>Envelope detector</h4><div class="part">ADL5511</div><p>Tells when a radar pulse is present.</p></div>
+    <div class="card" id="c-comp"><h4>Comparator</h4><div class="part">ADCMP600</div><p>Goes high when the ship&rsquo;s radar pings.</p></div>
+    <div class="card" id="c-dac"><h4>DAC</h4><div class="part">Analog Devices nanoDAC</div><p>Sets the comparator&rsquo;s trigger level.</p></div>
+    <div class="card" id="c-fpga"><h4>FPGA</h4><div class="part">PYNQ-Z2 or ECP5</div><p>Control, Morse timing, hold-off.</p></div>
+    <div class="card" id="c-sh"><h4>Sample and hold</h4><div class="part">ADG1211 + 100 pF + ADA4622-1</div><p>Grabs the phase detector voltage during the pulse, then shifts and scales it to drive the VCO. The VCO needs 4.8 to 7.8 V for the band.</p></div>
+    <div class="card" id="c-pll"><h4>PLL local oscillator</h4><div class="part">ADF5355 module</div><p>Runs at 8.3 GHz.</p></div>
+    <div class="card" id="c-lobuf"><h4>LO buffer amp</h4><div class="part">ZX60-14012L-S+</div><p>+12 dB, 0.3 MHz to 14 GHz. Brings the LO up to what the mixers want.</p><div class="links"><a href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX60-14012L-S%2B">product page</a></div></div>
+    <div class="card" id="c-losplit"><h4>LO splitter</h4><div class="part">ZX10-2-1252-S+</div><p>Sends the LO to both mixers. 0.7 dB insertion loss, 1.8 to 12.5 GHz.</p><div class="links"><a href="https://www.minicircuits.com/WebStore/dashboard.html?model=ZX10-2-1252-S%2B">product page</a></div></div>
+    <div class="card" id="c-key"><h4>Keying switch</h4><div class="part">ADG901</div><p>Turns the reply on and off to make the Morse letter.</p></div>
+    <div class="card" id="c-txmixer"><h4>TX mixer</h4><div class="part">ZX05-14LH-S+</div><p>Same part as the RX mixer. Brings the VCO&rsquo;s 1.0&ndash;1.2 GHz back up to 9.3&ndash;9.5 GHz.</p></div>
+    <div class="card" id="c-filter"><h4>Image reject filter</h4><div class="part">VHF-8400+</div><p>Passes 9.3&ndash;9.5 GHz with 1.4 to 1.6 dB loss. Knocks the 7.1&ndash;7.3 GHz image down 24 to 28 dB.</p><div class="links"><a href="https://www.minicircuits.com/pdfs/VHF-8400+.pdf">datasheet</a></div></div>
+    <div class="card" id="c-pa"><h4>Power amp</h4><div class="part">not picked</div><p>About 1 W at 9.3 to 9.5 GHz.</p></div>
+    <div class="card" id="c-txant"><h4>TX antenna</h4><div class="part">copy of the RX horn</div><p>Sends the pulsed Morse reply.</p></div>
+  </div>
+</section>
+
+<section id="docs">
+  <h2>Documents</h2>
+  <div class="tablewrap"><table>
+    <tr><th class="l">What</th><th class="l">Link</th></tr>
+    <tr><td class="l">Splitter ZFRSC-42-S+</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZFRSC-42+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">Mixer ZX05-30W-S+</td><td class="l"><a class="doc" href="https://www.minicircuits.com/pdfs/ZX05-30W-S+.pdf">datasheet</a></td></tr>
+    <tr><td class="l">VCO CVCO55BE-0800-1600</td><td class="l"><a class="doc" href="https://www.digikey.com/en/products/detail/crystek-corporation/CVCO55BE-0800-1600/1643988">DigiKey listing</a></td></tr>
+    <tr><td class="l">Syscomp CGR-201</td><td class="l"><a class="doc" href="https://www.saelig.com/supplier/syscomp/CGR201-Datasheet.pdf">datasheet</a></td></tr>
+    <tr><td class="l">Pluto SDR transmit</td><td class="l"><a class="doc" href="https://wiki.analog.com/university/tools/pluto/users/transmit">ADI wiki</a></td></tr>
+    <tr><td class="l">Mixer basics</td><td class="l"><a class="doc" href="https://markimicrowave.com/technical-resources/white-papers/mixer-basics-primer/">Marki primer</a>, <a class="doc" href="https://www.rfwireless-world.com/tutorials/rf-mixer-basics">RF Wireless World</a></td></tr>
+    <tr><td class="l">Furuno radar, installation</td><td class="l"><a class="doc" href="https://www.psicompany.com/man-prod-info/furuno/Gp1920C/18X4C_19X4C_GP1920C%20Installation%20Manual%20K.pdf">manual PDF</a></td></tr>
+    <tr><td class="l">Furuno radar, operator</td><td class="l"><a class="doc" href="https://www.instructionsmanuals.com/sites/default/files/2019-06/Furuno-1944CBB-en.pdf">manual PDF</a>, <a class="doc" href="https://www.furunousa.com/-/media/sites/furuno/document_library/documents/manuals/public_manuals/18x4c_19x4c__gd1920c_bb_operators_guide.pdf">quick guide</a></td></tr>
+  </table></div>
+  <p>Racon rules that the design must meet: reply within 0.7 &micro;s, and on the interrogating frequency within &plusmn;3.5 MHz for pulses under 0.2 &micro;s, or &plusmn;1.5 MHz for longer pulses.</p>
+</section>

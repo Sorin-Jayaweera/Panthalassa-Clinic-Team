@@ -1,0 +1,40 @@
+A fine done 1000.0
+A fine done 1100.0
+A fine done 1200.0
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\pluto_characterization\characterize_pluto.py", line 88, in main
+    read_tone("A_att_coarse", fset, att)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\pluto_characterization\characterize_pluto.py", line 67, in read_tone
+    P.tone_on(fset, att, scale=scale)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 44, in tone_on
+    _attr("-c", "ad9361-phy", "altvoltage1", "frequency", str(int(freq_hz - TONE_OFFSET_HZ)))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 20, in _attr
+    raise RuntimeError(f"iio_attr {' '.join(args)} failed: {r.stderr.strip() or r.stdout.strip()}")
+RuntimeError: iio_attr -c ad9361-phy altvoltage1 frequency 1399000000 failed: ERROR: READ LINE: -10053
+ERROR: Unable to send command: Unknown error (10054)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\pluto_characterization\characterize_pluto.py", line 162, in <module>
+    main()
+    ~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\pluto_characterization\characterize_pluto.py", line 155, in main
+    P.tone_off()
+    ~~~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 34, in tone_off
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 20, in _attr
+    raise RuntimeError(f"iio_attr {' '.join(args)} failed: {r.stderr.strip() or r.stdout.strip()}")
+RuntimeError: iio_attr -c -o ad9361-phy voltage0 hardwaregain -89.75 failed: Unable to create IIO context ip:192.168.2.1: Unknown error (10060)
+resuming; 201 readings already saved
+A fine done 1000.0
+A fine done 1100.0
+A fine done 1200.0
+A coarse done
+B done att 20
+B done att 0

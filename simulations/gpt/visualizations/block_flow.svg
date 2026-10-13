@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="640" viewBox="0 0 1400 640">
+  <style>
+    text { font-family: Arial, sans-serif; fill: #111; }
+    .axis { stroke: #222; stroke-width: 1.5; }
+    .grid { stroke: #ddd; stroke-width: 1; }
+    .line1 { fill: none; stroke: #1769aa; stroke-width: 2.5; }
+    .line2 { fill: none; stroke: #b35c00; stroke-width: 2.5; }
+    .band_rx { fill: #1769aa; }
+    .band_if { fill: #2e7d32; }
+    .band_tx { fill: #b71c1c; }
+    .band_image { fill: #8a6d3b; }
+    .box { fill: #f7f7f4; stroke: #222; stroke-width: 2; rx: 6; }
+    .rx { fill: #e8f2ff; }
+    .if { fill: #eaf6ea; }
+    .ctrl { fill: #fff4dd; }
+    .tx { fill: #ffeaea; }
+    .arrow { stroke: #222; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+    .dash { stroke-dasharray: 7 7; }
+    .small { font-size: 15px; }
+    .title { font-size: 24px; font-weight: 700; }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#222"/>
+    </marker>
+  </defs>
+
+  <text class="title" x="40" y="42">JACON behavioral simulation map</text>
+  <rect class="box rx" x="40" y="80" width="150" height="70"/><text x="60" y="112">RX antenna</text><text class="small" x="60" y="134">9.3-9.5 GHz</text>
+  <rect class="box rx" x="230" y="80" width="150" height="70"/><text x="258" y="112">Limiter</text><text class="small" x="252" y="134">protect LNA</text>
+  <rect class="box rx" x="420" y="80" width="150" height="70"/><text x="466" y="112">LNA</text><text class="small" x="456" y="134">+22 dB</text>
+  <rect class="box rx" x="610" y="80" width="150" height="70"/><text x="658" y="112">Mixer</text><text class="small" x="636" y="134">RF - LO = IF</text>
+  <rect class="box if" x="800" y="80" width="150" height="70"/><text x="846" y="112">IF amp</text><text class="small" x="826" y="134">1.0-1.2 GHz</text>
+  <rect class="box if" x="990" y="80" width="150" height="70"/><text x="1010" y="112">IF splitter</text><text class="small" x="1012" y="134">detector branches</text>
+  <path class="arrow" d="M190 115 L230 115"/><path class="arrow" d="M380 115 L420 115"/><path class="arrow" d="M570 115 L610 115"/><path class="arrow" d="M760 115 L800 115"/><path class="arrow" d="M950 115 L990 115"/>
+  <rect class="box ctrl" x="610" y="210" width="150" height="70"/><text x="636" y="242">8.3 GHz LO</text><text class="small" x="632" y="264">PLL + buffer</text>
+  <path class="arrow" d="M685 210 L685 150"/>
+  <rect class="box if" x="990" y="210" width="150" height="76"/><text x="1015" y="240">Envelope</text><text x="1010" y="262">detector</text>
+  <rect class="box ctrl" x="1180" y="210" width="150" height="76"/><text x="1206" y="240">Comparator</text><text class="small" x="1208" y="262">radar ping</text>
+  <path class="arrow" d="M1065 150 L1065 210"/><path class="arrow" d="M1140 248 L1180 248"/>
+  <rect class="box if" x="990" y="350" width="150" height="80"/><text x="1018" y="382">Limiter</text><text class="small" x="1006" y="404">fixed IF level</text>
+  <rect class="box if" x="800" y="350" width="150" height="80"/><text x="820" y="382">Delay-line</text><text x="812" y="404">phase det.</text>
+  <rect class="box ctrl" x="610" y="350" width="150" height="80"/><text x="634" y="382">Sample/</text><text x="652" y="404">hold</text>
+  <rect class="box ctrl" x="420" y="350" width="150" height="80"/><text x="468" y="382">VCO</text><text class="small" x="438" y="404">1.0-1.2 GHz</text>
+  <path class="arrow" d="M1065 150 L1065 350"/><path class="arrow" d="M990 390 L950 390"/><path class="arrow" d="M800 390 L760 390"/><path class="arrow" d="M610 390 L570 390"/>
+  <path class="arrow dash" d="M1255 286 L1255 490 L685 490 L685 430"/>
+  <rect class="box tx" x="420" y="520" width="150" height="70"/><text x="466" y="552">TX mixer</text><text class="small" x="450" y="574">+ 8.3 GHz LO</text>
+  <rect class="box tx" x="610" y="520" width="150" height="70"/><text x="620" y="552">Image filter</text><text class="small" x="630" y="574">pass 9.3-9.5</text>
+  <rect class="box tx" x="800" y="520" width="150" height="70"/><text x="840" y="552">Keying</text><text class="small" x="842" y="574">. - .</text>
+  <rect class="box tx" x="990" y="520" width="150" height="70"/><text x="1038" y="552">PA</text><text class="small" x="1010" y="574">to TX antenna</text>
+  <path class="arrow" d="M495 430 L495 520"/><path class="arrow" d="M570 555 L610 555"/><path class="arrow" d="M760 555 L800 555"/><path class="arrow" d="M950 555 L990 555"/>
+  <path class="arrow" d="M685 280 L685 520 L570 520"/>
+
+</svg>

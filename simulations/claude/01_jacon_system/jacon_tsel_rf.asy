@@ -1,0 +1,19 @@
+Version 4
+SymbolType CELL
+RECTANGLE Normal 0 0 176 112
+TEXT 88 20 Center 2 TEST SEL (RF)
+TEXT 88 44 Center 0 stim when TEST=N
+WINDOW 0 88 -8 Bottom 2
+WINDOW 39 88 152 Top 1
+SYMATTR Prefix X
+SYMATTR SpiceModel TSEL_RF
+SYMATTR Description JACON block: TEST SEL (RF) - stim when TEST=N
+PIN 0 64 LEFT 8
+PINATTR PinName norm
+PINATTR SpiceOrder 1
+PIN 96 112 BOTTOM 8
+PINATTR PinName stim
+PINATTR SpiceOrder 2
+PIN 176 64 RIGHT 8
+PINATTR PinName out
+PINATTR SpiceOrder 3

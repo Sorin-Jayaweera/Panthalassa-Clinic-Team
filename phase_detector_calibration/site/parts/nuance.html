@@ -1,0 +1,153 @@
+<p class="fragment-note">This file is one piece of the JACON notes. <a href="../index.html">Open the full site</a> to see it with the other tabs.</p>
+<section id="nuance-intro">
+  <h2>The fine print on each part</h2>
+  <p class="lede">Things that will bite if you forget them. Each one says how I know it, so you can mark it validated or under question.</p>
+</section>
+
+<section>
+  <div class="comp" id="n-vco">
+    <h3>VCO</h3>
+    <div class="part">Crystek CVCO55BE-0800-1600</div>
+    <div class="notes">
+      <div><h4>Measured</h4>
+        <ul>
+          <li>The tuning curve bends. Slope was about 40 MHz/V from 0 to 1 V, 33 from 1 to 2 V, 75 from 2 to 3 V, and about 68 in the 1.0 to 1.2 GHz band. A straight line will not do. Use a lookup.</li>
+          <li>Same voltage gives the same frequency within 0.1 MHz, if nothing is touched. Over 74 minutes it wandered about 60 kHz rms with no trend.</li>
+          <li>What it is plugged into changes its frequency. Swapping one tee moved it 1.5 to 3.2 MHz. Between 4 October and 10 October, with different loads, the same voltage differed by up to 16 MHz.</li>
+          <li>Output power falls as frequency rises: +7.4 dBm at 1.04 GHz, +4.8 dBm at 1.18 GHz.</li>
+          <li>It is fast. With the drive&rsquo;s shape divided out, it follows the tuning pin with about 26 ns of delay and no slowing I could see up to 7 MHz.</li>
+          <li>The 4 October note says it looked &ldquo;painfully slow, seconds&rdquo;. That was the bench supply and the analyzer&rsquo;s sweep, not the VCO.</li>
+        </ul></div>
+      <div><h4>Consequences</h4>
+        <ul>
+          <li>For 1.0 to 1.2 GHz the tuning pin needs 4.8 to 7.8 V. The Syscomp tops out at 3.52 V, so every automated test so far sat at 744 to 920 MHz, below the real band.</li>
+          <li>The racon rule is &plusmn;1.5 to &plusmn;3.5 MHz. At 68 MHz/V that is &plusmn;22 to &plusmn;51 mV on the tuning pin. The sample-and-hold has to be that good.</li>
+          <li>Calibrate it in its final wiring. Move a cable and the table shifts by more than the racon tolerance.</li>
+        </ul></div>
+      <div><h4>Not known yet</h4>
+        <ul>
+          <li>How it drifts with temperature or supply voltage. Listed pushing is 2 MHz/V on Vcc.</li>
+          <li>Its speed above 7 MHz. Needs a faster edge than the Syscomp has.</li>
+          <li>I never opened the Crystek datasheet itself. Listed numbers are from the DigiKey page.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-vco">characteristics &rarr;</a> <a href="#p-drift">drift test &rarr;</a> <a href="#p-deconv">speed test &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="n-splitter">
+    <h3>Splitter and delay cable</h3>
+    <div class="part">Mini-Circuits ZFRSC-42-S+ and 4.5 in of SMA cable</div>
+    <div class="notes">
+      <div><h4>Measured or from the datasheet</h4>
+        <ul>
+          <li>It is resistive, so each output is 6 dB down, not 3 dB. The 6.7 dB you measured is right. The 5 October note of &ldquo;only 1.5 dB at first&rdquo; was a wrong reading, not a change in the part.</li>
+          <li>0.75 W is what it can take, not what it gets. Your 15 September note &ldquo;mW: 750 &rarr; 188 &rarr; max 50&rdquo; used the rating as if it were the signal. The Pluto puts out 12.6 mW at most.</li>
+          <li>Isolation between the two outputs is only about 6 dB. Whatever bounces off one mixer port goes straight to the other.</li>
+          <li>The extra cable is 4.5 in, about 0.55 ns. The drawing asks for 0.2 ns, 3 to 4 cm.</li>
+        </ul></div>
+      <div><h4>Consequences</h4>
+        <ul>
+          <li>At 0.55 ns the phase at 1.1 GHz is about 216&deg;, not the 90&deg; the drawing aims for. Across 1.0 to 1.2 GHz it swings 196&deg; to 236&deg;, which is 40&deg; of a cosine.</li>
+          <li>Longer delay means more mV per MHz but a narrower one-way range.</li>
+        </ul>
+        <div class="math">\[ \frac{dV}{df} \propto 2\pi\tau\,\sin(2\pi f\tau), \qquad \text{one-way span} = \frac{1}{2\tau} \]</div></div>
+      <div><h4>Under question</h4>
+        <ul>
+          <li>The measured curves turn over every 30 to 50 MHz with the VCO and every 170 MHz with the Pluto. A 0.55 ns delay alone would turn over every 900 MHz. Something else sets the shape.</li>
+          <li>My guess: the mixer ports are badly matched (VSWR near 3) and the splitter barely isolates them, so reflections add their own, longer delays. Not tested.</li>
+          <li>A Wilkinson splitter or small attenuators on the mixer ports would test that guess.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-delaysplit">characteristics &rarr;</a> <a href="https://www.minicircuits.com/pdfs/ZFRSC-42+.pdf">datasheet</a></div>
+  </div>
+
+  <div class="comp" id="n-mixer">
+    <h3>Mixer as phase detector</h3>
+    <div class="part">Mini-Circuits ZX05-30W-S+</div>
+    <div class="notes">
+      <div><h4>Measured</h4>
+        <ul>
+          <li>Output depends on power as much as on frequency. At 1.08 GHz it read 46 mV at &minus;2 dBm and 8 mV at &minus;12.25 dBm.</li>
+          <li>With the VCO as source it only goes one way from 744 to 788 MHz. Above that it folds back four times before 890 MHz.</li>
+          <li>The slope inside that range runs from 0.05 to 3.7 mV/MHz. Near the ends a tiny voltage error is a big frequency error.</li>
+          <li>Noise is small: 84 to 142 &micro;V rms, about half of it the scope. That is 40 to 65 kHz in the usable range.</li>
+          <li>It follows a step in under 140 ns, limited by the drive.</li>
+          <li>The output slid about 0.4 mV in an hour near the fold, worth about 140 kHz.</li>
+        </ul></div>
+      <div><h4>From the datasheet</h4>
+        <ul>
+          <li>It wants +7 dBm on the LO port. On the bench it got about +0.6 dBm, so the diodes were only partly switched. That is why the output moves so much with power.</li>
+          <li>RF port VSWR is 2.8 to 3.5 around 1 GHz. A third to a half of the voltage bounces back.</li>
+          <li>LO to IF isolation is only 7 dB minimum. Some RF leaks onto the output.</li>
+          <li>Damage limit is 50 mW of RF and 40 mA at the IF port.</li>
+        </ul></div>
+      <div><h4>Consequences</h4>
+        <ul>
+          <li>The voltage-to-frequency table is only good at the power it was made at. The limiting amp in the design is what fixes this. Without it, a near radar and a far radar read as different frequencies.</li>
+          <li>You wondered on 15 September if the mixer was burnt. Power could not have done it: the most it ever saw was about 3 mW against a 50 mW limit.</li>
+          <li>All my scope readings were into 1 M&Omega;. A 50 &Omega; load on the IF port will give a different, smaller voltage.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-phasedet">characteristics &rarr;</a> <a href="#p-mapping">the lookup &rarr;</a> <a href="#p-noise">noise &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="n-syscomp">
+    <h3>Syscomp CGR-201</h3>
+    <div class="notes">
+      <div><h4>Measured</h4>
+        <ul>
+          <li>It leaks. With a waveform selected and amplitude at zero it still puts about 100 mV peak-to-peak on the output. For a steady voltage the waveform must be switched off.</li>
+          <li>Its edge takes about 145 ns and starts with a spike about half the step tall.</li>
+          <li>Highest output is 3.52 V. Lowest is about &minus;4 V, so a wrong setting can put a negative voltage on the tuning pin.</li>
+          <li>It resets to defaults when its USB is replugged.</li>
+        </ul></div>
+      <div><h4>Consequences</h4>
+        <ul>
+          <li>Every timing number in the test log is a ceiling set by this edge.</li>
+          <li>It cannot reach the 4.8 to 7.8 V the real band needs. An op-amp with gain and offset after it would.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-cgr">characteristics &rarr;</a> <a href="#mistakes">how I found the leak &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="n-scope">
+    <h3>Oscilloscope</h3>
+    <div class="notes">
+      <div><h4>Measured</h4>
+        <ul>
+          <li>100 MHz bandwidth. It cannot show an 800 MHz signal directly. It shows a weak alias.</li>
+          <li>CH1 and CH2 share a converter. Both on means 500 MSa/s each. CH1 with CH3 gives 1 GSa/s.</li>
+          <li>It will not trigger on a channel that is switched off.</li>
+          <li>8 bits. A quiet DC level reads in steps unless there is a little noise to blur them.</li>
+          <li>Its own noise is 60 to 65 &micro;V rms at 1 mV/div.</li>
+          <li>Stopping a script mid-transfer jams its USB until the cable is replugged.</li>
+        </ul></div>
+      <div><h4>Consequences</h4>
+        <ul>
+          <li>Inputs are 1 M&Omega; only. RF parts wired straight to it are unterminated.</li>
+          <li>The tuning voltage I report is the scope&rsquo;s reading, good to a few percent. I never checked it with a multimeter.</li>
+          <li>CH1 sat part-way along the cable to the VCO. What it saw is not exactly what the tuning pin saw.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-scope">characteristics &rarr;</a> <a href="#p-alias">the alias trick &rarr;</a></div>
+  </div>
+
+  <div class="comp" id="n-sa">
+    <h3>Spectrum analyzer (SSA3021X)</h3>
+    <div class="notes">
+      <div><h4>Measured</h4>
+        <ul>
+          <li>Read the marker only after a full sweep. Reading early gave power errors of 15 dB.</li>
+          <li>Six readings in a row agreed within 0.03 MHz and 0.1 dB.</li>
+          <li>Even so, 15 of 648 power readings came out 2 to 8 dB low at random. The mixer output did not move with them, so the VCO had not changed.</li>
+          <li>A wide span quantizes the frequency. Your 4 October &ldquo;two discrete values within 3 MHz&rdquo; was the 2.67 MHz marker step, not the VCO hopping.</li>
+        </ul></div>
+      <div><h4>Under question</h4>
+        <ul>
+          <li>Power reads low from 850 to 890 MHz, every time. I think the 30 kHz filter is too narrow for a VCO that jitters, and it is worst where the VCO is steepest. Not tested. A 1 MHz filter with averaging would settle it.</li>
+          <li>The tee feeding the analyzer puts two 50 &Omega; loads in parallel on the VCO. Power read there is not the VCO&rsquo;s true output.</li>
+        </ul></div>
+    </div>
+    <div class="links"><a href="#c-sa">characteristics &rarr;</a> <a href="#p-power">power plots &rarr;</a></div>
+  </div>
+</section>

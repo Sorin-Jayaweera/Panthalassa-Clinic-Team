@@ -1,0 +1,18 @@
+{
+  "csv": "C:\\ThatFamily Dropbox\\Sorin Jayaweera\\allSaves\\mudd\\senior\\clinic\\simulations\\claude\\03_gnuradio_pluto\\measurements\\example_SYNTHETIC_measurement.csv",
+  "n_points": 41,
+  "dl_in": 4.5,
+  "vf_datasheet": 0.7,
+  "dt_predicted_ps": 544.6625154449825,
+  "dt_fit_ps": 565.4648888554871,
+  "vf_effective": 0.6742483367679535,
+  "fit_amplitude_V": -0.11596448038226667,
+  "fit_offset_V": 0.008479885699000683,
+  "fit_rms_V": 0.001395568076394756,
+  "ltspice_scale": -1.7898956336035048,
+  "ltspice_rms_after_scaling_V": 0.0014739133172084707,
+  "recovery_rms_MHz__inverse_of_fitted_curve": 4.7207959746367285,
+  "recovery_rms_MHz__inverse_of_datasheet_prediction": 5.07269712259277,
+  "recovery_rms_MHz__straight-line_map": 7.5208359597667975,
+  "noise_limited_resolution_MHz": 4.882765078890685
+}

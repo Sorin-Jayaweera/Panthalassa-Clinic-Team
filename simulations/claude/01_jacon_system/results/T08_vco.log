@@ -1,0 +1,16 @@
+LTspice 26.0.2 for Windows
+Circuit: C:\Users\Sorin\AppData\Local\Temp\jacon_run\T08_vco\T08_vco.net
+Start Time: Sun Sep 13 19:46:21 2026
+Options:plotwinsize=0
+solver = Normal
+Maximum thread count: 14
+tnom = 27
+temp = 27
+method = trap
+Direct Newton iteration succeeded in finding operating point.
+Total elapsed time: 0.313 seconds.
+
+Files loaded:
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T08_vco\T08_vco.net
+C:\Users\Sorin\AppData\Local\Temp\jacon_run\T08_vco\jacon_blocks.inc
+

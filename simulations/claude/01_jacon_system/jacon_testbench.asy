@@ -1,0 +1,22 @@
+Version 4
+SymbolType CELL
+RECTANGLE Normal 0 0 240 256
+TEXT 120 20 Center 2 TEST STIMULI
+TEXT 120 44 Center 0 used by TSEL switches
+WINDOW 0 120 -8 Bottom 2
+WINDOW 39 120 296 Top 1
+SYMATTR Prefix X
+SYMATTR SpiceModel TESTBENCH
+SYMATTR Description JACON block: TEST STIMULI - used by TSEL switches
+PIN 240 64 RIGHT 8
+PINATTR PinName stim_if
+PINATTR SpiceOrder 1
+PIN 240 112 RIGHT 8
+PINATTR PinName stim_pd
+PINATTR SpiceOrder 2
+PIN 240 160 RIGHT 8
+PINATTR PinName stim_det
+PINATTR SpiceOrder 3
+PIN 240 208 RIGHT 8
+PINATTR PinName stim_vtune
+PINATTR SpiceOrder 4

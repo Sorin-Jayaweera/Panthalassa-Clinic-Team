@@ -1,0 +1,364 @@
+<p class="fragment-note">This file is one piece of the JACON notes. <a href="../index.html">Open the full site</a> to see it with the other tabs.</p>
+<section id="setup">
+  <h2>The bench</h2>
+  <div class="chain">Syscomp CGR-201 ──► VCO tuning pin (Vt) ──► VCO (Crystek, Vcc 11.5 V)
+        │                                    │
+        └─► scope CH1                        └─► tee ──► spectrum analyzer (SSA3021X)
+                                                  └──► splitter ──► short cable ──► mixer ──► scope CH2
+                                                             └────► +4.5 in cable ─┘</div>
+  <p>Three things under computer control: the Syscomp sets the tuning voltage, the analyzer reads the true frequency, the scope (SDS1104X-E) reads the tuning voltage and the mixer output. The mixer output is a DC voltage that depends on frequency. That is the phase detector.</p>
+</section>
+
+<section id="answers">
+  <h2>Short answers</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Question</th><th>Answer</th></tr>
+    <tr><td>VCO range with this drive</td><td>743.6 to 920.0 MHz for 0 to 3.5 V</td></tr>
+    <tr><td>VCO repeatability</td><td>about 0.1 MHz, same wiring, same hour</td></tr>
+    <tr><td>VCO absolute accuracy</td><td>a few MHz (voltage accuracy and loading)</td></tr>
+    <tr><td>Where the mixer can identify frequency</td><td>744 to 788 MHz only</td></tr>
+    <tr><td>Mixer slope there</td><td>2.66 mV/MHz on average</td></tr>
+    <tr><td>Frequency detection accuracy</td><td>about &plusmn;0.2 MHz over an hour</td></tr>
+    <tr><td>Time to get within 2 MHz after a step</td><td>74 to 122 ns after the drive&rsquo;s half-way point</td></tr>
+    <tr><td>System delay (deconvolved)</td><td>about 26 ns</td></tr>
+  </table></div>
+  <div class="caution"><strong>Limit on every timing number:</strong> the Syscomp&rsquo;s own edge takes about 145 ns. The VCO and mixer are faster than that, so the timing numbers are ceilings.</div>
+</section>
+
+<section id="static">
+  <h2>Static calibration</h2>
+  <p class="lede">Set a voltage, wait, read the frequency, read the mixer. Step up 0.02 V. Do that 176 times from 0 to 3.5 V. One sweep gives every plot in this section.</p>
+
+  <div class="plate" id="p-vco">
+    <div class="tag">Plot 1</div>
+    <h3>VCO: output frequency vs input voltage</h3>
+    <figure><a href="img/vco_f_vs_v.png"><img src="img/vco_f_vs_v.png" alt="VCO frequency against tuning voltage, 0 to 3.5 V"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>For each voltage I nudged the Syscomp until scope CH1 read the target within 3 mV. Then I asked the analyzer for the peak twice: once wide to find it, once in a 2 MHz span to read it well.</p>
+        <p>Green dots go up. Black crosses are 14 points taken coming back down. They land on the curve within 0.10 MHz.</p>
+        <p>The slope is not constant: about 40 MHz/V below 1 V, 33 from 1 to 2 V, 75 from 2 to 3 V.</p></div>
+      <div><h4>Math</h4>
+        <p>Setting the voltage is a simple feedback loop on the Syscomp&rsquo;s offset code, with \(k = 1.875\) mV per code:</p>
+        <div class="math">\[ c_{n+1} = c_n + \frac{V_\text{target} - V_\text{CH1}}{k} \]</div>
+        <p>Marker resolution in the narrow span is \(2\ \text{MHz} / 751 \approx 2.7\) kHz.</p></div>
+    </div>
+    <details><summary>Code: setting Vt and reading the peak</summary>
+<pre class="code"><code>def set_vt(g, s, target, code):
+    s.write(f"C1:OFST {-target:.3f}V")      # keep CH1 centred on the target
+    for _ in range(4):
+        g.set_offset_raw(code)
+        time.sleep(0.6)
+        v, _ = scope_mean(s, 1, n=2)
+        if abs(v - target) &lt; 0.003:
+            break
+        code += (target - v) / OFFSET_V_PER_CODE
+    return v, code
+
+def measure(self):                          # spectrum analyzer
+    f, _ = self._peak(850e6, 500e6)         # wide: find it
+    f, p = self._peak(f, 2e6)               # narrow: read it
+    return f, p</code></pre></details>
+  </div>
+
+  <div class="plate" id="p-mixer">
+    <div class="tag">Plot 2</div>
+    <h3>Splitter and mixer: output voltage vs input frequency</h3>
+    <figure><a href="img/mixer_v_vs_f.png"><img src="img/mixer_v_vs_f.png" alt="Mixer output voltage against frequency"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>Same sweep. At each voltage I also read scope CH2, averaged over three 14 ms records. I plotted that against the frequency the analyzer gave, not against the voltage I set.</p>
+        <p>It rises cleanly up to 788 MHz, then turns over at 802, 834, 868 and 886 MHz. Above 788 MHz one voltage means several frequencies.</p></div>
+      <div><h4>Math</h4>
+        <p>An ideal delay-line detector gives a cosine in frequency, with \(\tau\) the extra delay of the longer cable:</p>
+        <div class="math">\[ V_\text{out} \propto \cos(2\pi f \tau), \qquad \tau = \frac{\Delta L}{v} \approx \frac{4.5\ \text{in}}{0.7c} \approx 0.55\ \text{ns} \]</div>
+        <p>That predicts one slow swing over about 900 MHz. The measured curve wiggles every 30 to 50 MHz, so something else in the RF path is shaping it. I did not find out what.</p></div>
+    </div>
+  </div>
+
+  <div class="plate" id="p-mapping">
+    <div class="tag">Plot 3</div>
+    <h3>The lookup: how mixer voltage becomes frequency</h3>
+    <figure><a href="img/mapping.png"><img src="img/mapping.png" alt="Three panels: calibration points, the inverse lookup, and its slope"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>I kept only the 61 calibration points from 0 to 1.2 V, where the curve goes one way. I swapped the axes and drew straight lines between neighbours. A mixer voltage goes in, a frequency comes out.</p>
+        <p>The right panel is why it is not clean. The slope runs from 0.05 to 3.7 mV/MHz. Where it is shallow, below 755 MHz and above 785 MHz, a tiny voltage error is a big frequency error.</p>
+        <p>Point-to-point roughness of the table is 0.084 mV, about 40 kHz.</p></div>
+      <div><h4>Math</h4>
+        <p>Linear interpolation between the two calibration points that bracket the reading:</p>
+        <div class="math">\[ f(V) = f_i + (V - V_i)\,\frac{f_{i+1} - f_i}{V_{i+1} - V_i}, \qquad V_i \le V \le V_{i+1} \]</div>
+        <p>A voltage error turns into a frequency error through the local slope:</p>
+        <div class="math">\[ \delta f = \frac{\delta V}{dV/df} \]</div></div>
+    </div>
+    <details><summary>Code: the lookup</summary>
+<pre class="code"><code>use = up[up["vt_meas_v"] &lt;= 1.2]            # single-valued part only
+cf, cv = use["vco_freq_hz"] / 1e6, use["mixer_out_v"] * 1e3
+order = np.argsort(cv)
+
+def mv_to_mhz(mv):
+    return np.interp(mv, cv[order], cf[order])</code></pre></details>
+  </div>
+
+  <div class="plate" id="p-chain">
+    <div class="tag">Plot 4</div>
+    <h3>Whole chain: mixer output vs tuning voltage</h3>
+    <figure><a href="img/mixer_v_vs_vt.png"><img src="img/mixer_v_vs_vt.png" alt="Mixer output against tuning voltage"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>Same data as plot 2, plotted against the voltage I set. This is what you would see with no analyzer at all. It mixes the VCO&rsquo;s curve and the mixer&rsquo;s curve together.</p></div>
+    </div>
+  </div>
+
+  <div class="plate" id="p-power">
+    <div class="tag">Plots 5 and 6</div>
+    <h3>Power read by the analyzer, and why it dips</h3>
+    <figure><a href="img/power.png"><img src="img/power.png" alt="Analyzer power against frequency, single sweep"></a></figure>
+    <figure><a href="img/power_repeat.png"><img src="img/power_repeat.png" alt="Single sweep against the spread of 18 repeated readings"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>The first plot is the marker height from the same narrow-span reading as plot 1. One reading per point.</p>
+        <p>For the second I took the 18 drift passes and plotted the mean, with bars from lowest to highest reading at each voltage.</p>
+        <p>Two different things show up:</p>
+        <ul>
+          <li><strong>One-off drops.</strong> 15 of 648 readings were more than 2 dB under their own median. They hit random voltages at random times. The mixer output did not move with them (0.23 mV at most), and the mixer is very sensitive to power. So the VCO did not really lose power. The analyzer missed the peak.</li>
+          <li><strong>The broad low patch, 850 to 890 MHz.</strong> It repeats every pass. It also sits exactly where the VCO is steepest (correlation with tuning slope is &minus;0.89).</li>
+        </ul></div>
+      <div><h4>My best guess, not proven</h4>
+        <p>I read the peak through a 30 kHz filter. Any noise on the tuning pin wobbles the frequency. Where the VCO is steep, the same noise wobbles it further, less of the signal sits inside the filter, and the peak reads low.</p>
+        <div class="math">\[ \Delta f_\text{rms} = K_v\,\sigma_{V_t}, \qquad K_v \approx 33\ \text{to}\ 90\ \text{MHz/V} \]</div>
+        <p>With \(\sigma_{V_t}\) of even 1 mV that is 33 to 90 kHz, wider than the filter. The fix is a 1 MHz filter and averaging. I have not run it: the analyzer was already off.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="steps">
+  <h2>Step response</h2>
+  <p class="lede">I drove the tuning pin with a 50 kHz square wave and watched the mixer output on the scope. The mixer output is slow enough that the scope sees it directly.</p>
+
+  <div class="plate" id="p-step">
+    <div class="tag">Plots 7 and 8</div>
+    <h3>Rising and falling steps, five sizes overlaid</h3>
+    <figure><a href="img/step_rise.png"><img src="img/step_rise.png" alt="Rising edges: drive, mixer output and frequency"></a></figure>
+    <figure><a href="img/step_fall.png"><img src="img/step_fall.png" alt="Falling edges: drive, mixer output and frequency"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>Each colour is one square wave, from 0.2 V up to a different top level. I took 3 long captures of each. Every capture holds about 140 rising and 140 falling edges.</p>
+        <p>I found every edge on CH1, lined them all up on the moment the drive crossed half-way, and averaged. About 420 edges per curve. Averaging is what makes them this smooth.</p>
+        <p>Top panel is the drive as measured. Middle is the mixer voltage as measured. Bottom is the middle panel put through the lookup.</p>
+        <p>These are raw averaged recordings. Nothing is divided out here. The spike at the start of the drive is the Syscomp, and the mixer is reacting to that shape.</p></div>
+      <div><h4>Math</h4>
+        <p>With \(t_k\) the time of edge \(k\) and \(N \approx 420\):</p>
+        <div class="math">\[ \bar{y}(\tau) = \frac{1}{N}\sum_{k=1}^{N} y(t_k + \tau) \]</div>
+        <p>Noise drops by \(\sqrt{N} \approx 20\).</p></div>
+    </div>
+    <details><summary>Code: finding and stacking the edges</summary>
+<pre class="code"><code>dlo, dhi = an.levels(vd)                      # low and high level of the drive
+edges = an.rising_edges(t, vd, dlo, dhi)      # 50 % crossings, interpolated
+
+def stack_edges(tp, p, edges, grid):
+    acc, n = np.zeros(len(grid), complex), 0
+    for e in edges:
+        x = (grid + e - tp[0]) / dt           # where each grid time falls in the record
+        i0 = np.floor(x).astype(int); w = x - i0
+        acc += p[i0] * (1 - w) + p[i0 + 1] * w
+        n += 1
+    return acc, n</code></pre></details>
+  </div>
+
+  <div class="plate" id="p-settle">
+    <div class="tag">Plots 9 and 10</div>
+    <h3>Time to get within &plusmn;2 MHz of the final frequency</h3>
+    <figure><a href="img/settle_rise.png"><img src="img/settle_rise.png" alt="Rising edges with a plus or minus 2 MHz band, mixer voltage and frequency side by side"></a></figure>
+    <figure><a href="img/settle_fall.png"><img src="img/settle_fall.png" alt="Falling edges with a plus or minus 2 MHz band"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>Left column is the mixer voltage I measured. Right column is the same trace through the lookup. The extra axis on the right edge shows the mV that each MHz tick corresponds to.</p>
+        <p>The green band is the final frequency &plusmn;2 MHz. On the left I converted the band edges back to mV, so both columns show the same band.</p>
+        <p>The red dot is the first sample inside the band. In every case it stays inside afterwards. No overshoot.</p>
+        <div class="tablewrap"><table>
+          <tr><th>Step (V)</th><th>Mixer (mV)</th><th>Freq (MHz)</th><th>In band at</th></tr>
+          <tr><td>0.20 &rarr; 0.40</td><td>35.8 &rarr; 54.7</td><td>752.9 &rarr; 763.2</td><td>74 ns</td></tr>
+          <tr><td>0.20 &rarr; 0.60</td><td>36.0 &rarr; 75.2</td><td>753.1 &rarr; 771.2</td><td>100 ns</td></tr>
+          <tr><td>0.20 &rarr; 0.80</td><td>36.2 &rarr; 97.7</td><td>753.4 &rarr; 777.9</td><td>110 ns</td></tr>
+          <tr><td>0.20 &rarr; 1.00</td><td>36.4 &rarr; 115.3</td><td>753.6 &rarr; 783.6</td><td>114 ns</td></tr>
+          <tr><td>0.20 &rarr; 1.15</td><td>36.1 &rarr; 121.1</td><td>753.2 &rarr; 787.2</td><td>122 ns</td></tr>
+        </table></div>
+        <p>Times count from the drive&rsquo;s half-way point. Add 48 ns to count from the start of the drive edge.</p></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ t_\text{in} = \min\{\, t : |f(t) - f_\text{final}| \le 2\ \text{MHz} \,\} \]</div>
+        <p>\(f_\text{final}\) is the median of the trace from 3 to 4.5 &micro;s after the edge.</p>
+        <p>The band is not the same height in mV for each step, because the lookup slope changes. At 787 MHz it is only 2.6 mV tall. At 778 MHz it is 14.5 mV.</p></div>
+    </div>
+    <details><summary>Code: first time inside the band</summary>
+<pre class="code"><code>fr = mv_to_mhz(mv)                            # mixer trace through the lookup
+f1 = np.median(fr[(t &gt; 3000) &amp; (t &lt; 4500)])    # final frequency
+inside = np.abs(fr - f1) &lt;= TOL               # TOL = 2.0 MHz
+i_first = np.nonzero(sel &amp; inside)[0][0]
+t_first = t[i_first]</code></pre></details>
+  </div>
+
+  <div class="plate" id="p-transition">
+    <div class="tag">Plot 11</div>
+    <h3>10 to 90 % transition time vs step size</h3>
+    <figure><a href="img/transition_time.png"><img src="img/transition_time.png" alt="Transition times of mixer output, frequency and drive against step size"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>For each averaged trace I took the start and end levels, then read off when it crossed 10 % and 90 % of the way. I did that for the drive, the mixer voltage and the looked-up frequency.</p>
+        <p>The drive sits at about 145 ns for every step. The mixer is at or below it. The system is not the slow part.</p>
+        <p>Mixer and frequency times differ because the lookup is curved. That is the lookup, not the hardware.</p></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ s(t) = \frac{y(t) - y_0}{y_1 - y_0}, \qquad t_r = t\big|_{s = 0.9} - t\big|_{s = 0.1} \]</div></div>
+    </div>
+  </div>
+
+  <div class="plate" id="p-deconv">
+    <div class="tag">Plot 12</div>
+    <h3>Deconvolution: dividing the drive&rsquo;s shape out</h3>
+    <figure><a href="img/deconvolution.png"><img src="img/deconvolution.png" alt="Transfer function magnitude and phase, trust region, and deconvolved step"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>First I undid the curve. I ran each mixer trace backwards through the calibration to get the tuning voltage it corresponds to. Now input and output are both in volts and the system has a gain of 1.</p>
+        <p>Then I differentiated both, so each step becomes a pulse, took the Fourier transform, and divided output by input. I combined all 20 steps into one estimate.</p>
+        <p>To get a step response back I multiplied by a smooth 7 MHz low-pass, inverse transformed, and integrated.</p>
+        <p><strong>What it says:</strong> flat to within 1 dB up to 3 MHz, a delay of 26 ns, and no slowing I can detect. The red deconvolved step rises in 68 ns, and an ideal instant system through the same 7 MHz filter also gives 68 ns.</p></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ H(f) = \frac{\sum_i X_i'^{*}(f)\, Y_i'(f)}{\sum_i |X_i'(f)|^2} \]</div>
+        <div class="math">\[ s(t) = \int_{-\infty}^{t} \mathcal{F}^{-1}\!\left\{ \frac{\sum_i X_i'^{*} Y_i'}{\sum_i |X_i'|^2 + \lambda}\; G(f) \right\} dt' \]</div>
+        <p>\(X_i'\), \(Y_i'\) are transforms of the differentiated drive and output for step \(i\). \(\lambda\) is 2 % of the DC value and stops the division blowing up. \(G\) is a Gaussian, &minus;3 dB at 7 MHz.</p>
+        <p>Delay comes from the phase slope below 5 MHz: \(\tau = -\frac{1}{2\pi}\frac{d\phi}{df}\).</p></div>
+    </div>
+    <div class="caution"><strong>Why only 7 MHz:</strong> the Syscomp&rsquo;s edge has almost no energy near 10 MHz (the spike and the main rise cancel there). Dividing by nearly zero gives the tall fake peak in the top-left panel. Everything in the grey region is not real. Also, CH1 sits part-way along the cable, so what it sees is not exactly what the VCO pin sees. That is probably why the gain creeps above 0 dB.</div>
+    <details><summary>Code: the division</summary>
+<pre class="code"><code>xn = normalise(smooth5(drive))                # 0 -> 1 step
+yn = normalise(mixer_to_vt(mixer_mV))         # undo the static curve first
+DX.append(np.fft.rfft(np.gradient(xn) * win))
+DY.append(np.fft.rfft(np.gradient(yn) * win))
+...
+Sxx = np.mean(np.abs(DX) ** 2, axis=0)
+Sxy = np.mean(np.conj(DX) * DY, axis=0)
+H = Sxy / Sxx
+H_reg = Sxy / (Sxx + 0.02 * Sxx[0])
+step = np.cumsum(np.roll(np.fft.irfft(H_reg * G, N), shift))</code></pre></details>
+  </div>
+</section>
+
+<section id="stability">
+  <h2>Noise and drift</h2>
+
+  <div class="plate" id="p-noise">
+    <div class="tag">Table</div>
+    <h3>Noise at a fixed voltage</h3>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>I held the tuning voltage still, switched CH2 to AC coupling at 1 mV/div, and recorded 1.4 ms. I took the rms. I also recorded CH3 with nothing plugged in, same settings, to know the scope&rsquo;s own noise.</p>
+        <p>Then I divided the voltage noise by the lookup slope at that frequency to get frequency noise.</p>
+        <div class="tablewrap"><table>
+          <tr><th>Freq (MHz)</th><th>Slope (mV/MHz)</th><th>Mixer rms (&micro;V)</th><th>Scope alone (&micro;V)</th><th>Freq noise (kHz)</th></tr>
+          <tr><td>753.5</td><td>0.85</td><td>91</td><td>62</td><td>107</td></tr>
+          <tr><td>763.3</td><td>2.66</td><td>138</td><td>62</td><td>52</td></tr>
+          <tr><td>771.4</td><td>2.90</td><td>129</td><td>62</td><td>45</td></tr>
+          <tr><td>778.0</td><td>3.64</td><td>137</td><td>63</td><td>38</td></tr>
+          <tr><td>783.4</td><td>2.32</td><td>101</td><td>65</td><td>44</td></tr>
+          <tr><td>785.9</td><td>1.27</td><td>84</td><td>63</td><td>66</td></tr>
+        </table></div>
+        <p>Full scope bandwidth, single shot. About half is the scope itself, so the real system is quieter than this.</p></div>
+      <div><h4>Math</h4>
+        <div class="math">\[ \sigma_f = \frac{\sigma_V}{dV/df} \]</div>
+        <p>Example at 778 MHz: \(137\ \mu\text{V} / 3.64\ \text{mV/MHz} = 38\ \text{kHz}\).</p></div>
+    </div>
+  </div>
+
+  <div class="plate" id="p-drift">
+    <div class="tag">Plot 13</div>
+    <h3>Drift heat map, relative to the median</h3>
+    <figure><a href="img/drift_heatmap.png"><img src="img/drift_heatmap.png" alt="Three heat maps of frequency, mixer output and analyzer power deviation over 74 minutes"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>I ran the same coarse sweep 18 times, back to back, over 74 minutes. 36 voltages each time.</p>
+        <p>For every voltage I took the median of its 18 readings and subtracted it. So each cell is how far that one reading was from typical. Time runs left to right, voltage bottom to top, red is high, blue is low.</p>
+        <p><strong>Frequency (left):</strong> speckle, no pattern in time. Bigger speckle above 2 V, where the VCO is steep and 1 mV of setting error is worth more.</p>
+        <p><strong>Mixer (middle):</strong> a real slow slide. Red on the left, blue on the right around 1.0 to 1.6 V. About &minus;0.4 mV per hour at worst.</p>
+        <p><strong>Power (right):</strong> the scattered dark blue cells are the one-off drops from plot 6.</p></div>
+      <div><h4>Math</h4>
+        <p>With \(x_{ij}\) the reading at pass \(i\), voltage \(j\):</p>
+        <div class="math">\[ \Delta_{ij} = x_{ij} - \operatorname{median}_i\,(x_{ij}) \]</div>
+        <p>Turning mixer drift into frequency error in the usable band: \(0.37\ \text{mV} / 2.66\ \text{mV/MHz} \approx 140\ \text{kHz}\).</p></div>
+    </div>
+    <details><summary>Code: the heat map</summary>
+<pre class="code"><code>F = np.array([p["vco_freq_hz"] for p in passes]) / 1e6      # shape (18, 36)
+dF = (F - np.median(F, axis=0)) * 1e3                        # kHz from the median
+lim = np.abs(dF).max()
+ax.pcolormesh(minutes, vt, dF.T, cmap="RdBu_r", vmin=-lim, vmax=lim, shading="nearest")</code></pre></details>
+  </div>
+</section>
+
+<section id="p-alias">
+  <h2>Earlier test: bare VCO straight into the scope</h2>
+  <p class="lede">Before the mixer was wired in, I had only the scope on the VCO&rsquo;s RF output. The scope is 100 MHz and the VCO is near 800 MHz, so this needed a trick.</p>
+
+  <div class="plate">
+    <div class="tag">Plots 14 to 16</div>
+    <h3>Frequency vs time, rise time, and settled frequency</h3>
+    <figure><a href="img/vco_freq_vs_time.png"><img src="img/vco_freq_vs_time.png" alt="VCO frequency against time for ten step sizes"></a></figure>
+    <figure><a href="img/vco_rise_time.png"><img src="img/vco_rise_time.png" alt="Rise time against high voltage level"></a></figure>
+    <figure><a href="img/vco_freq_vs_voltage.png"><img src="img/vco_freq_vs_voltage.png" alt="Settled frequency against tuning voltage"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>The scope samples at 500 MSa/s. An 800 MHz signal shows up as a fake lower tone, an alias, near 200 MHz. The alias moves one-for-one with the real frequency, so I tracked the alias and converted back.</p>
+        <p>The signal was tiny, tens of microvolts, well under the scope&rsquo;s noise. So I did not track single shots. I stacked 1112 edges per step. The VCO&rsquo;s phase is random from edge to edge, so I could not average the waveform. I averaged a quantity that does not care about phase.</p>
+        <p>Result: the frequency follows the drive voltage with 0 to 12 ns of lag. Same story as the mixer test.</p></div>
+      <div><h4>Math</h4>
+        <p>Alias, and how to undo it for this band:</p>
+        <div class="math">\[ f_\text{alias} = |f - k f_s|, \qquad f = 2 f_s - f_\text{alias}\ \ \text{for}\ 750 &lt; f &lt; 1000\ \text{MHz},\ f_s = 500\ \text{MSa/s} \]</div>
+        <p>The phase-proof quantity: multiply the filtered signal \(z\) by its own conjugate \(m\) samples earlier, average over edges, take the angle.</p>
+        <div class="math">\[ p[n] = z[n+m]\, z^{*}[n], \qquad f_\text{alias} = \frac{f_s}{2\pi m}\,\arg \big\langle p[n] \big\rangle_\text{edges} \]</div></div>
+    </div>
+    <div class="caution"><strong>Do not trust the &ldquo;static DC&rdquo; curve in the third plot.</strong> It was taken before I found the Syscomp leak (below). The step results are fine.</div>
+    <details><summary>Code: lag product and unfolding</summary>
+<pre class="code"><code>z = np.fft.ifft(2 * spec * w)                 # band-limited analytic signal
+p = z[lag:] * np.conj(z[:-lag])               # phase cancels, frequency stays
+
+def lag_to_alias(p, fs, band_start, lag):
+    ph = np.angle(p * np.exp(-2j * np.pi * band_start * lag / fs))
+    return band_start + np.mod(ph, 2 * np.pi) * fs / (2 * np.pi * lag)
+
+def unfold(f_alias, fs, f_expected):
+    zone = int(f_expected // (fs / 2))
+    return zone * fs / 2 + f_alias if zone % 2 == 0 else (zone + 1) * fs / 2 - f_alias</code></pre></details>
+  </div>
+</section>
+
+<section id="mistakes">
+  <h2>What went wrong along the way</h2>
+  <div class="caution"><strong>The Syscomp leaks.</strong> With a waveform selected and amplitude set to zero, it still puts about 100 mV peak-to-peak of that waveform on the output. My first two &ldquo;DC&rdquo; sweeps had the VCO hopping between two frequencies 3.4 MHz apart. I caught it in the noise test, switched the waveform off, and redid the sweep. Everything above uses the clean run.</div>
+  <div class="caution"><strong>I read the analyzer too early.</strong> At first I grabbed the marker before the sweep had finished. Power jumped by 15 dB between neighbours. I blamed the open tee port for that, and I was wrong. Fixed by taking one complete single sweep per reading.</div>
+  <div class="plate">
+    <div class="tag">Reference only</div>
+    <h3>Good vs bad tee</h3>
+    <figure><a href="img/comparison.png"><img src="img/comparison.png" alt="Good and bad setup compared over 0 to 0.7 V"></a></figure>
+    <figure><a href="img/bad.png"><img src="img/bad.png" alt="Partial sweep with the open tee stub"></a></figure>
+    <div class="notes">
+      <div><h4>What I did</h4>
+        <p>The bad setup had a second tee with one port left open. I got 15 points on it before you swapped in the male-male adaptor. I overlaid those on the later sweep.</p>
+        <p>Both curves here were taken with the leak, so frequencies are off by up to 1.7 MHz. The power panel in the bad plot is the too-early reading and means nothing.</p>
+        <p>What survives: with the tee fixed, the VCO ran 1.5 to 3.2 MHz lower at the same voltage. Wiring changes the VCO.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Where the files are</h2>
+  <p>Everything is under <code>clinic\phase_detector_calibration\</code> and <code>clinic\vco_rise_time\</code>.</p>
+  <div class="tablewrap"><table>
+    <tr><th>What</th><th>File</th></tr>
+    <tr><td>Clean calibration data</td><td>phase_detector_calibration_run3_cleanDC_0p02V_steps.csv</td></tr>
+    <tr><td>Step traces and summary</td><td>step_response\20261010_182707\</td></tr>
+    <tr><td>Time to within 2 MHz</td><td>step_response\20261010_182707\settle_within_2MHz.csv</td></tr>
+    <tr><td>Transfer function</td><td>deconvolution\transfer_function.csv</td></tr>
+    <tr><td>Noise</td><td>noise_cleanDC\noise_summary.csv</td></tr>
+    <tr><td>Drift passes</td><td>drift\drift_pass_01.csv to 18</td></tr>
+    <tr><td>Bare-VCO test</td><td>vco_rise_time\data\20261010_155415\</td></tr>
+    <tr><td>Scripts</td><td>run_calibration.py, run_step_response.py, deconvolve.py, plot_mapping_and_settle.py</td></tr>
+  </table></div>
+</section>

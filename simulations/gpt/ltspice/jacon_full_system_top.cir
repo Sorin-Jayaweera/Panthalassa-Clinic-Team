@@ -1,0 +1,92 @@
+* JACON full-system behavioral LTspice simulation
+* Source diagram: clinic/racon_draft_design01b_drawing.pdf
+*
+* Goal:
+*   Receive a 9.3-9.5 GHz radar pulse, estimate IF frequency from a delay-line
+*   phase detector, tune a 1.0-1.2 GHz VCO, upconvert with an 8.3 GHz LO, and
+*   key a same-frequency '. - .' Morse reply.
+*
+* How to switch what you are visualizing:
+*   - Probe the named nodes in the .save list below.
+*   - Edit VIEW to document your current plot focus:
+*       VIEW=1 front-end RX/mixdown
+*       VIEW=2 IF envelope/trigger
+*       VIEW=3 delay-line phase detector
+*       VIEW=4 VCO/upconversion/keyed TX
+*   - The model always computes all blocks so cross-block timing can be checked.
+
+.include jacon_common_models.lib
+
+.param VIEW=1
+.param frf=9.4G
+.param flo=8.3G
+.param fif={frf-flo}
+.param rx_dbm=-30
+.param rx_vpk={dbm_to_vpk(rx_dbm)}
+.param lo_vpk={dbm_to_vpk(10)}
+.param vco_vpk={dbm_to_vpk(0)}
+.param tx_gain_db=27
+
+* Delay detector: choose one delta time.
+* 0.227 ns puts the 1.1 GHz IF near quadrature, matching the diagram note.
+* 4.5 in of coax at VF=0.66 gives about 0.578 ns.
+.param coax_vf=0.66
+.param extra_len_in=4.5
+.param td_4p5in={extra_len_in*0.0254/(coax_vf*c0)}
+.param td_quadrature={1/(4*1.1G)}
+.param td_phase={td_quadrature}
+
+* SECTION 1: RX antenna, limiter, LNA
+* Radar pulse is compressed for transient convenience: 10 ns to 70 ns.
+B_rx_ant rx_ant 0 V={rx_vpk*sin(2*pi*frf*time)*if(time>10n,if(time<70n,1,0),0)}
+Xlim rx_ant rx_limited gain_limit PARAMS: gain_db=0 limit_v={dbm_to_vpk(15)}
+Xlna rx_limited rx_lna gain_limit PARAMS: gain_db=22 limit_v={dbm_to_vpk(17)}
+
+* SECTION 2: PLL LO, LO buffer/splitter, RX mixer, IF amp
+B_lo lo_raw 0 V={lo_vpk*sin(2*pi*flo*time)}
+Xlo_buf lo_raw lo_drive gain_limit PARAMS: gain_db=0 limit_v={dbm_to_vpk(10)}
+Xrxmix rx_lna lo_drive rx_mix_raw ideal_multiplier PARAMS: scale=1
+Xif_lpf rx_mix_raw if_mixer_out lpf_1pole PARAMS: fc=2.4G
+Xif_amp if_mixer_out if_amp_out gain_limit PARAMS: gain_db=13 limit_v={dbm_to_vpk(3)}
+
+* SECTION 3: IF splitter, envelope detector, comparator/FPGA trigger
+B_env_abs env_abs 0 V={abs(V(if_amp_out))}
+Xenv_lp env_abs envelope lpf_1pole PARAMS: fc=35Meg
+Vdac threshold 0 0.035
+Bcomp radar_ping 0 V={if(V(envelope)>V(threshold),1,0)}
+
+* SECTION 4: IF limiting amplifier and delay-line phase detector
+Xif_limit if_amp_out if_limited gain_limit PARAMS: gain_db=54 limit_v=0.20
+B_delay delayed_if 0 V={delay(V(if_limited), td_phase)}
+Xphase if_limited delayed_if phase_raw ideal_multiplier PARAMS: scale=1
+Xphase_lpf phase_raw phase_baseband lpf_1pole PARAMS: fc=50Meg
+
+* SECTION 5: sample-and-hold, tune scaling, VCO
+* tune_center = 8 V maps the VCO to 1.1 GHz with fmin=0.7 GHz, kvco=50 MHz/V.
+Btrack_gate track_gate 0 V={V(radar_ping)}
+Xsh phase_baseband track_gate held_phase sample_hold PARAMS: chold=100p
+Btune vco_tune 0 V={limit(8 + 6*V(held_phase), 6, 10)}
+Xvco vco_tune vco_if simple_vco PARAMS: fmin=0.7G kvco=50Meg amp={vco_vpk}
+
+* SECTION 6: Morse '. - .' keying, TX mixer, image reject filter, PA
+* Compressed Morse timing: dot=30 ns, dash=90 ns, gap=30 ns, starts at 100 ns.
+B_morse morse_key 0 V={limit(if(time>100n,if(time<130n,1,0),0)+if(time>160n,if(time<250n,1,0),0)+if(time>280n,if(time<310n,1,0),0),0,1)}
+Xtxmix vco_if lo_drive tx_mix_raw ideal_multiplier PARAMS: scale=1
+Ximage tx_mix_raw tx_filtered hpf_1pole PARAMS: fc=8.4G
+Xpa tx_filtered tx_pa gain_limit PARAMS: gain_db={tx_gain_db} limit_v={dbm_to_vpk(30)}
+Btx_keyed tx_ant 0 V={V(tx_pa)*V(morse_key)}
+Rload_tx tx_ant 0 50
+
+.save V(rx_ant) V(rx_limited) V(rx_lna)
+.save V(lo_drive) V(rx_mix_raw) V(if_mixer_out) V(if_amp_out)
+.save V(envelope) V(threshold) V(radar_ping)
+.save V(if_limited) V(delayed_if) V(phase_raw) V(phase_baseband)
+.save V(held_phase) V(vco_tune) V(vco_if)
+.save V(morse_key) V(tx_mix_raw) V(tx_filtered) V(tx_ant)
+
+.tran 0 340n 0 1p
+.options plotwinsize=0 numdgt=7
+.meas tran held_phase_avg AVG V(held_phase) FROM=80n TO=95n
+.meas tran tune_avg AVG V(vco_tune) FROM=80n TO=95n
+.meas tran tx_peak_pp PP V(tx_ant) FROM=100n TO=310n
+.end

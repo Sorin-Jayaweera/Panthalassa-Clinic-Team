@@ -1,0 +1,11 @@
+Vt 0.099 V (748.3 MHz, 0.45 mV/MHz) fs 500M: mixer rms full 84 uV (scope floor 62), 1 MHz 52.0 uV (floor 32.5) -> 186 kHz full, 114.8 kHz in 1 MHz
+Vt 0.202 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 91 uV (scope floor 62), 1 MHz 60.4 uV (floor 32.2) -> 45 kHz full, 29.8 kHz in 1 MHz
+Vt 0.299 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 128 uV (scope floor 60), 1 MHz 100.7 uV (floor 27.2) -> 63 kHz full, 49.8 kHz in 1 MHz
+Vt 0.400 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 138 uV (scope floor 62), 1 MHz 111.0 uV (floor 32.3) -> 68 kHz full, 54.8 kHz in 1 MHz
+Vt 0.500 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 126 uV (scope floor 61), 1 MHz 99.5 uV (floor 28.9) -> 62 kHz full, 49.2 kHz in 1 MHz
+Vt 0.601 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 129 uV (scope floor 62), 1 MHz 102.6 uV (floor 31.6) -> 64 kHz full, 50.7 kHz in 1 MHz
+Vt 0.699 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 142 uV (scope floor 61), 1 MHz 116.2 uV (floor 30.0) -> 70 kHz full, 57.4 kHz in 1 MHz
+Vt 0.799 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 137 uV (scope floor 63), 1 MHz 110.9 uV (floor 32.2) -> 67 kHz full, 54.8 kHz in 1 MHz
+Vt 0.899 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 117 uV (scope floor 61), 1 MHz 89.3 uV (floor 29.7) -> 58 kHz full, 44.1 kHz in 1 MHz
+Vt 0.999 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 101 uV (scope floor 65), 1 MHz 71.7 uV (floor 37.5) -> 50 kHz full, 35.4 kHz in 1 MHz
+Vt 1.100 V (753.4 MHz, 2.02 mV/MHz) fs 500M: mixer rms full 84 uV (scope floor 63), 1 MHz 50.5 uV (floor 33.0) -> 41 kHz full, 24.9 kHz in 1 MHz
