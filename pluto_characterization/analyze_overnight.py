@@ -315,8 +315,8 @@ if B["wide_search"]:
     save(fig, "pluto_wide")
 
 # ---------------------------------------------------------------- full map
-for blk, name, sc in (("map", "pluto_map", 0.5), ("map_scale1", "pluto_map_scale1", 1.0)):
-    g = B[blk]
+for blk, name, sc in (("map", "pluto_map", 0.5), ("map_s1", "pluto_map_scale1", 1.0)):
+    g = [r for r in B[blk] if r["freq_set_hz"] < 2.095e9]      # 2100 MHz was read with a wrong span
     if len(g) < 50:
         continue
     atts = sorted({r["att_db"] for r in g})
@@ -391,11 +391,11 @@ if B["hourly_att"]:
             worst = max(worst, np.ptp(v))
     S["hourly"]["att_table_worst_span_db"] = r2(worst, 3)
     worst = 0
-    for f in sorted({r["freq_set_hz"] for r in B["hourly_freq"]}):
+    for f in sorted({r["freq_set_hz"] for r in B["hourly_freq"] if r["freq_set_hz"] < 2.095e9}):
         v = [r["level_dbm"] for r in B["hourly_freq"] if r["freq_set_hz"] == f]
         worst = max(worst, np.ptp(v))
     S["hourly"]["freq_sweep_worst_span_db"] = r2(worst, 3)
-    S["hourly"]["tonefreq_ppm"] = sorted({r2((r["freq_meas_hz"] - r["freq_set_hz"]) / r["freq_set_hz"] * 1e6, 2) for r in B["hourly_tonefreq"]})
+    S["hourly"]["tonefreq_ppm"] = sorted({r2((r["freq_meas_hz"] - r["freq_set_hz"]) / r["freq_set_hz"] * 1e6, 2) for r in B["hourly_tonefreq"] if r["level_dbm"] > -60})
 
 S["blocks"] = {k: len(v) for k, v in B.items()}
 (HERE / "overnight_summary.json").write_text(json.dumps(S, indent=1))

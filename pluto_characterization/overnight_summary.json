@@ -1,8 +1,8 @@
 {
- "readings": 2950,
+ "readings": 4465,
  "traces": 147,
  "first": "2026-10-12T21:44:33",
- "last": "2026-10-12T22:17:03",
+ "last": "2026-10-12T22:41:37",
  "floor": [
   [
    "10",
@@ -3768,84 +3768,105 @@
   ]
  ],
  "map": {
-  "n": 508,
-  "freqs": 56,
+  "n": 1575,
+  "freqs": 175,
   "att0_max": 1.14,
   "att0_max_at": 520.0,
-  "att0_min": -0.04,
-  "att0_min_at": 790.0,
+  "att0_min": -6.36,
+  "att0_min_at": 1630.0,
   "band_1000_1200": [
-   NaN,
-   NaN
+   -1.16,
+   0.2
   ]
  },
  "ref": {
   "1000 att20": {
-   "n": 4,
+   "n": 7,
    "first": -19.31,
-   "mean": -19.35,
+   "mean": -19.36,
    "span": 0.064,
-   "sd": 0.025,
-   "last_minus_first": -0.064
+   "sd": 0.02,
+   "last_minus_first": -0.059
   },
   "1000 att0": {
-   "n": 4,
+   "n": 7,
    "first": 0.03,
-   "mean": 0.01,
-   "span": 0.039,
+   "mean": -0.0,
+   "span": 0.048,
    "sd": 0.015,
-   "last_minus_first": -0.034
+   "last_minus_first": -0.048
   },
   "1100 att20": {
-   "n": 4,
+   "n": 7,
    "first": -19.42,
-   "mean": -19.44,
-   "span": 0.063,
-   "sd": 0.023,
-   "last_minus_first": -0.063
+   "mean": -19.46,
+   "span": 0.073,
+   "sd": 0.025,
+   "last_minus_first": -0.058
   },
   "1100 att0": {
-   "n": 4,
+   "n": 7,
    "first": -0.47,
-   "mean": -0.49,
-   "span": 0.044,
+   "mean": -0.5,
+   "span": 0.053,
    "sd": 0.017,
-   "last_minus_first": -0.044
-  },
-  "1200 att20": {
-   "n": 4,
-   "first": -19.43,
-   "mean": -19.46,
-   "span": 0.054,
-   "sd": 0.019,
-   "last_minus_first": -0.054
-  },
-  "1200 att0": {
-   "n": 4,
-   "first": -0.31,
-   "mean": -0.34,
-   "span": 0.044,
-   "sd": 0.018,
    "last_minus_first": -0.039
   },
+  "1200 att20": {
+   "n": 7,
+   "first": -19.43,
+   "mean": -19.47,
+   "span": 0.064,
+   "sd": 0.019,
+   "last_minus_first": -0.064
+  },
+  "1200 att0": {
+   "n": 7,
+   "first": -0.31,
+   "mean": -0.35,
+   "span": 0.064,
+   "sd": 0.019,
+   "last_minus_first": -0.064
+  },
   "freq_ppm": {
-   "n": 4,
+   "n": 8,
    "first": -12.618,
-   "last": -13.005,
-   "min": -13.091,
+   "last": -13.066,
+   "min": -13.164,
    "max": -12.618
   },
   "temp_c": {
    "first": 31.6,
-   "last": 34.2,
+   "last": 33.3,
    "min": 31.6,
    "max": 36.0
   },
-  "hours": 0.54
+  "hours": 0.95
+ },
+ "drift": {
+  "n": 1,
+  "mean": -19.489,
+  "sd": 0.0,
+  "span": 0.0
+ },
+ "hourly": {
+  "tags": [
+   "22:38"
+  ],
+  "att_table_worst_span_db": 0.0,
+  "freq_sweep_worst_span_db": 0.0,
+  "tonefreq_ppm": [
+   -13.14,
+   -13.07,
+   -13.04,
+   -13.02,
+   -13.0,
+   -12.99
+  ]
  },
  "blocks": {
-  "ref": 24,
-  "ref_freq": 4,
+  "ref": 42,
+  "ref_freq": 7,
   "analyzer_floor": 60,
   "fine_steps": 335,
   "low_level": 345,
@@ -3858,10 +3879,14 @@
   "retune_repeat": 150,
   "settling": 12,
   "wide_search": 204,
-  "map": 508,
-  "map_scale1": 0,
-  "drift_freq": 0,
-  "drift": 0,
-  "hourly_att": 0
+  "map": 1584,
+  "map_scale1": 213,
+  "hourly_att": 63,
+  "hourly_freq": 36,
+  "hourly_tonefreq": 7,
+  "drift": 1,
+  "drift_freq": 1,
+  "leak_vs_level": 97,
+  "map_s1": 0
  }
 }

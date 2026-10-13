@@ -24,3 +24,7 @@
 22:08:19 start wide_search
 22:10:36 done wide_search 2.3 min
 22:10:36 start map_scale0p5
+22:31:31 done map_scale0p5 20.9 min
+22:31:31 start map_scale1p0
+22:37:58 done map_scale1p0 6.5 min
+22:38:05 start drift

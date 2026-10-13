@@ -1,0 +1,2 @@
+22:39:56 start; saved readings 4276 blocks done ['analyzer_floor', 'close_lines', 'fine_steps', 'harmonics', 'low_level', 'map_scale0p5', 'map_scale1p0', 'retune_repeat', 'settling', 'state_dump', 'tone_offset', 'tone_scale', 'two_tone', 'wide_search']
+22:40:03 start leak_vs_level

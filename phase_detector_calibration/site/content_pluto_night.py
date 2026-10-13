@@ -151,15 +151,20 @@ def night():
                     "In every repeat the level is within 0.5 dB of its final value at the first point after the change. Settling takes less than one point.",
                     "The delay between sending the command over USB and the change appearing was not measured."])]
 
-    for key, img, sc in (("map", "pluto_map.png", "0.5"), ("map_scale1", "pluto_map_scale1.png", "1.0")):
+    for key, img, sc in (("map", "pluto_map.png", "0.5"), ("map_s1", "pluto_map_scale1.png", "1.0")):
         if key in N:
             m = N[key]
             out += [h(f"Full map, tone scale {sc}"), fig(img, f"Pluto output against frequency at each attenuation setting, tone scale {sc}"),
-                    ul([f"{m['n']} readings at {m['freqs']} frequencies" + (" (still running)." if (key == "map" and m["freqs"] < 176) or (key == "map_scale1" and m["freqs"] < 71) else "."),
+                    ul([f"{m['n']} readings at {m['freqs']} frequencies" + (" (still running)." if (key == "map" and m["freqs"] < 176) or (key == "map_s1" and m["freqs"] < 71) else "."),
                         f"At 0 dB attenuation: highest {n(m['att0_max'])} dBm at {n(m['att0_max_at'], 0)} MHz, lowest {n(m['att0_min'])} dBm at {n(m['att0_min_at'], 0)} MHz.",
                         f"Inside 1000 to 1200 MHz at 0 dB: {n(m['band_1000_1200'][0])} to {n(m['band_1000_1200'][1])} dBm.",
                         f"Full table: <code>{img[:-4]}_table.csv</code>."])]
 
+    out += [h("Readings that are not used"),
+            ul(["The spectrum analyzer's range ends at 2.1 GHz. When a sweep was centred at 2100 MHz the analyzer shortened its span without reporting it, and the script kept using the short span for the readings that followed.",
+                "Affected: every 2100 MHz point, and the whole first tone-scale-1.0 map (213 readings, block name <code>map_scale1</code> in the readings file). They read &minus;85 to &minus;117 dBm, which is noise.",
+                "They are still in <code>overnight_readings.csv</code> but are left out of every table and plot. The script now keeps each sweep inside the analyzer's range and the map is retaken as block <code>map_s1</code>.",
+                "Found at 22:45 on 12 Oct by checking the map for values that could not be right."])]
     if "ref" in N:
         rf = N["ref"]
         out += [h("Drift through the night"), fig("pluto_drift.png", "Reference readings, tone frequency error and Pluto temperature against time"),

@@ -10,3 +10,5 @@ harmonics
 retune_repeat
 settling
 wide_search
+map_scale0p5
+map_scale1p0
