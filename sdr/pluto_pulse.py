@@ -14,7 +14,9 @@ import os
 import sys
 import time
 
-os.add_dll_directory(r"C:\Users\Sorin\radioconda\Library\bin")
+_BIN = r"C:\Users\Sorin\radioconda\Library\bin"          # where libiio.dll is; it is found through PATH
+os.environ["PATH"] = _BIN + os.pathsep + os.environ.get("PATH", "")
+os.add_dll_directory(_BIN)
 import adi  # noqa: E402
 import numpy as np  # noqa: E402
 

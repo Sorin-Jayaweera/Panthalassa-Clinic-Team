@@ -12,3 +12,11 @@ settling
 wide_search
 map_scale0p5
 map_scale1p0
+leak_vs_level
+close_in
+offset_more
+tune_step
+low_more
+if_band_scale
+if_band_map
+map_scale1p0_redo

@@ -397,7 +397,9 @@ if B["hourly_att"]:
     S["hourly"]["freq_sweep_worst_span_db"] = r2(worst, 3)
     S["hourly"]["tonefreq_ppm"] = sorted({r2((r["freq_meas_hz"] - r["freq_set_hz"]) / r["freq_set_hz"] * 1e6, 2) for r in B["hourly_tonefreq"] if r["level_dbm"] > -60})
 
+import analyze_overnight2
+analyze_overnight2.run(B, S, TR, HERE, save, r2)
 S["blocks"] = {k: len(v) for k, v in B.items()}
 (HERE / "overnight_summary.json").write_text(json.dumps(S, indent=1))
-show = {k: v for k, v in S.items() if k not in ("low", "offset", "two_tone", "harm", "scale_lines", "wide")}
+show = {k: v for k, v in S.items() if k in ("tune", "tune_drift", "close_in", "low_more", "if_band", "if_scale", "pulse", "pulse_width", "pulse_spectrum", "pulse_check", "map_s1", "blocks")}
 print(json.dumps(show, indent=1))

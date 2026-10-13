@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from content import table, ul, ol, p, h, math, fig, D
+import content_pluto_night2 as N2
 
 SUM = Path(__file__).resolve().parent.parent.parent / "pluto_characterization" / "overnight_summary.json"
 N = json.loads(SUM.read_text()) if SUM.exists() else {}
@@ -38,8 +39,8 @@ def learned():
             ["Repeatability", "Leaving 1100 MHz and returning 30 times: level spread 0.03 dB. Setting 0 dB 30 times: 0.01 dB.", "One reading is enough."],
             ["Settling", "After a retune or an attenuation change the level is at its final value within one 5.3 ms sample.", "A 0.1 s wait after each change is ample."],
             ["Flatness", "At 0 dB: +1.2 dBm at 350 MHz falling to &minus;6.3 dBm near 1600 MHz. 1.1 dB spread inside 1.0 to 1.2 GHz.", "Use the per-frequency table, not one number, when a test covers more than one frequency."],
-            ["USB", "Dropped off USB once, at 21:26 on 12 Oct, 5 minutes into the first run. Needed the cable replugged.", "Scripts should save each reading as it is taken and be able to resume."],
-        ], cls="parts", left=(0, 1, 2))])
+            ["USB, first dropout", "Dropped off USB at 21:26 on 12 Oct, 5 minutes into the first run. Needed the cable replugged.", "Scripts should save each reading as it is taken and be able to resume."],
+        ] + N2.learned_rows(N), cls="parts", left=(0, 1, 2))])
 
 
 def night():
@@ -160,6 +161,7 @@ def night():
                         f"Inside 1000 to 1200 MHz at 0 dB: {n(m['band_1000_1200'][0])} to {n(m['band_1000_1200'][1])} dBm.",
                         f"Full table: <code>{img[:-4]}_table.csv</code>."])]
 
+    out += [N2.night2(N)]
     out += [h("Readings that are not used"),
             ul(["The spectrum analyzer's range ends at 2.1 GHz. When a sweep was centred at 2100 MHz the analyzer shortened its span without reporting it, and the script kept using the short span for the readings that followed.",
                 "Affected: every 2100 MHz point, and the whole first tone-scale-1.0 map (213 readings, block name <code>map_scale1</code> in the readings file). They read &minus;85 to &minus;117 dBm, which is noise.",

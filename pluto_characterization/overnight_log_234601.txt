@@ -1,0 +1,9 @@
+23:46:01 start; saved readings 9703 blocks done ['analyzer_floor', 'close_in', 'close_lines', 'fine_steps', 'harmonics', 'if_band_map', 'if_band_scale', 'leak_vs_level', 'low_level', 'low_more', 'map_scale0p5', 'map_scale1p0', 'offset_more', 'retune_repeat', 'settling', 'state_dump', 'tone_offset', 'tone_scale', 'tune_step', 'two_tone', 'wide_search']
+23:46:09 start map_scale1p0_redo
+23:49:20 done map_scale1p0_redo 3.2 min
+23:49:20 start pulse
+23:49:20 BLOCK FAILED pulse RuntimeError('pulse script did not start: ')
+23:49:20 start drift
+23:50:57 Pluto not answering: ERROR: READ LINE: -10053
+ERROR: Unable to send command: Unknown error (10054) (try 1 )
+23:54:42 Pluto not answering: Unable to create IIO context ip:192.168.2.1: Unknown error (10060) (try 10 )
