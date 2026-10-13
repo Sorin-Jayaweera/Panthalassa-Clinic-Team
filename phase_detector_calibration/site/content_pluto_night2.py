@@ -29,8 +29,15 @@ def learned_rows(N):
         rows.append(["Pulsed output", "Works. Level during a pulse equals the continuous-tone level. Width and spacing are correct for pulses from 100 &micro;s down to 300 ns (checked from the spectrum nulls). "
                      "Below about 100 ns the pulse comes out wider and lower than asked, because the RF bandwidth setting is 18 MHz. Between pulses only the LO leakage remains (about 60 dB under the pulse at 0 dB attenuation).",
                      "Use <code>sdr\\pluto_pulse.py</code> for pulse tests of 300 ns and longer. For 50 ns pulses the sample rate and bandwidth must be raised and rechecked. The spectrum analyzer cannot show pulse shape under 10 &micro;s; use a detector and the oscilloscope."])
-    rows.append(["Warm-up", "Just plugged in (chip at 24 &deg;C) the output was 0.4 dB higher and the frequency 9.2 ppm low. After hours of running (33 &deg;C) it was 12.8 ppm low.",
-                 "Let it run 30 minutes before a level-critical test, or take the reference reading at the same time as the test."])
+    rows.append(["Warm-up", "From plugged in (chip 27 &deg;C) to settled (32 &deg;C): level fell 0.11 dB in the first 28 minutes; frequency error went from &minus;10.2 ppm to &minus;12.0 ppm in 20 minutes and &minus;12.6 ppm after 2 hours.",
+                 "Let it run 30 minutes before a level-critical test and an hour before a frequency-critical one."])
+    rows.append(["The RF connection", "On 13 Oct after replugging, every level read 0.3 to 0.5 dB higher than the night before, and 1 to 3.5 dB higher from 1250 to 1750 MHz. "
+                 "At 11:31 the computer was moved; the level stepped down 0.45 dB and the whole table then matched the night before within 0.06 dB below 1400 MHz. The Pluto had not changed. The cable or a connector had.",
+                 "Tighten the SMA connectors and do not move the cable during a test. Take the without-part reference with the same cable, in the same position, on the same day. The dip near 1450 to 1700 MHz in the frequency sweep may be the cable, not the Pluto."])
+    rows.append(["Look up function", "<code>sdr\\pluto_level.py</code>: <code>pluto_dbm(freq, att, scale)</code> gives the output in dBm from the measured 1.0 to 1.2 GHz table; <code>pluto_setting(freq, want_dbm)</code> gives the attenuation setting for a wanted level.",
+                 "Use it to turn settings into power when analysing a chain test. Good to about 0.5 dB across days."])
+    rows.append(["Not measured", "Pulse rise time (the spectrum analyzer cannot resolve under 10 &micro;s). The line near 3 &times; LO for 1.0 to 1.2 GHz tones (3.0 to 3.6 GHz is above the analyzer's range).",
+                 "Rise time: a detector on the oscilloscope, or the SM200B. 3 &times; LO: the SM200B."])
     rows.append(["USB, second dropout", "Dropped off USB a second time at 23:51 on 12 Oct, after 2 h 20 min of continuous use. Both times it stopped answering during a frequency change and then disappeared from Windows.",
                  "Any long run needs someone able to replug it, or a powered USB hub that can be switched from the computer."])
     return rows
@@ -100,9 +107,9 @@ def night2(N):
                   "The RF is at the LO frequency during the pulse. Sample rate 30.72 MS/s, so the width is a whole number of 32.55 ns samples. Same wiring: Pluto TX straight into the spectrum analyzer. 1100 MHz."),
                 h("Level during the pulse"),
                 table(["Attenuation (dB)", "Amplitude", "Level during the pulse (dBm)", "Continuous tone at the same setting (dBm)"],
-                      [[n(k[0], 0), k[1], n(v), {(0.0, 0.5): "0.10", (0.0, 1.0): "4.7 (warm)", (20.0, 0.5): "&minus;18.93", (20.0, 1.0): "&minus;13.3 (warm)"}.get(k, D)] for k, v in on.items()], left=()),
+                      [[n(k[0], 0), k[1], n(v), {(0.0, 0.5): "0.10", (0.0, 1.0): "4.7 (12 Oct)", (20.0, 0.5): "&minus;18.93", (20.0, 1.0): "&minus;13.3 (12 Oct)"}.get(k, D)] for k, v in on.items()], left=()),
                 ul(["500 &micro;s pulse every 2 ms, read in zero span with a 300 kHz bandwidth.",
-                    "The pulse level matches the continuous tone within 0.2 dB where both were read cold (amplitude 0.5). &ldquo;Warm&rdquo; values are from the night before with the Pluto 9 &deg;C hotter, when it put out 0.4 to 0.9 dB less.",
+                    "The pulse level matches the continuous tone within 0.2 dB where both were read in the same hour (amplitude 0.5). The amplitude 1.0 tone values are from the night before; that morning every level read 0.3 to 0.5 dB higher because of the RF connection (see below).",
                     f"Between pulses the reading is {n(max(off), 1)} to {n(min(off), 1)} dBm, which is the analyzer's noise in this bandwidth. The pulse is at least 55 dB above it. "
                     "The LO leakage (about &minus;60 dBm at 0 dB attenuation, from the continuous-tone tests) is still there between pulses, so the true on/off ratio at 0 dB attenuation is about 60 dB."])]
     if "pulse_width" in N:
@@ -130,4 +137,22 @@ def night2(N):
                     "Below about 130 ns the departure grows (+0.9 dB at 130 ns, +1.5 dB at 65 ns, +4.3 dB at one sample). The spectrum is cut off beyond about &plusmn;10 MHz: the Pluto's RF bandwidth setting is 18 MHz. A pulse shorter than about 100 ns comes out wider and lower than asked.",
                     "To make the 50 ns pulses the design calls for, the Pluto's sample rate and RF bandwidth would have to be raised. That has not been tried and would need its own check.",
                     "After each pulse test the normal tone generator was switched back on and read: &minus;18.82 and &minus;18.99 dBm at 20 dB, as before."])]
+    out += [h("Warm-up and repeatability, 13 Oct"),
+            p("The Pluto was replugged at 10:59 on 13 Oct after 11 hours unpowered. The drift log ran from 11:02 to 13:03: level and frequency at 1100 MHz, 20 dB, every 23 s, with the level table and frequency sweep repeated at 11:00, 11:04 and 12:06."),
+            table(["Time", "Level at 1100 MHz, 20 dB (dBm)", "Frequency error (ppm)", "Chip temperature (&deg;C)"],
+                  [["11:02", "&minus;18.89", "&minus;10.24", "27.2"], ["11:22", "&minus;19.03", "&minus;11.95", "30.7"], ["11:30", "&minus;19.00", "&minus;12.1", "31.6"],
+                   ["11:31:32", "step to &minus;19.32, then &minus;19.48", "no change", "31.6"], ["11:54", "&minus;19.46", "&minus;12.38", "32.5"], ["12:27", "&minus;19.46", "&minus;12.51", "32.5"], ["13:00", "&minus;19.44", "&minus;12.57", "31.6"]], left=()),
+            ul(["Warm-up, 11:02 to 11:30: level fell 0.11 dB; frequency error moved from &minus;10.2 to &minus;12.1 ppm.",
+                "11:31:32: the computer was moved. The level dropped 0.45 dB between two readings 23 s apart and stayed there. The frequency did not change. The spectrum analyzer reported one USB error 23 s later and carried on.",
+                "After the step, 220 readings over 90 minutes: &minus;19.49 to &minus;19.43 dBm, standard deviation 0.011 dB."]),
+            h("The same table on three occasions"),
+            table(["Setting", "12 Oct 23:44 (dBm)", "13 Oct 11:04, before the move (dBm)", "13 Oct 12:06, after the move (dBm)"],
+                  [["1000 MHz, 0 dB", "&minus;0.01", "0.29", "0.01"], ["1100 MHz, 0 dB", "&minus;0.51", "&minus;0.01", "&minus;0.50"], ["1200 MHz, 0 dB", "&minus;0.38", "&minus;0.02", "&minus;0.40"],
+                   ["1100 MHz, 20 dB", "&minus;19.47", "&minus;19.00", "&minus;19.47"], ["1100 MHz, 40 dB", "&minus;39.54", "&minus;39.05", "&minus;39.52"],
+                   ["1250 MHz, 20 dB", "&minus;20.51", "&minus;19.61", "&minus;20.46"], ["1450 MHz, 20 dB", "&minus;23.51", "&minus;21.36", "&minus;22.95"], ["1600 MHz, 20 dB", "&minus;23.77", "&minus;20.30", "&minus;22.62"],
+                   ["1700 MHz, 20 dB", "&minus;23.92", "&minus;22.56", "&minus;23.77"], ["2000 MHz, 20 dB", "&minus;22.79", "&minus;22.75", "&minus;22.80"]], left=(0,)),
+            ul(["Before the move, 13 Oct read higher than 12 Oct at every frequency: by 0.04 to 3.5 dB, most between 1250 and 1750 MHz.",
+                "After the move, 13 Oct matches 12 Oct within 0.06 dB up to 1400 MHz and within 1.1 dB from 1450 to 1650 MHz.",
+                "A change that follows a mechanical disturbance, differs with frequency, and leaves the Pluto's frequency untouched is the RF path: the cable or an SMA connection between the Pluto and the analyzer.",
+                "So the level tables describe the Pluto plus that cable in the state it was in on the night of 12 Oct. Inside 1000 to 1200 MHz a different state moved them by 0.3 to 0.5 dB."])]
     return "".join(out)

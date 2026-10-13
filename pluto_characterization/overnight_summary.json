@@ -1,8 +1,8 @@
 {
- "readings": 10412,
+ "readings": 11236,
  "traces": 227,
  "first": "2026-10-12T21:44:33",
- "last": "2026-10-13T11:05:27",
+ "last": "2026-10-13T13:03:03",
  "floor": [
   [
    "10",
@@ -3793,78 +3793,79 @@
  },
  "ref": {
   "1000 att20": {
-   "n": 16,
+   "n": 27,
    "first": -19.31,
-   "mean": -19.31,
+   "mean": -19.3,
    "span": 0.425,
-   "sd": 0.126,
-   "last_minus_first": 0.297
+   "sd": 0.125,
+   "last_minus_first": -0.03
   },
   "1000 att0": {
-   "n": 16,
+   "n": 27,
    "first": 0.03,
-   "mean": 0.03,
+   "mean": 0.05,
    "span": 0.415,
-   "sd": 0.117,
-   "last_minus_first": 0.254
+   "sd": 0.115,
+   "last_minus_first": -0.024
   },
   "1100 att20": {
-   "n": 16,
+   "n": 27,
    "first": -19.42,
-   "mean": -19.4,
+   "mean": -19.39,
    "span": 0.561,
-   "sd": 0.168,
-   "last_minus_first": 0.415
+   "sd": 0.174,
+   "last_minus_first": -0.049
   },
   "1100 att0": {
-   "n": 16,
+   "n": 27,
    "first": -0.47,
-   "mean": -0.43,
+   "mean": -0.42,
    "span": 0.635,
-   "sd": 0.203,
-   "last_minus_first": 0.577
+   "sd": 0.199,
+   "last_minus_first": -0.034
   },
   "1200 att20": {
-   "n": 16,
+   "n": 27,
    "first": -19.43,
    "mean": -19.42,
-   "span": 0.494,
-   "sd": 0.152,
-   "last_minus_first": 0.4
+   "span": 0.503,
+   "sd": 0.153,
+   "last_minus_first": -0.083
   },
   "1200 att0": {
-   "n": 16,
+   "n": 27,
    "first": -0.31,
    "mean": -0.31,
-   "span": 0.498,
-   "sd": 0.149,
-   "last_minus_first": 0.366
+   "span": 0.518,
+   "sd": 0.152,
+   "last_minus_first": -0.093
   },
   "freq_ppm": {
-   "n": 19,
+   "n": 316,
    "first": -12.618,
-   "last": -10.315,
+   "last": -12.557,
    "min": -13.164,
    "max": -9.43
   },
   "temp_c": {
    "first": 31.6,
-   "last": 30.7,
+   "last": 32.5,
    "min": 23.7,
    "max": 36.0
   },
-  "hours": 13.35
+  "hours": 15.31
  },
  "drift": {
-  "n": 3,
-  "mean": -19.279,
-  "sd": 0.2767,
+  "n": 289,
+  "mean": -19.36,
+  "sd": 0.1873,
   "span": 0.601
  },
  "hourly": {
   "tags": [
    "11:00",
    "11:04",
+   "12:06",
    "22:38",
    "23:44",
    "23:49"
@@ -3888,6 +3889,19 @@
    -12.9,
    -12.89,
    -12.88,
+   -12.77,
+   -12.61,
+   -12.53,
+   -12.5,
+   -12.48,
+   -12.46,
+   -11.33,
+   -11.16,
+   -11.11,
+   -11.08,
+   -11.05,
+   -11.04,
+   -11.03,
    -10.43,
    -10.29,
    -10.23,
@@ -6599,8 +6613,8 @@
   ]
  ],
  "blocks": {
-  "ref": 96,
-  "ref_freq": 16,
+  "ref": 162,
+  "ref_freq": 27,
   "analyzer_floor": 60,
   "fine_steps": 335,
   "low_level": 345,
@@ -6615,11 +6629,11 @@
   "wide_search": 204,
   "map": 1584,
   "map_scale1": 213,
-  "hourly_att": 289,
-  "hourly_freq": 144,
-  "hourly_tonefreq": 25,
-  "drift": 3,
-  "drift_freq": 3,
+  "hourly_att": 378,
+  "hourly_freq": 216,
+  "hourly_tonefreq": 39,
+  "drift": 289,
+  "drift_freq": 289,
   "leak_vs_level": 378,
   "close_in_find": 6,
   "close_in": 24,

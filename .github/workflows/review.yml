@@ -1,0 +1,41 @@
+name: Review notes
+
+# Rebuilds the review/ folder and docs/review.json from the issues that people open from the website.
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, deleted]
+  issue_comment:
+    types: [created, edited, deleted]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: review-notes
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild review folder
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: python3 tools/build_review.py
+      - name: Commit if anything changed
+        run: |
+          git config user.name "review-notes"
+          git config user.email "review-notes@users.noreply.github.com"
+          git add review docs/review.json
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -m "Review notes updated from issues"
+            git pull --rebase
+            git push
+          fi

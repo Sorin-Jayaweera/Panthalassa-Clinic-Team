@@ -38,7 +38,7 @@ def learned():
             ["Frequency", "12.6 to 13.1 ppm low against the spectrum analyzer, the same at every frequency.", "Set the Pluto 12.8 ppm high (14.1 kHz at 1100 MHz) to land on a wanted frequency."],
             ["Repeatability", "Leaving 1100 MHz and returning 30 times: level spread 0.03 dB. Setting 0 dB 30 times: 0.01 dB.", "One reading is enough."],
             ["Settling", "After a retune or an attenuation change the level is at its final value within one 5.3 ms sample.", "A 0.1 s wait after each change is ample."],
-            ["Flatness", "At 0 dB: +1.2 dBm at 350 MHz falling to &minus;6.3 dBm near 1600 MHz. 1.1 dB spread inside 1.0 to 1.2 GHz.", "Use the per-frequency table, not one number, when a test covers more than one frequency."],
+            ["Flatness", "At 0 dB: +1.2 dBm at 350 MHz falling to &minus;6.3 dBm near 1600 MHz. 1.1 dB spread inside 1.0 to 1.2 GHz.", "Use the per-frequency table, not one number, when a test covers more than one frequency. Part of the dip near 1600 MHz moved when the cable was disturbed on 13 Oct, so it is at least partly the cable."],
             ["USB, first dropout", "Dropped off USB at 21:26 on 12 Oct, 5 minutes into the first run. Needed the cable replugged.", "Scripts should save each reading as it is taken and be able to resume."],
         ] + N2.learned_rows(N), cls="parts", left=(0, 1, 2))])
 

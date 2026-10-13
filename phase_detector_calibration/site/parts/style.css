@@ -123,3 +123,11 @@ details.item details.item { margin-top: 0.7rem; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --partial: #5a4410; --partial-line: #f0b85a; } }
 :root[data-theme="dark"] { --partial: #5a4410; --partial-line: #f0b85a; }
 .schematic .blk.partial rect { fill: var(--partial); stroke: var(--partial-line); stroke-width: 2; }
+
+mark[data-k="c"] { background: transparent; color: inherit; border-bottom: 2px dotted var(--accent); padding: 0 0.1em; }
+mark[data-issue] { cursor: help; }
+[data-block].noted { box-shadow: -3px 0 0 var(--accent); }
+body.reviewing [data-block] { outline: 1px dashed var(--rule); outline-offset: 3px; }
+#review-list table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+#review-list th, #review-list td { text-align: left; vertical-align: top; padding: 0.35rem 0.5rem; border-bottom: 1px solid var(--rule); }
+#review-list td.quote { max-width: 28rem; }

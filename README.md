@@ -31,6 +31,16 @@ calculated, no filler.
 
 Every part tab follows `part_tab(title, subtitle, id, specs, expected, plan, results)` in `content_parts.py`.
 
+## Review notes: marking text as validated or under question, and commenting
+
+On the GitHub Pages site, press **Edit**, select some text, and choose Validated, Under question, Comment or Suggest a change.
+GitHub opens a new issue with the quote filled in; submit it with your own GitHub account. The page then highlights that text
+for everyone, and lists the note under the "Review notes" tab. A GitHub Action copies all notes into the `review/` folder
+(`validated.md`, `under_question.md`, `comments.md`, `suggested_changes.md`, `resolved.md`) within about a minute.
+Close the issue to withdraw or resolve a note.
+
+Because the Action commits to `main`, run `git pull --rebase` before you push.
+
 ## Folders
 
 | Folder | What is in it |
@@ -46,6 +56,8 @@ Every part tab follows `part_tab(title, subtitle, id, specs, expected, plan, res
 | `simulations/` | LTspice and GNU Radio simulations. |
 | `animations/` | Racon Morse animation. |
 | `datasheets/` | Datasheet PDFs for the parts. `build_site.py` copies them to `docs/datasheets/` so the website can link to them. |
+| `review/` | Review notes copied from the GitHub issues. Generated; do not edit by hand. |
+| `tools/` | `build_review.py`, which builds `review/` from the issues. |
 | `docs/` | Built website for GitHub Pages. Do not edit by hand; it is overwritten by `build_site.py`. |
 
 ## Instruments the scripts talk to

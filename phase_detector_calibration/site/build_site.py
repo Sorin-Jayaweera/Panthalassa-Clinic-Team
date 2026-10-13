@@ -13,6 +13,8 @@ P = HERE / "parts"
 CAL = HERE.parent / "phase_detector_calibration_run3_cleanDC_0p02V_steps.csv"
 
 W, H = 172, 68
+REPO = "Sorin-Jayaweera/Panthalassa-Clinic-Team"
+PAGES_URL = "https://sorin-jayaweera.github.io/Panthalassa-Clinic-Team/"
 # key, label, part number, x, y (centre), status, link target, spec line 1, spec line 2
 # status: tested = every test in its plan is done (green); partial = some tests done (yellow);
 #         have = part on hand, not tested; none = not on hand or not chosen
@@ -177,7 +179,7 @@ def lut_tab():
 
 TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
         ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
-        ("tab-tests", "Tests to run"), ("tab-errors", "Errors")]
+        ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
 HEAD = """<title>JACON Engineering Notes</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -208,7 +210,22 @@ TOOLS = """<div id="seltools" hidden>
   <button type="button" data-act="clear" data-edit>Clear mark</button>
   <button type="button" data-act="restore" data-edit>Restore original text</button>
   <button type="button" data-act="comment">Comment</button>
+  <button type="button" data-act="suggest" hidden>Suggest a change</button>
 </div>
+"""
+
+
+REVIEW = f"""<h2>Review notes</h2>
+<p>Marks and comments made by people on the GitHub copy of this page. Each one is a GitHub issue in
+<a href="https://github.com/{REPO}/issues">{REPO}</a>, written with that person's own GitHub account.</p>
+<h3>How to add one</h3>
+<ol><li>Open <a href="{PAGES_URL}">the GitHub copy of this page</a> and press <b>Edit</b> in the bar at the top.</li>
+<li>Select some text. A small bar appears: Validated, Under question, Comment, Suggest a change.</li>
+<li>Press one. GitHub opens with the quote filled in. Add a note if you want and press <b>Submit new issue</b>.</li>
+<li>Reload this page. The text is highlighted and the note is listed below. The folder <code>review/</code> in the repository is updated about a minute later.</li></ol>
+<p>To withdraw a mark, or when a question has been answered, close the issue on GitHub.</p>
+<p id="review-status" class="sub">Loading.</p>
+<div id="review-list"></div>
 """
 
 
@@ -228,8 +245,8 @@ def write_standalone(page):
     backups = root / "site_backups"
     backups.mkdir(exist_ok=True)
     stamp = dt.datetime.now().strftime("%Y%m%d")
-    for out in (HERE / "JACON_notes_standalone.html", root / "JACON_notes_backup.html", backups / f"JACON_notes_{stamp}.html"):
-        out.write_text(s, encoding="utf-8")
+    for out in (HERE / "JACON_notes_standalone.html", backups / f"JACON_notes_{stamp}.html"):
+        out.write_text(local_datasheets(s, PAGES_URL + "datasheets/"), encoding="utf-8")
     (root / "JACON_notes_backup.html").write_text(local_datasheets(s, "docs/datasheets/"), encoding="utf-8")     # this copy sits next to docs/
     print("standalone", len(s), "bytes ->", root / "JACON_notes_backup.html")
 
@@ -283,13 +300,13 @@ def main():
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>')
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET,
-              "tab-pluto": CPL.PLUTO, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS}
+              "tab-pluto": CPL.PLUTO, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
     tabs = '<div class="tabs" role="tablist">' + "".join(
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"
     body = "".join(f'<div class="panel" id="{tid}"{"" if i == 0 else " hidden"}>\n{panels[tid]}\n</div>\n' for i, (tid, _) in enumerate(TABS))
     page = (HEAD % (P / "style.css").read_text(encoding="utf-8")) + "<main>\n" + BAR + tabs + body + "</main>\n" + TOOLS \
-        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + "</script>\n"
-    (HERE / "index.html").write_text(page, encoding="utf-8")
+        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + (P / "review.js").read_text(encoding="utf-8") + "</script>\n"
+    (HERE / "index.html").write_text(local_datasheets(page, PAGES_URL + "datasheets/"), encoding="utf-8")
     print("index.html", len(page), "bytes")
     write_standalone(page)
     write_pages(page)
