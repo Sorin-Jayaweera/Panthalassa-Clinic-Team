@@ -3,7 +3,7 @@
 $d = Split-Path -Parent $MyInvocation.MyCommand.Path
 $csv = Join-Path $d "overnight_readings.csv"
 $procId = [int](Get-Content (Join-Path $d "overnight_pid.txt"))
-$env:RUN_MINUTES = "720"
+$env:RUN_MINUTES = "55"
 $deadline = (Get-Date).AddMinutes(50)
 while ((Get-Date) -lt $deadline) {
     if (-not (Get-Process -Id $procId -ErrorAction SilentlyContinue)) { "process already gone"; break }

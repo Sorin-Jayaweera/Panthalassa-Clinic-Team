@@ -29,8 +29,9 @@ def learned_rows(N):
         rows.append(["Pulsed output", "Works. Level during a pulse equals the continuous-tone level. Width and spacing are correct for pulses from 100 &micro;s down to 300 ns (checked from the spectrum nulls). "
                      "Below about 100 ns the pulse comes out wider and lower than asked, because the RF bandwidth setting is 18 MHz. Between pulses only the LO leakage remains (about 60 dB under the pulse at 0 dB attenuation).",
                      "Use <code>sdr\\pluto_pulse.py</code> for pulse tests of 300 ns and longer. For 50 ns pulses the sample rate and bandwidth must be raised and rechecked. The spectrum analyzer cannot show pulse shape under 10 &micro;s; use a detector and the oscilloscope."])
-    rows.append(["Warm-up", "From plugged in (chip 27 &deg;C) to settled (32 &deg;C): level fell 0.11 dB in the first 28 minutes; frequency error went from &minus;10.2 ppm to &minus;12.0 ppm in 20 minutes and &minus;12.6 ppm after 2 hours.",
-                 "Let it run 30 minutes before a level-critical test and an hour before a frequency-critical one."])
+    rows.append(["Warm-up", "Two cold starts were logged. From 27 &deg;C the level fell 0.11 dB in 28 minutes. From 25 &deg;C it fell 0.20 dB in 34 minutes and was still falling slowly at 31.6 &deg;C. "
+                 "Frequency error went from about &minus;10.3 ppm cold to &minus;12.4 ppm after 35 minutes and &minus;12.6 ppm after 2 hours.",
+                 "Let it run 45 minutes before a level-critical test and an hour before a frequency-critical one. A cold Pluto reads up to 0.4 dB higher than the tables, which were taken warm (33 &deg;C)."])
     rows.append(["The RF connection", "On 13 Oct after replugging, every level read 0.3 to 0.5 dB higher than the night before, and 1 to 3.5 dB higher from 1250 to 1750 MHz. "
                  "At 11:31 the computer was moved; the level stepped down 0.45 dB and the whole table then matched the night before within 0.06 dB below 1400 MHz. The Pluto had not changed. The cable or a connector had.",
                  "Tighten the SMA connectors and do not move the cable during a test. Take the without-part reference with the same cable, in the same position, on the same day. The dip near 1450 to 1700 MHz in the frequency sweep may be the cable, not the Pluto."])
@@ -155,4 +156,17 @@ def night2(N):
                 "After the move, 13 Oct matches 12 Oct within 0.06 dB up to 1400 MHz and within 1.1 dB from 1450 to 1650 MHz.",
                 "A change that follows a mechanical disturbance, differs with frequency, and leaves the Pluto's frequency untouched is the RF path: the cable or an SMA connection between the Pluto and the analyzer.",
                 "So the level tables describe the Pluto plus that cable in the state it was in on the night of 12 Oct. Inside 1000 to 1200 MHz a different state moved them by 0.3 to 0.5 dB."])]
+    out += [h("Third connection, 13 Oct afternoon"),
+            p("Everything was unplugged at 13:03 and plugged in again at 15:31. The run logged from 15:32 to 16:08 (36 minutes), starting with the Pluto cold at 25.4 &deg;C."),
+            table(["Time", "Chip temperature (&deg;C)", "1000 MHz, 0 dB (dBm)", "1100 MHz, 0 dB (dBm)", "1200 MHz, 0 dB (dBm)", "1100 MHz, 20 dB (dBm)", "Frequency error (ppm)"],
+                  [["15:32", "25.4", "0.38", "&minus;0.09", "0.09", "&minus;19.05", "&minus;9.7"], ["15:45", "29.8", "0.25", "&minus;0.22", "&minus;0.06", "&minus;19.19", "&minus;11.6"],
+                   ["15:55", "30.7", "0.19", "&minus;0.29", "&minus;0.12", "&minus;19.24", "&minus;12.1"], ["16:05", "31.6", "0.15", "&minus;0.32", "&minus;0.15", "&minus;19.28", "&minus;12.4"],
+                   ["12 Oct 23:44, warm", "33.3", "&minus;0.01", "&minus;0.51", "&minus;0.38", "&minus;19.47", "&minus;12.8"]], left=()),
+            table(["Frequency (MHz)", "12 Oct 23:44 (dBm)", "13 Oct 11:04, before the move (dBm)", "13 Oct 15:32, cold (dBm)"],
+                  [["500", "&minus;18.76", "&minus;18.62", "&minus;18.38"], ["1100", "&minus;19.48", "&minus;19.01", "&minus;19.08"], ["1400", "&minus;20.77", "&minus;19.76", "&minus;20.15"],
+                   ["1450", "&minus;23.51", "&minus;21.36", "&minus;22.88"], ["1600", "&minus;23.77", "&minus;20.30", "&minus;23.67"], ["1700", "&minus;23.92", "&minus;22.56", "&minus;23.94"], ["2000", "&minus;22.79", "&minus;22.75", "&minus;22.33"]], left=()),
+            ul(["The frequency sweep has the same shape as on 12 Oct, including the dip from 1450 to 1700 MHz. So that dip belongs to the Pluto and cable in their normal state. The connection of 13 Oct before the move was the odd one.",
+                "Cold, this connection read 0.3 to 0.6 dB higher than 12 Oct. As the Pluto warmed the level fell 0.20 dB in 34 minutes and was still falling slowly when the run was stopped.",
+                "At the last reading (31.6 &deg;C) it was 0.16 to 0.23 dB above the 12 Oct values, with the chip still 1.7 &deg;C cooler than it was then. So the difference between this connection and that of 12 Oct is at most about 0.2 dB.",
+                "Taken together: a good connection repeats to about 0.2 dB inside 1000 to 1200 MHz once the Pluto is warm. A poor connection (13 Oct before the move) can add 0.5 dB there and several dB above 1250 MHz, and does not announce itself."])]
     return "".join(out)
