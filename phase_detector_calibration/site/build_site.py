@@ -230,7 +230,36 @@ def write_standalone(page):
     stamp = dt.datetime.now().strftime("%Y%m%d")
     for out in (HERE / "JACON_notes_standalone.html", root / "JACON_notes_backup.html", backups / f"JACON_notes_{stamp}.html"):
         out.write_text(s, encoding="utf-8")
+    (root / "JACON_notes_backup.html").write_text(local_datasheets(s, "docs/datasheets/"), encoding="utf-8")     # this copy sits next to docs/
     print("standalone", len(s), "bytes ->", root / "JACON_notes_backup.html")
+
+
+def local_datasheets(page, prefix):
+    """Point datasheet links at the copies kept in docs/datasheets (the vendor links do not open from GitHub Pages).
+    Copies clinic/claude/datasheets/*.pdf to docs/datasheets with the + signs removed from the names."""
+    import re
+    import shutil
+    src = HERE.parent.parent / "datasheets"
+    dst = HERE.parent.parent / "docs" / "datasheets"
+    dst.mkdir(parents=True, exist_ok=True)
+    have = {}
+    for f in list(src.glob("*.pdf")) + [HERE.parent.parent / "documentation" / "datasheets" / "CVCO55BE-0800-1600.pdf"]:
+        if f.exists():
+            safe = f.name.replace("+", "")
+            shutil.copy2(f, dst / safe)
+            have[f.name] = safe
+
+    def swap(m):
+        name = m.group(1)
+        alt = name.replace("-S+.pdf", "+.pdf")                      # some files are saved without the -S connector suffix
+        got = have.get(name) or have.get(alt)
+        return f'href="{prefix}{got}" target="_blank" rel="noopener"' if got else m.group(0)
+    page = re.sub(r'href="https://www\.minicircuits\.com/pdfs/([^"]+\.pdf)"', swap, page)
+    if "CGR201-Datasheet.pdf" in have:
+        page = page.replace('href="https://www.saelig.com/supplier/syscomp/CGR201-Datasheet.pdf"', f'href="{prefix}CGR201-Datasheet.pdf" target="_blank" rel="noopener"')
+    if "CVCO55BE-0800-1600.pdf" in have:
+        page = page.replace('>DigiKey listing</a>', f'>DigiKey listing</a>, <a href="{prefix}CVCO55BE-0800-1600.pdf" target="_blank" rel="noopener">Crystek datasheet (PDF)</a>')
+    return page
 
 
 def write_pages(page):
@@ -240,6 +269,7 @@ def write_pages(page):
     (docs / "img").mkdir(parents=True, exist_ok=True)
     for f in (HERE / "img").glob("*.png"):
         shutil.copy2(f, docs / "img" / f.name)
+    page = local_datasheets(page, "datasheets/")
     s = '<!doctype html>\n<html lang="en">\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n' + page + "</html>\n"
     (docs / "index.html").write_text(s, encoding="utf-8")
     (docs / ".nojekyll").write_text("", encoding="utf-8")

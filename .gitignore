@@ -8,8 +8,6 @@ _patch*.py
 *.raw
 
 # third-party files: get them from the vendor (links in README.md)
-datasheets/
-documentation/datasheets/
 documentation/racon_docs/*.pdf
 signal_hound/smdevice/*.dll
 signal_hound/smdevice/*.lib

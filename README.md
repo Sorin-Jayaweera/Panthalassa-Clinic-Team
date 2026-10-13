@@ -45,6 +45,7 @@ Every part tab follows `part_tab(title, subtitle, id, specs, expected, plan, res
 | `measurements/` | Earlier hand measurements of the VCO. |
 | `simulations/` | LTspice and GNU Radio simulations. |
 | `animations/` | Racon Morse animation. |
+| `datasheets/` | Datasheet PDFs for the parts. `build_site.py` copies them to `docs/datasheets/` so the website can link to them. |
 | `docs/` | Built website for GitHub Pages. Do not edit by hand; it is overwritten by `build_site.py`. |
 
 ## Instruments the scripts talk to
@@ -60,7 +61,6 @@ Every part tab follows `part_tab(title, subtitle, id, specs, expected, plan, res
 ## Not in this repository
 
 - LTspice `.raw` waveform files (up to 235 MB each, over GitHub's file limit). Re-run the simulation to get them.
-- Datasheet PDFs. Mini-Circuits: `https://www.minicircuits.com/pdfs/<part number>.pdf`. The website links each one.
 - Signal Hound `sm_api.dll` and `sm_api.lib`. Install the Signal Hound SDK and copy them into `signal_hound/smdevice/`.
 - Dated older copies of the website (`site_backups/`).
 
