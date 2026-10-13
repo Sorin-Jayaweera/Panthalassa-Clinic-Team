@@ -38,3 +38,8 @@ A fine done 1200.0
 A coarse done
 B done att 20
 B done att 0
+C done
+D done
+E done
+F done
+all done

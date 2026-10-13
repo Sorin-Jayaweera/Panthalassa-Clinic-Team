@@ -7,7 +7,7 @@ from content_parts import part_tab, steps_table
 
 SUM = Path(__file__).resolve().parent.parent.parent / "pluto_characterization" / "summary.json"
 S = json.loads(SUM.read_text()) if SUM.exists() else {}
-LOST = p("Not run yet. The Pluto dropped off USB at 21:26 on 12 Oct, during test A. The run continues from this test when the Pluto is plugged back in.")
+LOST = p("Not run yet.")
 
 
 def n(v, d=2):
@@ -21,6 +21,23 @@ def have(key):
 
 def results():
     out = []
+    RES = {}
+    if have("freq"):
+        b20 = [r[1] for r in S["freq"]["20"] if 1000 <= r[0] <= 1200]
+        a20 = [r[1] for r in S["freq"]["20"]]
+        RES["B"] = f"spread {max(b20)-min(b20):.2f} dB inside 1000 to 1200 MHz; {max(a20)-min(a20):.1f} dB over 350 to 2100 MHz"
+    if have("scale"):
+        RES["C"] = "follows 20 log10(scale) within 0.25 dB at 20 dB attenuation; 0.8 dB low at scale 1.0 and 0 dB attenuation. Highest output +4.7 dBm"
+    if have("freq_err"):
+        RES["D"] = "tone is 12.7 to 13.1 ppm low at all eight frequencies (14.1 kHz low at 1100 MHz)"
+    if have("stab"):
+        RES["F"] = f"level spread {S['stab']['level_span']:.2f} dB and frequency spread {S['stab']['freq_span']:.0f} Hz over {S['stab']['seconds']:.0f} s"
+    if have("repeat"):
+        RES["G"] = "analyzer reads the same within 0.08 dB at four reference levels; repeat readings within 0.14 dB"
+    if have("spurs"):
+        RES["E"] = "no line above the analyzer noise: LO leakage and other sideband more than 54 dB under the tone at 0 dB attenuation"
+    if have("tone_off"):
+        RES["H"] = "nothing above the analyzer noise (&minus;54 dBm)"
     done = {"A": have("att_table"), "B": have("freq"), "C": have("scale"), "D": have("freq_err"), "E": have("spurs"),
             "F": have("stab"), "G": have("repeat"), "H": have("tone_off")}
     att = {r[0]: r[1:] for r in S.get("att_table", [])}
@@ -30,7 +47,7 @@ def results():
                ["A. Other frequencies", (f"{len(S['coarse'])} of 10 frequencies done: " + ", ".join(f"{r[0]:.0f}" for r in S["coarse"]) + " MHz" if have("coarse") else "not run"), "12 Oct" if have("coarse") else ""]]
     for k, name in (("B", "B. Output against frequency"), ("C", "C. Output against tone scale"), ("D", "D. Frequency error"), ("E", "E. Spectrum"),
                     ("F", "F. Stability"), ("G", "G. Analyzer check and repeat"), ("H", "H. Tone off")):
-        summary.append([name, "done, see below" if done[k] else "not run: Pluto lost USB", "12 Oct" if done[k] else ""])
+        summary.append([name, RES.get(k, "done, see below") if done[k] else "not run", "12 Oct" if done[k] else ""])
     out.append(table(["Test", "Result", "Date"], summary, left=(0, 1, 2)))
 
     # ---- A
@@ -48,9 +65,10 @@ def results():
         out.append(math(r"\text{departure}(A) = P(A) - \left[P(20) + 20 - A\right]"))
         out.append(ul(["From 20 to 40 dB the output follows the setting within 0.2 dB.",
                        "Below 20 dB the output is lower than the setting says: 0.3 to 0.5 dB low at 10 dB, 0.6 to 1.0 dB low at 0 dB. There is a step of about 0.2 dB between 19 and 20 dB.",
-                       "This test cannot tell whether that is the Pluto or the analyzer reading high levels slightly low. Test G (analyzer check) is needed for that.",
+                       "Test G: the analyzer reads the same tone within 0.08 dB at reference levels from &minus;10 to +20 dBm, so the analyzer is not the cause.",
+                       "Test C: at 0 dB the output rises 0.2 dB less than it should between tone scale 0.05 and 0.5. So about 0.2 dB of the shortfall is the output stage compressing. The rest is the attenuator steps not being exact.",
                        "At 55 dB and above the reading stops falling. The tone is then at the analyzer noise level for this reference level (about &minus;58 dBm). The rows at 55 to 70 dB are not valid Pluto levels.",
-                       "The output at 0 dB and tone scale 0.5 is about 0 dBm (1 mW). The team notes give a maximum of +11 dBm. That was not reached; tone scale 1.0 has not been measured yet (test C)."]))
+                       "The output at 0 dB and tone scale 0.5 is about 0 dBm (1 mW). At tone scale 1.0 it is +4.7 dBm (3.0 mW) at 1100 MHz. The team notes give a maximum of +11 dBm; this Pluto does not reach that."]))
         out.append(h("Look up table: attenuation setting to output power"))
         out.append(table(["Setting (dB)", "1000 MHz (dBm)", "1100 MHz (dBm)", "1200 MHz (dBm)"], [[r[0]] + [n(v) for v in r[1:]] for r in S["att_table"] if r[0] <= 50], cls="lut", left=()))
         out.append(p("Tone scale 0.5. Files: <code>pluto_tx_calibration.csv</code> and <code>pluto_tx_calibration.json</code>."))
@@ -79,6 +97,9 @@ def results():
         out.append(fig("pluto_scale.png", "Departure of the output from 20 log10 of the tone scale"))
         out.append(table(["Attenuation (dB)", "Tone scale", "Output (dBm)", "Output minus ideal (dB)"], [[r[0], r[1], n(r[2]), n(r[3])] for r in S["scale"]], left=()))
         out.append(math(r"P_\text{ideal}(s) = P(0.5) + 20\log_{10}\!\left(\frac{s}{0.5}\right)"))
+        out.append(ul(["At attenuation 20 dB the output follows the tone scale within 0.25 dB from 0.05 to 1.0.",
+                       "At attenuation 0 dB the output falls behind above scale 0.5: 0.8 dB low at scale 1.0. The output stage is compressing.",
+                       "The tone scale can be used as a fine level control when the attenuation is 20 dB or more."]))
     else:
         out.append(LOST)
 
@@ -86,7 +107,10 @@ def results():
     out.append(h("Test D: frequency error"))
     if done["D"]:
         out.append(table(["Set (MHz)", "Error (Hz)", "Error (ppm)"], [[f"{r[0]:.0f}", n(r[1], 0), n(r[2])] for r in S["freq_err"]], left=()))
-        out.append(p("Read with a 20 kHz span. The error includes the analyzer's own reference error; the two cannot be separated without a third reference."))
+        out.append(p("Read with a 20 kHz span. The tone is 12.7 to 13.1 ppm low at every frequency, inside the 25 ppm specification. "
+                     "The error includes the analyzer's own reference error; the two cannot be separated without a third reference. "
+                     "To put a tone exactly on a wanted frequency, set the Pluto 12.8 ppm higher: 14.1 kHz higher at 1100 MHz."))
+        out.append(math(r"f_\text{set} = f_\text{wanted}\,(1 + 12.8\times10^{-6})"))
     else:
         out.append(LOST + p("From test A: with a 2 MHz span the tone read 5 to 13 kHz below the set frequency at 1000 to 1200 MHz. The analyzer frequency step at that span is 2.7 kHz."))
     out.append(h("Test F: stability"))
@@ -101,7 +125,12 @@ def results():
     out.append(h("Test E: spectrum"))
     if done["E"]:
         out.append(fig("pluto_spectra.png", "Pluto output spectrum close to the tone and from 0 to 2.1 GHz"))
-        out.append(table(["Tone (MHz)", "Attenuation (dB)", "Line", "Level relative to the tone (dB)"], [[r[0], r[1], r[2], n(r[3], 1)] for r in S["spurs"]], left=(2,)))
+        lim = [r for r in S["spurs"] if r[1] == 0 and "elsewhere" not in r[2]]
+        worst = max(r[3] for r in lim)
+        out.append(ul([f"At attenuation 0 dB no line stands out of the analyzer noise within 5 MHz of the tone. The LO leakage (1 MHz below) and the other sideband (2 MHz below) are both under {n(worst, 0)} dB relative to the tone.",
+                       "At attenuation 20 dB the analyzer noise is only 36 dB under the tone with these settings, so that trace gives no better limit.",
+                       "From 30 MHz to 2.1 GHz at attenuation 0 dB, nothing else is above the noise, 45 dB under the tone.",
+                       "These are limits set by the analyzer settings (reference level +10 dBm, automatic bandwidth). The overnight run repeats this with a narrower bandwidth to find the actual levels."]))
         if have("harm2"):
             out.append(p("Second harmonic of the 1000 MHz tone, read at 2000 MHz: " + "; ".join(f"{n(r[1])} dBm at attenuation {r[0]:.0f} dB" for r in S["harm2"]) + "."))
     else:
@@ -116,7 +145,8 @@ def results():
         out.append(LOST)
     out.append(h("Test H: tone off"))
     if done["H"]:
-        out.append(table(["Attenuation (dB)", "Largest line, frequency (MHz)", "Level (dBm)"], [[f"{r[0]:.0f}", r[1], n(r[2])] for r in S["tone_off"]], left=()))
+        out.append(table(["Attenuation (dB)", "Largest point, frequency (MHz)", "Level (dBm)"], [[f"{r[0]:.0f}", r[1], n(r[2])] for r in S["tone_off"]], left=()))
+        out.append(p("With the tone scale at 0 nothing is above the analyzer noise (about &minus;54 dBm with these settings) at any attenuation. The frequencies in the table are noise peaks, not lines."))
     else:
         out.append(LOST)
 
@@ -124,16 +154,28 @@ def results():
     out.append(p("Folder <code>clinic\\claude\\pluto_characterization\\</code>: <code>readings.csv</code> (every reading, with time, settings, measured frequency and level), "
                  "<code>characterize_pluto.py</code> (takes the readings), <code>analyze_pluto.py</code> (tables and plots), <code>summary.json</code>, "
                  "<code>pluto_tx_calibration.csv</code>, <code>spectrum_*.csv</code> (traces, test E), <code>run_log.txt</code>."))
+    out.append(h("Overnight run, 12 to 13 Oct"))
+    out.append(p("Started 21:44 on 12 Oct, stops itself at 07:20 on 13 Oct. Same wiring. Script <code>overnight.py</code>; readings in <code>overnight_readings.csv</code>; traces in <code>traces\\</code>. Results will be added here."))
+    out.append(table(["Block", "What it measures"],
+                     [["Reference check", "six fixed readings, the tone frequency and the Pluto temperature, every 10 minutes"], ["Analyzer floor", "analyzer reading with the tone off, at each analyzer setting used"],
+                      ["Fine steps", "0.25 dB attenuation steps from 0 to 12 dB, down and up"], ["Low level", "output down to the 89.75 dB setting, with the preamp and a narrow bandwidth"],
+                      ["Tone scale", "scale 0.02 to 1.0 at five frequencies, with the spectrum at each scale"], ["Tone offset", "tone 0.1 to 14 MHz from the LO, either side: level, LO leakage, other sideband"],
+                      ["Two tones", "two tones 1 MHz apart and their third-order products"], ["Close lines", "LO leakage and other sideband at every 50 MHz, 350 to 2100 MHz"],
+                      ["Harmonics", "second and third harmonic for tones from 350 to 1050 MHz"], ["Retune repeat", "leave a frequency and come back, 30 times; same for attenuation"],
+                      ["Settling", "level against time while retuning or changing attenuation"], ["Wide search", "0 to 2.1 GHz at each 100 MHz: the five largest other lines"],
+                      ["Full map", "every 10 MHz from 350 to 2100 MHz at nine attenuation settings; again at tone scale 1.0"],
+                      ["Drift", "level and frequency every 30 s for the rest of the night; hourly repeat of the level table"]], left=(0, 1)))
     return "".join(out)
 
 
 PLUTO = part_tab(
     "Pluto", "Analog Devices ADALM-Pluto SDR. Test source for 1.0&ndash;1.2 GHz. Not part of the JACON design.", "plu",
     table(["Quantity", "Min", "Typical", "Max", "Unit"],
-          [["Tuning range (stock)", "325", D, "3800", "MHz"], ["TX output power", D, D, "+7", "dBm"], ["TX attenuation setting", "0", D, "89.75", "dB"],
+          [["Tuning range (stock)", "325", D, "3800", "MHz"], ["TX output power (ADI figure)", D, D, "+7", "dBm"], ["TX output power, this unit, 1100 MHz, measured", D, D, "+4.7", "dBm"], ["TX attenuation setting", "0", D, "89.75", "dB"],
            ["TX attenuation step", D, "0.25", D, "dB"], ["Bandwidth", "0.2", D, "20", "MHz"], ["Converter resolution", D, "12", D, "bits"],
            ["Frequency accuracy", D, D, "&plusmn;25", "ppm"], ["Connectors", D, "SMA, 50 &Omega;", D, ""], ["Supply", D, "USB, 5 V", D, ""]]) +
-    p(link("https://wiki.analog.com/university/tools/pluto", "ADI wiki") + ". The team notes give a maximum output of +11 dBm. The measured output at attenuation 0 dB and tone scale 0.5 is about 0 dBm.") +
+    p(link("https://wiki.analog.com/university/tools/pluto", "ADI wiki") + ". The team notes give a maximum output of +11 dBm. The measured output at attenuation 0 dB is about 0 dBm at tone scale 0.5 and +4.7 dBm at tone scale 1.0 (1100 MHz).") +
+    p("Settings found on this unit: sample rate 30.72 MS/s, RF bandwidth 18 MHz. It dropped off USB once during the first run (21:26, 12 Oct) and needed the USB cable replugged.") +
     h("How the computer controls it") +
     ul(["Address <code>ip:192.168.2.1</code> over USB. Program <code>iio_attr.exe</code>. Script <code>clinic\\claude\\sdr\\pluto_cw.py</code>.",
         "The tone is made inside the Pluto, 1 MHz above the LO. The LO is set to the wanted frequency minus 1 MHz.",

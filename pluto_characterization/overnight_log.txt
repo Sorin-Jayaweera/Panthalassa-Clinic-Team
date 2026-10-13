@@ -1,0 +1,6 @@
+21:44:30 start; saved readings 0 blocks done []
+21:44:38 start state_dump
+21:44:38 done state_dump 0.0 min
+21:44:38 start analyzer_floor
+21:44:52 done analyzer_floor 0.2 min
+21:44:52 start fine_steps
