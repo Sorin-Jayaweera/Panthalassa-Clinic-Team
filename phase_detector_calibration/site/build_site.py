@@ -147,31 +147,33 @@ def lut_tab():
     s4 = np.gradient(v4[:, 1], v4[:, 0])
     rows4 = [[f"{a:.2f}", f"{b:.2f}", f"{s:.1f}"] for (a, b), s in zip(VCO_4OCT, s4)]
     m = vt <= 1.2
-    mslope = np.gradient(mv[m], f[m])
-    mix_rows = [[f"{a:.2f}", f"{b:.2f}", f"{s:.2f}", f"{v:.3f}"] for a, b, s, v in zip(mv[m], f[m], mslope, vt[m])]
+    o = np.argsort(mv[m])                                       # sorted by the input of the look up: mixer voltage
+    mm, fm, vm = mv[m][o], f[m][o], vt[m][o]
+    mslope = np.gradient(fm, mm)                                # MHz per mV, the direction the table is used in
+    mix_rows = [[f"{a:.2f}", f"{b:.2f}", f"{s:.3f}", f"{v:.3f}"] for a, b, s, v in zip(mm, fm, mslope, vm)]
     return "".join([
         "<h2>Look up tables</h2>",
-        C.p("Two tables: VCO tuning voltage to frequency, and mixer output voltage to frequency. Each is valid only for the wiring and power it was measured with."),
-        C.item("lut-vco", "VCO: tuning voltage to frequency, 0 to 3.5 V",
-               C.fig("vco_f_vs_v.png", "VCO frequency against tuning voltage 0 to 3.5 V"),
-               C.h("Conditions"), C.ul(["Measured 10 Oct. Vcc 11.5 V.", "VCO output connected to a tee: one side to the SSA3021X analyzer, the other to the splitter and mixer.",
+        C.p("Two look ups: VCO tuning voltage Vt to VCO output frequency, and mixer output voltage to VCO frequency. Each is valid only for the wiring and power it was measured with. Pluto output levels are on the Pluto tab."),
+        C.item("lut-vco", "VCO: tuning voltage Vt to output frequency, 0 to 3.5 V",
+               C.fig("vco_f_vs_v.png", "VCO output frequency against tuning voltage Vt, 0 to 3.5 V"),
+               C.h("Conditions"), C.ul(["Measured 10 Oct. Vcc 11.5 V.", "VCO output connected to a tee: one side to the spectrum analyzer, the other to the splitter and mixer.",
                                          "Tuning voltage read on scope CH1. Accuracy a few percent.", "Repeatability 0.10 MHz."]),
-               C.h("Table"), C.table(["Vt (V)", "Frequency (MHz)", "Slope (MHz/V)"], vco_rows, cls="lut", left=()),
+               C.h("Table"), C.table(["Tuning voltage Vt (V)", "VCO output frequency (MHz)", "Slope (MHz/V)"], vco_rows, cls="lut", left=()),
                C.p("Values every 0.1 V, interpolated from 176 measured points spaced 0.02 V. Full data: <code>phase_detector_calibration_run3_cleanDC_0p02V_steps.csv</code>."),
                C.h("How it was made"), C.p("See " + C.link("#vco-tune35", "VCO, Frequency vs voltage, 0 to 3.5 V") + ".")),
-        C.item("lut-vco10", "VCO: tuning voltage to frequency, 0 to 10 V",
-               C.fig("comp_vco_tuning.png", "VCO frequency against tuning voltage 0 to 10 V"),
+        C.item("lut-vco10", "VCO: tuning voltage Vt to output frequency, 0 to 10 V",
+               C.fig("comp_vco_tuning.png", "VCO output frequency against tuning voltage Vt, 0 to 10 V"),
                C.h("Conditions"), C.ul(["Measured 4 Oct by hand. Vcc 11.48 to 11.5 V.", "VCO output connected straight to the spectrum analyzer.",
                                          "Frequency read 10 s after setting the voltage. The analyzer marker step was 2.67 MHz.", "1.0 GHz is at 4.83 V. 1.2 GHz is at 7.75 V."]),
-               C.h("Table"), C.table(["Vt (V)", "Frequency (MHz)", "Slope (MHz/V)"], rows4, cls="lut", left=()),
+               C.h("Table"), C.table(["Tuning voltage Vt (V)", "VCO output frequency (MHz)", "Slope (MHz/V)"], rows4, cls="lut", left=()),
                C.p("Source: <code>VCO tests.xlsx</code>, sheet &ldquo;absolute accuracy&rdquo;.")),
-        C.item("lut-mixer", "Mixer: output voltage to frequency",
-               C.fig("mapping.png", "Calibration points, inverse look up, and slope"),
+        C.item("lut-mixer", "Mixer (phase detector): output voltage to VCO frequency",
+               C.fig("mapping.png", "Mixer output voltage against VCO frequency as measured, the same points used as a look up, and the slope"),
                C.h("Conditions"), C.ul(["Measured 10 Oct. Source: the VCO, about +0.6 dBm at each mixer port.", "Splitter ZFRSC-42-S+, 4.5 in extra cable on one side, mixer ZX05-30W-S+.",
                                          "Mixer output read on scope CH2 into 1 M&Omega;.", "Valid from 743.6 to 788.4 MHz only. Above that one voltage matches more than one frequency.",
                                          "A different input power gives a different table."]),
-               C.h("Table"), C.table(["Mixer output (mV)", "Frequency (MHz)", "Slope (mV/MHz)", "VCO Vt at this point (V)"], mix_rows, cls="lut", left=()),
-               C.h("How to use it"), C.ol(["Read the mixer voltage.", "Find the two rows on either side of it.", "Draw a straight line between them and read the frequency."]),
+               C.h("Table"), C.table(["Mixer output voltage (mV)", "VCO frequency (MHz)", "Slope (MHz/mV)", "VCO tuning voltage Vt at this point (V)"], mix_rows, cls="lut", left=()),
+               C.h("How to use it"), C.ol(["Read the mixer output voltage V in mV.", "Find the two rows on either side of it (the table is sorted by mixer voltage).", "Draw a straight line between them and read the VCO frequency f in MHz. The slope column is the MHz per mV between neighbouring rows."]),
                C.math(r"f(V) = f_i + (V - V_i)\,\frac{f_{i+1} - f_i}{V_{i+1} - V_i}"),
                C.code(C.C_LOOKUP), C.p("How it was made: see " + C.link("#mx-lut", "Mixer, Mixer look up table") + ".")),
     ])

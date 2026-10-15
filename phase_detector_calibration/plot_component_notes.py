@@ -33,7 +33,7 @@ ax.plot(v_team, 800 + 60 * v_team, ":", color="k", lw=1, label="straight line 0.
 lo, hi = np.interp(BAND, f_team, v_team)
 ax.axvspan(lo, hi, color="tab:orange", alpha=0.08)
 ax.annotate(f"needs {lo:.1f} to {hi:.1f} V", (0.5 * (lo + hi), BAND[0] - 55), ha="center", fontsize=9, color="tab:orange")
-ax.set(xlabel="Tuning voltage Vt (V)", ylabel="Output frequency (MHz)", title="VCO (Crystek CVCO55BE-0800-1600): frequency vs tuning voltage")
+ax.set(xlabel="Tuning voltage Vt (V)", ylabel="VCO output frequency (MHz)", title="VCO (Crystek CVCO55BE-0800-1600): output frequency against tuning voltage Vt")
 ax.grid(alpha=0.3)
 ax.legend(fontsize=8)
 fig.tight_layout()

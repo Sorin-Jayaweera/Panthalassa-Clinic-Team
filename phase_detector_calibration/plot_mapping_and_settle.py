@@ -42,32 +42,33 @@ a = ax[0]
 a.plot(up["vco_freq_hz"] / 1e6, up["mixer_out_v"] * 1e3, "-", color="lightgray", lw=1, label="rest of the sweep (not usable: folds back)")
 a.plot(cf, cv, "o", ms=4, color="tab:green", label=f"calibration points used ({len(cf)} points, Vt 0 to 1.2 V)")
 a.plot(cf, cv, "-", color="tab:green", lw=0.8, label="straight lines between points = the lookup")
-a.set(xlabel="Frequency read by the spectrum analyzer (MHz)", ylabel="Mixer output read by the scope (mV)",
-      title="Step 1: what was measured (frequency in, voltage out)", xlim=(740, 830))
+a.set(xlabel="VCO frequency, read by the spectrum analyzer (MHz)", ylabel="Mixer output voltage, read by the scope (mV)",
+      title="Step 1, measured: mixer output voltage against VCO frequency", xlim=(740, 830))
 a.legend(fontsize=8)
 a = ax[1]
-a.plot(cv[order], cf[order], "o-", ms=4, lw=0.8, color="tab:green", label="same points, axes swapped")
+a.plot(cv[order], cf[order], "o-", ms=4, lw=0.8, color="tab:green", label="same points as step 1, axes swapped")
 ex_mv = 90.0
 ex_f = mv_to_mhz(ex_mv)
 a.plot([ex_mv, ex_mv, cv.min() - 5], [cf.min() - 2, ex_f, ex_f], "--", color="tab:red", lw=1)
 a.plot([ex_mv], [ex_f], "o", color="tab:red")
 a.annotate(f"example: {ex_mv:.0f} mV reads as {ex_f:.1f} MHz", (ex_mv, ex_f), (ex_mv - 55, ex_f + 6), color="tab:red", fontsize=9,
            arrowprops=dict(arrowstyle="->", color="tab:red"))
-a.set(xlabel="Mixer output (mV)", ylabel="Frequency (MHz)", title="Step 2: the lookup, voltage in, frequency out",
+a.set(xlabel="Mixer output voltage (mV)", ylabel="VCO frequency (MHz)", title="Step 2, look up: mixer output voltage to VCO frequency",
       xlim=(cv.min() - 5, cv.max() + 5), ylim=(cf.min() - 2, cf.max() + 2))
 a.legend(fontsize=8, loc="lower right")
 a = ax[2]
 slope = np.gradient(cv, cf)
 a.plot(cf, slope, "o-", ms=3, color="tab:blue")
-a.set(xlabel="Frequency (MHz)", ylabel="Slope (mV per MHz)", title="Step 3: how sensitive the lookup is")
+a.set(xlabel="VCO frequency (MHz)", ylabel="Slope of mixer output voltage (mV/MHz)", title="Step 3: mixer output voltage change per MHz")
 a2 = a.twinx()
 a2.plot(cf, 2 * TOL * slope, alpha=0)  # same shape; gives the right-hand scale
-a2.set_ylabel(f"Width of a +/-{TOL:g} MHz band, in mV")
+a2.set_ylabel(f"Mixer voltage change across ±{TOL:g} MHz (mV)")
 for x in ax:
     x.grid(alpha=0.3)
-fig.suptitle("How mixer voltage is turned into frequency (GOOD setup, clean DC, run 3)", fontweight="bold")
+fig.suptitle("Mixer output voltage to VCO frequency look up table (run 3, 10 Oct: clean DC on Vt, Vt 0 to 1.2 V)", fontweight="bold")
 fig.tight_layout()
-fig.savefig(HERE / "MAPPING_mixer_voltage_to_frequency.png", dpi=125)
+for out in (HERE / "MAPPING_mixer_voltage_to_frequency.png", HERE / "site" / "img" / "mapping.png"):
+    fig.savefig(out, dpi=125)
 plt.close(fig)
 print("usable range: %.1f-%.1f MHz, %.1f-%.1f mV; slope min %.2f max %.2f mV/MHz" % (cf.min(), cf.max(), cv.min(), cv.max(), slope.min(), slope.max()))
 # how rough is the lookup: each point against a line through its two neighbours
