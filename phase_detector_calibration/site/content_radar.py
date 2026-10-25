@@ -1,0 +1,91 @@
+"""Radar tab: the Furuno radar measured over the air with the SM200B, 25 Oct 2026."""
+from content import item, table, ul, ol, p, h, math, fig, D
+
+SETUP = """<pre class="diagram">
+ Furuno 1722C/NT radar, NavNet, 12.1 V 6.35 A          long-range pulse (LP), 24 nm range
+ AN-72 absorber foam over the radome face
+          ~~~ 11.3 m (37 ft) of air, room with walls ~~~
+ Vivaldi R120 antenna (5-13 GHz), facing the radar
+          |  long SMA cable
+ JFW 50DR-046 manual attenuator, set to 0 dB     (rated DC-2.5 GHz: not counted at 9.4 GHz)
+          |
+ 10 dB fixed attenuator (8 GHz)  +  2 dB (8 GHz)  +  2 dB (8 GHz)   = 14 dB counted
+          |
+ Signal Hound SM200B, +20 dBm max input, internal attenuator 30 dB, reference level +20 dBm
+</pre>"""
+
+RADAR = "".join([
+    "<h2>Radar</h2>",
+    '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
+    "What the racon's limiter, LNA and mixer will be given.</p>",
+    item("rad-design", "What the front end must handle", table(["Quantity", "Measured", "Design for", "Notes"], [
+        ["Carrier frequency", "9402.62 MHz median (9402.41 to 9402.80, 5th to 95th percentile of 705 pulses)", "9380 to 9440 MHz", "Furuno specifies 9410 &plusmn;30 MHz. Another unit of the same model can sit anywhere in that band."],
+        ["Pulse-to-pulse frequency change", "74 kHz standard deviation within one beam pass", "&lt; 0.5 MHz", ""],
+        ["Frequency change inside one pulse", "about &minus;0.15 MHz/&micro;s (about 0.1 MHz over the pulse)", "negligible", "No second tone, no oscillation inside the pulse."],
+        ["Pulse width, long pulse", "680 ns median (630 to 700 ns) at half power", "0.08 to 0.8 &micro;s", "Only the long pulse (24 nm range) was measured. Shorter ranges use shorter pulses, down to about 0.08 &micro;s; not measured."],
+        ["Rise time, 10 to 90 % amplitude", "40 ns median (20 to 120 ns)", "design for 20 ns", "Measured to one 20 ns sample; the true edge may be faster."],
+        ["Fall time, 90 to 10 % amplitude", "80 ns median (60 to 170 ns)", "", ""],
+        ["Pulse top", "flat; 1.0 to 1.7 dB ripple", "", "A clean switched carrier."],
+        ["Occupied bandwidth, long pulse", "1.30 MHz at &minus;3 dB, 2.20 MHz at &minus;10 dB, 7.8 MHz at &minus;20 dB", "IF bandwidth &ge; 8 MHz for the long pulse, &ge; 25 MHz for the short pulse", "First sidelobes &minus;17 dB (low side) and &minus;11 dB (high side): lopsided, typical of a magnetron."],
+        ["Time between pulses", "16 values from 1606.5 to 1706.5 &micro;s in 6.67 &micro;s steps, mean 1655 &micro;s", "do not assume a fixed interval", "Staggered on purpose. Mean rate 604 pulses/s at this range. Shorter ranges use higher rates; not measured."],
+        ["Fraction of time on", "0.041 % (680 ns / 1655 &micro;s)", "", "Average power is 34 dB below peak."],
+        ["Rotation", "2.5885 s (23.18 rpm)", "", "From the autocorrelation of 30 s of received power."],
+        ["Main beam passing the antenna", "&minus;3 dB over 16&deg; here (about 115 ms, about 70 pulses)", "5.2&deg; (37 ms, about 22 pulses) in open space", "Broadened by room reflections at 11.3 m (the far field starts at about 13 m)."],
+        ["Second harmonic, 18.805 GHz", "not detected; under &minus;41.7 dBm at the SM200B while the fundamental was &minus;22 dBm", "", "So at least 20 dB down in this measurement. The limit is the measurement, not the radar."],
+        ["Peak power received here", "&minus;22 dBm at the SM200B; at least &minus;8 dBm at the Vivaldi output", "see the table below", "Through AN-72 foam, at 11.3 m. Cable and manual attenuator loss at 9.4 GHz not yet measured, so the true antenna output is somewhat higher."]],
+        cls="parts", left=(0, 1, 2, 3)),
+        h("Peak power at the racon antenna against distance"),
+        table(["Distance to the radar", "Peak at a 12.5 dBi horn (dBm)", "Peak (mW)"],
+              [["10 m", "+28", "630"], ["30 m", "+18.5", "70"], ["100 m", "+8", "6.3"], ["300 m", "&minus;1.5", "0.7"], ["1 km", "&minus;12", "0.063"], ["3 km", "&minus;21.5", "0.007"], ["10 km", "&minus;32", "0.0006"]], left=()),
+        math(r"P_r = \underbrace{63.4 + 24}_{\text{EIRP, dBm}} + G_r - 20\log_{10}\!\left(\frac{4\pi d}{\lambda}\right), \qquad \lambda = 3.19\ \text{cm}"),
+        ul(["63.4 dBm = 2.2 kW peak. 24 dBi = the radar antenna gain implied by its 5.2&deg; &times; 25&deg; beam. G<sub>r</sub> = 12.5 dBi for the racon horn.",
+            "Main beam, line of sight, no foam. These are design values; the measurement here was through foam and is about 30 dB lower than this formula gives for 11.3 m and a 10 dBi antenna.",
+            "Average power at any distance is 34 dB below the peak in the table.",
+            "The limiter must take the closest-approach peak (+28 dBm at 10 m) and keep the LNA input under its +15 dBm limit; the limiter's spike leakage on a 20 ns edge is what to check."])),
+    item("rad-plots-pulse", "One pulse: shape, I and Q, frequency inside the pulse",
+         fig("radar_one_pulse.png", "The strongest pulse: power, amplitude, I and Q, and instantaneous frequency"),
+         ul(["Top left: power, one sample every 20 ns. Half-power width 660 ns.", "Top right: amplitude. Rise and fall 80 ns between 10 % and 90 % here.",
+             "Bottom left: I and Q after removing the carrier. Both are smooth through the pulse: the carrier is clean; the slow change in Q is a small frequency offset and drift.",
+             "Bottom right: the instantaneous frequency across the flat top, within about 1 MHz of the carrier."]),
+         fig("radar_pulse_spectrogram.png", "Spectrogram inside one pulse"),
+         p("A 0.32 &micro;s sliding FFT through the pulse. One frequency throughout; energy spreads only at the switching edges.")),
+    item("rad-plots-fft", "FFT of a pulse, with bandwidth markers",
+         fig("radar_fft_pulse.png", "FFT of single pulses with -3, -10 and -20 dB bandwidth markers and the ideal rectangular-pulse spectrum"),
+         ul(["Each FFT covers 2 &micro;s around one pulse. Orange: power average of the 23 pulses within 3 dB of the strongest. Dotted: an ideal 660 ns rectangular pulse.",
+             "Bandwidth 1.30 MHz at &minus;3 dB, 2.20 MHz at &minus;10 dB, 7.8 MHz at &minus;20 dB.",
+             "The nulls are where the ideal pulse puts them (multiples of 1/660 ns = 1.52 MHz); the sidelobes are uneven, which a small frequency drift inside the pulse causes."])),
+    item("rad-plots-train", "Pulse train and waterfall",
+         fig("radar_train_spectrogram.png", "60 ms of one beam pass with the time between each pair of pulses, and a waterfall of each pulse's spectrum"),
+         ul(["Top: 60 ms of the strongest beam pass. Purple numbers are the time between pulses in &micro;s.",
+             "Bottom: one row per pulse, each row that pulse's spectrum. Every pulse is at the same frequency (red dots: mean &minus;0.103 MHz from 9402.6 MHz, 74 kHz standard deviation).",
+             "The dip in strength in the middle of the pass is the beam's shape plus room reflections."])),
+    item("rad-plots-pri", "Time between pulses",
+         fig("radar_pri.png", "Histogram of the time between pulses and the first 150 intervals in order"),
+         p("Over 9,900 intervals: 16 values from 1606.5 to 1706.5 &micro;s, 6.67 &micro;s apart, used about equally and mixed in a repeating order. A racon cannot predict the next pulse from the last interval.")),
+    item("rad-plots-rot", "Rotation and the beam as seen from the Vivaldi",
+         fig("radar_timeline.png", "Pulse peaks over 30 s and the autocorrelation that gives the rotation period"),
+         fig("radar_beam.png", "Received pulse peak against radar antenna angle, all rotations folded"),
+         ul(["Rotation 2.5885 s (23.18 rpm), from 30 s of every pulse with no samples lost.",
+             "Main beam &minus;22.2 dBm. Half a turn away (&minus;166&deg;) there is a second response 10.6 dB lower: the back of the antenna or a reflection off the room behind the Vivaldi. Other bumps at &plusmn;50&deg; and +120&deg; are reflections.",
+             "The &minus;3 dB width here (16&deg;) is wider than the 5.2&deg; specification because of reflections and the short distance."])),
+    item("rad-plots-stats", "Pulse statistics", fig("radar_pulse_stats.png", "Histograms of pulse width, rise time, fall time and carrier frequency"),
+         p("From 30 s at 50 MS/s: the 152 pulses within 3 dB of the strongest for the edge figures; 705 pulses above &minus;30 dBm for frequency.")),
+    item("rad-plots-swept", "Swept spectra, 0 to 20 GHz", fig("radar_spectra_swept.png", "Max-hold swept spectra at several spans and resolution bandwidths"),
+         ul(["Swept max hold at several spans, 12 to 30 s each. Nothing found from 5 to 9 GHz, 10.8 to 13 GHz, or near 18.8 GHz above the sweep noise (about &minus;48 to &minus;54 dBm with a 3 MHz RBW).",
+             "A swept analyzer only catches a pulse when the sweep and the beam line up, so peak levels on these plots read low and differ from scan to scan. Use the I/Q measurements above for power."])),
+    item("rad-setup", "Setup and safety",
+         SETUP,
+         ul(["SM200B damage limit +20 dBm. Worst case before the test, with only the 14 dB of fixed pads counted, the radar's main beam on a 10 dBi antenna at 11.3 m: +10.4 dBm at the SM200B, 9.6 dB under the limit.",
+             "The manual attenuator was not counted: JFW rates it DC to 2.5 GHz. Setting it from 50 dB to 0 dB changed the reading by only about 3 dB, confirming it does little at 9.4 GHz.",
+             "Changes were made one at a time with a reading between: Vivaldi pointed away (&minus;38.8 dBm in 10 MHz RBW), turned to face the radar, whiteboard removed and manual attenuator to 0 dB (&minus;21.5 dBm in Spike, 3 MHz RBW). Highest pulse peak at the SM200B in all captures: &minus;21.6 dBm, 41.6 dB under the limit.",
+             "Radar supply: 12.1 V, 6.35 A (77 W) transmitting; 4.64 A in standby. Antenna does not turn in standby.",
+             "SM200B internal temperature 24 &deg;C at switch-on, 49 &deg;C after an hour; Spike showed 47 to 48 &deg;C."])),
+    item("rad-files", "Files and how the numbers were made",
+         ul(["Folder <code>radar_test/</code> in the repository.",
+             "<code>sm200b_scan.py</code>, <code>sm200b_monitor.py</code>: swept scans and the safety monitor used during setup.",
+             "<code>radar_pulses.py</code>: I/Q streaming. 50 MS/s (one sample every 20 ns, 41.5 MHz bandwidth) for pulse shape; 6.25 MS/s for 30 s timing captures that keep up with no lost samples. Finds every pulse 15 dB above the noise and records time, peak, width, rise, fall, carrier frequency and chirp. Output folders <code>pulses_*</code>.",
+             "<code>capture_raw.py</code>: 60 ms of raw I/Q around the strongest beam pass, <code>raw_*.npz</code>.",
+             "<code>plot_raw.py</code>, <code>plot_stats.py</code>: the plots on this tab, written to <code>radar_test/plots/</code>. <code>radar_spectra.py</code>: the swept spectra.",
+             "Rotation: autocorrelation of the received power, 1 ms bins, refined over four turns. Beam plot: time folded modulo the rotation period. Carrier frequency: mean phase step between samples on the flat top of each pulse.",
+             "Power is |I + jQ|&sup2; of the SM200B's corrected 32-bit I/Q, which is in mW at its input."])),
+])

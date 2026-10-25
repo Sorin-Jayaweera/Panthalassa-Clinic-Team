@@ -1,0 +1,52 @@
+{
+ "temp_start_c": 49.02,
+ "full_0-20GHz_rbw3M": {
+  "peak_dbm": -40.4,
+  "peak_ghz": 0.0,
+  "median_dbm": -54.37,
+  "sweeps": 1616
+ },
+ "xband_9-10.8GHz_rbw3M": {
+  "peak_dbm": -28.77,
+  "peak_ghz": 9.40332,
+  "median_dbm": -53.44,
+  "sweeps": 6078
+ },
+ "pulse_9.37-9.44_rbw3M": {
+  "peak_dbm": -41.59,
+  "peak_ghz": 9.402344,
+  "median_dbm": -52.79,
+  "sweeps": 13861
+ },
+ "pulse_9.37-9.44_rbw300k": {
+  "peak_dbm": -35.79,
+  "peak_ghz": 9.402527,
+  "median_dbm": -62.74,
+  "sweeps": 13860
+ },
+ "pulse_9.37-9.44_rbw30k": {
+  "peak_dbm": -53.32,
+  "peak_ghz": 9.402507,
+  "median_dbm": -72.83,
+  "sweeps": 4499
+ },
+ "harmonic2_18.7-18.9GHz_rbw3M": {
+  "peak_dbm": -46.57,
+  "peak_ghz": 18.744629,
+  "median_dbm": -48.27,
+  "sweeps": 16911
+ },
+ "below_band_5-9GHz_rbw3M": {
+  "peak_dbm": -49.31,
+  "peak_ghz": 7.669434,
+  "median_dbm": -53.89,
+  "sweeps": 2827
+ },
+ "above_band_10.8-13GHz_rbw3M": {
+  "peak_dbm": -50.08,
+  "peak_ghz": 12.491211,
+  "median_dbm": -53.62,
+  "sweeps": 4421
+ },
+ "temp_end_c": 49.02
+}

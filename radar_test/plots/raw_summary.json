@@ -1,0 +1,20 @@
+{
+ "noise_dbm_per_sample": -52.88,
+ "pulses_in_record": 36,
+ "strongest_dbm": -22.89,
+ "pulse_to_pulse_freq_std_khz": 74.0,
+ "chirp_khz_per_us": -151.0,
+ "pulse_carrier_mhz": 9402.794,
+ "width_ns": 660.0,
+ "rise_ns": 80.0,
+ "fall_ns": 80.0,
+ "sidelobe_first_db": {
+  "low": -17.0,
+  "high": -10.8
+ },
+ "bandwidth_mhz_at_minus_db": {
+  "3": 1.299,
+  "10": 2.201,
+  "20": 7.808
+ }
+}

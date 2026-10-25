@@ -1,0 +1,98 @@
+{
+ "center_hz": 9403600000.0,
+ "temp_start_c": 49.02,
+ "supply_v": 11.86,
+ "supply_a": 1.16,
+ "sample_rate": 6250000.0,
+ "bandwidth": 4800000.0,
+ "decimation": 8,
+ "noise_dbm_per_sample": -61.45822560497277,
+ "capture_s": 30.11,
+ "temp_end_c": 49.69,
+ "samples_lost": 0,
+ "pulses_found": 9998,
+ "pri_us_median": 1659.52,
+ "pri_us_spread": [
+  1606.24,
+  1706.56
+ ],
+ "prf_hz": 602.6,
+ "passes": [
+  {
+   "t_peak": 15.1822,
+   "peak_dbm": -21.64,
+   "pulses": 9998,
+   "dur_ms": 30065.0,
+   "dur_3db_ms": 25925.2
+  }
+ ],
+ "peak_dbm_max": -21.64,
+ "strong_pulses": 165,
+ "freq_mhz_strong": [
+  NaN,
+  NaN,
+  NaN
+ ],
+ "chirp_khz_strong": [
+  NaN,
+  NaN,
+  NaN
+ ],
+ "pri_us_commonest": [
+  [
+   1606.0,
+   648
+  ],
+  [
+   1626.0,
+   619
+  ],
+  [
+   1613.0,
+   614
+  ],
+  [
+   1633.0,
+   598
+  ],
+  [
+   1653.0,
+   597
+  ],
+  [
+   1673.0,
+   564
+  ],
+  [
+   1693.0,
+   563
+  ],
+  [
+   1660.0,
+   561
+  ],
+  [
+   1680.0,
+   555
+  ],
+  [
+   1700.0,
+   542
+  ]
+ ],
+ "width_ns": [
+  640.0,
+  480.0,
+  640.0
+ ],
+ "rise_ns": [
+  160.0,
+  0.0,
+  480.0
+ ],
+ "fall_ns": [
+  160.0,
+  0.0,
+  320.0
+ ]
+}
