@@ -1,0 +1,16 @@
+Quantity,Value,Unit,How it was obtained
+Center frequency,9402.62,MHz,median carrier of 705 pulses from I/Q (pulse to pulse 9402.41 to 9402.80 MHz)
+Frequency span at -3 dB,1.30,MHz,FFT of the long pulse
+Frequency span at -10 dB,2.20,MHz,FFT of the long pulse
+Frequency span at -20 dB,7.8,MHz,FFT of the long pulse
+Pulse width (long pulse),680,ns,half-power width; median of 152 strongest pulses
+Pulses per second,604.2,pulses/s,1 / mean pulse spacing of 1655.2 us (16 staggered spacings from 1606.5 to 1706.5 us)
+Revolutions per second,0.3863,rev/s,1 / 2.5885 s rotation (23.18 rpm)
+Pulses per revolution,1564,pulses,604.2 pulses/s x 2.5885 s
+Pulses per beam pass (5.2 deg spec beam),22.6,pulses,1564 x 5.2 / 360
+Pulses per beam pass (16 deg measured here),69.5,pulses,1564 x 16 / 360; widened by room reflections at 11.3 m
+Fraction of time transmitting,0.0411,%,680 ns / 1655.2 us
+Average / peak while transmitting,-33.86,dB,10 log10(0.000411)
+Average / peak over a full rotation (5.2 deg beam),-52.3,dB,-33.86 dB - 18.4 dB for 5.2 / 360 of the turn
+Spreading loss at 11.3 m,72.97,dB,20 log10(4 pi d / lambda) with lambda = 31.88 mm
+Spreading loss at 1 m,51.91,dB,same formula; add 20 log10(d) for distance d in metres

@@ -1,0 +1,8 @@
+Condition,Peak (dBm),Peak (mW),Average while transmitting (dBm),Average while transmitting (mW),How it was obtained
+"At SM200B input, whiteboard in",-25.5,0.002818,-59.4,1.158e-06,"estimated: 3.3 dB below 'out', from the 100 kHz Spike readings (-44.0 vs -40.7 dBm)"
+"At Vivaldi output (+14 dB pads), whiteboard in",-11.5,0.07079,-45.4,2.908e-05,"cable and manual attenuator loss at 9.4 GHz not included, so the true value is somewhat higher"
+"Effective radiated power (EIRP) of the radar, whiteboard in",53.5,2.226e+05,19.6,91.43,= Vivaldi output + 72.97 dB spreading loss at 11.3 m - 8 dBi assumed Vivaldi gain; includes the AN-72 foam
+"At SM200B input, whiteboard out",-22.2,0.006026,-56.1,2.475e-06,measured
+"At Vivaldi output (+14 dB pads), whiteboard out",-8.2,0.1514,-42.1,6.218e-05,"cable and manual attenuator loss at 9.4 GHz not included, so the true value is somewhat higher"
+"Effective radiated power (EIRP) of the radar, whiteboard out",56.8,4.758e+05,22.9,195.5,= Vivaldi output + 72.97 dB spreading loss at 11.3 m - 8 dBi assumed Vivaldi gain; includes the AN-72 foam
+"Radar EIRP, specification (no foam)",87.4,5.521e+08,53.6,2.268e+05,2.2 kW peak (63.4 dBm) + 24 dBi antenna gain from the 5.2 x 25 deg beam

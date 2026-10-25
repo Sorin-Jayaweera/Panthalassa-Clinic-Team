@@ -1,5 +1,15 @@
 """Radar tab: the Furuno radar measured over the air with the SM200B, 25 Oct 2026."""
+import csv
+from pathlib import Path
+
 from content import item, table, ul, ol, p, h, math, fig, D
+
+_RT = Path(__file__).resolve().parent.parent.parent / "radar_test"
+
+
+def _csv(name):
+    rows = list(csv.reader(open(_RT / name, encoding="utf-8")))
+    return table(rows[0], rows[1:], cls="parts", left=tuple(range(len(rows[0]))))
 
 SETUP = """<pre class="diagram">
  Furuno 1722C/NT radar, NavNet, 12.1 V 6.35 A          long-range pulse (LP), 24 nm range
@@ -18,6 +28,13 @@ RADAR = "".join([
     "<h2>Radar</h2>",
     '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
     "What the racon's limiter, LNA and mixer will be given.</p>",
+    item("rad-tables", "Power and timing tables (CSV)",
+         h("Power"), _csv("radar_power_table.csv"),
+         ul(["Whiteboard in: the Vivaldi faced the radar but no wideband reading was taken. The value is the measured whiteboard-out peak lowered by the 3.3 dB difference between the two 100 kHz Spike readings (&minus;44.0 and &minus;40.7 dBm). The manual attenuator also moved from 50 to 0 dB between those readings.",
+             "EIRP assumes 8 dBi for the Vivaldi at 9.4 GHz (not measured). Each dB the real gain differs moves the EIRP by the same dB the other way.",
+             "To predict the peak at another distance d (m) with a receive antenna of gain G (dBi): P = EIRP + G &minus; 51.91 &minus; 20 log10(d)."]),
+         h("Signal"), _csv("radar_signal_table.csv"),
+         p("Copy-paste versions: <code>radar_test/radar_power_table.csv</code> and <code>radar_test/radar_signal_table.csv</code>."), open_=True),
     item("rad-design", "What the front end must handle", table(["Quantity", "Measured", "Design for", "Notes"], [
         ["Carrier frequency", "9402.62 MHz median (9402.41 to 9402.80, 5th to 95th percentile of 705 pulses)", "9380 to 9440 MHz", "Furuno specifies 9410 &plusmn;30 MHz. Another unit of the same model can sit anywhere in that band."],
         ["Pulse-to-pulse frequency change", "74 kHz standard deviation within one beam pass", "&lt; 0.5 MHz", ""],
