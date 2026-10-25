@@ -35,6 +35,13 @@ RADAR = "".join([
              "To predict the peak at another distance d (m) with a receive antenna of gain G (dBi): P = EIRP + G &minus; 51.91 &minus; 20 log10(d)."]),
          h("Signal"), _csv("radar_signal_table.csv"),
          p("Copy-paste versions: <code>radar_test/radar_power_table.csv</code> and <code>radar_test/radar_signal_table.csv</code>."), open_=True),
+    item("rad-spike", "Spike max-hold exports, 100 kHz and 3 MHz RBW",
+         fig("furuno_spike_maxhold_9370-9430MHz_rbw100kHz_vs_3MHz_11m_14dB_pads.png", "Spike max-hold spectra of the radar at 100 kHz and 3 MHz RBW, with markers"),
+         ul(["Sorin's exports from Spike: <code>data/Furino Characterization/14db8G_11meters_100khzrbw.csv</code> and <code>14db8G_11meters_3mhzrbw.csv</code>. Plot made by <code>radar_test/plot_spike_exports.py</code>.",
+             "Setup: Vivaldi at 11.3 m facing the radar, AN-72 foam on the radar, whiteboard out, 14 dB of 8 GHz pads, manual attenuator at 0 dB.",
+             "100 kHz RBW: peak &minus;44.7 dBm at 9403.008 MHz, &minus;3 dB width 1.27 MHz. Sidelobes on the high side at +2.05, +3.47, +5.20, +6.62 MHz: &minus;10.0, &minus;14.6, &minus;17.1, &minus;19.3 dB. Their spacing (about 1.5 MHz) gives a pulse width of about 0.68 &micro;s.",
+             "3 MHz RBW: peak &minus;20.5 dBm (9.0 &micro;W) at 9403.594 MHz. This filter is wide enough to hold the pulse, so this is close to the true pulse peak and agrees with the I/Q measurement (&minus;22 dBm).",
+             "The 24.2 dB difference between the two peaks is the narrow filter missing most of the pulse's energy, not a change in the radar."])),
     item("rad-design", "What the front end must handle", table(["Quantity", "Measured", "Design for", "Notes"], [
         ["Carrier frequency", "9402.62 MHz median (9402.41 to 9402.80, 5th to 95th percentile of 705 pulses)", "9380 to 9440 MHz", "Furuno specifies 9410 &plusmn;30 MHz. Another unit of the same model can sit anywhere in that band."],
         ["Pulse-to-pulse frequency change", "74 kHz standard deviation within one beam pass", "&lt; 0.5 MHz", ""],
