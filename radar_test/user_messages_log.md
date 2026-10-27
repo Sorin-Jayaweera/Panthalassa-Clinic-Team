@@ -74,3 +74,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~20:58 PC clock "spike is open"
 - ~21:00 PC clock "spike opening" + photo of the ADF5355 box (saved as adf5355/box_photo_2026-10-26.jpg)
 - ~21:15 PC clock asked for numbers and a chart: SM200B reading with the 50 ohm load directly on the SM200B, the load into the attenuators, and the antenna into the attenuators
+- ~21:25 PC clock "the tests sometimes show two of the same thing. Also, I never had just the load in a cable into the SM200B. Reread over the messages to figure out what each of the tests were."
+- ~21:30 PC clock "also put that chart on the github pages."

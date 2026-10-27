@@ -13,18 +13,18 @@ C = {"load direct": "#2a78d6", "load + 29 dB": "#eb6834", "Vivaldi + 29 dB": "#1
 
 # (distance group, label, kind, dBm, who read it)
 ROWS = [
-    ("3.96 m (13 ft), radar foam off", "Test 17: load on a cable, no pads", "load direct", -15.7, "Spike"),
-    ("3.96 m (13 ft), radar foam off", "Test 21: load on SM200B input", "load direct", -22.5, "Spike"),
-    ("3.96 m (13 ft), radar foam off", "Test 22: same, SM200B wrapped in AN-72", "load direct", -25.7, "Spike (Sorin: about -30)"),
-    ("3.96 m (13 ft), radar foam off", "Test 23: same, whiteboard between", "load direct", -19.43, "Sorin"),
-    ("3.96 m (13 ft), radar foam off", "Test 16: load -> 29 dB", "load + 29 dB", -20.5, "Spike"),
-    ("3.96 m (13 ft), radar foam off", "Test 20: load -> 29 dB", "load + 29 dB", -22.9, "Spike"),
-    ("3.96 m (13 ft), radar foam off", "Test 24: load -> 29 dB, wrapped, whiteboard", "load + 29 dB", -25.0, "Sorin"),
+    ("3.96 m (13 ft), radar foam off", "Test 17 (25 Oct): load on SM200B input", "load direct", -15.7, "Spike"),
+    ("3.96 m (13 ft), radar foam off", "Test 21 (26 Oct): load on SM200B input", "load direct", -22.5, "Spike"),
+    ("3.96 m (13 ft), radar foam off", "Test 22: load on input, SM200B wrapped in AN-72", "load direct", -25.7, "Spike (Sorin: about -30)"),
+    ("3.96 m (13 ft), radar foam off", "Test 23: as 22, whiteboard between", "load direct", -19.43, "Sorin"),
+    ("3.96 m (13 ft), radar foam off", "Test 16 (25 Oct): load -> 29 dB", "load + 29 dB", -20.5, "Spike"),
+    ("3.96 m (13 ft), radar foam off", "Test 20 (26 Oct): load -> 29 dB", "load + 29 dB", -22.9, "Spike"),
+    ("3.96 m (13 ft), radar foam off", "Test 24: as 23, with the 29 dB put back", "load + 29 dB", -25.0, "Sorin"),
     ("3.96 m (13 ft), radar foam off", "Test 15: Vivaldi -> 29 dB", "Vivaldi + 29 dB", -25.9, "Spike"),
     ("11.3-11.5 m, radar foam off", "Test 25a: load -> 29 dB, whiteboard in", "load + 29 dB", -33.0, "Sorin (-34 to -32)"),
     ("11.3-11.5 m, radar foam off", "Test 25b: load -> 29 dB, whiteboard out", "load + 29 dB", -31.2, "Spike"),
     ("11.3-11.5 m, radar foam off", "Test 7: Vivaldi -> 29 dB", "Vivaldi + 29 dB", -20.3, "Spike"),
-    ("11.3-11.5 m, radar foam off", "Test 11: Vivaldi -> 29 dB (later)", "Vivaldi + 29 dB", -29.4, "I/Q"),
+    ("11.3-11.5 m, radar foam off", "Test 11: Vivaldi -> 29 dB (3 h after test 7)", "Vivaldi + 29 dB", -29.4, "I/Q"),
 ]
 
 fig, ax = plt.subplots(figsize=(11, 6.2))
