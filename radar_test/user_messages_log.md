@@ -69,3 +69,8 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~20:20 PC clock "The adf and signal hound are both pluggedin."
 - (reading) ADF5355 Out B at power-up: 8.000002 GHz, -26.98 dBm at the SM200B through 19 dB
 - ~20:30 PC clock "you can program it, just show me what you are doing"
+- ~20:45 PC clock "I see an 8 GHz signal?"
+- ~20:47 PC clock "https://github.com/analogdevicesinc/no-OS/blob/main/drivers/frequency/adf5355/adf5355.h https://www.analog.com/en/products/adf5355.html#software-resources Keep trying"
+- ~20:58 PC clock "spike is open"
+- ~21:00 PC clock "spike opening" + photo of the ADF5355 box (saved as adf5355/box_photo_2026-10-26.jpg)
+- ~21:15 PC clock asked for numbers and a chart: SM200B reading with the 50 ohm load directly on the SM200B, the load into the attenuators, and the antenna into the attenuators

@@ -58,3 +58,12 @@ Box re-enumerated as COM14. Spike at 8.15 GHz centre, 1 GHz span; box sitting at
 raw 4-byte register words (100 and 25 MHz reference), hex text lines, `0x` hex lines, `8300`, `8300.000`, `8300000000`,
 `F8300`, `f8300`, `FREQ 8300MHz`, `:FREQ 8.3GHz`, `SET 8300`. No reply to any, and the line never left 8.000 GHz.
 Conclusion: the box needs the seller's own (probably framed binary) protocol, or direct SPI access inside the box.
+
+## Third and fourth tries (26 Oct 2026, ~20:50–21:00 PC clock)
+
+- `probe_bitbang.py`: SPI bit-banged on the PL2303's DTR, RTS and TXD (break), all 6 pin orders, normal and inverted, each with its own
+  target (8.05–8.60 GHz). Checked with `peaks.py` on the SM200B: still 8.0000 GHz, −26.8 dBm. Not wired that way.
+- STM32 serial bootloader check (0x7F, even parity, 9600/57600/115200, DTR/RTS pulsed in all 4 states): no ACK.
+
+Photo: `box_photo_2026-10-26.jpg`. Extruded aluminium case with screwed acrylic end plates, so it opens without damage.
+Inputs: USB cable and a separate DC barrel jack.

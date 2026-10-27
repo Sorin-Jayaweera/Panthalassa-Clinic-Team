@@ -4,7 +4,7 @@ Each test is one sentence that expands. Inside: Sorin's own words and numbers (q
 Pacific, UTC-7), the setup, then a collapsed "AI analysis" with derived numbers. The same tests in one table:
 radar_test/test_log.md. Who read each number: "Sorin" = Sorin read it off Spike or said it; "Spike" = Claude read a
 Spike screenshot; "I/Q" = Claude's own Python capture from the SM200B."""
-from content import item, table, ul, p, h
+from content import item, table, ul, p, h, fig
 
 # The radar: Furuno 1722C/NT, long pulse (24 nm range), 9402.6 MHz, 0.68 us pulses, 604 pulses/s, 2.2 kW peak (spec).
 # Pads: fixed 8 GHz-rated SMA attenuators. "29 dB" = 3 + 6 + 10 + 10. "14 dB" = 10 + 2 + 2.
@@ -271,4 +271,7 @@ def section():
     return "".join(out)
 
 
-POWER = item("rad-power", "Power readings by test: 50 &Omega; load vs antenna, every chain", section(), open_=True)
+POWER = item("rad-power", "Power readings by test: 50 &Omega; load vs antenna, every chain",
+             fig("radar_sm200b_reading_load_direct_vs_load_29dB_vs_vivaldi_29dB.png", "Peak at the SM200B: load direct, load through 29 dB, Vivaldi through 29 dB, at 13 ft and 11.5 m"),
+             p("Peak at the SM200B (3 MHz RBW, Min/Max, Max Hold). Blue: 50 &Omega; load on the SM200B (or on a short cable, test 17). Orange: load &rarr; 29 dB pads. Green: Vivaldi &rarr; 29 dB pads. Made by <code>radar_test/plot_load_vs_antenna.py</code>."),
+             section(), open_=True)
