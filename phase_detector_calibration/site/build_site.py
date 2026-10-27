@@ -8,6 +8,7 @@ import content_more as CM
 import content_parts as CP
 import content_pluto as CPL
 import content_radar as CRA
+import content_env as CE
 
 HERE = Path(__file__).resolve().parent
 P = HERE / "parts"
@@ -30,10 +31,10 @@ BLOCKS = [
     ("delaysplit", "Delay-line splitter", "ZFRSC-42-S+", 105, 702, "partial", "tab-splitter", "loss 6.0 dB (6.5 max)", "+4.5 in cable = 0.55 ns"),
     ("phasedet", "Phase detector", "ZX05-30W-S+", 105, 800, "partial", "tab-mixer", "LO +7 dBm, max in +17", "out: DC volts vs freq."),
     ("sh", "Sample and hold", "ADG1211 + ADA4622", 105, 892, "none", "pi-sh", "holds detector voltage", "out 4.8-7.8 V to VCO"),
-    ("env", "Envelope detector", "ADL5511", 325, 610, "none", "pi-env", "detects the pulse", ""),
-    ("comp", "Comparator", "ADCMP600", 435, 702, "none", "pi-comp", "high during a pulse", ""),
-    ("dac", "DAC", "nanoDAC", 545, 610, "none", "pi-dac", "sets comparator level", ""),
-    ("fpga", "FPGA", "PYNQ-Z2 / ECP5", 655, 702, "none", "pi-fpga", "timing, Morse, hold-off", ""),
+    ("env", "Envelope detector", "ADL5511", 325, 610, "partial", "tab-env", "VENV = 1.1 V + 1.47 x Vin", "-30 to +17 dBm, max +19"),
+    ("comp", "Comparator", "ADCMP604", 435, 702, "have", "tab-comp", "high during a pulse", "LVDS out, 1.6 ns"),
+    ("dac", "DAC", "nanoDAC", 545, 610, "none", "pi-dac", "sets comparator level", "CGR-201 output for now"),
+    ("fpga", "FPGA", "Icepi Zero (ECP5)", 655, 702, "have", "pi-fpga", "timing, Morse, hold-off", ""),
     ("losplit", "LO splitter", "ZX10-2-1252-S+", 520, 321, "have", "pi-losplit", "loss 4.1 dB at 8.3 GHz", "max in +32.7 dBm"),
     ("lobuf", "LO buffer amp", "ZX60-14012L-S+", 520, 413, "partial", "tab-lobuf", "+12.5 dB, 12 V 62 mA", "max out +12, max in +10"),
     ("pll", "PLL LO", "ADF5355", 520, 505, "none", "pi-pll", "8.3 GHz", ""),
@@ -88,6 +89,10 @@ def block_data(key, x, y):
     if key == "lobuf":
         return (spark([1000, 1050, 1100, 1150, 1200], [10.63, 10.02, 11.40, 11.30, 10.15], left, top)
                 + f'<text class="t2" x="{x}" y="{y+31}" text-anchor="middle">gain 10-11 dB, 1 dB comp. +8.2 dBm</text>')
+    if key == "env":
+        pts = [(-a, r) for a, r, _ in CE.SWEEP if r > 2]
+        return (spark([x for x, _ in pts], [20 * np.log10(r) for _, r in pts], left, top)
+                + f'<text class="t2" x="{x}" y="{y+31}" text-anchor="middle">1.47-1.51 V/V at 1.1 GHz, floor -30 dBm</text>')
     if key == "ifsplit":
         return (f'<text class="t2" x="{x}" y="{y+12}" text-anchor="middle">not tested in this position</text>'
                 f'<text class="t2" x="{x}" y="{y+25}" text-anchor="middle">same part as delay-line splitter</text>')
@@ -181,7 +186,7 @@ def lut_tab():
 
 
 TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
-        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
+        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
         ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
 HEAD = """<title>JACON Engineering Notes</title>
@@ -302,7 +307,7 @@ def main():
                '<button type="button" id="sch-specs" aria-pressed="true">Specs</button><button type="button" id="sch-data" aria-pressed="false">Data taken</button></span></div>'
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>')
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
-              "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET,
+              "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
               "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
     tabs = '<div class="tabs" role="tablist">' + "".join(
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"

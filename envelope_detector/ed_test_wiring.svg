@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 640" width="1060" height="640" font-family="-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <style>
+    .box { fill: #f9fafb; stroke: #111827; stroke-width: 1.6; }
+    .ttl { font-size: 15px; font-weight: 700; fill: #111827; text-anchor: middle; }
+    .sub { font-size: 12px; fill: #4b5563; text-anchor: middle; }
+    .port { font-size: 12px; fill: #111827; font-weight: 600; }
+    .note { font-size: 11px; fill: #4b5563; }
+    .warn { font-size: 11px; fill: #b45309; font-weight: 600; }
+    .pwr { font-size: 11.5px; fill: #b91c1c; font-weight: 700; text-anchor: middle; }
+    .gnd { font-size: 11.5px; fill: #111827; font-weight: 700; text-anchor: middle; }
+    .rf { stroke: #c2410c; stroke-width: 3; fill: none; }
+    .an { stroke: #1d4ed8; stroke-width: 2; fill: none; }
+    .dc { stroke: #7c3aed; stroke-width: 2; fill: none; }
+    .usb { stroke: #6b7280; stroke-width: 2; fill: none; stroke-dasharray: 2 4; }
+    .stub { stroke: #111827; stroke-width: 1.4; fill: none; }
+    .pt { fill: #ffffff; stroke: #111827; stroke-width: 1.6; }
+    .tp { fill: #ffffff; stroke: #111827; stroke-width: 1.6; }
+    .c { text-anchor: middle; }
+    .e { text-anchor: end; }
+  </style>
+  <rect x="0" y="0" width="1060" height="640" fill="#ffffff"/>
+
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#111827">Test A: envelope detector (ADL5511) on its own</text>
+  <text x="30" y="62" font-size="13" fill="#4b5563">Pluto = signal source · CGR-201 = scope on VENV · DMM = VRMS (power meter), plus EREF at start and end · nothing else connected</text>
+
+  <!-- Pluto -->
+  <rect x="30" y="150" width="160" height="180" rx="6" class="box"/>
+  <text x="110" y="180" class="ttl">ADALM-PLUTO</text>
+  <text x="110" y="196" class="sub">Rev C · AD9364 mode</text>
+  <circle cx="190" cy="220" r="4.5" class="pt"/>
+  <text x="178" y="224" class="port e">TX</text>
+  <text x="110" y="270" class="note c">RX: unused</text>
+  <text x="110" y="318" class="port c">USB</text>
+
+  <line x1="195" y1="220" x2="360" y2="220" class="rf"/>
+  <text x="277" y="194" class="note c">1.1 GHz CW, then pulses</text>
+  <text x="277" y="208" class="note c">TX attenuation stepped</text>
+  <text x="277" y="240" class="note c">≤ +7 dBm (ED max +17)</text>
+
+  <!-- ED -->
+  <rect x="360" y="130" width="260" height="240" rx="6" class="box"/>
+  <text x="490" y="160" class="ttl">ADL5511-EVALZ</text>
+  <text x="490" y="176" class="sub">envelope detector</text>
+  <circle cx="360" cy="220" r="4.5" class="pt"/>
+  <text x="370" y="224" class="port">RFIN</text>
+  <circle cx="620" cy="220" r="4.5" class="pt"/>
+  <text x="610" y="224" class="port e">VENV</text>
+  <text x="490" y="254" class="note c">SW1 → toward "SW1" (ON)</text>
+  <text x="490" y="270" class="note c">top silkscreen: RFIN vs VENV</text>
+  <rect x="615" y="285" width="10" height="10" class="tp"/>
+  <text x="608" y="294" class="port e">EREF (TP)</text>
+  <rect x="615" y="335" width="10" height="10" class="tp"/>
+  <text x="608" y="344" class="port e">VRMS (TP)</text>
+  <rect x="425" y="365" width="10" height="10" class="tp"/>
+  <text x="430" y="392" class="gnd">GND (TP)</text>
+  <line x1="440" y1="130" x2="440" y2="116" class="stub"/><text x="440" y="110" class="pwr">VPOS +5 V</text>
+  <line x1="540" y1="130" x2="540" y2="116" class="stub"/><text x="540" y="110" class="gnd">GND</text>
+
+  <!-- VENV -> CGR A -->
+  <line x1="625" y1="220" x2="800" y2="220" class="an"/>
+  <text x="712" y="208" class="note c">VENV ≈ 1.1 V + envelope</text>
+  <text x="712" y="240" class="warn c">⚠ short cable, 1 MΩ only</text>
+
+  <!-- EREF: read by DMM at start/end (no scope cable) -->
+  <text x="635" y="287" class="note">EREF: DMM at start and end only</text>
+  <text x="635" y="301" class="note">(move red probe VRMS ↔ EREF)</text>
+
+  <!-- VRMS -> DMM -->
+  <polyline points="625,340 700,340 700,420" class="dc"/>
+  <rect x="625" y="420" width="180" height="62" rx="6" class="box"/>
+  <text x="715" y="444" class="ttl" font-size="14">DMM (DC V)</text>
+  <text x="715" y="461" class="note c">+ → VRMS TP (EREF at start/end)</text>
+  <text x="715" y="475" class="note c">COM → GND TP</text>
+
+  <!-- CGR-201 -->
+  <rect x="800" y="130" width="230" height="260" rx="6" class="box"/>
+  <text x="915" y="160" class="ttl">Syscomp CGR-201</text>
+  <text x="915" y="176" class="sub">scope only</text>
+  <circle cx="800" cy="220" r="4.5" class="pt"/>
+  <text x="810" y="224" class="port">Input A (BNC)</text>
+  <text x="810" y="240" class="note">VENV · DC coupled</text>
+  <circle cx="800" cy="290" r="4.5" class="pt"/>
+  <text x="810" y="294" class="port">Input B (BNC)</text>
+  <text x="810" y="310" class="note">unused</text>
+  <text x="810" y="340" class="note"><tspan font-weight="700" fill="#111827">A − EREF</tspan> = true envelope (by hand)</text>
+  <text x="810" y="358" class="note">Output (BNC): leave unconnected</text>
+  <text x="915" y="382" class="port c">USB</text>
+
+  <!-- Legend -->
+  <rect x="420" y="410" width="180" height="90" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="434" y1="428" x2="474" y2="428" class="rf"/><text x="482" y="432" class="note">RF, 50 Ω (SMA)</text>
+  <line x1="434" y1="448" x2="474" y2="448" class="an"/><text x="482" y="452" class="note">envelope signal</text>
+  <line x1="434" y1="468" x2="474" y2="468" class="dc"/><text x="482" y="472" class="note">DC ref. / readout</text>
+  <line x1="434" y1="488" x2="474" y2="488" class="usb"/><text x="482" y="492" class="note">USB</text>
+
+  <!-- USB -->
+  <polyline points="110,330 110,510 600,510 600,530" class="usb"/>
+  <text x="160" y="503" class="note">USB (straight into the Mac)</text>
+  <line x1="915" y1="390" x2="915" y2="530" class="usb"/>
+
+  <!-- Supply -->
+  <rect x="30" y="530" width="510" height="95" rx="6" class="box"/>
+  <text x="45" y="554" font-size="14" font-weight="700" fill="#111827">Bench DC supply (one channel)</text>
+  <text x="45" y="576" class="note"><tspan fill="#b91c1c" font-weight="700">+5.00 V</tspan> → VPOS pin · <tspan font-weight="700" fill="#111827">current limit 60 mA</tspan></text>
+  <text x="45" y="594" class="note"><tspan font-weight="700" fill="#111827">COM</tspan> → GND pin (also the common point for DMM and CGR-201 ground)</text>
+  <text x="45" y="612" class="note">Expect ≈ 21.5 mA with no RF, ≈ 30 mA at the Pluto's max level</text>
+
+  <!-- Computer -->
+  <rect x="560" y="530" width="470" height="95" rx="6" class="box" style="fill:#eef2ff"/>
+  <text x="795" y="554" class="ttl">Computer</text>
+  <text x="575" y="576" class="note">• GNU Radio → Pluto: 1.1 GHz tone, step TX attenuation; later pulses</text>
+  <text x="575" y="594" class="note">• CGR-201 software: Input A (VENV); read VRMS off the DMM</text>
+  <text x="575" y="612" class="note">• Log one row per step in ED-TEST-PROCEDURE.md</text>
+</svg>

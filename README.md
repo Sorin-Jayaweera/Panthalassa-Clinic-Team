@@ -18,6 +18,7 @@ GitHub Pages is turned on in the repository settings: Settings, Pages, "Deploy f
    - `content_parts.py`: LNA, RX mixer, IF amp, VCO, splitter and phase detector tabs
    - `content_more.py`: LO buffer and image filter tabs
    - `content_pluto.py`: Pluto tab (its tables are filled from `pluto_characterization/summary.json`)
+   - `content_env.py`: Envelope detector and Comparator tabs
    - `build_site.py`: the schematic, the look up tables, and the list of tabs
    - `parts/style.css`, `parts/app.js`: appearance and page behaviour
 2. Put new plots in `phase_detector_calibration/site/img/`.
@@ -48,6 +49,7 @@ Because the Action commits to `main`, run `git pull --rebase` before you push.
 | `phase_detector_calibration/` | VCO tuning curve, splitter and mixer (phase detector) calibration, step response, noise, drift, deconvolution. Data, scripts, plots, and the website source in `site/`. |
 | `vco_rise_time/` | VCO step response with the Syscomp CGR-201 and the oscilloscope. Drivers `cgr201.py` and `sds.py`. Raw captures in `data/`. |
 | `lo_buffer_test/` | LO buffer amp ZX60-14012L-S+: gain, compression, output with no input. |
+| `envelope_detector/` | Envelope detector ADL5511 (and comparator ADCMP604) bench test: `ed_sweep.py` steps the Pluto and reads VENV on the CGR-201 scope, `plot_ed_sweep.py`, data in `data/`, part limits, procedure, results and wiring drawings. |
 | `pluto_characterization/` | ADALM-Pluto TX output measured straight into the spectrum analyzer: level against attenuation setting, frequency, tone scale; spectra; drift. `pluto_tx_calibration.csv` is the setting-to-dBm table. |
 | `sdr/` | `pluto_cw.py`: Pluto tone control with a hard power limit. `pluto_safe_tx.grc`: GNU Radio flowgraph with the same limit. |
 | `signal_hound/` | Python wrapper for the Signal Hound SM200B. |
@@ -66,7 +68,7 @@ Because the Action commits to `main`, run `git pull --rebase` before you push.
 |---|---|
 | Siglent SSA3021X spectrum analyzer | USB, VISA (`pyvisa`) |
 | Siglent SDS1104X-E oscilloscope | USB, VISA (`pyvisa`) |
-| Syscomp CGR-201 | USB serial, 115200 baud (`pyserial`) |
+| Syscomp CGR-201 | USB serial, 115200 baud (`pyserial`; `envelope_detector/ed_sweep.py` uses the built-in `termios` and also reads its scope) |
 | ADALM-Pluto | USB network, `ip:192.168.2.1`, `iio_attr` from libiio |
 | Signal Hound SM200B | USB 3, Signal Hound SM API |
 

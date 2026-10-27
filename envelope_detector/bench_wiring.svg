@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 820" width="1330" height="820" font-family="-apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif">
+  <style>
+    .box { fill: #f9fafb; stroke: #111827; stroke-width: 1.6; }
+    .opt { fill: #ffffff; stroke: #6b7280; stroke-width: 1.4; stroke-dasharray: 6 4; }
+    .ttl { font-size: 15px; font-weight: 700; fill: #111827; text-anchor: middle; }
+    .sub { font-size: 12px; fill: #4b5563; text-anchor: middle; }
+    .port { font-size: 12px; fill: #111827; font-weight: 600; }
+    .note { font-size: 11px; fill: #4b5563; }
+    .warn { font-size: 11px; fill: #b45309; font-weight: 600; }
+    .pwr { font-size: 11.5px; fill: #b91c1c; font-weight: 700; text-anchor: middle; }
+    .gnd { font-size: 11.5px; fill: #111827; font-weight: 700; text-anchor: middle; }
+    .rf { stroke: #c2410c; stroke-width: 3; fill: none; }
+    .an { stroke: #1d4ed8; stroke-width: 2; fill: none; }
+    .dg { stroke: #15803d; stroke-width: 2; fill: none; stroke-dasharray: 7 4; }
+    .usb { stroke: #6b7280; stroke-width: 2; fill: none; stroke-dasharray: 2 4; }
+    .stub { stroke: #111827; stroke-width: 1.4; fill: none; }
+    .pt { fill: #ffffff; stroke: #111827; stroke-width: 1.6; }
+    .dot { fill: #111827; }
+    .c { text-anchor: middle; }
+    .e { text-anchor: end; }
+  </style>
+  <rect x="0" y="0" width="1330" height="820" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="30" y="40" font-size="20" font-weight="700" fill="#111827">Bench wiring: envelope detector → comparator → computer</text>
+  <text x="30" y="62" font-size="13" fill="#4b5563">Keying switch left out for now. The Pluto stands in for the 1.1 GHz IF; the CGR-201 sets the threshold and watches VENV and the comparator output.</text>
+
+  <!-- ===== Pluto ===== -->
+  <rect x="30" y="170" width="160" height="200" rx="6" class="box"/>
+  <text x="110" y="200" class="ttl">ADALM-PLUTO</text>
+  <text x="110" y="216" class="sub">Rev C · AD9364 mode</text>
+  <circle cx="190" cy="240" r="4.5" class="pt"/>
+  <text x="178" y="244" class="port e">TX</text>
+  <text x="110" y="300" class="note c">RX: unused for now</text>
+  <text x="110" y="358" class="port c">USB</text>
+
+  <!-- Pluto TX -> ED RFIN -->
+  <line x1="195" y1="240" x2="330" y2="240" class="rf"/>
+  <text x="262" y="214" class="note c">1.1 GHz pulses</text>
+  <text x="262" y="228" class="note c">(or CW for static tests)</text>
+  <text x="262" y="258" class="note c">≤ +7 dBm</text>
+
+  <!-- ===== ADL5511 ===== -->
+  <rect x="330" y="170" width="200" height="200" rx="6" class="box"/>
+  <text x="430" y="200" class="ttl">ADL5511-EVALZ</text>
+  <text x="430" y="216" class="sub">envelope detector</text>
+  <circle cx="330" cy="240" r="4.5" class="pt"/>
+  <text x="340" y="244" class="port">RFIN</text>
+  <circle cx="530" cy="240" r="4.5" class="pt"/>
+  <text x="520" y="244" class="port e">VENV</text>
+  <text x="430" y="290" class="note c">SW1 → ON (enable)</text>
+  <text x="430" y="315" class="note c">EREF test point ≈ 1.1 V → DMM</text>
+  <text x="430" y="333" class="note c">VRMS test point → DMM (power cal.)</text>
+  <line x1="390" y1="170" x2="390" y2="156" class="stub"/><text x="390" y="150" class="pwr">+5 V</text>
+  <line x1="470" y1="170" x2="470" y2="156" class="stub"/><text x="470" y="150" class="gnd">GND</text>
+  <text x="330" y="400" class="warn">⚠ VENV: load ≥ 500 Ω only (never 50 Ω), keep cable short</text>
+
+  <!-- VENV -> comparator IN+ with tee -->
+  <line x1="535" y1="240" x2="720" y2="240" class="an"/>
+  <text x="585" y="228" class="note c">VENV 1.1–1.9 V</text>
+  <circle cx="640" cy="240" r="4" class="dot"/>
+  <text x="648" y="258" class="note">tee</text>
+  <polyline points="640,240 640,520 1090,520" class="an"/>
+  <text x="760" y="512" class="note c">VENV monitor</text>
+
+  <!-- ===== ADCMP604 ===== -->
+  <rect x="720" y="130" width="230" height="300" rx="6" class="box"/>
+  <text x="835" y="165" class="ttl">ADCMP604 eval</text>
+  <text x="835" y="181" class="sub">comparator · LVDS output</text>
+  <text x="835" y="199" class="note c">inputs unterminated (no R on board)</text>
+  <circle cx="720" cy="240" r="4.5" class="pt"/>
+  <text x="730" y="244" class="port">IN+ (J1)</text>
+  <circle cx="720" cy="360" r="4.5" class="pt"/>
+  <text x="730" y="364" class="port">IN− (J3)</text>
+  <circle cx="950" cy="220" r="4.5" class="pt"/>
+  <text x="940" y="224" class="port e">OUT+ (J7)</text>
+  <circle cx="950" cy="300" r="4.5" class="pt"/>
+  <text x="940" y="304" class="port e">OUT− (J8)</text>
+  <text x="835" y="398" class="note c">J2 IN+FB, J4 IN−FB:</text>
+  <text x="835" y="413" class="note c">leave open (verify)</text>
+  <line x1="780" y1="130" x2="780" y2="116" class="stub"/><text x="780" y="110" class="pwr">+3.3 V</text>
+  <line x1="835" y1="130" x2="835" y2="116" class="stub"/><text x="835" y="110" class="gnd">AGND</text>
+  <line x1="890" y1="130" x2="890" y2="116" class="stub"/><text x="890" y="110" class="gnd">VEE→GND</text>
+
+  <!-- LVDS outputs + 100 ohm -->
+  <line x1="955" y1="220" x2="1090" y2="220" class="dg"/>
+  <text x="1030" y="192" class="note c">LVDS 350 mV diff.</text>
+  <text x="1030" y="206" class="note c">OUT+ ≈ 1.03 / 1.38 V</text>
+  <line x1="955" y1="300" x2="1010" y2="300" class="dg"/>
+  <circle cx="1010" cy="220" r="4" class="dot"/>
+  <polyline points="1010,220 1010,240 1002,245 1018,252 1002,259 1018,266 1002,273 1010,278 1010,300" class="stub"/>
+  <text x="1020" y="262" class="note">100 Ω</text>
+  <text x="1020" y="276" class="note">LVDS term.</text>
+
+  <!-- Threshold: CGR Output -> 1k -> IN- -->
+  <polyline points="1090,470 850,470 844,462 834,478 824,462 814,478 804,462 796,470 665,470 665,360 725,360" class="an"/>
+  <text x="822" y="452" class="note c">1 kΩ</text>
+  <text x="985" y="460" class="note c">DC = no-RF VENV + 20 mV</text>
+  <text x="975" y="494" class="warn c">⚠ set to DC before connecting</text>
+
+  <!-- ===== CGR-201 ===== -->
+  <rect x="1090" y="150" width="210" height="450" rx="6" class="box"/>
+  <text x="1195" y="185" class="ttl">Syscomp CGR-201</text>
+  <text x="1195" y="201" class="sub">2 inputs · 1 output</text>
+  <circle cx="1090" cy="220" r="4.5" class="pt"/>
+  <text x="1100" y="224" class="port">Input B (BNC)</text>
+  <text x="1100" y="240" class="note">trigger ↑ ≈ 1.2 V = ping</text>
+  <circle cx="1090" cy="470" r="4.5" class="pt"/>
+  <text x="1100" y="474" class="port">Output 50 Ω (BNC)</text>
+  <text x="1100" y="490" class="note">DC = threshold</text>
+  <circle cx="1090" cy="520" r="4.5" class="pt"/>
+  <text x="1100" y="524" class="port">Input A (BNC)</text>
+  <text x="1100" y="540" class="note">monitor VENV</text>
+  <text x="1195" y="564" class="note c">inputs 1 MΩ ‖ 20 pF, 50 V pk max</text>
+  <text x="1195" y="592" class="port c">USB</text>
+
+  <!-- Optional bench scope -->
+  <rect x="690" y="560" width="350" height="78" rx="6" class="opt"/>
+  <text x="706" y="582" font-size="12.5" font-weight="700" fill="#111827">Optional: bench scope (ns timing)</text>
+  <text x="706" y="601" class="note">Swap Input B for a bench-scope channel: OUT+ (and OUT−),</text>
+  <text x="706" y="617" class="note">×10 probes, <tspan font-weight="700" fill="#b45309">1 MΩ input, never 50 Ω</tspan>; math CH1 − CH2.</text>
+
+  <!-- Legend -->
+  <rect x="330" y="428" width="200" height="122" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="1"/>
+  <text x="344" y="448" font-size="12" font-weight="700" fill="#111827">Legend</text>
+  <line x1="344" y1="468" x2="384" y2="468" class="rf"/><text x="392" y="472" class="note">RF, 50 Ω (SMA)</text>
+  <line x1="344" y1="490" x2="384" y2="490" class="an"/><text x="392" y="494" class="note">analog baseband</text>
+  <line x1="344" y1="512" x2="384" y2="512" class="dg"/><text x="392" y="516" class="note">comparator output</text>
+  <line x1="344" y1="534" x2="384" y2="534" class="usb"/><text x="392" y="538" class="note">USB</text>
+
+  <!-- USB links -->
+  <polyline points="110,370 110,665 640,665 640,690" class="usb"/>
+  <text x="300" y="658" class="note c">USB (plug straight into the Mac)</text>
+  <line x1="1195" y1="600" x2="1195" y2="690" class="usb"/>
+  <text x="1205" y="650" class="note">USB</text>
+
+  <!-- ===== Bench supply ===== -->
+  <rect x="30" y="690" width="540" height="110" rx="6" class="box"/>
+  <text x="45" y="714" font-size="14" font-weight="700" fill="#111827">Bench DC supply: set current limits first</text>
+  <text x="45" y="736" class="note"><tspan fill="#b91c1c" font-weight="700">+5.0 V</tspan> → ADL5511 VPOS · limit 60 mA</text>
+  <text x="45" y="754" class="note"><tspan fill="#b91c1c" font-weight="700">+3.3 V</tspan> → ADCMP604 VCC · limit 40 mA · tie CGND/VEE to AGND</text>
+  <text x="45" y="772" class="note"><tspan font-weight="700" fill="#111827">GND</tspan> → all board grounds, tied once to USB ground (a CGR-201 BNC shell)</text>
+  <text x="45" y="790" class="note">Order: supplies on → then RF and signals. Reverse to power down.</text>
+
+  <!-- ===== Computer ===== -->
+  <rect x="600" y="690" width="700" height="110" rx="6" class="box" style="fill:#eef2ff"/>
+  <text x="950" y="714" class="ttl">Computer (stands in for the FPGA)</text>
+  <text x="620" y="738" font-size="12.5" font-weight="700" fill="#111827">GNU Radio / pyadi-iio → Pluto</text>
+  <text x="620" y="756" class="note">• CW tone for static tests, stepped in level</text>
+  <text x="620" y="774" class="note">• Cyclic-buffer pulses ≥ 10 µs (CGR-201 is 5 MHz)</text>
+  <text x="960" y="738" font-size="12.5" font-weight="700" fill="#111827">Python → CGR-201 (serial command set)</text>
+  <text x="960" y="756" class="note">• Warm 10 min, then Output = no-RF VENV + 20 mV (≈ −21.5 dBm)</text>
+  <text x="960" y="774" class="note">• Trigger on Input B → count / timestamp pings</text>
+  <text x="960" y="792" class="note">• Input A logs VENV for each ping</text>
+</svg>
