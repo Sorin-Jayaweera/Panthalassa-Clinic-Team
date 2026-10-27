@@ -52,3 +52,13 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~19:12 "amplifier is off now, radar transmitting"
 - ~19:14 "radar is off, update the github page"
 - ~19:20 (with racon_draft_design01b_drawing.pdf) "look at the JCon specs. What is the next thing that I should test? We've seen that we can receive, we know the frequency spectrum, we know the pulses, we know characterizations of the radar itself, we know the amplification from this amplifier and the power limiter. I'm assuming that you have good data from. I want you to explain that to me. We've used the signal spectrum analyzer. I'm curious about using the spectrum analyzer as a SDR, but I think maybe we can go to PLL and shifting down frequency and then doing frequency identification at the same time."
+- ~19:25 "the LNA has 6V in on the datasheet"
+- ~19:30 "I have plugged you into the ADF5355 through the USB port and I've applied power. I want you to teach me how I would normally program and use the ADF5355."
+- ~19:08 PC clock "I have connected out B, which is 6.8 to 13.6 gigahertz through an SMA cable to the attenuators. I right now have a 10 dB attenuator, a 6 dB attenuator, and a 3 dB attenuator. Is this safe? Show me documentation."
+- ~19:20 PC clock: asked to reorganise the Radar section: power levels by condition, grouped 50 ohm load vs antenna, then by signal chain; each test a one-sentence summary that expands; top line = max power at the spectrum analyzer and the power at the farthest point of the chain; every number Sorin said must appear; other analysis hidden as "AI analysis"; amplifier results under ZX60-5123LN+, limiter results under its part; documented for a year from now.
+- ~19:30 PC clock "I have plugged in the ADF five-three-five-five only and not the spectrum analyzer. It is not plugged in. It's just what you have, so make sure you don't transmit because it would destroy the thing. But you can program it."
+- ~19:33 PC clock "keep writing the documentation at the same time that you're working on this ADF 5355."
+- ~19:34 PC clock "I just plugged in the spectrum analyzer in addition to the ADF."
+- ~19:36 PC clock "it's connected to the SignalHound SM200B."
+- ~19:40 PC clock "It is a black box with three output ports, out A plus, out A minus, out B, from AliExpress."
+- ~19:44 PC clock "try this: https://github.com/analogdevicesinc/no-OS/blob/main/drivers/frequency/adf5355/adf5355.c. I also just plugged the ADF 5355 into the 10+6+3 db attenuators in the SM200B."

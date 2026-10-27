@@ -21,8 +21,8 @@ PAGES_URL = "https://sorin-jayaweera.github.io/Panthalassa-Clinic-Team/"
 #         have = part on hand, not tested; none = not on hand or not chosen
 BLOCKS = [
     ("rxant", "RX antenna", "horn", 105, 45, "have", "pi-rxant", "8.2-12.4 GHz", "gain 10-15 dBi"),
-    ("limiter", "Power limiter", "not chosen", 105, 137, "none", "pi-limiter", "output must stay", "under +15 dBm"),
-    ("lna", "LNA", "ZX60-5123LN+", 105, 229, "have", "tab-lna", "+22 dB, NF 1.4 dB, 6 V", "max in +15 dBm"),
+    ("limiter", "Power limiter", "HLM-20PSM", 105, 137, "partial", "tab-limiter", "clamps +13 to +17 dBm", "loss 0.5 dB typ"),
+    ("lna", "LNA", "ZX60-5123LN+", 105, 229, "partial", "tab-lna", "+22 dB, NF 1.4 dB, 6 V", "max in +15 dBm"),
     ("rxmixer", "RX mixer", "ZX05-14LH-S+", 105, 321, "have", "tab-rxmixer", "loss 7.7 dB, LO +10 dBm", "max in +17 dBm"),
     ("ifamp", "IF amp", "P103LN / 2534MA", 105, 413, "have", "tab-ifamp", "P103LN +15.6 dB, max +21", "2534MA +43.5 dB, max -15"),
     ("ifsplit", "IF splitter", "ZFRSC-42-S+", 105, 505, "have", "tab-splitter", "loss 6.0 dB (6.5 max)", "max in +28.8 dBm"),
@@ -180,7 +180,7 @@ def lut_tab():
     ])
 
 
-TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
+TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
         ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
         ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
@@ -301,7 +301,7 @@ def main():
              + '<div class="bar"><span>Show in each block:</span><span class="switch" role="group" aria-label="Schematic view">'
                '<button type="button" id="sch-specs" aria-pressed="true">Specs</button><button type="button" id="sch-data" aria-pressed="false">Data taken</button></span></div>'
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>')
-    panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
+    panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET,
               "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
     tabs = '<div class="tabs" role="tablist">' + "".join(

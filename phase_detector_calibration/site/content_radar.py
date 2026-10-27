@@ -3,6 +3,7 @@ import csv
 from pathlib import Path
 
 from content import item, table, ul, ol, p, h, math, fig, D
+from content_radar_tests import POWER
 
 _RT = Path(__file__).resolve().parent.parent.parent / "radar_test"
 
@@ -72,7 +73,8 @@ RADAR = "".join([
     "<h2>Radar</h2>",
     '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
     "What the racon's limiter, LNA and mixer will be given.</p>",
-    item("rad-log", "Test log: every test and its result (25 and 26 Oct)",
+    POWER,
+    item("rad-log", "Test log: all tests as one table (25 and 26 Oct)",
          _md(open(_RT / "test_log.md", encoding="utf-8").read()),
          h("Spike screens, 26 Oct at 11.5 m (3 MHz RBW, Min/Max, Max Hold)"),
          p("Test 25b: 50 &Omega; load &rarr; 29 dB pads, whiteboard out. The leak floor: &minus;31.2 dBm."),
@@ -81,7 +83,7 @@ RADAR = "".join([
          fig("spike_test27_vivaldi_limiter_20dB_LNA_on_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA on, -7.94 dBm"),
          p("Test 28: same, LNA off. &minus;25.85 dBm."),
          fig("spike_test28_vivaldi_limiter_20dB_LNA_off_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA off, -25.85 dBm"),
-         p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>."), open_=True),
+         p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
          ul(["Whiteboard in: the Vivaldi faced the radar but no wideband reading was taken. The value is the measured whiteboard-out peak lowered by the 3.3 dB difference between the two 100 kHz Spike readings (&minus;44.0 and &minus;40.7 dBm). The manual attenuator also moved from 50 to 0 dB between those readings.",

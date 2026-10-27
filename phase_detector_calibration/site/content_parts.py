@@ -19,6 +19,43 @@ def steps_table(rows):
 
 NOT_RUN = p("Not run yet.")
 
+# ------------------------------------------------------------------ Limiter
+LIMITER = part_tab(
+    "Limiter", "Marki Microwave EVAL-HLM-20P: the HLM-20PSM limiter chip on an SMA evaluation board. Between the RX antenna and the LNA. Keeps strong radar pulses from damaging the LNA.", "lim",
+    table(["Quantity", "Min", "Typical", "Max", "Unit"],
+          [["Frequency range", "DC", D, "20", "GHz"], ["Insertion loss, DC&ndash;20 GHz", D, "0.5", "1.5", "dB"], ["Insertion loss at 10 GHz (features list)", D, "0.7", D, "dB"],
+           ["Return loss", D, "15", D, "dB"], ["Input power at 1 dB compression", D, "+15", D, "dBm"],
+           ["Flat leakage (output while clamping), at 1 GHz", D, "+17", D, "dBm"], ["Flat leakage, at 20 GHz", D, "+13", D, "dBm"],
+           ["Flat leakage at 9.4 GHz (straight line between the two)", D, "&asymp; +15", D, "dBm"],
+           ["Spike leakage (energy let through at a pulse&rsquo;s leading edge)", D, "0.1", D, "erg"], ["Recovery time after a pulse", D, "8", D, "ns"],
+           ["RF power, average, absolute max", D, D, "5 (+37.0 dBm)", "W"], ["RF power, peak (pulsed), absolute max", D, D, "50 (+47.0 dBm)", "W"]]) +
+    p("Source: " + link("https://markimicrowave.com/products/surface-mount/limiters/hlm-20psm/datasheet/", "HLM-20PSM datasheet, Rev A") + " (electrical specifications, page 4; absolute maximum ratings, page 3) and the " +
+      link("https://markimicrowave.com/products/evaluation-board/limiters/eval-hlm-20p/", "EVAL-HLM-20P page") + ". No local PDF: Marki&rsquo;s site refuses scripted downloads, so open the link in a browser.") +
+    '<div class="note">The board is marked with an input and an output side. The input side goes toward the antenna. Passive: no power supply.</div>',
+    ul(["Below about +10 dBm in, it is a short piece of line: about 0.5&ndash;0.7 dB loss at 9.4 GHz.",
+        "Around +15 dBm in, its diodes start to conduct and the output stops following the input (1 dB compression at +15 dBm in).",
+        "Well above that, the output stays near the flat leakage, about +15 dBm at 9.4 GHz (+13 to +17 dBm across its band), whatever the input, up to 5 W average and 50 W peak.",
+        "For each pulse the leading edge gets through before the diodes turn on (spike leakage, 0.1 erg). After the pulse it recovers in about 8 ns.",
+        "What this means for the LNA (ZX60-5123LN+, absolute max input +15 dBm): the limiter alone does not keep the LNA safe. Put at least 10 dB of pad between them for testing."]) +
+    math(r"P_\text{out} \approx P_\text{in} - 0.5\ \text{dB} \quad (P_\text{in} \ll +15\ \text{dBm}) \qquad P_\text{out} \approx +15\ \text{dBm} \quad (P_\text{in} \gg +15\ \text{dBm at 9.4 GHz})"),
+    p("Every step starts with a leak check: the same wiring with a 50 &Omega; load in place of the antenna. A reading only counts if it is at least 20 dB above that.") +
+    steps_table([
+        ["1", "Leak floor", "50 &Omega; load &rarr; limiter &rarr; pads &rarr; SM200B, radar at the test distance", "transmit", "read the Max Hold peak", "below &minus;45 dBm", "20 dB under the readings in 2&ndash;4"],
+        ["2", "Loss at low level", "Vivaldi &rarr; pads &rarr; SM200B, then Vivaldi &rarr; limiter &rarr; pads, radar at 11.3 m", "swap the limiter in and out without moving the cable", "difference of the two peaks", "0.5&ndash;0.7 dB", "under 1.5 dB"],
+        ["3", "Clamp curve", "same as 2, radar at 11.3, 8, 6, 4, 3 m (or more pads in front of the limiter at one distance)", "move the radar or change the front pads", "limiter output (reading + pads) vs input (reading without the limiter)", "follows the input to about +10 dBm, then flattens near +15 dBm", "never above +17 dBm out"],
+        ["4", "Leading edge", "as 3 at the closest distance", "transmit", "I/Q capture at 50 MS/s or faster; look at the first 50 ns of each pulse", "a short overshoot", "overshoot under the LNA&rsquo;s +15 dBm"]]) +
+    '<div class="note">Keep 29 dB of pads after the limiter whenever the SM200B is on it: the limiter can pass up to +17 dBm, and the SM200B&rsquo;s limit is +20 dBm.</div>',
+    table(["Test (Radar tab number)", "Setup", "Result", "Expected", "Trust", "Date"],
+          [["Direction", "board markings", "input side faces the antenna", D, "yes", "25 Oct"],
+           ["Radar 8: low level", "Vivaldi &rarr; limiter &rarr; 29 dB, 11.3 m, foam off", "&minus;20 dBm (Sorin) / &minus;22.9 dBm (Spike) at the SM200B &rarr; +9 / +6.1 dBm out of the limiter", "passes, under 1.5 dB loss", "fair: about 10 dB above the leak", "25 Oct"],
+           ["Radar 12 vs 11: loss", "same, with and without the limiter, 11.3 m", "&minus;30.2 vs &minus;29.4 dBm: 0.8 dB", "0.5&ndash;0.7 dB", "<b>no</b>: both at the leak floor (&minus;31.2 dBm)", "25 Oct"],
+           ["Radar 13: strong signal", "same, radar at 3.96 m (13 ft)", "&minus;12.9 dBm at the SM200B &rarr; <b>+16.1 dBm out of the limiter</b>; no leading-edge spike at 20 ns resolution", "+13 to +17 dBm when clamping", "partly: the input was not measured, and the leak (&minus;21 to &minus;23 dBm) is only 8&ndash;10 dB below", "25 Oct"],
+           ["Radar 14: strong signal, Spike", "same as 13", "&minus;15.27 dBm (Sorin&rsquo;s Spike screenshot; reference level &minus;20 dBm, may be compressed) &rarr; +13.7 dBm out", "as 13", "low", "25 Oct"],
+           ["Radar 26a: pickup", "50 &Omega; load &rarr; limiter &rarr; 10 dB &rarr; LNA (off) &rarr; 29 dB, 11.5 m", "&minus;31 dBm, same as the load alone", D, "yes", "26 Oct"],
+           ["Radar 27: in the chain", "Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA &rarr; 19 dB, 11.5 m", "chain consistent with 0.8 dB limiter loss and 22&ndash;23 dB LNA gain", D, "fair", "26 Oct"]],
+          left=(0, 1, 2, 3, 4, 5)) +
+    p("Not yet shown: that it clamps. That needs test 3 with a leak floor at least 20 dB below the readings. Every reading is on the Radar tab, section &ldquo;Power readings by test&rdquo;."))
+
 # ------------------------------------------------------------------ LNA
 LNA = part_tab(
     "LNA", "Mini-Circuits ZX60-5123LN+. First amplifier after the antenna and limiter. 9.3&ndash;9.5 GHz.", "lna",
@@ -45,9 +82,20 @@ LNA = part_tab(
         ["5", "Stray signals", "same as 4", "nothing", "sweep 1&ndash;20 GHz", "noise only", "no lines above the noise"]]) +
     '<div class="note">Never put more than +15 dBm into the LNA. In test 3 stop at 0 dBm input. Keep the 20 dB attenuator on the output whenever the SM200B is connected.</div>',
     table(["Test", "Result", "Expected", "Pass?", "Date"],
-          [["1. Supply current", "0.08 A at 6.0 V", "80 mA, max 95 mA", "pass", "12 Oct"], ["2. Gain vs frequency", "not run", "22 dB", "", ""],
+          [["1. Supply current", "0.08 A at 6.0 V", "80 mA, max 95 mA", "pass", "12 Oct"], ["2. Gain vs frequency", "partial: one frequency (9.4047 GHz), over the air from the radar: &asymp; 23 dB (&plusmn;2 dB)", "22 dB", "pass at 9.4 GHz", "26 Oct"],
            ["3. Compression", "not run", "+17 dBm out", "", ""], ["4. Noise figure", "not run", "1.4 dB", "", ""], ["5. Stray signals", "not run", "none", "", ""]], left=(0, 1, 2, 3, 4)) +
-    p("Test 1: read from the display of an Agilent E3630A supply, 6 V output. Input and output each had a 50 &Omega; termination. The display reads to 0.01 A, so the current is between 75 and 85 mA."))
+    p("Test 1: read from the display of an Agilent E3630A supply, 6 V output. Input and output each had a 50 &Omega; termination. The display reads to 0.01 A, so the current is between 75 and 85 mA.") +
+    h("Over the air with the Furuno radar, 25 and 26 Oct (Radar tab test numbers)") +
+    table(["Test", "Chain", "Distance", "SM200B (max)", "Result", "Date"],
+          [["10", "open cable &rarr; LNA (6 V, 0.08 A) &rarr; 29 dB", "11.3 m", "nothing on screen", "USB dropout of the SM200B, not the LNA. Current 0.08 A matched the datasheet. No damage.", "25 Oct"],
+           ["18", "Vivaldi &rarr; limiter &rarr; LNA <b>unpowered</b> &rarr; 29 dB", "3.96 m", "&minus;10 dBm (Sorin)", "Not powered: the limiter can pass +17 dBm, above the LNA&rsquo;s +15 dBm absolute max input. A 10 dB pad was added before the LNA.", "26 Oct"],
+           ["26a", "50 &Omega; load &rarr; limiter &rarr; 10 dB &rarr; LNA off &rarr; 29 dB", "11.5 m", "&minus;31 dBm (Sorin)", "leak floor, same as the load alone", "26 Oct"],
+           ["26b", "same, LNA on", "11.5 m", "&minus;28 dBm (Sorin)", "+3 dB: radar pickup before the LNA, amplified, about equals the leak after it. No oscillation.", "26 Oct"],
+           ["26c", "50 &Omega; load &rarr; limiter &rarr; 20 dB &rarr; LNA on &rarr; 19 dB", "11.5 m", "&minus;24.06 dBm (Sorin)", "leak floor for tests 27 and 28", "26 Oct"],
+           ["27", "Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA on &rarr; 19 dB", "11.5 m", "<b>&minus;7.94 dBm</b> (Spike)", "LNA output +11.1 dBm. Input &asymp; &minus;12.1 dBm (antenna +8.7 dBm from test 7, &minus;0.8 dB limiter, &minus;20 dB pad). <b>Gain &asymp; 23 dB</b> (datasheet 22). 16 dB over the leak floor. Linear: input 7 dB under the compression point.", "26 Oct"],
+           ["28", "same, LNA off", "11.5 m", "&minus;25.85 dBm (Spike)", "17.9 dB below test 27. At the leak floor, so 17.9 dB is only a lower bound on the on/off difference.", "26 Oct"]],
+          left=(0, 1, 2, 3, 4, 5)) +
+    '<div class="note">Rules learned: at least 10 dB of pad between the limiter and the LNA (limiter output up to +17 dBm, LNA absolute max input +15 dBm). At 11.5 m from this radar, 20 dB before the LNA keeps it linear. Always measure the leak floor (a 50 &Omega; load in place of the antenna) for the same wiring first.</div>')
 
 # ------------------------------------------------------------------ RX mixer
 RXMIXER = part_tab(

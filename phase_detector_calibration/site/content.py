@@ -67,6 +67,7 @@ DS = {
     "p103": "https://www.minicircuits.com/pdfs/ZX60-P103LN+.pdf",
     "hpf": "https://www.minicircuits.com/pdfs/VHF-8400+.pdf",
     "vlm": "https://www.minicircuits.com/pdfs/VLM-33-S+.pdf",
+    "hlm": "https://markimicrowave.com/products/surface-mount/limiters/hlm-20psm/datasheet/",
 }
 
 
@@ -92,8 +93,8 @@ PARTS = [
     {"id": "pi-cable", "cells": ["SMA cables", D, D, D, D, D, D, D, "&minus;0.04, &minus;0.09, &minus;0.21 at 1.04 GHz", "extra delay cable 4.5 in = 0.55 ns", "measured 6 Oct", D]},
     {"id": "pi-pluto", "cells": ["Pluto SDR (test source)", "ADALM-PLUTO", "used at 1.0&ndash;1.2 GHz", "no RF input used", D, D, "output max +11 dBm (12.6 mW, 0.79 V rms)", D, D, D, "team notes", link(DS["pluto"], "ADI wiki")]},
     {"id": "pi-rxant", "cells": ["RX antenna", "horn", "8.2&ndash;12.4 GHz", D, D, D, "+10 to +15 dBi", D, "not tested", D, "design drawing", D]},
-    {"id": "pi-limiter", "cells": ["Power limiter", "not chosen (VLM-33-S+ on hand)", D, D, D, D, D, D, "not tested", "output must stay under +15 dBm", "design drawing", link(DS["vlm"], "VLM-33-S+ PDF")]},
-    {"id": "pi-lna", "cells": ["LNA", "Mini-Circuits ZX60-5123LN+", "5.5&ndash;12.5 GHz", "15.0", "31.6", "1.26", "+22.0", "+19.0 (min gain)", "not tested",
+    {"id": "pi-limiter", "cells": ["Power limiter", "Marki EVAL-HLM-20P (HLM-20PSM chip)", "DC&ndash;20 GHz", "+37.0 (5 W average; 50 W peak)", "5000", "15.8", "&minus;0.5 loss (0.7 at 10 GHz)", "&minus;1.5 loss (max)", "partly: over the air, 25 Oct (Limiter tab)", "flat leakage +17 dBm at 1 GHz, +13 dBm at 20 GHz; input P1dB +15 dBm; recovery 8 ns; spike leakage 0.1 erg; return loss 15 dB. Input side faces the antenna", "datasheet", link(DS["hlm"], "Marki datasheet")]},
+    {"id": "pi-lna", "cells": ["LNA", "Mini-Circuits ZX60-5123LN+", "5.5&ndash;12.5 GHz", "15.0", "31.6", "1.26", "+22.0", "+19.0 (min gain)", "partly: 0.08 A at 6 V; &asymp; 23 dB over the air (LNA tab)",
                                "supply 6 V typ (5&ndash;10 V; 12 V abs max), 80 mA (95 max); noise figure 1.4 dB; P1dB out +17 dBm; OIP3 +29.5 dBm", "datasheet", link("https://www.minicircuits.com/pdfs/ZX60-5123LN+.pdf", "PDF")]},
     {"id": "pi-rxmixer", "cells": ["RX mixer and TX mixer", "Mini-Circuits ZX05-14LH-S+", "RF/LO 3.7&ndash;10 GHz, IF DC&ndash;4 GHz", "17.0", "50", "1.58", "&minus;6.7 conversion loss (&minus;7.7 at 9.4 GHz)", "&minus;9.5 conversion loss", "not tested",
                                    "LO level +10 dBm (10 mW, 0.71 V rms); 1 dB compression +5 dBm in; LO&ndash;RF isolation 35 typ / 25 min; LO&ndash;IF 17 typ / 9 min; RF VSWR 4.0 at 9.4 GHz", "datasheet", link("https://www.minicircuits.com/pdfs/ZX05-14LH-S+.pdf", "PDF")]},
