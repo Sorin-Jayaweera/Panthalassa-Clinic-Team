@@ -76,3 +76,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~21:15 PC clock asked for numbers and a chart: SM200B reading with the 50 ohm load directly on the SM200B, the load into the attenuators, and the antenna into the attenuators
 - ~21:25 PC clock "the tests sometimes show two of the same thing. Also, I never had just the load in a cable into the SM200B. Reread over the messages to figure out what each of the tests were."
 - ~21:30 PC clock "also put that chart on the github pages."
+- ~21:45 PC clock "I'm measuring the attenuators on a VNA before I go back to the PLL mix down thing (which because I can manually push buttons to set the frequency, we don't need to care about usb control). I have the Agilent 8720ES S-Parameter network analyzer. +30 dBm RF 40 VDC MAX. Walk me through calibrating it and then measuring the S parameters of the 3 dB 8G attenuator."
+- 27 Oct "how many dB per division?"
+- 27 Oct four 8720ES photos (S22, S12, S11, S21, 10 dB/div, REF 0 dB, 50 MHz-20.05 GHz, 3 dB "8G" pad in) "put these on the website, and read them" (saved in radar_test/vna/)

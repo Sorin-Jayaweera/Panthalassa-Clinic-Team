@@ -74,6 +74,26 @@ RADAR = "".join([
     '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
     "What the racon's limiter, LNA and mixer will be given.</p>",
     POWER,
+    item("rad-pads", "Attenuator pads on the VNA: the 3 dB &ldquo;8G&rdquo; pad (27 Oct)",
+         p("Agilent 8720ES, 85052D kit (3.5 mm), full 2-port cal saved as REG26: 50 MHz&ndash;20.05 GHz, 801 points, IF BW 1 kHz, &minus;10 dBm. "
+           "Photos at 10 dB/div, REF 0 dB (centre line), so each reading is good to about &plusmn;1 dB. Read off the photos by eye; marker readings at 1 dB/div still to come."),
+         table(["Frequency", "S21 (loss)", "S12", "S11 (in match)", "S22 (out match)"], [
+             ["50 MHz&ndash;5 GHz", "&minus;2.5 to &minus;4 dB", "&minus;3 dB", "&minus;45 dB rising to &minus;15 dB", "&minus;36 rising to &minus;20 dB"],
+             ["~5.7 GHz", "notch, &minus;10 dB", "notch, &minus;10 dB", "&minus;11 dB, with a null at 5.5 GHz", "spike to ~0 dB (not physical, see below)"],
+             ["8.3 GHz (LO)", "&asymp; &minus;5 dB", "&asymp; &minus;5.5 dB", "&asymp; &minus;25 dB (null near 8 GHz)", "&asymp; &minus;16 dB"],
+             ["9.4 GHz (radar)", "&asymp; &minus;5.5 dB", "&asymp; &minus;6 dB", "&asymp; &minus;21 dB", "&asymp; &minus;35 dB (null)"],
+             ["14&ndash;20 GHz", "&minus;5 to &minus;10 dB, rippling", "&minus;5 to &minus;8 dB", "&asymp; &minus;11 dB", "&minus;10 to &minus;13 dB"]]),
+         ul(["<b>The &ldquo;3 dB&rdquo; pad loses about 5&ndash;6 dB at 9.4 GHz, not 3 dB.</b> It is rated only to 8 GHz. If the 6 and 10 dB pads do the same, "
+             "the &ldquo;29 dB&rdquo; and &ldquo;19 dB&rdquo; chains are several dB more, and every power worked back through them is several dB too low. Correct once all four pads are measured.",
+             "S21 &asymp; S12: the pad is reciprocal, as a passive pad should be.",
+             "The ~5.7 GHz feature: S22 near 0 dB at the same time as S21 = &minus;10 dB means more power out than in (|S21|&sup2; + |S22|&sup2; &gt; 1), so S22 there is not real. "
+             "Likely a cal or connection fault at port 2 at that frequency (the thru check before the pad went in showed no notch). Re-seat and torque the port 2 connection and repeat; if the S21 notch stays, it belongs to the pad.",
+             "Below 5 GHz the pad is a good 3 dB pad (match better than &minus;15 dB)."]),
+         fig("vna_pad3dB_S21_10dBdiv.png", "8720ES: S21 of the 3 dB pad, 10 dB/div"),
+         fig("vna_pad3dB_S12_10dBdiv.png", "8720ES: S12 of the 3 dB pad, 10 dB/div"),
+         fig("vna_pad3dB_S11_10dBdiv.png", "8720ES: S11 of the 3 dB pad, 10 dB/div"),
+         fig("vna_pad3dB_S22_10dBdiv.png", "8720ES: S22 of the 3 dB pad, 10 dB/div"),
+         p("Original photos: <code>radar_test/vna/</code>.")),
     item("rad-log", "Test log: all tests as one table (25 and 26 Oct)",
          _md(open(_RT / "test_log.md", encoding="utf-8").read()),
          h("Spike screens, 26 Oct at 11.5 m (3 MHz RBW, Min/Max, Max Hold)"),
