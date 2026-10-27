@@ -11,6 +11,50 @@ def _csv(name):
     rows = list(csv.reader(open(_RT / name, encoding="utf-8")))
     return table(rows[0], rows[1:], cls="parts", left=tuple(range(len(rows[0]))))
 
+
+def _md(text):
+    """Render radar_test/test_log.md (headings, tables, numbered and bulleted lists, **bold**, `code`)."""
+    import html as _h
+    import re
+
+    def inline(t):
+        t = _h.escape(t, quote=False)
+        t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+        return re.sub(r"`(.+?)`", r"<code>\1</code>", t)
+
+    out, rows, lst = [], [], None
+
+    def flush():
+        nonlocal rows, lst
+        if rows:
+            out.append(table([inline(c) for c in rows[0]], [[inline(c) for c in r] for r in rows[2:]], cls="parts", left=tuple(range(len(rows[0])))))
+            rows = []
+        if lst:
+            out.append((ol if lst[0] == "ol" else ul)([inline(i) for i in lst[1]]))
+            lst = None
+
+    for line in text.splitlines():
+        if line.startswith("|"):
+            rows.append([c.strip() for c in line.strip().strip("|").split("|")])
+            continue
+        m = re.match(r"(\d+\.|-) (.*)", line)
+        if m:
+            kind = "ol" if m.group(1)[0].isdigit() else "ul"
+            if rows or (lst and lst[0] != kind):
+                flush()
+            lst = lst or (kind, [])
+            lst[1].append(m.group(2))
+            continue
+        flush()
+        if line.startswith("# "):
+            continue
+        if line.startswith("## "):
+            out.append(h(inline(line[3:])))
+        elif line.strip():
+            out.append(p(inline(line)))
+    flush()
+    return "".join(out)
+
 SETUP = """<pre class="diagram">
  Furuno 1722C/NT radar, NavNet, 12.1 V 6.35 A          long-range pulse (LP), 24 nm range
  AN-72 absorber foam over the radome face
@@ -28,13 +72,24 @@ RADAR = "".join([
     "<h2>Radar</h2>",
     '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
     "What the racon's limiter, LNA and mixer will be given.</p>",
+    item("rad-log", "Test log: every test and its result (25 and 26 Oct)",
+         _md(open(_RT / "test_log.md", encoding="utf-8").read()),
+         h("Spike screens, 26 Oct at 11.5 m (3 MHz RBW, Min/Max, Max Hold)"),
+         p("Test 25b: 50 &Omega; load &rarr; 29 dB pads, whiteboard out. The leak floor: &minus;31.2 dBm."),
+         fig("spike_test25b_leak_floor_50ohm_load_29dB_11p5m.png", "Spike: leak floor with a 50 ohm load, -31.2 dBm"),
+         p("Test 27: Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA on &rarr; 19 dB. &minus;7.94 dBm, 16 dB above the &minus;24.06 dBm floor of the same chain with a load (26c)."),
+         fig("spike_test27_vivaldi_limiter_20dB_LNA_on_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA on, -7.94 dBm"),
+         p("Test 28: same, LNA off. &minus;25.85 dBm."),
+         fig("spike_test28_vivaldi_limiter_20dB_LNA_off_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA off, -25.85 dBm"),
+         p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>."), open_=True),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
          ul(["Whiteboard in: the Vivaldi faced the radar but no wideband reading was taken. The value is the measured whiteboard-out peak lowered by the 3.3 dB difference between the two 100 kHz Spike readings (&minus;44.0 and &minus;40.7 dBm). The manual attenuator also moved from 50 to 0 dB between those readings.",
              "EIRP assumes 8 dBi for the Vivaldi at 9.4 GHz (not measured). Each dB the real gain differs moves the EIRP by the same dB the other way.",
              "To predict the peak at another distance d (m) with a receive antenna of gain G (dBi): P = EIRP + G &minus; 51.91 &minus; 20 log10(d)."]),
          h("Signal"), _csv("radar_signal_table.csv"),
-         p("Copy-paste versions: <code>radar_test/radar_power_table.csv</code> and <code>radar_test/radar_signal_table.csv</code>."), open_=True),
+         p("Copy-paste versions: <code>radar_test/radar_power_table.csv</code> and <code>radar_test/radar_signal_table.csv</code>."),
+         p("<b>Caution:</b> the 26 Oct leak tests (log tests 16&ndash;26) show the radar reaches the SM200B directly at about &minus;20 to &minus;31 dBm. Power readings with 29 dB pads that are within 20 dB of that (tests 7&ndash;18) are partly leakage.")),
     item("rad-spike", "Spike max-hold exports, 100 kHz and 3 MHz RBW",
          fig("furuno_spike_maxhold_9370-9430MHz_rbw100kHz_vs_3MHz_11m_14dB_pads.png", "Spike max-hold spectra of the radar at 100 kHz and 3 MHz RBW, with markers"),
          ul(["Sorin's exports from Spike: <code>data/Furino Characterization/14db8G_11meters_100khzrbw.csv</code> and <code>14db8G_11meters_3mhzrbw.csv</code>. Plot made by <code>radar_test/plot_spike_exports.py</code>.",
