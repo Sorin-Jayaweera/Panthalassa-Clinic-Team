@@ -31,3 +31,30 @@ The reference frequency of this box is not known; with 25 MHz, INT = 166.
 1. Watch the lock LED (if the box has one) while sending register sets: a change shows a format was accepted.
 2. Or open the box and drive the ADF5355's SPI pins (CLK, DATA, LE, CE) from a Pico/Arduino with these register words.
 3. Or find the seller's PC program; capture its bytes on COM13.
+
+## First look on the SM200B (26 Oct 2026, 19:51)
+
+Out B → SMA cable → 10 + 6 + 3 dB pads (19 dB) → SM200B. Spike full span 100 kHz–20.1 GHz, RBW 300 kHz, ref −20 dBm.
+The box was already putting out a signal at power-up; none of the register formats sent earlier had switched it off.
+
+| Line | Frequency | At the SM200B | Relative to 8 GHz | Likely source |
+|---|---|---|---|---|
+| 1 | 8.000002 GHz | −26.98 dBm | 0 dB | wanted output (VCO 4 GHz doubled) |
+| 2 | 4.000002 GHz | −33.55 dBm | −6.6 dB | VCO fundamental leaking through the doubler |
+| 3 | 2.000002 GHz | −40.65 dBm | −13.7 dB | VCO ÷ 2 (the Out A path) |
+| 4 | 11.999905 GHz | −53.53 dBm | −26.5 dB | 3 × VCO |
+| 5 | 5.999954 GHz | −62.72 dBm | −35.7 dB | 3 × (VCO ÷ 2) |
+
+Out B level ≈ −26.98 + 19 = **−8 dBm** (cable and pad loss at 8 GHz not taken out; the "8G" pads are rated only to 8 GHz).
+Datasheet typical is about +1 dBm, so either the cable and pads lose several dB at 8 GHz or the box is set to a lower power.
+For the mixer's +10 dBm LO, −8 dBm + 12 dB (ZX60-14012L-S+) ≈ +4 dBm is not enough; the VCO line at 4 GHz (−6.6 dBc) also needs filtering before the mixer.
+After Spike reconnected, COM13 (the box's USB-serial) was no longer listed in Windows.
+Screen: `spike_screens/adf5355_outB_powerup_default_full_span_19dB_pads.jpg`.
+
+## Second try at the USB commands (26 Oct 2026, 19:35–19:40 PC clock), watched live in Spike
+
+Box re-enumerated as COM14. Spike at 8.15 GHz centre, 1 GHz span; box sitting at 8.000 GHz, −27.3 dBm.
+`probe_formats.py` sent "go to 8.3 GHz on Out B" in 13 formats at 4800, 9600, 19200, 38400, 57600 and 115200 baud:
+raw 4-byte register words (100 and 25 MHz reference), hex text lines, `0x` hex lines, `8300`, `8300.000`, `8300000000`,
+`F8300`, `f8300`, `FREQ 8300MHz`, `:FREQ 8.3GHz`, `SET 8300`. No reply to any, and the line never left 8.000 GHz.
+Conclusion: the box needs the seller's own (probably framed binary) protocol, or direct SPI access inside the box.

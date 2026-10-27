@@ -66,3 +66,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~19:55 PC clock "check https://github.com/gallicchio/"
 - ~19:58 PC clock "the SM200B is plugged in"
 - ~20:05 PC clock "the spectrum analyzer was getting hot, I just unplugged it. Do what you can with the ADF5355."
+- ~20:20 PC clock "The adf and signal hound are both pluggedin."
+- (reading) ADF5355 Out B at power-up: 8.000002 GHz, -26.98 dBm at the SM200B through 19 dB
+- ~20:30 PC clock "you can program it, just show me what you are doing"
