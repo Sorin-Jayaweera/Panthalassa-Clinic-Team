@@ -62,3 +62,7 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~19:36 PC clock "it's connected to the SignalHound SM200B."
 - ~19:40 PC clock "It is a black box with three output ports, out A plus, out A minus, out B, from AliExpress."
 - ~19:44 PC clock "try this: https://github.com/analogdevicesinc/no-OS/blob/main/drivers/frequency/adf5355/adf5355.c. I also just plugged the ADF 5355 into the 10+6+3 db attenuators in the SM200B."
+- ~19:50 PC clock "the sticker is hand written from someone in my lab, it says 2021-05 microwave synthesizer 5+MHZ - 13.66 Hz, 180 bucks ali express with the Out A+ and out A- at 54 M-6.8 GHz, and out B at 13.smth GHz"
+- ~19:55 PC clock "check https://github.com/gallicchio/"
+- ~19:58 PC clock "the SM200B is plugged in"
+- ~20:05 PC clock "the spectrum analyzer was getting hot, I just unplugged it. Do what you can with the ADF5355."
