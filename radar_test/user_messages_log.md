@@ -79,3 +79,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - ~21:45 PC clock "I'm measuring the attenuators on a VNA before I go back to the PLL mix down thing (which because I can manually push buttons to set the frequency, we don't need to care about usb control). I have the Agilent 8720ES S-Parameter network analyzer. +30 dBm RF 40 VDC MAX. Walk me through calibrating it and then measuring the S parameters of the 3 dB 8G attenuator."
 - 27 Oct "how many dB per division?"
 - 27 Oct four 8720ES photos (S22, S12, S11, S21, 10 dB/div, REF 0 dB, 50 MHz-20.05 GHz, 3 dB "8G" pad in) "put these on the website, and read them" (saved in radar_test/vna/)
+- 29 Oct four 8720ES photos with markers (S22, S12, S21, S11; markers at 50 MHz, 880 MHz, 9.502, 10.284, 20.05 GHz), no text (saved as radar_test/vna/pad3dB_sweep2_*)
