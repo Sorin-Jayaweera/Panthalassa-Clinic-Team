@@ -131,3 +131,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "side 1: vivaldi to power limiter to 20 db to the 6v amp to 6 + 10 db to the RF of the mixer. Side 2: adf to the 12 v amplifier to S of the splitter, port 2 capped at 50 and port 1 to the LO port of the mixer. IF of the mixer goes to 3db to kitty."
 - 31 Oct Spike screenshot "I have the 12V and 6 V amp powered. furuno is off. the PLL is driving at 8.3 Ghz, and I see it. is it safe to turn on the furuno?"
 - 31 Oct three Spike screenshots, no text (IF near 1.1 GHz, 9.4 GHz, 8.3 GHz)
+- 31 Oct two Spike screenshots "-38 at the lower when -19 at the higher frequencies. This is with power on, the splitter still there, and pll still on. I was just looking a second time."
