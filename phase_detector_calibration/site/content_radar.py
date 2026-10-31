@@ -74,7 +74,7 @@ RADAR = "".join([
     '<p class="sub">Furuno 1722C/NT X-band radar (NavNet VX1, 2.2 kW peak, 18 in radome) received over the air by a Vivaldi antenna and the Signal Hound SM200B, 25 Oct 2026. '
     "What the racon's limiter, LNA and mixer will be given.</p>",
     POWER,
-    item("rad-pads", "Attenuator pads on the VNA: the 3 dB and 6 dB &ldquo;8G&rdquo; pads",
+    item("rad-pads", "Attenuator pads on the VNA: the 3, 6 and 10 dB &ldquo;8G&rdquo; pads",
          p("Agilent 8720ES, 85052D kit (3.5 mm), full 2-port cal: 50 MHz&ndash;20.05 GHz, 801 points, IF BW 1 kHz, &minus;10 dBm. Cal REG26 was made with the first cable; recalibrated with the better cable for the sweeps below. All values in dB. Copy-paste version: <code>radar_test/vna/pad_measurements.csv</code>. "
            "<b>3 dB pad, sweep 3 (marker readings, better cable, recalibrated; use these):</b>"),
          table(["Frequency", "S21 (loss)", "S12", "S11 (in match)", "S22 (out match)"], [
@@ -103,6 +103,20 @@ RADAR = "".join([
          fig("vna_pad6dB_S12_markers.png", "8720ES: S12 of the 6 dB pad"),
          fig("vna_pad6dB_S11_markers.png", "8720ES: S11 of the 6 dB pad"),
          fig("vna_pad6dB_S22_markers.png", "8720ES: S22 of the 6 dB pad"),
+         h("10 dB pad: relative readings only, to be retaken"),
+         p("These screens were in delta-marker mode (&Delta;REF=&Delta;), so the numbers below are relative to a fixed reference marker, not absolute dB. Differences within one column are valid. "
+           "The reference value is not on the screens. Fitting the photos suggests about &minus;14.6 dB (the last 6 dB pad S22 reading), which would put S21 near &minus;10.7 and S12 near &minus;11.3 dB at 9.4 GHz, but that is an estimate. "
+           "S21 and S12 then differ by a nearly constant 0.5&ndash;0.8 dB, including at 50 MHz, so do not use these as loss values."),
+         table(["Marker", "Frequency", "S21 rel.", "S12 rel.", "S11 rel.", "S22 rel."], [
+             ["1", "50 MHz", "+4.053", "+3.379", "&minus;32.330", "&minus;39.862"],
+             ["4", "8.008 GHz", "+3.964", "+3.200", "&minus;14.947", "&minus;3.639"],
+             ["2", "9.400 GHz", "+3.830", "+3.307", "&minus;12.749", "+1.643"],
+             ["3", "10.000 GHz", "+3.871", "+3.290", "&minus;11.743", "+2.962"],
+             ["5", "20.048 GHz", "+5.553", "+4.896", "&minus;0.074", "&minus;11.365"]]),
+         fig("vna_pad10dB_delta_S21.png", "8720ES: S21 of the 10 dB pad, delta markers"),
+         fig("vna_pad10dB_delta_S12.png", "8720ES: S12 of the 10 dB pad, delta markers"),
+         fig("vna_pad10dB_delta_S11.png", "8720ES: S11 of the 10 dB pad, delta markers"),
+         fig("vna_pad10dB_delta_S22.png", "8720ES: S22 of the 10 dB pad, delta markers"),
          h("3 dB pad, sweep 2, first cable, markers (superseded)"),
          table(["Frequency", "S21", "S12", "S11", "S22"], [
              ["50 MHz", "&minus;3.035 dB", "&minus;3.013 dB", "&minus;56.19 dB", "&minus;49.58 dB"],

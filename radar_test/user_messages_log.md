@@ -83,3 +83,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct four 8720ES photos with markers (saved as radar_test/vna/pad3dB_sweep3_*) "I remeasured the 3 dB attenuator using a different cable that is much better. This is for 8G."
 - 31 Oct four 8720ES photos (saved as radar_test/vna/pad6dB_*) "YES I recalibrated the data, all I'm asking you to do right now is to just read these four photographs and write down the numbers for each of my markers that I have it in a good table. Here are photos for, instead of the 3 dB, this is now for a 6 dB attenuator."
 - 31 Oct "yes, record this data as we go. Do you have the 3db and 6db done?"
+- 31 Oct four 8720ES photos (saved as radar_test/vna/pad10dB_delta_*, screens in delta-marker mode) "This is for 10dB. Next I want to measure the vivaldi antenna - it only has one port. Walk me through how to measure this on the S parameter network analyzer"
