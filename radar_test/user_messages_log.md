@@ -124,3 +124,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct Spike screenshot (RBW 100 kHz) "it goes from -54 to -52 when I turn on the 6V power supply when looking at smaller RBW"
 - 31 Oct two Spike screenshots "1: yes 0.08 A. 2: I put the load directly on the power limiter (not after a meter of cable)."
 - 31 Oct Spike screenshot "vivaldi directly on the limiter"
+- 31 Oct "I can leave this as it is, I want to test the frequency mixing with the PLL. That is my end goal. As long as I have that frequency content going in, I'm happy."
+- 31 Oct "-16.46 with amp on, -27.39 with amp off."
