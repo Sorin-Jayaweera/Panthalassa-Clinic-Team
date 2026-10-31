@@ -254,7 +254,20 @@ PHASEDET = part_tab(
           [["Output range, VCO source", "30.3 to 145.7 mV over 744&ndash;920 MHz", "10 Oct"], ["Range where one voltage = one frequency", "744 to 788 MHz", "10 Oct"],
            ["Slope in that range", "2.66 mV/MHz mean", "10 Oct"], ["Power at each input", "+0.6 dBm (wanted: +7 on LO)", "6 Oct"], ["Noise", "84 to 142 &micro;V rms = 38 to 66 kHz", "10 Oct"],
            ["10&ndash;90 % time after a step", "89 to 140 ns (input edge is 145 ns)", "10 Oct"], ["Delay, input to output", "26 ns", "10 Oct"]], left=(0, 1, 2)) +
-    p("The measured curve does not match the expected smooth cosine. It has turning points 14 to 34 MHz apart. The cause is not known.") + MIX_ITEMS)
+    p("The measured curve does not match the expected smooth cosine. It has turning points 14 to 34 MHz apart. The cause is not known.") +
+    h("VNA, LO and RF ports, mixer not driven (8720ES, 31 Oct)") +
+    p("Port 1 = LO, port 2 = RF. No LO drive, so the diodes are off and these are not operating values: do not compare them with the datasheet&rsquo;s +7 dBm figures. The setup photo shows the IF port open, not loaded; repeat with 50 &Omega; on IF. S22, S21 and S12 screens show Cor and * rather than C2, so a sweep may not have finished.") +
+    table(["Marker", "Frequency", "S11 (LO match)", "S21 (LO to RF)", "S12 (RF to LO)", "S22 (RF match)"], [
+        ["1", "50 MHz", "&minus;0.046 dB", "&minus;57.91 dB", "&minus;66.02 dB", "&minus;0.131 dB"],
+        ["2", "500 MHz", "&minus;9.830 dB", "&minus;34.91 dB", "&minus;37.46 dB", "&minus;29.54 dB"],
+        ["3", "1.002 GHz", "&minus;11.94 dB", "&minus;31.89 dB", "&minus;32.15 dB", "&minus;11.10 dB"],
+        ["4", "1.500 GHz", "&minus;13.75 dB", "&minus;30.18 dB", "&minus;31.10 dB", "&minus;6.09 dB"],
+        ["5", "2.002 GHz", "&minus;4.823 dB", "&minus;26.16 dB", "&minus;26.24 dB", "&minus;3.86 dB"]]) +
+    fig("vna_mixer30W_LOport1_RFport2_setup.png", "ZX05-30W-S+ with LO and RF on cables, IF open") +
+    fig("vna_mixer30W_LOport1_RFport2_S11.png", "8720ES: mixer S11, LO port") +
+    fig("vna_mixer30W_LOport1_RFport2_S21.png", "8720ES: mixer S21, LO to RF") +
+    fig("vna_mixer30W_LOport1_RFport2_S12.png", "8720ES: mixer S12, RF to LO") +
+    fig("vna_mixer30W_LOport1_RFport2_S22.png", "8720ES: mixer S22, RF port") + MIX_ITEMS)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",
