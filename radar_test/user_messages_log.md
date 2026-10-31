@@ -132,3 +132,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct Spike screenshot "I have the 12V and 6 V amp powered. furuno is off. the PLL is driving at 8.3 Ghz, and I see it. is it safe to turn on the furuno?"
 - 31 Oct three Spike screenshots, no text (IF near 1.1 GHz, 9.4 GHz, 8.3 GHz)
 - 31 Oct two Spike screenshots "-38 at the lower when -19 at the higher frequencies. This is with power on, the splitter still there, and pll still on. I was just looking a second time."
+- 31 Oct "with the PLL off I don't see the lower frequency (1.1 GHz) at all."

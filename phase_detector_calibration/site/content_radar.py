@@ -190,6 +190,7 @@ RADAR = "".join([
          p("Test 36b, second look, same wiring, both at RBW 3 MHz: IF &minus;38.57 dBm at 1.105469 GHz and &minus;19.82 dBm at 9.404688 GHz, 18.75 dB apart. The 9.4 GHz reading is close to the test 32 leak (&minus;23.15 dBm), so it is not a clean feedthrough number. Apparent conversion loss about 31.6 dB, using about &minus;4 dBm RF from test 34."),
          fig("spike_test36b_mixer_IF_3MHz_31oct.png", "Spike: mixer IF, -38.57 dBm at 1.105469 GHz"),
          fig("spike_test36b_mixer_9p4GHz_3MHz_31oct.png", "Spike: 9.4 GHz at the IF port, -19.82 dBm"),
+         p("Test 36c, control: with the PLL off, Sorin saw no 1.1 GHz signal, so the peak is the mixing product."),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
