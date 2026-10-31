@@ -178,6 +178,8 @@ RADAR = "".join([
          p("Test 32: 50 &Omega; load directly on the limiter input instead of the antenna (which had been on a meter of cable), LNA on at 0.08 A. &minus;23.15 dBm at 3 MHz RBW and &minus;45.04 dBm at 100 kHz RBW, both at 9.40625 GHz. The load reads higher than the antenna by 9.7 and 4.4 dB, so tests 30 and 31 are leak, not signal through the chain. They do not show the LNA gain. Why the antenna path gave well under the expected &minus;18 dBm is not known."),
          fig("spike_test32_load_on_limiter_100kHz_31oct.png", "Spike: load on limiter, 100 kHz RBW, -45.04 dBm"),
          fig("spike_test32_load_on_limiter_3MHz_31oct.png", "Spike: load on limiter, 3 MHz RBW, -23.15 dBm"),
+         p("Test 33: Vivaldi directly on the limiter, no meter of cable. &minus;18.94 dBm at 9.405469 GHz, 3 MHz RBW, near the expected &minus;18 dBm. That is 13.9 dB above test 30 with the cable, which points at that cable or its connection, and only 4.2 dB above the load reading in test 32. The peak is above the &minus;20 dBm ref, so it may read low; to be rechecked at a higher ref."),
+         fig("spike_test33_vivaldi_direct_on_limiter_31oct.png", "Spike: Vivaldi directly on limiter, -18.94 dBm"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
