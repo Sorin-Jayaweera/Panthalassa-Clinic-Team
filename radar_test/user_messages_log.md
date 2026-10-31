@@ -139,3 +139,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "so you want a second ZX60-14912L-S+ after the PLL. y/n"
 - 31 Oct "save all this to the website. Now that we have a low frequency, I'm going to measure it on the oscilloscope and the SSA 3021X spectrum analyzer to compare. Then I'll put in the frequency identification."
 - 31 Oct "The setup: I have the furuno to the power limiter to 20 db to the 6v amp to 16 db to the RF port of the mixer. I have the 8.3 GHz adf to the 12v amp to the splitter (one side 50 ohm) to the LO port. The IF port goes to the oscope (yippie)  and then to the SSA 3021x ( call it  maxxie). You are plugged in to the usb of maxxie and yippie."
+- 31 Oct Spike screenshot "I plugged it back into kitty with the 3db as the only new thing (if to 3db to kitty). Nothing else changed."
