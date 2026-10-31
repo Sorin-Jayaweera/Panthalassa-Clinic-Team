@@ -181,6 +181,8 @@ RADAR = "".join([
          p("Test 33: Vivaldi directly on the limiter, no meter of cable. &minus;18.94 dBm at 9.405469 GHz, 3 MHz RBW, near the expected &minus;18 dBm. That is 13.9 dB above test 30 with the cable, which points at that cable or its connection, and only 4.2 dB above the load reading in test 32. The peak is above the &minus;20 dBm ref, so it may read low; to be rechecked at a higher ref."),
          fig("spike_test33_vivaldi_direct_on_limiter_31oct.png", "Spike: Vivaldi directly on limiter, -18.94 dBm"),
          p("Test 34: Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA &rarr; 29 dB &rarr; SM200B, no PLL or mixer. Sorin read &minus;16.46 dBm with the amp on and &minus;27.39 dBm with the amp off, 10.93 dB apart, which is a lower bound on the gain. No screenshot; Spike settings not stated."),
+         p("Test 35, radar off, baseline for the mix-down: Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA &rarr; 6+10 &rarr; ZX05-14LH-S+ RF; ADF 8.3 GHz &rarr; buffer &rarr; ZX10 &rarr; mixer LO; IF &rarr; 3 dB &rarr; SM200B. LO at the IF port: &minus;30.62 dBm at 8.300002 GHz. By eye, about &minus;32 dBm near 4.15 GHz and &minus;52 dBm near 16.6 GHz."),
+         fig("spike_test35_mixer_IF_radar_off_full_span_31oct.png", "Spike: mixer IF, full span, radar off, LO -30.62 dBm"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
