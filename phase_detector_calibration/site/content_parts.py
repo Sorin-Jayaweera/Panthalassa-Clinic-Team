@@ -267,7 +267,15 @@ PHASEDET = part_tab(
     fig("vna_mixer30W_LOport1_RFport2_S11.png", "8720ES: mixer S11, LO port") +
     fig("vna_mixer30W_LOport1_RFport2_S21.png", "8720ES: mixer S21, LO to RF") +
     fig("vna_mixer30W_LOport1_RFport2_S12.png", "8720ES: mixer S12, RF to LO") +
-    fig("vna_mixer30W_LOport1_RFport2_S22.png", "8720ES: mixer S22, RF port") + MIX_ITEMS)
+    fig("vna_mixer30W_LOport1_RFport2_S22.png", "8720ES: mixer S22, RF port") +
+    h("VNA, LO and IF ports, mixer not driven (8720ES, 31 Oct)") +
+    p("Port 1 = LO, port 2 = IF, RF port open, no LO drive. Same limits as above. Photos not stored; values read from them at the time. The LO match agrees with the LO and RF sweep within 0.05 dB at every marker. At 50 MHz S21 and S12 differ by 18 dB, so that marker is not a real isolation value.") +
+    table(["Marker", "Frequency", "S11 (LO match)", "S21 (LO to IF)", "S12 (IF to LO)", "S22 (IF match)"], [
+        ["1", "50 MHz", "&minus;0.030 dB", "&minus;66.11 dB", "&minus;47.64 dB", "&minus;9.39 dB"],
+        ["2", "500 MHz", "&minus;9.840 dB", "&minus;29.97 dB", "&minus;30.60 dB", "&minus;24.35 dB"],
+        ["3", "1.002 GHz", "&minus;11.94 dB", "&minus;24.19 dB", "&minus;23.82 dB", "&minus;19.42 dB"],
+        ["4", "1.500 GHz", "&minus;13.70 dB", "&minus;22.16 dB", "&minus;21.94 dB", "&minus;11.46 dB"],
+        ["5", "2.002 GHz", "&minus;4.793 dB", "&minus;14.84 dB", "&minus;14.37 dB", "&minus;4.94 dB"]]) + MIX_ITEMS)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",
