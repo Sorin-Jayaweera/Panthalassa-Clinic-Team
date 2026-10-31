@@ -1,0 +1,7 @@
+# Vivaldi S11, port 1, port 2 open. RAW values in dB RELATIVE to the fixed delta marker, NOT absolute. Fixed marker value not on screen.
+marker,freq_GHz,S11_rel_dB_cal_points_C2,S11_rel_dB_1601pts_interpolated_C2delta
+1,0.050,13.436,13.436
+4,8.008,6.268,5.705
+2,9.400,5.243,8.770
+3,10.000,6.920,5.543
+5,20.048,8.732,8.688
