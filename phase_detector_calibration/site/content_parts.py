@@ -1,6 +1,6 @@
 """Per-part tabs. Every part has the same four sections: Specs, Expected behavior, Test plan, Results."""
 import content as C
-from content import item, table, ul, ol, p, h, link, math, D
+from content import item, table, ul, ol, p, h, link, math, fig, D
 
 PDF = "https://www.minicircuits.com/pdfs/"
 
