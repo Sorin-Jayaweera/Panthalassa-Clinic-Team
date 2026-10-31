@@ -126,3 +126,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct Spike screenshot "vivaldi directly on the limiter"
 - 31 Oct "I can leave this as it is, I want to test the frequency mixing with the PLL. That is my end goal. As long as I have that frequency content going in, I'm happy."
 - 31 Oct "-16.46 with amp on, -27.39 with amp off."
+- 31 Oct "you misread. I hadn't put in the PLL yet. This is with vivaldi to power limiter to 20 db to amp to 29 db to kitty. "-16.46 with amp on, -27.39 with amp off.""
