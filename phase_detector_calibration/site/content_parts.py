@@ -275,7 +275,20 @@ PHASEDET = part_tab(
         ["2", "500 MHz", "&minus;9.840 dB", "&minus;29.97 dB", "&minus;30.60 dB", "&minus;24.35 dB"],
         ["3", "1.002 GHz", "&minus;11.94 dB", "&minus;24.19 dB", "&minus;23.82 dB", "&minus;19.42 dB"],
         ["4", "1.500 GHz", "&minus;13.70 dB", "&minus;22.16 dB", "&minus;21.94 dB", "&minus;11.46 dB"],
-        ["5", "2.002 GHz", "&minus;4.793 dB", "&minus;14.84 dB", "&minus;14.37 dB", "&minus;4.94 dB"]]) + MIX_ITEMS)
+        ["5", "2.002 GHz", "&minus;4.793 dB", "&minus;14.84 dB", "&minus;14.37 dB", "&minus;4.94 dB"]]) +
+    h("VNA, IF and RF ports, mixer not driven, LO open (8720ES, 31 Oct)") +
+    p("Port 1 = IF, port 2 = RF, no load on LO (Sorin is redoing these sweeps with the load on). S21 and S12 differ by up to 7 dB at 1 GHz and 23 dB at 50 MHz, so treat these isolation values as unconfirmed.") +
+    table(["Marker", "Frequency", "S11 (IF match)", "S21 (IF to RF)", "S12 (RF to IF)", "S22 (RF match)"], [
+        ["1", "50 MHz", "&minus;10.22 dB", "&minus;30.41 dB", "&minus;53.15 dB", "&minus;0.107 dB"],
+        ["2", "500 MHz", "&minus;23.57 dB", "&minus;26.53 dB", "&minus;24.07 dB", "&minus;26.80 dB"],
+        ["3", "1.002 GHz", "&minus;18.94 dB", "&minus;26.17 dB", "&minus;33.59 dB", "&minus;11.17 dB"],
+        ["4", "1.500 GHz", "&minus;11.78 dB", "&minus;24.35 dB", "&minus;26.99 dB", "&minus;6.23 dB"],
+        ["5", "2.002 GHz", "&minus;4.517 dB", "&minus;27.80 dB", "&minus;30.98 dB", "&minus;4.09 dB"]]) +
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_setup.png", "ZX05-30W-S+ with IF and RF on cables, LO open") +
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S11.png", "8720ES: mixer S11, IF port, LO open") +
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S21.png", "8720ES: mixer S21, IF to RF, LO open") +
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S12.png", "8720ES: mixer S12, RF to IF, LO open") +
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",
