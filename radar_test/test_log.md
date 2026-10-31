@@ -46,6 +46,7 @@ Distances are radar to Vivaldi. 11.3 m = 37 ft (Sorin); on 26 Oct Sorin gave the
 | 26c | 18:48 | 11.5 m | 50 Ω load → limiter → 20 dB (10+10) → LNA powered → 19 dB (10+6+3) | 20 + 19 dB | off | **−24.06 dBm** (your reading) | leak floor for the test-27 wiring; 4 dB above 26b because 10 dB less padding after the LNA |
 | 27 | 18:50 | 11.5 m | Vivaldi → limiter → 20 dB → LNA (6 V) → 19 dB → SM200B, whiteboard out | 20 + 19 dB | off | **−7.94 dBm** at 9.4047 GHz (Spike 3 MHz, Min/Max, Max Hold 20 s, ref +10 dBm); −11.4 dBm at ref −20 was clipped | 16 dB above the 26c floor (−24.06). LNA output about +11.1 dBm; with the input estimated from test 7 (+8.7 − 0.8 − 20 = −12.1 dBm) the LNA gain is about 23 dB (datasheet about 22) |
 | 28 | 18:52 | 11.5 m | same as 27, LNA **unpowered** | 20 + 19 dB | off | **−25.85 dBm** at 9.4047 GHz (Spike 3 MHz, ref +10) | 17.9 dB below 27. This is near the leak floor (−24 to −31), so it is leak plus whatever leaks through the off LNA, not a clean off-state loss; on/off difference is a lower bound on the gain |
+| 29 | 31 Oct | not stated | Vivaldi → limiter → 10+10 → LNA → 10+6+3 → SM200B (same pads as 27) | 20 + 19 dB | off | **−19.12 dBm** at 9.408594 GHz (Spike 3 MHz, Min/Max, Max Hold, ref 0; Sorin's screenshot) | 11.2 dB below test 27 and only 4.9 dB above the 26c floor (−24.06, 25 Oct), so leak may be a large part of it. Cause of the drop not known; hold time, position and aim not recorded. No load control taken today |
 
 ## What the tests show
 

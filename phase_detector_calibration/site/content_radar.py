@@ -167,6 +167,8 @@ RADAR = "".join([
          fig("spike_test27_vivaldi_limiter_20dB_LNA_on_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA on, -7.94 dBm"),
          p("Test 28: same, LNA off. &minus;25.85 dBm."),
          fig("spike_test28_vivaldi_limiter_20dB_LNA_off_19dB_11p5m.png", "Spike: Vivaldi, limiter, LNA off, -25.85 dBm"),
+         p("Test 29 (31 Oct): same pads as test 27 (Vivaldi &rarr; limiter &rarr; 10+10 &rarr; LNA &rarr; 10+6+3). &minus;19.12 dBm at 9.408594 GHz, 11.2 dB below test 27 and only 4.9 dB above the 25 Oct floor of this chain, so leak may be a large part of it. Cause of the drop not known; no load control taken yet."),
+         fig("spike_test29_vivaldi_limiter_20dB_LNA_19dB_31oct.png", "Spike: Vivaldi, limiter, LNA, -19.12 dBm"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),

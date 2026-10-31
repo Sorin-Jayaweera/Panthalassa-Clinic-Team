@@ -109,3 +109,10 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct Spike screenshot, -53.96 dBm at 8.29995 GHz: "Now I measure with the ZX10-1252-S+ in"
 - 31 Oct "The setup for that measurement was ADF to 10 dB to ZX60-14012L-S+ to 20 dB attenuators to the splitter to kitty."
 - 31 Oct "With the splitter in I measured -57 dB, and with it out I measure -53 dB. I had forgotten to turn on the amplifier. With it on, I now measure -31 dB without the splitter and -36 with it. Now on to the radar. I have 10 + 6 + 3 + 10 dB to the ZX60-5123LN+ (6V dc in) to the power limiter to the vivaldi, with the furuno. Am I good to turn the furuno on?"
+- 31 Oct "it is my goal for the LNA to saturate - that way i have a constant voltage for the frequency mixer (phase detector circuit later)."
+- 31 Oct "I have on off keying from the envelope, and phase detection. will the lna break? or will it just rail out?"
+- 31 Oct "I forgot about the RF limiting amp, that is where I actually want to saturate."
+- 31 Oct "I'm going to measure with Vivaldi -> limiter -> 10 + 10 -> LNA -> 10 + 6 + 3 -> kitty. Turning on the radar now, I'll send you a screenshot."
+- 31 Oct Spike screenshot (noise only) "are these settings good?"
+- 31 Oct "take control to fix this measurement"
+- 31 Oct Spike screenshot, no text (radar at 9.408594 GHz, -19.12 dBm, ref 0, RBW 3 MHz)
