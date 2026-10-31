@@ -116,3 +116,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct Spike screenshot (noise only) "are these settings good?"
 - 31 Oct "take control to fix this measurement"
 - 31 Oct Spike screenshot, no text (radar at 9.408594 GHz, -19.12 dBm, ref 0, RBW 3 MHz)
+- 31 Oct "why does this look so different than before?"
+- 31 Oct "I forgot to turn on the poewr for the amp."
