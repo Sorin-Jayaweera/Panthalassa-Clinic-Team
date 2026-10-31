@@ -54,7 +54,23 @@ LIMITER = part_tab(
            ["Radar 26a: pickup", "50 &Omega; load &rarr; limiter &rarr; 10 dB &rarr; LNA (off) &rarr; 29 dB, 11.5 m", "&minus;31 dBm, same as the load alone", D, "yes", "26 Oct"],
            ["Radar 27: in the chain", "Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA &rarr; 19 dB, 11.5 m", "chain consistent with 0.8 dB limiter loss and 22&ndash;23 dB LNA gain", D, "fair", "26 Oct"]],
           left=(0, 1, 2, 3, 4, 5)) +
-    h("VNA small-signal sweep (8720ES, &minus;10 dBm, 31 Oct): relative readings, to be retaken") +
+    h("VNA small-signal sweep (8720ES, 31 Oct): EVAL-HLM-20P board, use these") +
+    p("Delta markers off, cal not interpolated (C2 on screen). Includes the evaluation board&rsquo;s connectors and traces.") +
+    table(["Marker", "Frequency", "S21 (loss)", "S12", "S11 (in match)", "S22 (out match)"], [
+        ["1", "50 MHz", "&minus;0.099 dB", "&minus;0.067 dB", "&minus;36.16 dB", "&minus;39.13 dB"],
+        ["4", "8.008 GHz", "&minus;1.617 dB", "&minus;1.166 dB", "&minus;12.29 dB", "&minus;15.04 dB"],
+        ["2", "9.400 GHz (radar band)", "<b>&minus;1.759 dB</b>", "<b>&minus;1.670 dB</b>", "&minus;14.40 dB", "&minus;13.14 dB"],
+        ["3", "10.000 GHz", "&minus;1.697 dB", "&minus;1.943 dB", "&minus;13.40 dB", "&minus;11.36 dB"],
+        ["5", "20.046 GHz", "&minus;2.237 dB", "&minus;2.216 dB", "&minus;18.05 dB", "&minus;23.64 dB"]]) +
+    ul(["<b>Loss at 9.4 GHz is about 1.7 dB</b>, against the datasheet&rsquo;s 0.5 dB typical, 0.7 dB at 10 GHz and 1.5 dB max. The datasheet figures are for the limiter; how much of the extra is the evaluation board was not measured. This replaces the over-the-air 0.8 dB, which was already marked untrustworthy.",
+        "Match at 9.4 GHz is 13&ndash;14 dB return loss (datasheet 15 dB typical).",
+        "S21 and S12 agree within 0.09 dB at 9.4 GHz, but differ by up to 0.45 dB at 8 GHz. The S11 trace is noticeably noisier than S22, so the port 1 connection is worth checking.",
+        "This is a low-level measurement. It says nothing about clamping."]) +
+    fig("vna_limiter_abs_S21.png", "8720ES: limiter S21, absolute markers") +
+    fig("vna_limiter_abs_S12.png", "8720ES: limiter S12, absolute markers") +
+    fig("vna_limiter_abs_S11.png", "8720ES: limiter S11, absolute markers") +
+    fig("vna_limiter_abs_S22.png", "8720ES: limiter S22, absolute markers") +
+    h("Earlier VNA sweep: relative readings, superseded") +
     p("Screens were in delta-marker mode with an interpolated cal (C2&Delta;, 1601 points), so these are dB relative to a fixed marker whose value is not on screen. Do not read them as loss. Differences within a column are valid: S21 falls 1.7 dB from 50 MHz to 9.4 GHz. "
       "S21 and S12 differ by 0.6&ndash;1.1 dB at every marker, more than a reciprocal part should; the 10 dB pad, taken on the same setup, shows the same offset, so suspect the setup. This low-level sweep says nothing about clamping.") +
     table(["Marker", "Frequency", "S21 rel.", "S12 rel.", "S11 rel.", "S22 rel."], [
