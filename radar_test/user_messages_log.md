@@ -104,3 +104,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "I have 8.3 GHz on OUT B, to 10 db to the amp to 20 db to kitty. Open spike and measure"
 - 31 Oct Spike screenshot, -33.57 dBm at 8.29995 GHz: "This picture is without the splitter. I'm now putting in the splitter at the end. There are three sides - S, 1, and 2. I'm putting S to come from the amplifier, capping 2, and measuring at 1."
 - 31 Oct Spike screenshot, -59.92 dBm at 8.29995 GHz: "And this is with the splitter"
+- 31 Oct "The splitter is the ZFRSC-42-S+"
+- 31 Oct "I'm going to change it to the ZX10-2-1252-S+"
+- 31 Oct Spike screenshot, -53.96 dBm at 8.29995 GHz: "Now I measure with the ZX10-1252-S+ in"
