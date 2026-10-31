@@ -196,6 +196,7 @@ RADAR = "".join([
          fig("yippie_first_look_31oct.png", "SDS1104X-E: flat trace with the IF connected"),
          p("Test 38: same chain, IF &rarr; 3 dB &rarr; SM200B, nothing else changed. IF about &minus;37 dBm near 1.104 GHz by eye (RBW 3 MHz, ref &minus;20), agreeing with test 36b. The chain still works, so the weak test 37 reading comes from the scope/SSA path or the SSA&rsquo;s narrower RBW."),
          fig("spike_test38_mixer_IF_back_on_kitty_31oct.png", "Spike: IF back on the SM200B, about -37 dBm"),
+         p("Test 39: IF directly on the SSA3021X, no pad or scope. RBW 1 MHz, atten 0. Zero span at 1.105 GHz: &minus;50.88 and &minus;54.76 dBm max over 30 s. Swept 100 MHz with a 1 s sweep: &minus;61.54 dBm at 1.1056 GHz. The frequency agrees with Spike. The level matches test 37 with the scope in, so the scope was not the loss. It is about 15 dB below the &minus;35.6 dBm Spike implies; the 1 MHz RBW against a 0.65 &micro;s pulse should explain about 9.5 dB, and the rest is not explained. No PLL-off control on the SSA."),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
