@@ -107,3 +107,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "The splitter is the ZFRSC-42-S+"
 - 31 Oct "I'm going to change it to the ZX10-2-1252-S+"
 - 31 Oct Spike screenshot, -53.96 dBm at 8.29995 GHz: "Now I measure with the ZX10-1252-S+ in"
+- 31 Oct "The setup for that measurement was ADF to 10 dB to ZX60-14012L-S+ to 20 dB attenuators to the splitter to kitty."
+- 31 Oct "With the splitter in I measured -57 dB, and with it out I measure -53 dB. I had forgotten to turn on the amplifier. With it on, I now measure -31 dB without the splitter and -36 with it. Now on to the radar. I have 10 + 6 + 3 + 10 dB to the ZX60-5123LN+ (6V dc in) to the power limiter to the vivaldi, with the furuno. Am I good to turn the furuno on?"
