@@ -28,7 +28,8 @@ LOBUF = part_tab(
         ["6", "Harmonics", "same as 5", "nothing", "read 16.6 GHz", "not specified", "recorded"]]) +
     '<div class="note">Input limit is +10 dBm. Check the PLL level (test 2) before connecting it to the amp without attenuators.</div>',
     table(["Test", "Result", "Expected", "Pass?", "Date"],
-          [["1. Supply current", "0.06 A at 12.0 V", "62 mA, max 68 mA", "pass", "12 Oct"], ["2. PLL level", "not run", "", "", ""],
+          [["1. Supply current", "0.06 A at 12.0 V", "62 mA, max 68 mA", "pass", "12 Oct"], ["2. PLL level at 8.3 GHz, through the buffer", "ADF5355 Out B &rarr; 10 dB &rarr; buffer &rarr; 20 dB &rarr; SM200B: &minus;33.57 dBm at 8.29995 GHz. With 12.5 dB buffer gain and pads at nominal, Out B &asymp; &minus;16 dBm." + fig("spike_LO_8p3GHz_no_splitter.png", "Spike: LO through buffer, -33.57 dBm"), "&minus;25.5 dBm (from Out B &minus;8 dBm at 8.000 GHz)", "8 dB low; cause not known", "31 Oct"],
+           ["5. Splitter added, first look", "same chain with splitter at the end, S from buffer, output 2 on 50 &Omega;, output 1 to SM200B: &minus;59.92 dBm. 26.35 dB lower than without the splitter." + fig("spike_LO_8p3GHz_with_splitter.png", "Spike: LO through splitter, -59.92 dBm"), "4.1 dB drop", "<b>22 dB too much loss: being checked</b>", "31 Oct"],
            ["3. Gain, at 1.1 GHz", "11.5 dB (four levels: 11.8, 11.0, 11.7, 11.7)", "11 dB at 1 GHz; min 9 dB", "pass", "12 Oct"],
            ["3. Gain, 1.0 to 1.2 GHz", "10.0 to 11.4 dB (mean 10.7)", "about 11 dB; min 9 dB", "pass", "12 Oct"],
            ["3. Gain, at 8.3 GHz", "not run", "12.5 dB", "", ""], ["4. Compression, 1.0 to 1.2 GHz", "gain 1 dB down at +8.2 dBm (1000 MHz), +8.4 dBm (1100 MHz), about +9 dBm (1200 MHz)", "+11 dBm typ, +9 min (+11.5 at 1 GHz)", "0.6 to 0.8 dB under the minimum at 1000 and 1100 MHz", "12 Oct"],

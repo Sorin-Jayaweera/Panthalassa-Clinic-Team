@@ -94,3 +94,13 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "the next is LO port 1 IF port 2" + five photos (S22, S12, S21, S11, setup with RF open). Photos were not saved to disk by the app, only values transcribed.
 - 31 Oct five photos (saved as radar_test/vna/mixer30W_IFport1_RFport2_LOopen_*) "now it is  IF (port 1) and RF (port 2). I didn't have the load on. I'm redoing them."
 - 31 Oct "the numbers look the same when I put the broadband load on the LO port while having the RF and IF ports connected."
+- 31 Oct "I also want to measure the IF amplifier ZX60-2534MA-S+. I want to go step by step through each of these components. I am worried about puttin the amplifier onto the S parameter network powered though. I can put attenuators and recalibrate?"
+- 31 Oct "is it worth actually doing this?"
+- 31 Oct "I want to move to testing how well we can mix down from 9.4 GHz to 1-1.2 GHz. It'll be the Vivaldi, power limiter, the LNA, and then 10+10 + 10+10 +6+3 dB of 8G attenuators. I will turn on the furuno and measure through the antenna what we have on this setup in spike (with the SM200B - nickname kitty). Then I will put in the PLL oscillator at 8.3 (or 8.4? what?) GHz (to make our range 1-1.2 GHz), and measure what we read from that through an LO Buffer Amp, then a splitter (where one side has a 50 ohm load, and the other goes to the mixer which is right after the LNA on the RX antenna side). What do you think of this plan?"
+- 31 Oct "the LO amplifier (ZX60-14012L-S+) has 10 dBm max at the input. Shouldn't I do ADF5355 -> 10 dB attenuator -> the LO buffer amp -> kitty to see what we see out, and then I'll put in the mixer and cap an end, see what we see, and then put it aside and measure the antenna stuff and then put in the mixer and measure after that?"
+- 31 Oct "step 1: ADF out B to 10 db to buffer to 20 db to kitty. Good?"
+- 31 Oct "This has LO buffer amp has + 12 VDC. Is it safe? Show me the datasheet with max amplificatoin"
+- 31 Oct "The ADF5355 has 5 buttons - I can easily control FA to set its frequency, but I can't figure out how to change FB from 8 GHz. Help."
+- 31 Oct "I have 8.3 GHz on OUT B, to 10 db to the amp to 20 db to kitty. Open spike and measure"
+- 31 Oct Spike screenshot, -33.57 dBm at 8.29995 GHz: "This picture is without the splitter. I'm now putting in the splitter at the end. There are three sides - S, 1, and 2. I'm putting S to come from the amplifier, capping 2, and measuring at 1."
+- 31 Oct Spike screenshot, -59.92 dBm at 8.29995 GHz: "And this is with the splitter"
