@@ -143,3 +143,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "it's connected to maxxie, I took out the 3db attenuator but that is it."
 - 31 Oct "show me what you saw on maxxie?"
 - 31 Oct "USB is back, radar and PLL are on, retake it."
+- 31 Oct "The peak is at 1.103 GHz at -58.52 dBm."
