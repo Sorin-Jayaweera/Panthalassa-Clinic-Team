@@ -191,6 +191,7 @@ RADAR = "".join([
          fig("spike_test36b_mixer_IF_3MHz_31oct.png", "Spike: mixer IF, -38.57 dBm at 1.105469 GHz"),
          fig("spike_test36b_mixer_9p4GHz_3MHz_31oct.png", "Spike: 9.4 GHz at the IF port, -19.82 dBm"),
          p("Test 36c, control: with the PLL off, Sorin saw no 1.1 GHz signal, so the peak is the mixing product."),
+         p("Decisions (Sorin, 31 Oct): the ZX10 splitter stays in the LO path because the transmit up-converter will need the other output. No second LO amp for now, so each mixer gets about &minus;6 dBm of LO, about 16 dB under the +10 dBm spec. Likely cost: the extra conversion loss seen above, not yet proven to be from the LO. The envelope detector reference and the RF limiting amp on the frequency path are set after the mixer. To check: whether about &minus;36 dBm at the mixer IF port clears their input sensitivity, and the transmit output level. Next: measure the IF on the oscilloscope and SSA 3021X, then add the frequency identification."),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),

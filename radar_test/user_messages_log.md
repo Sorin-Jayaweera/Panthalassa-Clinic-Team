@@ -133,3 +133,8 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct three Spike screenshots, no text (IF near 1.1 GHz, 9.4 GHz, 8.3 GHz)
 - 31 Oct two Spike screenshots "-38 at the lower when -19 at the higher frequencies. This is with power on, the splitter still there, and pll still on. I was just looking a second time."
 - 31 Oct "with the PLL off I don't see the lower frequency (1.1 GHz) at all."
+- 31 Oct "I'm leaving the splitter, since it'll need to be there for the other half (transmit convert up in frequency).,"
+- 31 Oct "why would I need that? I can tune the envelope detector reference voltage and have the RF limiting amplifier on the frequency part."
+- 31 Oct "in simple words. Are you saying that there is not enough power coming out of the PLL, so the mixer isn't working properly?"
+- 31 Oct "so you want a second ZX60-14912L-S+ after the PLL. y/n"
+- 31 Oct "save all this to the website. Now that we have a low frequency, I'm going to measure it on the oscilloscope and the SSA 3021X spectrum analyzer to compare. Then I'll put in the frequency identification."
