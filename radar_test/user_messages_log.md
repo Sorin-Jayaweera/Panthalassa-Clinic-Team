@@ -85,3 +85,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "yes, record this data as we go. Do you have the 3db and 6db done?"
 - 31 Oct four 8720ES photos (saved as radar_test/vna/pad10dB_delta_*, screens in delta-marker mode) "This is for 10dB. Next I want to measure the vivaldi antenna - it only has one port. Walk me through how to measure this on the S parameter network analyzer"
 - 31 Oct two 8720ES photos (saved as radar_test/vna/vivaldi_S11_*) "With the vivaldi plugged in to port 1, I measured S11. I see minor change if i turn it around. I don't have the broadband load on port 2, because it isn't measured at all for S11, which is the only thing that makes sense here. I also just changed number of points to 1601. It was at 201 or something low like that."
+- 31 Oct four 8720ES photos (saved as radar_test/vna/limiter_delta_*, delta markers, C2-delta) "next I'm measuring the power limiter:"

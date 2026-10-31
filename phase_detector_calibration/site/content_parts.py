@@ -54,6 +54,19 @@ LIMITER = part_tab(
            ["Radar 26a: pickup", "50 &Omega; load &rarr; limiter &rarr; 10 dB &rarr; LNA (off) &rarr; 29 dB, 11.5 m", "&minus;31 dBm, same as the load alone", D, "yes", "26 Oct"],
            ["Radar 27: in the chain", "Vivaldi &rarr; limiter &rarr; 20 dB &rarr; LNA &rarr; 19 dB, 11.5 m", "chain consistent with 0.8 dB limiter loss and 22&ndash;23 dB LNA gain", D, "fair", "26 Oct"]],
           left=(0, 1, 2, 3, 4, 5)) +
+    h("VNA small-signal sweep (8720ES, &minus;10 dBm, 31 Oct): relative readings, to be retaken") +
+    p("Screens were in delta-marker mode with an interpolated cal (C2&Delta;, 1601 points), so these are dB relative to a fixed marker whose value is not on screen. Do not read them as loss. Differences within a column are valid: S21 falls 1.7 dB from 50 MHz to 9.4 GHz. "
+      "S21 and S12 differ by 0.6&ndash;1.1 dB at every marker, more than a reciprocal part should; the 10 dB pad, taken on the same setup, shows the same offset, so suspect the setup. This low-level sweep says nothing about clamping.") +
+    table(["Marker", "Frequency", "S21 rel.", "S12 rel.", "S11 rel.", "S22 rel."], [
+        ["1", "50 MHz", "+14.025", "+13.259", "&minus;22.463", "&minus;26.329"],
+        ["4", "8.008 GHz", "+12.646", "+11.839", "+0.181", "&minus;0.705"],
+        ["2", "9.400 GHz", "+12.329", "+11.742", "&minus;1.191", "+4.604"],
+        ["3", "10.000 GHz", "+12.428", "+11.709", "+1.582", "&minus;1.274"],
+        ["5", "20.048 GHz", "+11.860", "+10.800", "&minus;3.543", "&minus;0.131"]]) +
+    fig("vna_limiter_delta_S21.png", "8720ES: limiter S21, delta markers") +
+    fig("vna_limiter_delta_S12.png", "8720ES: limiter S12, delta markers") +
+    fig("vna_limiter_delta_S11.png", "8720ES: limiter S11, delta markers") +
+    fig("vna_limiter_delta_S22.png", "8720ES: limiter S22, delta markers") +
     p("Not yet shown: that it clamps. That needs test 3 with a leak floor at least 20 dB below the readings. Every reading is on the Radar tab, section &ldquo;Power readings by test&rdquo;."))
 
 # ------------------------------------------------------------------ LNA
