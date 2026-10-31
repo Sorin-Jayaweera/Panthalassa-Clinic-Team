@@ -171,6 +171,8 @@ RADAR = "".join([
          fig("spike_test29_vivaldi_limiter_20dB_LNA_19dB_31oct.png", "Spike: Vivaldi, limiter, LNA unpowered, -19.12 dBm"),
          p("Test 30 (31 Oct): limiter &rarr; 20 dB &rarr; LNA powered on &rarr; 10+6+3+10 (29 dB). &minus;32.83 dBm at 9.40625 GHz, about 15 dB below the &minus;18 dBm expected from test 27 plus 10 dB. Scaled to 19 dB after the LNA it is 3.7 dB below test 29 with the LNA off, so the LNA shows no gain here. Cause not known."),
          fig("spike_test30_limiter_20dB_LNA_on_29dB_31oct.png", "Spike: limiter, 20 dB, LNA on, 29 dB, -32.83 dBm"),
+         p("Test 30b: same wiring, ref &minus;20 dBm. Peak about &minus;33 dBm by eye (marker was off the peak), the same as test 30. The floor drops about 30 dB, to about &minus;82 dBm, which shows the skirts that ref +10 hid."),
+         fig("spike_test30b_limiter_20dB_LNA_on_29dB_ref-20_31oct.png", "Spike: same wiring at ref -20, skirts visible, peak about -33 dBm"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
