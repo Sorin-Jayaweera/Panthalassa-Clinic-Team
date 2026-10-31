@@ -121,3 +121,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "Look at my screen. You don't have to open a new spike, doing so will crash the usb port. I can also close and let you open the only one. Only one instance of spike can be running. The setup is furuno (currently active) to the power limiter, 20 db, amplifier poewred on, 10+6+3+10 db to kitty"
 - 31 Oct Spike screenshot, no text (9.40625 GHz, -32.83 dBm, ref +10, RBW 3 MHz, span 100 MHz)
 - 31 Oct Spike screenshot (ref -20) "with ref -20 it looks much closer to what we used to see"
+- 31 Oct Spike screenshot (RBW 100 kHz) "it goes from -54 to -52 when I turn on the 6V power supply when looking at smaller RBW"

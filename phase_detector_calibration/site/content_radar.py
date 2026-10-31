@@ -173,6 +173,8 @@ RADAR = "".join([
          fig("spike_test30_limiter_20dB_LNA_on_29dB_31oct.png", "Spike: limiter, 20 dB, LNA on, 29 dB, -32.83 dBm"),
          p("Test 30b: same wiring, ref &minus;20 dBm. Peak about &minus;33 dBm by eye (marker was off the peak), the same as test 30. The floor drops about 30 dB, to about &minus;82 dBm, which shows the skirts that ref +10 hid."),
          fig("spike_test30b_limiter_20dB_LNA_on_29dB_ref-20_31oct.png", "Spike: same wiring at ref -20, skirts visible, peak about -33 dBm"),
+         p("Test 31: same wiring, RBW 100 kHz. &minus;49.46 dBm at 9.405664 GHz (Max Hold). Sorin saw the 6 V supply move it only from &minus;54 to &minus;52 dBm, where tests 27 and 28 differed by 17.9 dB. Either the LNA is not amplifying or this signal bypasses it. Sinc lobes are about 1.5 MHz apart by eye, about a 0.65 &micro;s pulse."),
+         fig("spike_test31_limiter_20dB_LNA_on_29dB_100kHz_31oct.png", "Spike: same wiring at 100 kHz RBW, sinc lobes, -49.46 dBm"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
