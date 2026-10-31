@@ -200,6 +200,8 @@ RADAR = "".join([
          p("Test 39b, retake with radar and PLL on: zero span &minus;54.73 dBm max; swept &minus;58.52 dBm at 1.1031 GHz. The swept peak is sparse spikes because the sweep catches pulses only now and then, so its frequency and level vary between runs. Markers on the screens are not on the peak; the numbers come from the trace data."),
          fig("maxxie_IF_swept_100MHz_31oct_screen.png", "SSA3021X: IF, swept 100 MHz, Max Hold"),
          fig("maxxie_IF_zero_span_1p105GHz_31oct_screen.png", "SSA3021X: IF, zero span at 1.105 GHz, Max Hold"),
+         p("Test 40, first look at the phase detector: mixer IF &rarr; ZFRSC-42-S+ &rarr; two cables, one 4.5 in longer &rarr; ZX05-30W-S+ LO and RF; its IF &rarr; SDS1104X-E, radar on. Scope flat at its old settings (120 mV/div, 1 ms/div). Not a valid test yet: each detector port gets about &minus;39 dBm, about 46 dB under the +7 dBm LO spec, so little or no output is expected until the limiting amp is in."),
+         fig("yippie_phase_detector_first_look_31oct.png", "SDS1104X-E: phase detector output, flat at the old settings"),
          p("Full log: <code>radar_test/test_log.md</code>. Every instruction Sorin gave during the tests: <code>radar_test/user_messages_log.md</code>.")),
     item("rad-tables", "Power and timing tables (CSV)",
          h("Power"), _csv("radar_power_table.csv"),
