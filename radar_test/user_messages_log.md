@@ -93,3 +93,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct five photos (saved as radar_test/vna/mixer30W_*: S22, S12, S21, S11, setup) "I want to measure everything about this mixer, and then everything about the other mixer. Port 1 is LO, Port 2 is RF:"
 - 31 Oct "the next is LO port 1 IF port 2" + five photos (S22, S12, S21, S11, setup with RF open). Photos were not saved to disk by the app, only values transcribed.
 - 31 Oct five photos (saved as radar_test/vna/mixer30W_IFport1_RFport2_LOopen_*) "now it is  IF (port 1) and RF (port 2). I didn't have the load on. I'm redoing them."
+- 31 Oct "the numbers look the same when I put the broadband load on the LO port while having the RF and IF ports connected."

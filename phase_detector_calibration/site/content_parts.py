@@ -277,7 +277,7 @@ PHASEDET = part_tab(
         ["4", "1.500 GHz", "&minus;13.70 dB", "&minus;22.16 dB", "&minus;21.94 dB", "&minus;11.46 dB"],
         ["5", "2.002 GHz", "&minus;4.793 dB", "&minus;14.84 dB", "&minus;14.37 dB", "&minus;4.94 dB"]]) +
     h("VNA, IF and RF ports, mixer not driven, LO open (8720ES, 31 Oct)") +
-    p("Port 1 = IF, port 2 = RF, no load on LO (Sorin is redoing these sweeps with the load on). S21 and S12 differ by up to 7 dB at 1 GHz and 23 dB at 50 MHz, so treat these isolation values as unconfirmed.") +
+    p("Port 1 = IF, port 2 = RF, no load on LO. Sorin repeated it with the broadband load on LO and the numbers looked the same (by eye; that screen was not recorded). S21 and S12 differ by up to 7 dB at 1 GHz and 23 dB at 50 MHz, so treat these isolation values as unconfirmed.") +
     table(["Marker", "Frequency", "S11 (IF match)", "S21 (IF to RF)", "S12 (RF to IF)", "S22 (RF match)"], [
         ["1", "50 MHz", "&minus;10.22 dB", "&minus;30.41 dB", "&minus;53.15 dB", "&minus;0.107 dB"],
         ["2", "500 MHz", "&minus;23.57 dB", "&minus;26.53 dB", "&minus;24.07 dB", "&minus;26.80 dB"],
