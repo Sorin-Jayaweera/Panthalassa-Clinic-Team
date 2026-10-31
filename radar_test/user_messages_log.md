@@ -145,3 +145,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 31 Oct "USB is back, radar and PLL are on, retake it."
 - 31 Oct "The peak is at 1.103 GHz at -58.52 dBm."
 - 31 Oct "I'm putting in the mini circuits splitter ZFRSC-42-S plus, going through two lengths of cable, one which has an extra 4.5 inches that we already tested before, going to the ZX05-30W-S plus with LO and RF connected to the both sides of the splitter so that IF out is just a voltage. the output of the splitter, or the IF out of the mixer, is going to the oscilloscope. Radar is on"
+- 31 Oct "nothing is plugged in to the SSA 3021X and yet it is still showing the frequency spectrum from before"
+- 31 Oct "I have the ZX60-P103LN+ (three of them)."
