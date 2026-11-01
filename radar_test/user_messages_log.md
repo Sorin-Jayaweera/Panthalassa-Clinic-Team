@@ -174,3 +174,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "say done when done for any test where you are recording data"
 - 1 Nov "and an eta"
 - 1 Nov "status"
+- 1 Nov "do i need to keep holding the antenna up?"
