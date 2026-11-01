@@ -175,3 +175,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "and an eta"
 - 1 Nov "status"
 - 1 Nov "do i need to keep holding the antenna up?"
+- 1 Nov "and we don't expect to have any 1 Ghz with the PLL off. Show me the plots from all this data we just took. the main thing I want is the voltage out of the phase detector over time (as the radar is spinning at about 1 rev / 2 seconds)."
+- 1 Nov "it was hand held in the same orientation."
+- 1 Nov "label PLL off for ones where it is off. Why would we see anything when the PLL is off?"
