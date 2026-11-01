@@ -187,3 +187,7 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "try to do this yourself, you have 10 minutes"
 - 1 Nov "The Pluto's in. I can see it as drive D, and I can open the kitty in spike."
 - 1 Nov "show me plots"
+- 1 Nov "what frequency would the VCO spit out if we put in the 240 (what was it?) mV what we read when it was the whole chain from the furuno?"
+- 1 Nov "I probably need an FPGA with a look up table of voltage in to voltage out to control the FPGA to reproduce the tone from after the mix down."
+- 1 Nov "because of this I want to put the PLL to get our map between 900 Mhz to 1100 MHz, instead of 1 Ghz to 1.2 GHz. What freq for the PLL?" (with screenshot of the 800 to 1200 MHz Pluto calibration plot)
+- 1 Nov "Right now, you are plugged into the Pluto, which is going into the three amplifiers and the phase detector, which is going to the digital oscilloscope and to Kitty. You are plugged into the Pluto, Kitty, and the oscilloscope, although the USB connections keep joining and disconnecting. I want to test over the entire range of the Pluto what we get out as a voltage from the phase detector so that I can find the best range that we should map onto using the PLL."
