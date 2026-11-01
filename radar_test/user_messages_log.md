@@ -186,3 +186,4 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "kitty plugged directly into USB 3, go"
 - 1 Nov "try to do this yourself, you have 10 minutes"
 - 1 Nov "The Pluto's in. I can see it as drive D, and I can open the kitty in spike."
+- 1 Nov "show me plots"
