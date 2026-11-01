@@ -155,3 +155,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "take data again from scratch, 1 - 1.2 GHz."
 - 1 Nov "show me the plot of the new run"
 - 1 Nov "status"
+- 1 Nov "look over a wider range, go down to 800 Mhz"
+- 1 Nov "so 800 Mhz to 1 Ghz, and add it to the plot"
+- 1 Nov "I just realized - should I set the oscilloscope to 50 ohms?"

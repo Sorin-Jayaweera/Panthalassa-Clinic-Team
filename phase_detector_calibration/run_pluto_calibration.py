@@ -24,20 +24,40 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent / "sdr"))
 sys.path.insert(0, str(HERE.parent / "vco_rise_time"))
 from pluto_cw import set_attenuation, tone_off, tone_on  # noqa: E402
-from pluto_level import pluto_dbm, pluto_setting  # noqa: E402
+from pluto_level import pluto_dbm as _if_dbm  # noqa: E402
 from sds import SDS  # noqa: E402
 
 P_LIMIT_DBM = -28.0
 SCALE = 0.5
+_MAP = np.genfromtxt(HERE.parent / "pluto_characterization" / "pluto_map_table.csv", delimiter=",", skip_header=1)
+_MAP_ATT = np.arange(0, 41, 5.0)
+
+
+def pluto_dbm(freq_hz, att_db, scale):
+    """Below 1000 MHz use the 10 MHz map table (about 0.5 dB); from 1000 MHz the fine IF band table."""
+    if freq_hz >= 1000e6:
+        return _if_dbm(freq_hz, att_db, scale)
+    col = [np.interp(freq_hz / 1e6, _MAP[:, 0], _MAP[:, j + 1]) for j in range(len(_MAP_ATT))]
+    return float(np.interp(att_db, _MAP_ATT, col))
+
+
+def pluto_setting(freq_hz, want_dbm, scale):
+    atts = np.arange(31, 60.01, 0.25)
+    levels = np.array([pluto_dbm(freq_hz, x, scale) if x <= 40 or freq_hz >= 1000e6 else -999 for x in atts])
+    return float(atts[int(np.argmin(np.abs(levels - want_dbm)))])
 
 
 def attenuation_for(freq_hz, want_dbm):
     if want_dbm > P_LIMIT_DBM:
         raise ValueError(f"refusing {want_dbm} dBm: limit is {P_LIMIT_DBM} dBm")
     att = pluto_setting(freq_hz, want_dbm, SCALE)
-    if pluto_dbm(freq_hz, att, SCALE) > P_LIMIT_DBM:
+    if level_dbm(freq_hz, att) > P_LIMIT_DBM:
         raise ValueError(f"{att} dB would exceed {P_LIMIT_DBM} dBm at {freq_hz/1e6:.0f} MHz")
     return att
+
+
+def level_dbm(freq_hz, att):
+    return pluto_dbm(freq_hz, att, SCALE)
 
 
 def read(s, ch, n=3):
