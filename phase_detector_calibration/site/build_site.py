@@ -1,4 +1,5 @@
 """Assemble site/index.html: one page, one tab per part. Content lives in content.py."""
+import csv
 from pathlib import Path
 
 import numpy as np
@@ -21,13 +22,13 @@ PAGES_URL = "https://sorin-jayaweera.github.io/Panthalassa-Clinic-Team/"
 # status: tested = every test in its plan is done (green); partial = some tests done (yellow);
 #         have = part on hand, not tested; none = not on hand or not chosen
 BLOCKS = [
-    ("rxant", "RX antenna", "horn", 105, 45, "have", "pi-rxant", "8.2-12.4 GHz", "gain 10-15 dBi"),
+    ("rxant", "RX antenna", "Vivaldi R120 on test", 105, 45, "partial", "pi-rxant", "Vivaldi 5-13 GHz", "horn 8.2-12.4 GHz planned"),
     ("limiter", "Power limiter", "HLM-20PSM", 105, 137, "partial", "tab-limiter", "clamps +13 to +17 dBm", "loss 0.5 dB typ"),
     ("lna", "LNA", "ZX60-5123LN+", 105, 229, "partial", "tab-lna", "+22 dB, NF 1.4 dB, 6 V", "max in +15 dBm"),
-    ("rxmixer", "RX mixer", "ZX05-14LH-S+", 105, 321, "have", "tab-rxmixer", "loss 7.7 dB, LO +10 dBm", "max in +17 dBm"),
+    ("rxmixer", "RX mixer", "ZX05-14LH-S+", 105, 321, "partial", "tab-rxmixer", "loss 7.7 dB, LO +10 dBm", "max in +17 dBm"),
     ("ifamp", "IF amp", "P103LN / 2534MA", 105, 413, "have", "tab-ifamp", "P103LN +15.6 dB, max +21", "2534MA +43.5 dB, max -15"),
     ("ifsplit", "IF splitter", "ZFRSC-42-S+", 105, 505, "have", "tab-splitter", "loss 6.0 dB (6.5 max)", "max in +28.8 dBm"),
-    ("limamp", "RF limiting amp", "3 gain blocks", 105, 610, "none", "pi-limamp", "fixed output level,", "under +23.5 dBm"),
+    ("limamp", "RF limiting amp", "4 x ZX60-P162LN+ on test", 105, 610, "partial", "pi-limamp", "fixed output level,", "under +23.5 dBm"),
     ("delaysplit", "Delay-line splitter", "ZFRSC-42-S+", 105, 702, "partial", "tab-splitter", "loss 6.0 dB (6.5 max)", "+4.5 in cable = 0.55 ns"),
     ("phasedet", "Phase detector", "ZX05-30W-S+", 105, 800, "partial", "tab-mixer", "LO +7 dBm, max in +17", "out: DC volts vs freq."),
     ("sh", "Sample and hold", "ADG1211 + ADA4622", 105, 892, "none", "pi-sh", "holds detector voltage", "out 4.8-7.8 V to VCO"),
@@ -35,9 +36,9 @@ BLOCKS = [
     ("comp", "Comparator", "ADCMP604", 435, 702, "have", "tab-comp", "high during a pulse", "LVDS out, 1.6 ns"),
     ("dac", "DAC", "nanoDAC", 545, 610, "none", "pi-dac", "sets comparator level", "CGR-201 output for now"),
     ("fpga", "FPGA", "Icepi Zero (ECP5)", 655, 702, "have", "pi-fpga", "timing, Morse, hold-off", ""),
-    ("losplit", "LO splitter", "ZX10-2-1252-S+", 520, 321, "have", "pi-losplit", "loss 4.1 dB at 8.3 GHz", "max in +32.7 dBm"),
+    ("losplit", "LO splitter", "ZX10-2-1252-S+", 520, 321, "partial", "pi-losplit", "loss 4.1 dB at 8.3 GHz", "max in +32.7 dBm"),
     ("lobuf", "LO buffer amp", "ZX60-14012L-S+", 520, 413, "partial", "tab-lobuf", "+12.5 dB, 12 V 62 mA", "max out +12, max in +10"),
-    ("pll", "PLL LO", "ADF5355", 520, 505, "none", "pi-pll", "8.3 GHz", ""),
+    ("pll", "PLL LO", "ADF5355", 520, 505, "partial", "pi-pll", "8.3 GHz", ""),
     ("txant", "TX antenna", "horn", 935, 45, "have", "pi-txant", "8.2-12.4 GHz", "gain 10-15 dBi"),
     ("pa", "Power amp", "not chosen", 935, 137, "none", "pi-pa", "about 1 W out", ""),
     ("filter", "Image filter", "VHF-8400+", 935, 229, "have", "tab-filter", "loss < 3 dB at 9.3-9.5", "8.3 GHz LO: only 3-5 dB"),
@@ -99,6 +100,47 @@ def block_data(key, x, y):
     return None
 
 
+# what each block's colour rests on: key -> (done, not done, section with the results)
+STATUS = {
+    "rxant": ("Vivaldi: S11 on the VNA, and over the air from the Furuno", "Antenna gain (8 dBi is assumed). The horn", "tab-radar"),
+    "limiter": ("VNA sweep: 1.7 dB loss at 9.4 GHz. Over the air: +16.1 dBm out at 3.96 m", "Clamp curve with a clean leak floor, leading edge", "tab-limiter"),
+    "lna": ("Supply current. Gain about 23 dB at 9.4 GHz, over the air", "Gain vs frequency, compression, noise figure, stray signals", "tab-lna"),
+    "rxmixer": ("Mix-down of the radar to about 1.105 GHz, IF about -36 dBm, with about -6 dBm of LO", "Conversion loss vs frequency and LO power, compression, leakage, image", "tab-rxmixer"),
+    "ifamp": ("Nothing in this position. The ZX60-P103LN+ was tested as the limiting amp", "All tests in the plan. ZX60-2534MA-S+ not used", "tab-ifamp"),
+    "ifsplit": ("Nothing in this position. Same part as the delay-line splitter", "All tests in the plan", "tab-splitter"),
+    "limamp": ("3 x ZX60-P103LN+ and 4 x ZX60-P162LN+ with the Pluto: detector voltage vs frequency and power, 700 to 1600 MHz. 3 x P103 with the radar", "4 x P162 with the radar, pulses rather than a steady tone. Part not chosen", "lut-p162"),
+    "delaysplit": ("Loss 6.70 and 6.72 dB at 1.04 GHz. In the detector chain in every test above", "Loss vs frequency, isolation", "tab-splitter"),
+    "phasedet": ("Voltage vs frequency alone and after the amps, step response, noise, drift, VNA of the ports", "Different delay cables, 4 x P162 chain with the radar, one sweep on its own from 900 to 1200 MHz", "tab-mixer"),
+    "sh": ("Nothing", "Not on hand", "pi-sh"),
+    "env": ("Voltage vs input power at 1.1 GHz", "Band edges, pulse response", "tab-env"),
+    "comp": ("Nothing", "All tests in the plan", "tab-comp"),
+    "dac": ("Nothing", "Not on hand. CGR-201 output for now", "pi-dac"),
+    "fpga": ("Nothing", "All of it", "pi-fpga"),
+    "losplit": ("In the LO path for the radar mix-down, tests 35 to 42", "Its own loss", "tab-radar"),
+    "lobuf": ("Gain and compression at 1.0 to 1.2 GHz. In the LO path for the mix-down", "Gain and compression at 8.3 GHz, power at the mixers, harmonics", "tab-lobuf"),
+    "pll": ("Set to 8.3 GHz. 8.300 GHz seen at the mixer IF port", "Power at the mixers (about -6 dBm against +10 wanted), control from the FPGA", "tab-radar"),
+    "txant": ("Nothing", "All of it", "pi-txant"),
+    "pa": ("Nothing", "Not chosen", "pi-pa"),
+    "filter": ("Nothing", "All tests in the plan", "tab-filter"),
+    "txmixer": ("Nothing in this position. Same part as the RX mixer", "All tests in the plan", "tab-rxmixer"),
+    "key": ("Nothing", "Not on hand", "pi-key"),
+    "vco": ("Frequency vs voltage, output power, step response, drift", "Computer-run sweep over 4.8 to 7.8 V", "tab-vco"),
+}
+WORD = {"tested": "Fully tested", "partial": "Some tests done", "have": "Not tested", "none": "Not on hand"}
+
+
+def status_section():
+    """Colour key with counts, and one row per block saying what the colour rests on."""
+    n = {k: sum(b[5] == k for b in BLOCKS) for k in WORD}
+    key = "".join(f'<span class="stkey"><i class="sw {k}"></i>{t}: <b>{n[k]}</b></span>' for k, t in (
+        ("tested", "Green, every test in its plan done"), ("partial", "Yellow, some tests done"), ("have", "Grey, on hand, not tested"), ("none", "Dashed, not on hand or not chosen")))
+    order = {"tested": 0, "partial": 1, "have": 2, "none": 3}
+    rows = [[f'<a href="#{STATUS[b[0]][2]}">{b[1]}</a>', b[2], f'<span class="stpill {b[5]}">{WORD[b[5]]}</span>', STATUS[b[0]][0], STATUS[b[0]][1]]
+            for b in sorted(BLOCKS, key=lambda b: order[b[5]])]
+    table = C.table(["Block", "Part", "Status", "Done", "Not done"], rows, cls="parts", left=(0, 1, 2, 3, 4))
+    return f'<div class="stkeys">{key}</div>', "<h3>What has been tested</h3>" + table
+
+
 def schematic():
     out = ['<svg viewBox="0 0 1040 940" role="img" aria-label="JACON block diagram. Each block links to its part.">']
     for a, b in (("rxant", "limiter"), ("limiter", "lna"), ("lna", "rxmixer"), ("rxmixer", "ifamp"), ("ifamp", "ifsplit"),
@@ -123,7 +165,7 @@ def schematic():
         cls = {"tested": "blk tested", "partial": "blk partial", "have": "blk", "none": "blk none"}[st]
         data = block_data(key, bx, by)
         if data is None:
-            word = {"tested": "fully tested", "partial": "some tests done", "have": "on hand, not tested yet", "none": "not on hand"}[st]
+            word = {"tested": "fully tested", "partial": "some tests done", "have": "on hand, not tested yet", "none": "not on hand or not chosen"}[st]
             data = f'<text class="t2" x="{bx}" y="{by+18}" text-anchor="middle">{word}</text>'
         out.append(f'<a href="#{target}" aria-label="{label}, {part}"><g class="{cls}">'
                    f'<rect x="{bx-W/2:.0f}" y="{by-H/2:.0f}" width="{W}" height="{H}" rx="3"/>'
@@ -157,9 +199,11 @@ def lut_tab():
     mm, fm, vm = mv[m][o], f[m][o], vt[m][o]
     mslope = np.gradient(fm, mm)                                # MHz per mV, the direction the table is used in
     mix_rows = [[f"{a:.2f}", f"{b:.2f}", f"{s:.3f}", f"{v:.3f}"] for a, b, s, v in zip(mm, fm, mslope, vm)]
+    with open(HERE.parent / "lut_p162x4_mixer.csv") as fh:
+        p162_rows = [[r["freq_mhz"], r["median_mv_at_-60dbm"], r["lowest_mv_-65_to_-30dbm"], r["highest_mv_-65_to_-30dbm"]] for r in csv.DictReader(fh)]
     return "".join([
         "<h2>Look up tables</h2>",
-        C.p("Two look ups: VCO tuning voltage Vt to VCO output frequency, and mixer output voltage to VCO frequency. Each is valid only for the wiring and power it was measured with. Pluto output levels are on the Pluto tab."),
+        C.p("VCO tuning voltage Vt to VCO output frequency, and detector output voltage to frequency, for the mixer on its own and after 4 x ZX60-P162LN+. Each is valid only for the wiring and power it was measured with. Pluto output levels are on the Pluto tab."),
         C.item("lut-vco", "VCO: tuning voltage Vt to output frequency, 0 to 3.5 V",
                C.fig("vco_f_vs_v.png", "VCO output frequency against tuning voltage Vt, 0 to 3.5 V"),
                C.h("Conditions"), C.ul(["Measured 10 Oct. Vcc 11.5 V.", "VCO output connected to a tee: one side to the spectrum analyzer, the other to the splitter and mixer.",
@@ -173,7 +217,23 @@ def lut_tab():
                                          "Frequency read 10 s after setting the voltage. The analyzer marker step was 2.67 MHz.", "1.0 GHz is at 4.83 V. 1.2 GHz is at 7.75 V."]),
                C.h("Table"), C.table(["Tuning voltage Vt (V)", "VCO output frequency (MHz)", "Slope (MHz/V)"], rows4, cls="lut", left=()),
                C.p("Source: <code>VCO tests.xlsx</code>, sheet &ldquo;absolute accuracy&rdquo;.")),
-        C.item("lut-mixer", "Mixer (phase detector): output voltage to VCO frequency",
+        C.item("lut-mixer-alone", "Mixer on its own: voltage against frequency, wide and 900 to 1200 MHz",
+               C.fig("lut_mixer_alone.png", "Mixer output with no amplifiers, full range and 900 to 1200 MHz, with both wirings"),
+               C.ul(["This joins two different measurements, the VCO sweep of 10 Oct and the Pluto sweeps of 16 Sep. Sources, powers and meters differ, so they are not one curve.",
+                     "No data from 920 to 1000 MHz. A single sweep from 700 to 1600 MHz with the amps out has not been taken.",
+                     "Voltage depends strongly on power: at 1080 MHz it changes from 45.7 to 8.3 mV over 10 dB of Pluto setting. So no single table works without a fixed power.",
+                     "Data: <code>phase_detector_calibration/lut_mixer_alone.csv</code>. The table for the 744 to 788 MHz part is in the next section."])),
+        C.item("lut-p162", "4 x ZX60-P162LN+ then the mixer: voltage against frequency, wide and 900 to 1200 MHz",
+               C.fig("lut_p162x4_mixer.png", "Detector output after four amplifiers, 700 to 1600 MHz and 900 to 1200 MHz, one curve per Pluto level, with the wiring"),
+               C.ul(["Steady tone from the Pluto. Not yet measured with the radar's pulses.",
+                     "<b>The straight part is about 960 to 1010 MHz</b>: 2.57 mV/MHz, within 2.2 mV rms of a line. 900 to 950 MHz is also close to straight at 0.87 mV/MHz. 900 to 1200 MHz as a whole is not linear (40 mV rms off a line).",
+                     "The curve first stops rising at about 1065 MHz, so one voltage gives one frequency only below that, and only 900 to about 1020 MHz has a useful slope.",
+                     "Spread between Pluto levels from -65 to -30 dBm: about 10 mV at 900 and 950 MHz, 26 mV at 1000 MHz, 65 mV at 1100 MHz. Each 2.57 mV of spread is about 1 MHz of frequency error on the straight part.",
+                     "Below -65 dBm the curves leave the rail."]),
+               C.h("Table, 900 to 1200 MHz"),
+               C.table(["Frequency (MHz)", "Median at -60 dBm (mV)", "Lowest, -65 to -30 dBm (mV)", "Highest, -65 to -30 dBm (mV)"], p162_rows, cls="lut", left=()),
+               C.p("The -60 dBm column is the median of the repeat sweeps at 1 MHz steps. The other two come from the map at 5 MHz steps; some top-level points are missing where the Pluto reached its attenuation floor. Data: <code>phase_detector_calibration/lut_p162x4_mixer.csv</code>.")),
+        C.item("lut-mixer", "Mixer on its own: output voltage to VCO frequency, 744 to 788 MHz",
                C.fig("mapping.png", "Mixer output voltage against VCO frequency as measured, the same points used as a look up, and the slope"),
                C.h("Conditions"), C.ul(["Measured 10 Oct. Source: the VCO, about +0.6 dBm at each mixer port.", "Splitter ZFRSC-42-S+, 4.5 in extra cable on one side, mixer ZX05-30W-S+.",
                                          "Mixer output read on scope CH2 into 1 M&Omega;.", "Valid from 743.6 to 788.4 MHz only. Above that one voltage matches more than one frequency.",
@@ -302,10 +362,10 @@ def write_pages(page):
 
 
 def main():
-    schem = ("<h2>Schematic</h2>" + C.p("Click a block to open that part. Green = fully characterized (every test in its plan done). Yellow = some tests done. White = on hand, not tested yet. Dashed = not on hand or not chosen.")
+    schem = ("<h2>Schematic</h2>" + C.p("Click a block to open that part.") + status_section()[0]
              + '<div class="bar"><span>Show in each block:</span><span class="switch" role="group" aria-label="Schematic view">'
                '<button type="button" id="sch-specs" aria-pressed="true">Specs</button><button type="button" id="sch-data" aria-pressed="false">Data taken</button></span></div>'
-             + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>')
+             + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>' + status_section()[1])
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
               "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}

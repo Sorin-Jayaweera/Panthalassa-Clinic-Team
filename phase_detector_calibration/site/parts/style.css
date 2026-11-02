@@ -137,3 +137,19 @@ pre.diagram { font-family: var(--mono); font-size: 0.78rem; line-height: 1.35; b
 /* Radar power readings: one-sentence test lines; the AI analysis is set apart */
 details.item.test > summary { font-weight: 400; font-size: 0.9rem; }
 details.item.ai > summary { color: var(--accent); font-size: 0.85rem; }
+
+/* part status: blocks, colour key and status column share these */
+:root { --st-tested: #bfe8cf; --st-tested-line: #1c8a52; --st-have: #e4e7e6; --st-have-line: #6f8482; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --st-tested: #1f5a3c; --st-tested-line: #5fd79a; --st-have: #2c3634; --st-have-line: #8fa3a0; } }
+:root[data-theme="dark"] { --st-tested: #1f5a3c; --st-tested-line: #5fd79a; --st-have: #2c3634; --st-have-line: #8fa3a0; }
+.schematic .blk rect { fill: var(--st-have); stroke: var(--st-have-line); }
+.schematic .blk.tested rect { fill: var(--st-tested); stroke: var(--st-tested-line); stroke-width: 2; }
+.schematic .blk.none rect { fill: transparent; stroke-dasharray: 4 3; }
+.stkeys { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; margin: 0 0 0.8rem; font-size: 0.86rem; }
+.stkey { display: inline-flex; align-items: center; gap: 0.4rem; }
+.sw { display: inline-block; width: 1.5rem; height: 0.95rem; border-radius: 2px; border: 2px solid; flex: none; }
+.sw.tested, .stpill.tested { background: var(--st-tested); border-color: var(--st-tested-line); }
+.sw.partial, .stpill.partial { background: var(--partial); border-color: var(--partial-line); }
+.sw.have, .stpill.have { background: var(--st-have); border-color: var(--st-have-line); }
+.sw.none, .stpill.none { background: transparent; border: 2px dashed var(--st-have-line); }
+.stpill { display: inline-block; white-space: nowrap; padding: 0.05rem 0.45rem; border-radius: 2px; border: 1.5px solid; font-size: 0.8rem; color: var(--fg); }

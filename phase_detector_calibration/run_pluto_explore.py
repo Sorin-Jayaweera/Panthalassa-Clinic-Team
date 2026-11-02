@@ -1,7 +1,7 @@
 """Unattended Pluto measurements into the 3 amps and detector, scope at 1 Mohm, SM200B through 23 dB (assumed), about 2 hours.
 
-Passes, in order, each saved as it runs in pluto_explore_1nov.csv (kitty readings in pluto_explore_kitty_1nov.csv):
-  kitty    300-1700 MHz, 20 MHz steps, about +2.7 dBm at the detector: tone, twice the tone and near DC on the SM200B
+Passes, in order, each saved as it runs in pluto_explore_1nov.csv (sm200b readings in pluto_explore_sm200b_1nov.csv):
+  sm200b    300-1700 MHz, 20 MHz steps, about +2.7 dBm at the detector: tone, twice the tone and near DC on the SM200B
   levelmap 900-1200 MHz, 2 MHz steps, at -45, -42, -39, -33 and -31 dBm
   grid     400-1700 MHz, 100 MHz steps, -61 to -31 dBm in 3 dB steps, capped by the port limit below
   hold     1054 MHz, -36 dBm, one reading every 5 s for 15 min
@@ -40,7 +40,7 @@ PAD_DB = 23.0
 BLOCK = 262_144
 MAP_RUNS = HERE / "pluto_map_runs_1nov.csv"
 OUT = HERE / "pluto_explore_1nov.csv"
-OUT_K = HERE / "pluto_explore_kitty_1nov.csv"
+OUT_K = HERE / "pluto_explore_sm200b_1nov.csv"
 START = time.time()
 DEADLINE = START + HOURS * 3600
 
@@ -97,7 +97,7 @@ class Bench:
         print(f"{name} {rep} {want} dBm finished {dt.datetime.now():%H:%M:%S}", flush=True)
 
 
-def kitty_read(h, center):
+def sm200b_read(h, center):
     sm_set_IQ_center_freq(h, center)
     sm_configure(h, SM_MODE_IQ_STREAMING)
     fs = sm_get_IQ_parameters(h)["sample_rate"]
@@ -114,7 +114,7 @@ def line_near(fr, sp, f, width=2.0):
     return float(fr[k]), float(sp[k])
 
 
-def kitty_pass(b):
+def sm200b_pass(b):
     h = sm_open_device()["device"]
     new = not OUT_K.exists()
     try:
@@ -131,17 +131,17 @@ def kitty_pass(b):
                 w.writerow(["timestamp", "freq_mhz", "pluto_att_db", "pluto_want_dbm", "detector_mean_v", "tone_found_mhz", "tone_dbm", "double_found_mhz", "double_dbm", "low_found_mhz", "low_dbm"])
             for f in np.arange(300.0, 1700.5, 20.0):
                 att, want, _ = plan(f)
-                m = b.point("kitty", 0, f, att, want)
-                ft, lt = line_near(*kitty_read(h, f * 1e6), f)
-                fd, ld = line_near(*kitty_read(h, 2 * f * 1e6), 2 * f)
-                fr, sp = kitty_read(h, 21e6)
+                m = b.point("sm200b", 0, f, att, want)
+                ft, lt = line_near(*sm200b_read(h, f * 1e6), f)
+                fd, ld = line_near(*sm200b_read(h, 2 * f * 1e6), 2 * f)
+                fr, sp = sm200b_read(h, 21e6)
                 keep = abs(fr) > 0.5
                 k = int(sp[keep].argmax())
                 w.writerow([dt.datetime.now().isoformat(timespec="seconds"), f, att, round(float(want), 2), m, ft, round(lt, 2), fd, round(ld, 2), float(fr[keep][k]), round(float(sp[keep][k]), 2)])
                 fk.flush()
     finally:
         sm_close_device(h)
-    print(f"kitty finished {dt.datetime.now():%H:%M:%S}", flush=True)
+    print(f"sm200b finished {dt.datetime.now():%H:%M:%S}", flush=True)
 
 
 def wait_for_map_runs():
@@ -167,7 +167,7 @@ def main():
         time.sleep(1.0)
         m = b.save("start_off", 0, 0.0, 89.75, -999.0)
         print(f"tone off {m*1e3:.2f} mV", flush=True)
-        # The SM200B driver ends the process when its USB drops, so the kitty pass is not run here.
+        # The SM200B driver ends the process when its USB drops, so the sm200b pass is not run here.
         for want in (-37.0, -31.0, -43.0, -34.0, -40.0, -46.0, -49.0, -52.0, -55.0, -58.0, -61.0):
             b.sweep("map2d", 0, np.arange(400.0, 1700.5, 10.0), want)
         att = setting(1054.0, -36.0)

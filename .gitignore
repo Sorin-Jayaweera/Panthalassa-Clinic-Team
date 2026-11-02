@@ -15,3 +15,5 @@ signal_hound/smdevice/*.lib
 # older dated copies of the site; the current copy is JACON_notes_backup.html and docs/
 site_backups/
 phase_detector_calibration/site/JACON_notes_standalone.html
+# verbatim bench messages stay on this computer
+radar_test/user_messages_log.md

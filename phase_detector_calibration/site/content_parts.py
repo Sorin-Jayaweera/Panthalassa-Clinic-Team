@@ -152,7 +152,7 @@ RXMIXER = part_tab(
         ["5", "LO leakage", "same as 2", "nothing", "read 8.3 GHz at the IF port; move the SM200B to the RF port and read again", "&minus;7 dBm at IF; &minus;25 dBm at RF", "IF under +1 dBm; RF under &minus;15 dBm"],
         ["6", "Image", "same as 2, source at 7.1&ndash;7.3 GHz", "retune the source", "read the IF", "same level as test 2", "recorded; decides if an RX filter is needed"]]) +
     '<div class="note">RF input limit is +17 dBm. Stay at +5 dBm or below.</div>',
-    NOT_RUN)
+    p("None of the tests above has been run as a test of this mixer on its own. It has been used to mix the radar down, Radar tab tests 35 to 39: IF about &minus;36 to &minus;38 dBm near 1.105 GHz, apparent conversion loss about 30 dB with about &minus;6 dBm of LO, against 7.72 dB in the datasheet at +10 dBm LO. With the PLL off there was no 1.1 GHz signal (test 36c)."))
 
 # ------------------------------------------------------------------ IF amp
 AMP_HEAD = ["Quantity", "ZX60-P103LN+", "ZX60-2534MA-S+", "ZX60-P162LN+"]
@@ -190,7 +190,7 @@ IFAMP = part_tab(
         ["1", "Supply current", "amp powered, input and output on 50 &Omega; loads", "set 5.0 V, limit 220 mA; read the current", "nothing", "170 mA", "under 190 mA"],
         ["2", "Gain vs frequency", "Pluto &rarr; 60 dB attenuation (input &minus;50 dBm) &rarr; amp &rarr; 30 dB attenuator &rarr; analyzer", "connect; then remove the amp for the reference run", "step 1.0&ndash;1.2 GHz with and without the amp; subtract", "43.5 to 43.7 dB", "38 dB or more"],
         ["3", "Compression", "same, less input attenuation", "swap attenuators so the input steps from &minus;50 to &minus;20 dBm. Do not go above &minus;20 dBm.", "read output at each step", "+19 dBm out, at about &minus;23 dBm in", "+17 dBm or more"]]),
-    NOT_RUN)
+    p("None of the tests above has been run on a single amp. In the detector chain, in the RF limiting amp position: 3 x ZX60-P103LN+ (Radar tab, test 41 on) and 4 x ZX60-P162LN+ (test 50 on). See " + link("#lut-p162", "Look up tables") + "."))
 
 # ------------------------------------------------------------------ existing tabs, regrouped into the same four sections
 def split_items(html):

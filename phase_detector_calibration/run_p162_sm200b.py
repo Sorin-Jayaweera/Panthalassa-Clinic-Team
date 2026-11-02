@@ -1,7 +1,7 @@
 """Four ZX60-P162LN+ chain: tone, twice and three times the tone, and near DC on the SM200B, with the scope at each point.
 
 700 to 1500 MHz, 20 MHz steps, at -70, -60, -50 and -45 dBm. Levels are before the 23 dB pads. Stops with the tone off if a
-line passes STOP_DBM. The driver ends the process if the SM200B USB drops; rerun to carry on. Saves p162x4_kitty_1nov.csv.
+line passes STOP_DBM. The driver ends the process if the SM200B USB drops; rerun to carry on. Saves p162x4_sm200b_1nov.csv.
 Run from clinic/claude/signal_hound. Also remeasures 1320 MHz at -65 dBm for the map.
 """
 import csv
@@ -23,7 +23,7 @@ from smdevice.sm_api import *  # noqa: E402,F403
 PAD_DB = 23.0
 STOP_DBM = 5.0
 LEVELS = (-60.0, -45.0, -70.0, -50.0)
-OUT = HERE / "p162x4_kitty_1nov.csv"
+OUT = HERE / "p162x4_sm200b_1nov.csv"
 MAP = HERE / "p162x4_map_1nov.csv"
 
 
@@ -89,7 +89,7 @@ def main():
                     if max(t1, t2, t3) > STOP_DBM:
                         print(f"STOP RULE at {f} MHz {want} dBm: {t1} {t2} {t3}", flush=True)
                         return
-                print(f"kitty {want} dBm finished {dt.datetime.now():%H:%M:%S}", flush=True)
+                print(f"sm200b {want} dBm finished {dt.datetime.now():%H:%M:%S}", flush=True)
     finally:
         scope.drop()
         sm_close_device(h)

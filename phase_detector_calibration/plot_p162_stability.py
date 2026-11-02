@@ -6,9 +6,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 d = np.genfromtxt(HERE / "p162x4_map_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
-fig, (a, b) = plt.subplots(2, 1, figsize=(13, 8))
+fig, (a, b) = wiring.figure(2, [wiring.P162X4], size=(13, 9.5))
 for rep in np.unique(d["rep"][d["pass"] == "repeat"]):
     k = (d["pass"] == "repeat") & (d["rep"] == rep)
     a.plot(d["freq_mhz"][k], d["detector_mean_v"][k] * 1e3, lw=1, label=f"Sweep {rep + 1}")

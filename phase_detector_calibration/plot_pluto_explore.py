@@ -1,4 +1,4 @@
-"""Plots and summary numbers from the two hour unattended run, pluto_explore_1nov.csv and pluto_explore_kitty_1nov.csv."""
+"""Plots and summary numbers from the two hour unattended run, pluto_explore_1nov.csv and pluto_explore_sm200b_1nov.csv."""
 from pathlib import Path
 
 import matplotlib
@@ -78,7 +78,7 @@ for a in ax.flat[:5]:
     a.grid(alpha=0.3)
 
 a = ax[1, 2]
-kp = HERE / "pluto_explore_kitty_1nov.csv"
+kp = HERE / "pluto_explore_sm200b_1nov.csv"
 if kp.exists():
     K = np.genfromtxt(kp, delimiter=",", names=True, dtype=None, encoding="utf-8")
     a.plot(K["freq_mhz"], K["tone_dbm"], ".-", ms=3, lw=0.8, label="Tone")
@@ -86,10 +86,10 @@ if kp.exists():
     a.plot(K["freq_mhz"], K["low_dbm"], ".-", ms=3, lw=0.8, label="Strongest near DC")
     a.set_ylabel("dBm before pads")
     a.legend()
-    print(f"kitty {len(K)} points: tone {K['tone_dbm'].min():.1f} to {K['tone_dbm'].max():.1f}, double {K['double_dbm'].min():.1f} to {K['double_dbm'].max():.1f}, low {K['low_dbm'].min():.1f} to {K['low_dbm'].max():.1f} dBm")
-    print("kitty tone:", [(int(x), round(float(y), 1)) for x, y in zip(K["freq_mhz"], K["tone_dbm"]) if int(x) % 200 == 100])
-    print("kitty double:", [(int(x), round(float(y), 1)) for x, y in zip(K["freq_mhz"], K["double_dbm"]) if int(x) % 200 == 100])
-a.set_title("Kitty: leak through the detector, about +2.7 dBm at it")
+    print(f"sm200b {len(K)} points: tone {K['tone_dbm'].min():.1f} to {K['tone_dbm'].max():.1f}, double {K['double_dbm'].min():.1f} to {K['double_dbm'].max():.1f}, low {K['low_dbm'].min():.1f} to {K['low_dbm'].max():.1f} dBm")
+    print("sm200b tone:", [(int(x), round(float(y), 1)) for x, y in zip(K["freq_mhz"], K["tone_dbm"]) if int(x) % 200 == 100])
+    print("sm200b double:", [(int(x), round(float(y), 1)) for x, y in zip(K["freq_mhz"], K["double_dbm"]) if int(x) % 200 == 100])
+a.set_title("SM200B: leak through the detector, about +2.7 dBm at it")
 a.set_xlabel("Pluto frequency (MHz)")
 a.grid(alpha=0.3)
 fig.tight_layout()
