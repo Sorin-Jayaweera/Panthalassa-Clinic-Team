@@ -191,3 +191,6 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "I probably need an FPGA with a look up table of voltage in to voltage out to control the FPGA to reproduce the tone from after the mix down."
 - 1 Nov "because of this I want to put the PLL to get our map between 900 Mhz to 1100 MHz, instead of 1 Ghz to 1.2 GHz. What freq for the PLL?" (with screenshot of the 800 to 1200 MHz Pluto calibration plot)
 - 1 Nov "Right now, you are plugged into the Pluto, which is going into the three amplifiers and the phase detector, which is going to the digital oscilloscope and to Kitty. You are plugged into the Pluto, Kitty, and the oscilloscope, although the USB connections keep joining and disconnecting. I want to test over the entire range of the Pluto what we get out as a voltage from the phase detector so that I can find the best range that we should map onto using the PLL."
+- 1 Nov "I unplugged, continue where you left off"
+- 1 Nov "it is plugged in now"
+- 1 Nov "retake all data"

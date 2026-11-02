@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 HERE = Path(__file__).parent
-d = np.genfromtxt(HERE / "pluto_full_range_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
+d = np.genfromtxt(HERE / "pluto_full_range_1nov_run2.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
 f, v, rms = d["freq_mhz"], d["detector_mean_v"] * 1e3, d["rms_v"] * 1e3
 print(f"{len(f)} points, {f.min():.0f} to {f.max():.0f} MHz, {v.min():.1f} to {v.max():.1f} mV")
 s = np.convolve(v, np.ones(3) / 3, mode="same")
@@ -28,11 +28,20 @@ while i < len(f) - 1:
 print("runs that keep one direction, allowing 3 mV of ripple:")
 for a, b, va, vb in sorted(runs, key=lambda r: abs(r[3] - r[2]), reverse=True)[:8]:
     print(f"  {a:6.0f} to {b:6.0f} MHz: {va:7.1f} to {vb:7.1f} mV, {abs(vb-va)/max(b-a,1):.2f} mV/MHz")
+for x in (900, 950, 1000, 1020, 1050, 1090, 1100, 1400, 1450, 1500, 1550, 1600, 1650, 1700):
+    print(x, round(float(np.interp(x, f, v)), 1))
 for lo, hi in [(300, 3000)]:
     m = (f >= lo) & (f <= hi)
     print(f"largest rms in {lo} to {hi} MHz: {rms[m].max():.1f} mV at {f[m][rms[m].argmax()]:.0f} MHz; median {np.median(rms[m]):.2f} mV")
 fig, ax = plt.subplots(2, 1, figsize=(13, 7.5), sharex=True, height_ratios=[3, 1])
-ax[0].plot(f, v, ".-", ms=3, lw=0.8, color="#1f5fa8")
+r1 = np.genfromtxt(HERE / "pluto_full_range_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
+ax[0].plot(r1["freq_mhz"], r1["detector_mean_v"] * 1e3, lw=1, color="#c8691c", label="Run 1")
+ax[0].plot(f, v, ".-", ms=3, lw=0.8, color="#1f5fa8", label="Run 2")
+c = np.intersect1d(f, r1["freq_mhz"])
+dv = np.interp(c, f, v) - np.interp(c, r1["freq_mhz"], r1["detector_mean_v"] * 1e3)
+print(f"run 2 minus run 1: mean {dv.mean():.2f} mV, largest {abs(dv).max():.1f} mV at {c[abs(dv).argmax()]:.0f} MHz, median size {np.median(abs(dv)):.2f} mV")
+m = (c >= 300) & (c <= 2090)
+print(f"300 to 2090 MHz: mean {dv[m].mean():.2f} mV, largest {abs(dv[m]).max():.1f} mV at {c[m][abs(dv[m]).argmax()]:.0f} MHz")
 ax[0].axvspan(f.min(), 300, color="0.9", label="Below the detector's 300 MHz rating")
 ax[0].axvline(2090, color="0.4", ls="--", lw=1, label="Above 2090 MHz: Pluto level not in table, attenuation 39 dB")
 ax[0].set_ylabel("Phase detector output (mV, scope)")
