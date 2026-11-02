@@ -6,6 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 d = np.genfromtxt(HERE / "pluto_explore_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
 v = d["detector_mean_v"] * 1e3
@@ -93,4 +95,5 @@ a.set_title("SM200B: leak through the detector, about +2.7 dBm at it")
 a.set_xlabel("Pluto frequency (MHz)")
 a.grid(alpha=0.3)
 fig.tight_layout()
+wiring.add_strip(fig, wiring.P103X3)
 fig.savefig(HERE / "pluto_explore_1nov.png", dpi=105)

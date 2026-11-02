@@ -6,6 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 d = np.genfromtxt(HERE / "pluto_full_range_1nov_run2.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
 f, v, rms = d["freq_mhz"], d["detector_mean_v"] * 1e3, d["rms_v"] * 1e3
@@ -55,4 +57,5 @@ ax[1].set_xlabel("Pluto frequency (MHz)")
 ax[1].grid(alpha=0.3)
 ax[1].legend()
 fig.tight_layout()
+wiring.add_strip(fig, wiring.P103X3)
 fig.savefig(HERE / "pluto_full_range_1nov.png", dpi=120)

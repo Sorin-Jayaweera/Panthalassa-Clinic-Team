@@ -6,6 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 d = np.genfromtxt(HERE / "pluto_map_runs_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
 v = d["detector_mean_v"] * 1e3
@@ -36,4 +38,5 @@ print("largest rms mV:", round(float((d["rms_v"] * 1e3).max()), 2))
 for a in ax:
     a.grid(alpha=0.3)
 fig.tight_layout()
+wiring.add_strip(fig, wiring.P103X3)
 fig.savefig(HERE / "pluto_map_runs_1nov.png", dpi=110)

@@ -6,6 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 d = np.genfromtxt(HERE / "pluto_explore_1nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
 d = d[d["pass"] == "map2d"]
@@ -20,5 +22,6 @@ ax.set_title("Phase detector voltage against frequency at each Pluto power")
 ax.grid(alpha=0.3)
 ax.legend(title="Pluto level (table)", ncol=2, fontsize=9)
 fig.tight_layout()
+wiring.add_strip(fig, wiring.P103X3)
 fig.savefig(HERE / "pluto_power_freq_map_1nov.png", dpi=110)
 print(f"{len(d)} points, levels {levels.tolist()}")

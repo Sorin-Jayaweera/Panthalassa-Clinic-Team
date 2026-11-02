@@ -6,6 +6,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 z = np.load(HERE / "pluto_leak_1nov.npz")
 fs, pad = float(z["fs"]), float(z["pad_db"])
@@ -28,4 +30,5 @@ for col, (case, center, title) in enumerate(CASES):
         ax.set_ylabel("dBm before pads")
         ax.grid(alpha=0.3)
 fig.tight_layout()
+wiring.add_strip(fig, wiring.P103X3)
 fig.savefig(HERE / "pluto_leak_1nov.png", dpi=110)

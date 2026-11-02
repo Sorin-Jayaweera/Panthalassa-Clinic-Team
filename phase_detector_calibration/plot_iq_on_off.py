@@ -11,6 +11,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import wiring
+
 HERE = Path(__file__).parent
 SETS = [("furuno_detector_1nov_pll_on", "PLL ON", "#1f5fa8"), ("furuno_detector_1nov_pll_off_deliberate", "PLL OFF", "#c8691c")]
 CASES = [("baseband_21MHz", "near DC"), ("if_1p105GHz", "1.105 GHz")]
@@ -56,4 +58,5 @@ for case, title in CASES:
         for r in case_rows:
             r[col].set_ylim(lo, hi)
 fig.tight_layout()
+wiring.add_strip(fig, wiring.RADAR_P103, "Wiring. LO of the ZX05-14LH-S+: ADF5355 at 8.3 GHz, ZX60-14012L-S+, ZX10-2-1252-S+. PLL OFF rows have the ADF5355 off")
 fig.savefig(HERE / "furuno_detector_1nov_iq_on_off.png", dpi=110)
