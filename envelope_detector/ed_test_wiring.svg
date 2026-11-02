@@ -21,7 +21,7 @@
   <rect x="0" y="0" width="1060" height="640" fill="#ffffff"/>
 
   <text x="30" y="40" font-size="20" font-weight="700" fill="#111827">Test A: envelope detector (ADL5511) on its own</text>
-  <text x="30" y="62" font-size="13" fill="#4b5563">Pluto = signal source · CGR-201 = scope on VENV · DMM = VRMS (power meter), plus EREF at start and end · nothing else connected</text>
+  <text x="30" y="62" font-size="13" fill="#4b5563">Pluto = signal source · CGR-201 = VENV on input A, VRMS on input B (both logged by ed_sweep.py) · DMM = EREF at start and end</text>
 
   <!-- Pluto -->
   <rect x="30" y="150" width="160" height="180" rx="6" class="box"/>
@@ -35,7 +35,7 @@
   <line x1="195" y1="220" x2="360" y2="220" class="rf"/>
   <text x="277" y="194" class="note c">1.1 GHz CW, then pulses</text>
   <text x="277" y="208" class="note c">TX attenuation stepped</text>
-  <text x="277" y="240" class="note c">≤ +7 dBm (ED max +17)</text>
+  <text x="277" y="240" class="note c">≤ 0 dBm (ED max +17)</text>
 
   <!-- ED -->
   <rect x="360" y="130" width="260" height="240" rx="6" class="box"/>
@@ -62,14 +62,16 @@
   <text x="712" y="240" class="warn c">⚠ short cable, 1 MΩ only</text>
 
   <!-- EREF: read by DMM at start/end (no scope cable) -->
-  <text x="635" y="287" class="note">EREF: DMM at start and end only</text>
-  <text x="635" y="301" class="note">(move red probe VRMS ↔ EREF)</text>
+  <text x="635" y="382" class="note">EREF: DMM at start and end only</text>
+  <text x="635" y="396" class="note">(red on EREF, black on GND)</text>
 
-  <!-- VRMS -> DMM -->
-  <polyline points="625,340 700,340 700,420" class="dc"/>
+  <!-- VRMS -> CGR B -->
+  <polyline points="625,340 770,340 770,290 795,290" class="dc"/>
+  <text x="695" y="332" class="note c">VRMS → Input B</text>
+  <text x="695" y="358" class="note c">ground clip on GND TP</text>
   <rect x="625" y="420" width="180" height="62" rx="6" class="box"/>
   <text x="715" y="444" class="ttl" font-size="14">DMM (DC V)</text>
-  <text x="715" y="461" class="note c">+ → VRMS TP (EREF at start/end)</text>
+  <text x="715" y="461" class="note c">+ → EREF TP (start, end)</text>
   <text x="715" y="475" class="note c">COM → GND TP</text>
 
   <!-- CGR-201 -->
@@ -81,8 +83,8 @@
   <text x="810" y="240" class="note">VENV · DC coupled</text>
   <circle cx="800" cy="290" r="4.5" class="pt"/>
   <text x="810" y="294" class="port">Input B (BNC)</text>
-  <text x="810" y="310" class="note">unused</text>
-  <text x="810" y="340" class="note"><tspan font-weight="700" fill="#111827">A − EREF</tspan> = true envelope (by hand)</text>
+  <text x="810" y="310" class="note">VRMS · DC coupled</text>
+  <text x="810" y="340" class="note"><tspan font-weight="700" fill="#111827">A, B</tspan> logged every step</text>
   <text x="810" y="358" class="note">Output (BNC): leave unconnected</text>
   <text x="915" y="382" class="port c">USB</text>
 
@@ -103,12 +105,12 @@
   <text x="45" y="554" font-size="14" font-weight="700" fill="#111827">Bench DC supply (one channel)</text>
   <text x="45" y="576" class="note"><tspan fill="#b91c1c" font-weight="700">+5.00 V</tspan> → VPOS pin · <tspan font-weight="700" fill="#111827">current limit 60 mA</tspan></text>
   <text x="45" y="594" class="note"><tspan font-weight="700" fill="#111827">COM</tspan> → GND pin (also the common point for DMM and CGR-201 ground)</text>
-  <text x="45" y="612" class="note">Expect ≈ 21.5 mA with no RF, ≈ 30 mA at the Pluto's max level</text>
+  <text x="45" y="612" class="note">Expect ≈ 17–21 mA with no RF (17 mA on 26 Oct), ≈ 20 mA with RF</text>
 
   <!-- Computer -->
   <rect x="560" y="530" width="470" height="95" rx="6" class="box" style="fill:#eef2ff"/>
   <text x="795" y="554" class="ttl">Computer</text>
-  <text x="575" y="576" class="note">• GNU Radio → Pluto: 1.1 GHz tone, step TX attenuation; later pulses</text>
-  <text x="575" y="594" class="note">• CGR-201 software: Input A (VENV); read VRMS off the DMM</text>
-  <text x="575" y="612" class="note">• Log one row per step in ED-TEST-PROCEDURE.md</text>
+  <text x="575" y="576" class="note">• ed_sweep.py drives the Pluto: CW steps, or pulses (--pulse-us)</text>
+  <text x="575" y="594" class="note">• reads VENV (A) and VRMS (B) every step; saves a CSV in data/</text>
+  <text x="575" y="612" class="note">• DMM only for EREF, at the start and the end</text>
 </svg>

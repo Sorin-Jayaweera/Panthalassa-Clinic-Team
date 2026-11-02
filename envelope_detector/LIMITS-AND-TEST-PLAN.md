@@ -53,6 +53,7 @@ in its schematic.
 | **Supply** | USB, 500 mA (plug it straight into the Mac) | USB | USB-C 5 V | 5 V from the carrier |
 | **Input type** | RX: RF 50 Ω, AC-coupled, 70 MHz–6 GHz | Scope: 1 MΩ ‖ 20 pF; digital in: 3/5 V HCMOS | GPIO: LVCMOS, assume 3.3 V **(verify)** | ADC SMA: analog |
 | **Input range / abs max** | **RF only, ≤ 0 dBm. Never DC or logic levels** | 20 mV/div – 5 V/div; **50 V peak max** (label) | 0–3.3 V **(verify)** | Likely ±5 V full scale **(verify)**. The AD9280 itself is 0–2 V |
+| **Input accuracy** | — | After its stored calibration, low range: A ≈ +3 mV; B ≈ −7.2 mV and × 0.986 (measured vs DMM, 1 Nov). Repeatable per range and setting, drifts with temperature; rises cancel the offset. See `ED-TEST-PROCEDURE.md` | — | — |
 | **Output type** | TX: RF 50 Ω | **One** BNC output (generator): 50 Ω, ±3 V; header digital out: **5 V** HCMOS | GPIO: LVCMOS 3.3 V **(verify)** | DAC SMA: analog, op-amp buffered |
 | **Output range** | ~0 to +7 dBm near 1 GHz, uncalibrated | ±3 V (8-bit) | 0 / 3.3 V | Likely ±5 V **(verify)**, 8-bit ≈ 39 mV steps |
 | **Speed** | Up to 61.44 MS/s; use a cyclic TX buffer for clean pulses | **5 MHz BW, 40 MS/s** (25 ns/sample) | 50 MHz oscillator; PLL for faster sampling | ADC 32 MS/s, DAC 125 MS/s |

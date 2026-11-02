@@ -41,7 +41,9 @@ def main(path):
     rows = load(path)
     level = [r["tx_level_db"] for r in rows]
     rise = [r["venv_rise_v"] for r in rows]
-    vrms = [r["vrms_dmm_v"] for r in rows]
+    typed = all(r.get("vrms_dmm_v") not in ("", None) for r in rows)  # 26 Oct run: VRMS typed from the DMM
+    vrms = [r["vrms_dmm_v"] if typed else r["vrms_v"] for r in rows]     # later runs: VRMS on CGR-201 Input B
+    vrms_src = "DMM" if typed else "CGR-201 B"
     noise = [r["venv_noise_mv"] for r in rows]
 
     vrms0 = sum(v for v, l in zip(vrms, level) if l <= NO_RF_LEVEL_DB) / sum(l <= NO_RF_LEVEL_DB for l in level)
@@ -87,7 +89,7 @@ def main(path):
 
     # B: input power from each output, with the calibration line
     ax = axes[1]
-    ax.plot(level, p_vrms, "-s", color=ORANGE, lw=2, ms=6, mec=SURFACE, mew=1.5, label="from VRMS (DMM)")
+    ax.plot(level, p_vrms, "-s", color=ORANGE, lw=2, ms=6, mec=SURFACE, mew=1.5, label=f"from VRMS ({vrms_src})")
     ax.plot(level, p_venv, "-o", color=BLUE, lw=2, ms=6, mec=SURFACE, mew=1.5, label="from VENV (CGR-201)")
     xs = [-45, 0]
     ax.plot(xs, [x + p0 for x in xs], "--", color=INK_2, lw=1,

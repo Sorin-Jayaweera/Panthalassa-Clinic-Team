@@ -93,7 +93,7 @@ def block_data(key, x, y):
     if key == "env":
         pts = [(-a, r) for a, r, _ in CE.SWEEP if r > 2]
         return (spark([x for x, _ in pts], [20 * np.log10(r) for _, r in pts], left, top)
-                + f'<text class="t2" x="{x}" y="{y+31}" text-anchor="middle">1.47-1.51 V/V at 1.1 GHz, floor -30 dBm</text>')
+                + f'<text class="t2" x="{x}" y="{y+31}" text-anchor="middle">flat 1.0-1.2 GHz, floor -30 dBm</text>')
     if key == "ifsplit":
         return (f'<text class="t2" x="{x}" y="{y+12}" text-anchor="middle">not tested in this position</text>'
                 f'<text class="t2" x="{x}" y="{y+25}" text-anchor="middle">same part as delay-line splitter</text>')
@@ -112,7 +112,7 @@ STATUS = {
     "delaysplit": ("Loss 6.70 and 6.72 dB at 1.04 GHz. In the detector chain in every test above", "Loss vs frequency, isolation", "tab-splitter"),
     "phasedet": ("Voltage vs frequency alone and after the amps, step response, noise, drift, VNA of the ports", "Different delay cables, 4 x P162 chain with the radar, one sweep on its own from 900 to 1200 MHz", "tab-mixer"),
     "sh": ("Nothing", "Not on hand", "pi-sh"),
-    "env": ("Voltage vs input power at 1.1 GHz", "Band edges, pulse response", "tab-env"),
+    "env": ("Voltage vs input power at 1.0, 1.1 and 1.2 GHz (flat within 0.1 dB). Pulse height at 10 and 100 us equals CW within 1-3 %", "Its 4 ns rise and 50 ns-1.2 us pulses (needs the scope). Absolute power check of the Pluto on the spectrum analyzer", "tab-env"),
     "comp": ("Nothing", "All tests in the plan", "tab-comp"),
     "dac": ("Nothing", "Not on hand. CGR-201 output for now", "pi-dac"),
     "fpga": ("Nothing", "All of it", "pi-fpga"),
