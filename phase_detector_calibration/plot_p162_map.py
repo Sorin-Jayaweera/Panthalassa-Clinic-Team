@@ -26,6 +26,13 @@ ax.grid(alpha=0.3)
 ax.legend(title="Pluto level (table)", ncol=2, fontsize=9)
 fig.tight_layout()
 fig.savefig(HERE / "p162x4_power_freq_map_1nov.png", dpi=110)
+k = (d["freq_mhz"] >= 850) & (d["freq_mhz"] <= 950) & (d["pluto_want_dbm"] >= -70)
+fmin = d["freq_mhz"][k][d["detector_mean_v"][k].argmin()]
+print(f"lowest point near 900 MHz: {fmin:.0f} MHz, {d['detector_mean_v'][k].min()*1e3:.1f} mV")
+ax.set_xlim(fmin, 1200)
+ax.set_ylim(60, 340)
+ax.set_title(f"{fmin:.0f} to 1200 MHz: phase detector voltage at each Pluto power, 4 x ZX60-P162LN+" + chr(10) + "-85 to -45 dBm on the KUAIQU supply, -40 to -30 dBm on the Agilent E3630A")
+fig.savefig(HERE / "p162x4_power_freq_zoom_1nov.png", dpi=110)
 print(f"{len(d)} points, levels {levels.tolist()}, tone off readings {np.round(off, 1).tolist()}")
 for f in (900, 950, 1000, 1050, 1100, 1200, 1300, 1400, 1500):
     k = d["freq_mhz"] == f

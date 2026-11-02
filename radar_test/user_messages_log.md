@@ -249,3 +249,5 @@ Entries before 26 Oct 18:35 are rebuilt from the session summary and are close p
 - 1 Nov "I accidentally briefly unplugged the oscilloscope when I meant to unplug kitty"
 - 1 Nov "it is all good now though"
 - 1 Nov "show me plots"
+- 1 Nov "also put a zoomed in plot with pluto level from 900 to 1200"
+- 1 Nov "actually from wherever the minimum around 900 is -  850 or 900 or smth"
