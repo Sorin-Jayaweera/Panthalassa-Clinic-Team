@@ -24,7 +24,10 @@ from run_pluto_full_range import SCALE, Scope, _MAP, retry, tone_off, tone_on  #
 
 full.RETRY_S = 900.0
 LEVELS = (-60.0, -50.0, -70.0, -45.0, -65.0, -75.0, -55.0, -80.0, -85.0)
-TOP_DBM = -45.0
+TOP_ONLY = "--top" in sys.argv   # just the levels above the first map, then stop
+if TOP_ONLY:
+    LEVELS = (-40.0, -36.0, -33.0, -30.0)
+TOP_DBM = -30.0
 STOP_MV = 700.0   # scope at 200 mV/div reads to about 800 mV; the detector IF limit of 40 mA is about 2 V into 50 ohm
 MINUTES = 90.0
 OUT = HERE / "p162x4_map_1nov.csv"
@@ -76,6 +79,8 @@ def main():
                 if (name, float(f), want) in done:
                     continue
                 att = att_for(float(f), want)
+                if att < full.ATT_MIN_DB:   # the Pluto floor limits the level here, so leave the point out
+                    continue
                 retry(lambda: tone_on(float(f) * 1e6, att, SCALE), f"tone {f:.0f}")
                 time.sleep(0.3)
                 save(name, rep, float(f), att, want)
@@ -87,6 +92,8 @@ def main():
             save("start_off", 0, 0.0, 89.75, -999.0)
             for want in LEVELS:
                 sweep("map", 0, np.arange(700.0, 1600.5, 5.0), want)
+            if TOP_ONLY:
+                return
             att = att_for(1054.0, -60.0)
             retry(lambda: tone_on(1054e6, att, SCALE), "tone hold")
             for i in range(60):

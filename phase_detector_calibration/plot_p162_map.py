@@ -15,12 +15,13 @@ d = d[~((d["freq_mhz"] == 1320) & (d["pluto_want_dbm"] == -65) & (d["detector_me
 levels = np.unique(d["pluto_want_dbm"])
 fig, ax = plt.subplots(figsize=(13, 7))
 for i, want in enumerate(levels[::-1]):
-    k = d["pluto_want_dbm"] == want
+    k = np.where(d["pluto_want_dbm"] == want)[0]
+    k = k[np.argsort(d["freq_mhz"][k])]
     ax.plot(d["freq_mhz"][k], d["detector_mean_v"][k] * 1e3, lw=1.2, color=plt.cm.viridis_r(i / max(len(levels) - 1, 1)), label=f"{want:.0f} dBm")
 ax.axhline(np.median(off), color="0.4", ls="--", lw=1, label=f"Tone off, {np.median(off):.0f} mV")
 ax.set_xlabel("Pluto frequency (MHz)")
 ax.set_ylabel("Phase detector output (mV)")
-ax.set_title("Phase detector voltage against frequency at each Pluto power, 4 x ZX60-P162LN+")
+ax.set_title("Phase detector voltage against frequency at each Pluto power, 4 x ZX60-P162LN+\n-85 to -45 dBm on the KUAIQU supply, -40 to -30 dBm on the Agilent E3630A")
 ax.grid(alpha=0.3)
 ax.legend(title="Pluto level (table)", ncol=2, fontsize=9)
 fig.tight_layout()
