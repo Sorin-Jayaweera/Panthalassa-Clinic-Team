@@ -158,6 +158,21 @@ COMP = part_tab(
         ["1", "Supply", "board only", "set 3.3 V, 40 mA; inputs grounded", "nothing", "15 mA", "under 21 mA"],
         ["2", "Trip point", "CGR-201 output &rarr; 1 k&Omega; &rarr; IN+ (slow triangle 0.8&ndash;1.6 V, never negative); pot &rarr; IN&minus; at 1.20 V; 100 &Omega; across OUT&plusmn;; CGR-201 A on IN+, B on OUT+", "set the pot", "capture A and B", "OUT+ steps between &asymp;1.03 and 1.38 V where IN+ crosses 1.20 V", "within &plusmn;5 mV"],
         ["3", "Chatter", "same, triangle slowed to 1&ndash;10 Hz", "nothing", "count extra edges", "some", "recorded"],
-        ["4", "Detector to comparator", "VENV &rarr; IN+ (no termination); CGR-201 output (DC) &rarr; 1 k&Omega; &rarr; IN&minus;; OUT+ &rarr; CGR-201 B", "warm up 10 min; set IN&minus; = no-RF VENV + 20 mV", "pulse the Pluto; trigger on B; count pulses", "one output pulse per RF pulse above &minus;21.5 dBm", "no missed or extra pulses"]]) +
+        ["4", "Detector to comparator", "VENV &rarr; IN+ (no termination); CGR-201 output (DC) &rarr; 1 k&Omega; &rarr; IN&minus;; OUT+ &rarr; CGR-201 B", "warm up 10 min; set IN&minus; = no-RF VENV + 20 mV", "pulse the Pluto; trigger on B; count pulses", "one output pulse per RF pulse above &minus;21.5 dBm", "no missed or extra pulses"],
+        ["5", "Ripple vs threshold", "as step 4", "Pluto CW at TX 0 dB, then TX &minus;10 dB", "step IN&minus; up from the no-RF VENV past the CW VENV in the smallest steps available; note B at each step", "B solid high, then toggling at &asymp;400 kHz, then solid low. Width of the toggling band = ripple peak to peak (&asymp;27 mV at TX 0 dB)", "band &asymp;&plusmn;5 % of the VENV rise at both levels"],
+        ["6", "Edge chatter", "as step 4, B on the Siglent scope instead (CGR-201 is 5 MHz and misses ns bursts)", "pulsed, IN&minus; = no-RF + 20 mV", "zoom on each OUT+ edge", "a single edge", "count extra edges per pulse"]]) +
+    '<div class="note"><b>For whoever runs the comparator tests: the Pluto puts a ripple on VENV.</b> '
+    'On 1 Nov, a steady Pluto tone gave a &plusmn;13.7 mV, 400 kHz ripple on VENV at TX 0 dB (Envelope detector tab, figure &ldquo;ripple source and pulse shape&rdquo;). '
+    'It comes from a Pluto spur about 25 dB below the tone, not from the detector, so a real radar pulse should not have it. '
+    'The ADCMP604 has almost no hysteresis (&lt;0.1 mV) and a 1.6 ns delay, so it will follow this ripple wherever the ripple crosses the threshold.<ul>'
+    '<li><b>Threshold well below the pulse top</b> (no higher than the middle of the VENV rise): the ripple never reaches it, one clean output pulse. This is the normal case.</li>'
+    '<li><b>Threshold near the pulse top:</b> the output toggles at 400 kHz during the pulse. Fix: lower the threshold.</li>'
+    '<li><b>Pulse only just above the threshold</b> (the weakest detectable level): ripple and noise cross the threshold whatever value is chosen, so the output chatters. '
+    'The threshold cannot fix this; count it in the S-curve (step 2 of Test C) and plan for the FPGA to ignore &ldquo;on&rdquo; periods shorter than a minimum width.</li>'
+    '<li><b>Slow Pluto edges (0.65 &mu;s):</b> noise during the rise can give a short burst of toggles at each edge. Ns-scale, so look with the Siglent scope (step 6).</li></ul>'
+    'Step 5 measures the ripple with the comparator itself; no separate ripple test is needed first. '
+    '<mark data-k="q">Unverified: that the ripple is a fixed &asymp;&plusmn;5 % of the VENV rise at every level (predicted from the &minus;25 dBc spur, measured only at TX 0 dB; '
+    'below about &minus;15 dBm it is under the CGR-201&rsquo;s 5 mV steps).</mark> Step 5 at two levels checks it. '
+    'Moving the Pluto tone offset from 100 kHz to 1 MHz should move the ripple to 4 MHz, which would confirm the source.</div>' +
     '<div class="note">Set the CGR-201 output to DC before connecting it: it can swing to &minus;3 V and the comparator input limit is &minus;0.5 V. The 1 k&Omega; limits the current if it does.</div>',
     NOT_RUN)

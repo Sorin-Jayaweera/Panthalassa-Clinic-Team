@@ -206,6 +206,38 @@ The CGR-201 has one output and two inputs, so:
    output pulse per RF pulse.
 2. Lower the RF level to find where pulses are missed or start chattering
    (the S-curve).
+   - **Watch for Pluto ripple (see the box below).**
+   - **Ripple vs threshold:** with Pluto CW at TX 0 dB, then TX −10 dB, step
+     IN− up from the no-RF VENV past the CW VENV. Output B goes solid high →
+     toggling at ≈ 400 kHz → solid low. The width of the toggling band is the
+     ripple peak to peak (≈ 27 mV expected at TX 0 dB). Expect ≈ ±5 % of the
+     VENV rise at both levels.
+   - **Edge chatter:** look at OUT+ edges on the Siglent scope (the CGR-201 is
+     5 MHz and misses ns bursts). Count extra edges per pulse.
+
+> **For whoever runs the comparator tests: the Pluto puts a ripple on VENV.**
+> On 1 Nov a steady Pluto tone gave ±13.7 mV of 400 kHz ripple on VENV at
+> TX 0 dB (`ED-TEST-RESULTS.md`, extra checks). It comes from a Pluto spur
+> ≈ 25 dB below the tone, not from the ED; a real radar pulse should not have
+> it. The ADCMP604 has < 0.1 mV hysteresis and 1.6 ns delay, so it follows the
+> ripple wherever the ripple crosses the threshold.
+> - Threshold well below the pulse top (≤ the middle of the VENV rise): one
+>   clean pulse. Normal case.
+> - Threshold near the pulse top: 400 kHz toggling during the pulse. Fix:
+>   lower the threshold.
+> - Pulse only just above the threshold (weakest detectable level): chatter
+>   whatever threshold is chosen. The threshold can't fix this. Record it in
+>   the S-curve; plan for the FPGA to ignore "on" periods shorter than a
+>   minimum width.
+> - Slow Pluto edges (0.65 µs): noise on the rise can give a burst of toggles
+>   at each edge (ns scale, Siglent only).
+>
+> No separate ripple test is needed first: the ripple-vs-threshold step
+> measures it with the comparator. **Unverified:** that the ripple is a fixed
+> ≈ ±5 % of the VENV rise at every level (predicted from the −25 dBc spur,
+> measured only at TX 0 dB). Moving the Pluto tone offset from 100 kHz to
+> 1 MHz should move the ripple to 4 MHz and confirm the source.
+
 3. **Computer as the FPGA (current plan; wiring in `bench_wiring.svg`).**
    - The CGR-201 Output is the DC threshold → 1 kΩ → IN−.
    - Input A = VENV (tee). Input B = OUT+, with its trigger on the rising edge
