@@ -102,13 +102,14 @@ def plot_trip():
         up = [i for i, r in enumerate(pts) if r["phase"] in ("coarse", "fine_up")]
         upo = sorted(up, key=lambda i: x[i])
         ax.plot(x[upo], y[upo], "-", lw=1, color=line.get_color(),
-                label=f"IN− = {meta['vn']:.3f} V (J1 = setting {1e3 * off:+.1f} mV)")
+                label=f"threshold set to {meta['vn']:.3f} V")
     ax.axvline(0, color="k", lw=0.8)
-    ax.axvspan(-5, 5, color="0.85", zorder=0, label="±5 mV offset spec [DS Table 1]")
-    ax.set_xlabel("IN+ − IN−  (mV, at the pins; from CGR setting + DMM-measured J1 offset)")
-    ax.set_ylabel("OUT+ on CGR Input B\n(0 = low, 1 = high; CGR averages, 5 MHz)")
-    ax.set_title("Test 2: OUT+ is undecided over ≈ ±45 mV, centred near 0 mV\n"
-                 "(5 Nov, 100 Ω source; in-between = ≈ 27 MHz oscillation averaged by the CGR)")
+    ax.axvspan(-5, 5, color="0.85", zorder=0, label="datasheet: should flip within ±5 mV of 0")
+    ax.set_xlabel("input voltage minus threshold voltage (mV)")
+    ax.set_ylabel("comparator output, averaged\n(0 = always off, 1 = always on)")
+    ax.set_title("Slow input sweep past the threshold (Test 2, 5 Nov). An ideal comparator jumps 0 → 1 at 0 mV.\n"
+                 "This one is 'undecided' from ≈ −45 to +45 mV: it flickers on/off ≈ 27 million times/s, "
+                 "and the slow meter sees the average.", fontsize=9)
     ax.set_ylim(-0.1, 1.15)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=7, loc="upper left")
@@ -121,7 +122,8 @@ def plot_trip():
 MARGIN_BY_LABEL = {"rf_off": 17.2, "rf_off_m50": 54.8, "rf_off_m110": 110.6, "rf_off_m110_ch1": 110.6}
 STALE = {"20261108_211314"}  # scope probably not re-armed: discarded in the results sheet
 # Runs that never triggered write no summary row; add them by hand (results sheet).
-NO_TRIGGER = [(560, "coax; CH1 cable on the tee"), (300, "coax; CH1 cable on the tee")]
+NO_TRIGGER = [(560, "shielded cable + extra scope cable on the input"),
+              (300, "shielded cable + extra scope cable on the input")]
 
 
 def margin_of(label):
@@ -133,10 +135,10 @@ def margin_of(label):
 
 def group_of(row):
     if row["time"] < "20261108_211300":
-        return "grabber lead + CH1 probe on the IN+ tee"
+        return "unshielded clip lead on the comparator input"
     if "_B" in row["label"] or row["time"] >= "20261108_215600":  # round B onwards: CH1 cable removed
-        return "coax only (tee joins detector and J1)"
-    return "coax; CH1 cable on the tee"
+        return "shielded cable only"
+    return "shielded cable + extra scope cable on the input"
 
 
 def plot_rfoff():
@@ -157,24 +159,26 @@ def plot_rfoff():
             groups.setdefault(group_of(r), []).append((mv, rate))
     floor = 0.3
     fig, ax = plt.subplots(figsize=(8, 4.8))
-    markers = {"grabber lead + CH1 probe on the IN+ tee": "s", "coax; CH1 cable on the tee": "o",
-               "coax only (tee joins detector and J1)": "^"}
+    markers = {"unshielded clip lead on the comparator input": "s",
+               "shielded cable + extra scope cable on the input": "o", "shielded cable only": "^"}
     for g, pts in groups.items():
         pts = np.array(pts)
         ax.plot(pts[:, 0], np.maximum(pts[:, 1], floor), markers.get(g, "o"), ms=7, alpha=0.8, label=g)
     for mv, g in NO_TRIGGER:
         ax.plot(mv, floor, markers.get(g, "o"), ms=9, mfc="none", mec="k")
-    ax.plot([], [], "o", mfc="none", mec="k", label="no trigger at all in 10 s")
+    ax.plot([], [], "o", mfc="none", mec="k", label="nothing at all in 10 s (completely quiet)")
     ax.axvline(20, color="r", ls="--", lw=1)
-    ax.text(22, 3e4, "planned\n+20 mV", color="r", fontsize=8, va="top")
+    ax.text(24, 2e3, "planned\nthreshold\n(+20 mV)", color="r", fontsize=8, va="top")
     ax.axhline(1, color="0.6", lw=0.8, ls=":")
-    ax.text(400, 1.3, "≤ 1 edge: interference blip only (quiet)", fontsize=7, color="0.4")
+    ax.text(380, 1.3, "at or below this line: quiet (a stray blip at most)", fontsize=7, color="0.4")
     ax.set_yscale("log")
     ax.set_ylim(floor * 0.7, 1e5)
-    ax.set_xlabel("threshold margin above the detector's resting level (mV)")
-    ax.set_ylabel("OUT+ rising edges per ms, RF off\n(plotted at 0.3 when zero)")
-    ax.set_title("Test 4: with RF off, the comparator oscillates unless the margin is ≈ 150–300 mV\n"
-                 "(8–9 Nov, clip-lead output wiring; 1 ms of oscillation ≈ 27–53 thousand edges)")
+    ax.set_xlabel("how far the threshold sits above the detector's no-signal voltage (mV)")
+    ax.set_ylabel("false 'pings' per millisecond\n(output on-switches with NO radar signal;\n"
+                  "log scale, zero drawn at 0.3)")
+    ax.set_title("No radar signal at all (Test 4, 8–9 Nov): every point above the dotted line is the comparator\n"
+                 "flickering by itself (≈ 27–53 thousand times per ms). It only goes quiet ≈ 150–300 mV above "
+                 "the detector's resting voltage.", fontsize=9)
     ax.grid(alpha=0.3, which="both")
     ax.legend(fontsize=7, loc="center right")
     save(fig, "2_rfoff_margin.png")
@@ -203,28 +207,31 @@ def plot_osc_vs_pickup():
         print("3: m68 / m335 captures not found, skipped")
         return
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8), sharey=True)
-    for ax, shot, title, half in ((axes[0], osc, "68 mV margin: real oscillation", 200e-9),
-                                  (axes[1], pick, "335 mV margin: the one 'edge' is a pickup burst", 800e-9)):
+    for ax, shot, title, half in ((axes[0], osc, "threshold 68 mV above the input:\nthe output flips on/off by itself "
+                                                  "(≈ 27 million times/s)", 200e-9),
+                                  (axes[1], pick, "threshold 335 mV above the input:\nthe output stays off; this blip is "
+                                                  "interference picked up by the wires", 800e-9)):
         if shot is None:
             ax.set_title(title + "\n(data not found)")
             continue
         t, v, fs, name = shot
-        c = int(np.argmax(v)) if "335" in title else len(v) // 2
+        c = int(np.argmax(v)) if ax is axes[1] else len(v) // 2
         n = int(half * fs)
         sl = slice(max(c - n, 0), min(c + n, len(v)))
         ax.plot((t[sl] - t[c]) * 1e9, v[sl], lw=0.8)
-        ax.set_title(f"{title}\n{name}", fontsize=9)
+        ax.set_title(title, fontsize=9)
         ax.set_xlabel("time (ns)")
         ax.grid(alpha=0.3)
     for ax in axes:
-        ax.axhline(OUT_LOW, color="g", lw=0.8, ls="--")
-        ax.axhline(OUT_HIGH, color="m", lw=0.8, ls="--")
-        ax.axhline(1.40, color="r", lw=0.8, ls=":")
-    axes[0].set_ylabel("OUT+ (V)")
-    axes[1].text(0.02, 0.97, "green: low 1.105 V   magenta: high 1.483 V   red: trigger 1.40 V\n"
-                 "pickup swings above AND below the low level; a real flip steps up to ≈ 1.48 V",
+        ax.axhline(OUT_HIGH, color="m", lw=0.8, ls="--", label="output 'on' level (1.483 V)")
+        ax.axhline(1.40, color="r", lw=0.8, ls=":", label="counting threshold (1.40 V)")
+        ax.axhline(OUT_LOW, color="g", lw=0.8, ls="--", label="output 'off' level (1.105 V)")
+    axes[0].set_ylabel("comparator output (V)")
+    axes[1].legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.01, 1))
+    axes[1].text(1.03, 0.45, "A real 'on' switch steps UP\nto the 'on' level and back.\n"
+                 "Interference wiggles above\nAND below the 'off' level.",
                  transform=axes[1].transAxes, fontsize=7, va="top")
-    fig.suptitle("Scope (CH2 on J7, 10× probe), RF off, coax-only IN+", fontsize=10, y=1.06)
+    fig.suptitle("Oscilloscope on the comparator output, no radar signal (8 Nov)", fontsize=10, y=1.08)
     save(fig, "3_osc_vs_pickup.png")
 
 
@@ -267,38 +274,38 @@ def plot_pulses():
     above = first_burst(v, fs)
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(12, 6))
     tt, lo, hi = envelope(t, v)
-    a1.fill_between(tt * 1e3, lo, hi, step="mid", lw=0, label="OUT+ (min–max per screen pixel)")
+    a1.fill_between(tt * 1e3, lo, hi, step="mid", lw=0, label="comparator output")
     if len(above):
         t_first = t[above[0]]
         k = np.arange(np.floor((t[0] - t_first) / 200e-6), np.ceil((t[-1] - t_first) / 200e-6) + 1)
         for tk in t_first + k * 200e-6:
             if t[0] <= tk <= t[-1]:
                 a1.axvline(tk * 1e3, color="r", lw=0.4, alpha=0.5)
-        a1.plot([], [], color="r", lw=0.8, alpha=0.6, label="expected pulse start (every 200 µs)")
-    a1.axhline(1.40, color="k", lw=0.8, ls=":", label="trigger / edge threshold 1.40 V")
+        a1.plot([], [], color="r", lw=0.8, alpha=0.6, label="where each radar-like pulse starts (every 200 µs)")
+    a1.axhline(1.40, color="k", lw=0.8, ls=":", label="counting threshold (1.40 V)")
     a1.legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.01, 1), framealpha=0.9)
     a1.set_xlabel("time (ms)")
-    a1.set_ylabel("OUT+ (V)")
-    a1.set_title(f"Test 4, TX 0 dB, 100 µs on / 100 µs off, 335 mV margin ({name}, shot 0)\n"
-                 "red lines: expected pulse starts (every 200 µs, aligned to the first chatter burst). "
-                 "About 1/3–1/2 of pulses register.\nThin spikes between bursts: pickup, repeating "
-                 "every ≈ 14.5 µs (≈ 69 kHz).", fontsize=9)
+    a1.set_ylabel("comparator output (V)")
+    a1.set_title("Radar-like pulses into the detector (Test 4, 8 Nov): 100 µs on / 100 µs off, Pluto at full power, "
+                 "threshold 335 mV.\nIdeal: one clean 'on' per pulse at every red line. Seen: only ≈ 1/3–1/2 of "
+                 "pulses show up, and each is a burst of flicker.\n(Thin spikes in between = interference, "
+                 "repeating every ≈ 14.5 µs.)", fontsize=9)
     a1.grid(alpha=0.3)
     bursts = chatter_bursts(v, fs)
     if bursts:
         lens = [(b - a) / fs * 1e6 for a, b in bursts]
         a, b = max(bursts, key=lambda ab: ab[1] - ab[0])
         sl = slice(max(a - int(15e-6 * fs), 0), min(a + int(115e-6 * fs), len(v)))
-        a2.plot((t[sl] - t[a]) * 1e6, v[sl], lw=0.3, label="OUT+")
-        a2.set_title(f"Zoom on the longest burst: ≈ 27 MHz chatter for {(b - a) / fs * 1e6:.0f} µs of the "
-                     f"100 µs pulse, not one clean pulse.\nThis shot: {len(bursts)} bursts lasting "
-                     f"{min(lens):.0f}–{max(lens):.0f} µs (median {np.median(lens):.0f} µs)", fontsize=9)
-    a2.axhline(OUT_HIGH, color="m", lw=0.8, ls="--", label="high level 1.483 V (Test 1)")
-    a2.axhline(1.40, color="k", lw=0.8, ls=":", label="edge threshold 1.40 V")
-    a2.axhline(OUT_LOW, color="g", lw=0.8, ls="--", label="low level 1.105 V (Test 1)")
+        a2.plot((t[sl] - t[a]) * 1e6, v[sl], lw=0.3, label="comparator output")
+        a2.set_title(f"Zoom on one pulse: instead of switching on once, the output flips on/off ≈ 27 million "
+                     f"times/s for {(b - a) / fs * 1e6:.0f} µs.\nIn this capture: {len(bursts)} bursts, "
+                     f"lasting {min(lens):.0f}–{max(lens):.0f} µs (median {np.median(lens):.0f} µs)", fontsize=9)
+    a2.axhline(OUT_HIGH, color="m", lw=0.8, ls="--", label="output 'on' level (1.483 V)")
+    a2.axhline(1.40, color="k", lw=0.8, ls=":", label="counting threshold (1.40 V)")
+    a2.axhline(OUT_LOW, color="g", lw=0.8, ls="--", label="output 'off' level (1.105 V)")
     a2.legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.01, 1), framealpha=0.9)
     a2.set_xlabel("time from the start of the burst (µs)")
-    a2.set_ylabel("OUT+ (V)")
+    a2.set_ylabel("comparator output (V)")
     a2.grid(alpha=0.3)
     fig.tight_layout()
     save(fig, "4_pulses_0dB.png")
