@@ -265,15 +265,18 @@ def plot_pulses():
         return
     t, v, fs, name = shot
     above = first_burst(v, fs)
-    fig, (a1, a2) = plt.subplots(2, 1, figsize=(10, 6))
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(12, 6))
     tt, lo, hi = envelope(t, v)
-    a1.fill_between(tt * 1e3, lo, hi, step="mid", lw=0)
+    a1.fill_between(tt * 1e3, lo, hi, step="mid", lw=0, label="OUT+ (min–max per screen pixel)")
     if len(above):
         t_first = t[above[0]]
         k = np.arange(np.floor((t[0] - t_first) / 200e-6), np.ceil((t[-1] - t_first) / 200e-6) + 1)
         for tk in t_first + k * 200e-6:
             if t[0] <= tk <= t[-1]:
                 a1.axvline(tk * 1e3, color="r", lw=0.4, alpha=0.5)
+        a1.plot([], [], color="r", lw=0.8, alpha=0.6, label="expected pulse start (every 200 µs)")
+    a1.axhline(1.40, color="k", lw=0.8, ls=":", label="trigger / edge threshold 1.40 V")
+    a1.legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.01, 1), framealpha=0.9)
     a1.set_xlabel("time (ms)")
     a1.set_ylabel("OUT+ (V)")
     a1.set_title(f"Test 4, TX 0 dB, 100 µs on / 100 µs off, 335 mV margin ({name}, shot 0)\n"
@@ -286,11 +289,14 @@ def plot_pulses():
         lens = [(b - a) / fs * 1e6 for a, b in bursts]
         a, b = max(bursts, key=lambda ab: ab[1] - ab[0])
         sl = slice(max(a - int(15e-6 * fs), 0), min(a + int(115e-6 * fs), len(v)))
-        a2.plot((t[sl] - t[a]) * 1e6, v[sl], lw=0.3)
+        a2.plot((t[sl] - t[a]) * 1e6, v[sl], lw=0.3, label="OUT+")
         a2.set_title(f"Zoom on the longest burst: ≈ 27 MHz chatter for {(b - a) / fs * 1e6:.0f} µs of the "
                      f"100 µs pulse, not one clean pulse.\nThis shot: {len(bursts)} bursts lasting "
                      f"{min(lens):.0f}–{max(lens):.0f} µs (median {np.median(lens):.0f} µs)", fontsize=9)
-    a2.axhline(1.40, color="r", lw=0.8, ls=":")
+    a2.axhline(OUT_HIGH, color="m", lw=0.8, ls="--", label="high level 1.483 V (Test 1)")
+    a2.axhline(1.40, color="k", lw=0.8, ls=":", label="edge threshold 1.40 V")
+    a2.axhline(OUT_LOW, color="g", lw=0.8, ls="--", label="low level 1.105 V (Test 1)")
+    a2.legend(fontsize=7, loc="upper left", bbox_to_anchor=(1.01, 1), framealpha=0.9)
     a2.set_xlabel("time from the start of the burst (µs)")
     a2.set_ylabel("OUT+ (V)")
     a2.grid(alpha=0.3)
