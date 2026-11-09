@@ -177,7 +177,7 @@ With the grabber lead on J1's tee, it oscillated even at 110 mV; with the IN+ pa
 | 0 dB | 100 µs | ≈ 70 | 27, 33, 23 | 2,678 / 2,714 / 2,580 | 94.7–99.5 µs | ≈ 1/3–1/2 of pulses seen, and each one is a ≈ 27 MHz chatter burst lasting the whole pulse (calc: 2,700 edges / 100 µs) |
 | −3 dB | 100 µs | ≈ 70 | 0, 1, 1 (single 8–10 ns interference events) | — | — | no pulses caught |
 | RF off after the pulses | — | — | 0 | — | — | quiet: the pulses did not leave it oscillating |
-Why: at 0 dB VENV rises ≈ 330 mV (calc from [ED]: 105 mV at −10 dB × 1.78²), about equal to the 335 mV margin, so the pulse tops sit right at the threshold, inside the oscillation band: the comparator chatters for the whole pulse and misses the pulses whose tops fall just short. At −3 dB the rise (≈ 235 mV, calc) never reaches it. This is the teammate's concern (VENV hovering at the threshold → 0101… instead of a steady 1), seen directly.
+Why: at 0 dB VENV rises ≈ 330 mV (calc from [ED]: 105 mV at −10 dB × 1.78²), about equal to the 335 mV margin, so the pulse tops sit right at the threshold, inside the oscillation band: the comparator chatters for the whole pulse and misses the pulses whose tops fall just short. At −3 dB the rise (≈ 235 mV, calc) never reaches it. This is the teammate's concern (VENV hovering at the threshold → 0101… instead of a steady 1), seen directly. The same capture also shows thin pickup spikes on OUT+ repeating every ≈ 14.5 µs (≈ 69 kHz, from `plot_cmp.py` plot 4): a regular source nearby, likely a switching supply or charger. Plots: `plots_cmp/` (made by `plot_cmp.py`).
 Original table (planned for a +20 mV margin; not run, because RF-off oscillated below ≈ 150–300 mV with this wiring):
 
 | −10 dB | 100 µs | | | | | | 105 mV |
