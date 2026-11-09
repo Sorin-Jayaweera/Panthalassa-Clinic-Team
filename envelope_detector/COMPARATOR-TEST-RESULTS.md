@@ -174,10 +174,10 @@ With the grabber lead on J1's tee, it oscillated even at 110 mV; with the IN+ pa
 **Pulse test at margin ≈ 335 mV** (quiet RF-off: 1 interference event; CH2 trigger 1.40 V, 1 ms/div = 14 ms ≈ 70 pulse periods; no CH1 reference, so counted against the period; Pluto through a shared USB-C adapter, no dropouts reported):
 | TX level | Pulse | Expected pulses / shot | Output bursts (3 shots) | Rising edges per burst (max) | Longest burst | Reading |
 |---|---|---|---|---|---|---|
-| 0 dB | 100 µs | ≈ 70 | 27, 33, 23 | 2,678 / 2,714 / 2,580 | 94.7–99.5 µs | ≈ 1/3–1/2 of pulses seen, and each one is a ≈ 27 MHz chatter burst lasting the whole pulse (calc: 2,700 edges / 100 µs) |
+| 0 dB | 100 µs | ≈ 70 | 27, 33, 23 | 2,678 / 2,714 / 2,580 | 94.7–99.5 µs | ≈ 1/3–1/2 of pulses seen; each is a ≈ 27 MHz chatter burst. Shot 0 (`plot_cmp.py` plot 4): 26 bursts lasting 1–98 µs, median 40 µs; the longest fill nearly the whole 100 µs pulse (calc: 2,700 edges / 100 µs ≈ 27 MHz) |
 | −3 dB | 100 µs | ≈ 70 | 0, 1, 1 (single 8–10 ns interference events) | — | — | no pulses caught |
 | RF off after the pulses | — | — | 0 | — | — | quiet: the pulses did not leave it oscillating |
-Why: at 0 dB VENV rises ≈ 330 mV (calc from [ED]: 105 mV at −10 dB × 1.78²), about equal to the 335 mV margin, so the pulse tops sit right at the threshold, inside the oscillation band: the comparator chatters for the whole pulse and misses the pulses whose tops fall just short. At −3 dB the rise (≈ 235 mV, calc) never reaches it. This is the teammate's concern (VENV hovering at the threshold → 0101… instead of a steady 1), seen directly. The same capture also shows thin pickup spikes on OUT+ repeating every ≈ 14.5 µs (≈ 69 kHz, from `plot_cmp.py` plot 4): a regular source nearby, likely a switching supply or charger. Plots: `plots_cmp/` (made by `plot_cmp.py`).
+Why: at 0 dB VENV rises ≈ 330 mV (calc from [ED]: 105 mV at −10 dB × 1.78²), about equal to the 335 mV margin, so the pulse tops sit right at the threshold, inside the oscillation band: the comparator chatters for as long as the pulse top is near the threshold (1–98 µs), and misses the pulses whose tops fall just short. At −3 dB the rise (≈ 235 mV, calc) never reaches it. This is the teammate's concern (VENV hovering at the threshold → 0101… instead of a steady 1), seen directly. The same capture also shows thin pickup spikes on OUT+ repeating every ≈ 14.5 µs (≈ 69 kHz, from `plot_cmp.py` plot 4): a regular source nearby, likely a switching supply or charger. Plots: `plots_cmp/` (made by `plot_cmp.py`).
 Original table (planned for a +20 mV margin; not run, because RF-off oscillated below ≈ 150–300 mV with this wiring):
 
 | −10 dB | 100 µs | | | | | | 105 mV |
@@ -192,7 +192,7 @@ Conclusions:
 (Faulty-IN+ board, clip-lead output wiring: for scale only.)
 1. Every pulse caught with no extras: **no**. The planned +20 mV margin couldn't be used: with RF off the comparator oscillated (≈ 27–53 MHz) at margins below ≈ 150–300 mV.
 2. RF level where pulses start being caught: at a 335 mV margin, only 0 dB (Pluto full power, ≈ 0 dBm [ED], ±0.5 dB for this Pluto) reaches the threshold, and only ≈ 1/3–1/2 of pulses register. Predicted −21.5 dBm at +20 mV [ED] could not be tested.
-3. Chatter near the trip: ≈ 2,600–2,700 rising edges per pulse (the whole 100 µs pulse), when the pulse top sits at the threshold.
+3. Chatter near the trip: up to ≈ 2,600–2,700 rising edges per pulse; burst lengths 1–98 µs (median 40 µs in shot 0) when the pulse top sits at the threshold.
 4. Pulse heights vs CW: not measured (CH1 removed from the IN+ path to stop it feeding the oscillation).
 5. RF-off after pulses: quiet. No sign the pulses start a lasting oscillation at this margin.
 Next: solder the 100 Ω at J7/J8 (procedure Step 0 "Best"), then repeat the RF-off margin search; if the quiet margin drops to a few tens of mV, rerun this table at +20 mV.
