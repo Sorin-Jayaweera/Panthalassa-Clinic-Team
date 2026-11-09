@@ -246,6 +246,18 @@ def first_burst(v, fs, level=1.40, window=2e-6, min_samples=50):
     return idx[dense[0]:] if len(dense) else idx[:0]
 
 
+def chatter_bursts(v, fs, level=1.40, gap=1e-6, min_samples=50):
+    """(start, end) sample indices of chatter bursts: runs of samples above `level` with gaps
+    shorter than `gap`, keeping only runs with at least `min_samples` such samples (drops pickup)."""
+    idx = np.flatnonzero(v > level)
+    if not len(idx):
+        return []
+    cuts = np.flatnonzero(np.diff(idx) > gap * fs)
+    starts = np.r_[0, cuts + 1]
+    ends = np.r_[cuts, len(idx) - 1]
+    return [(int(idx[a]), int(idx[b])) for a, b in zip(starts, ends) if b - a + 1 >= min_samples]
+
+
 def plot_pulses():
     shot = load_shot("cmp_scope_ed_tx0_100us_m335_*")
     if shot is None:
@@ -269,14 +281,17 @@ def plot_pulses():
                  "About 1/3–1/2 of pulses register.\nThin spikes between bursts: pickup, repeating "
                  "every ≈ 14.5 µs (≈ 69 kHz).", fontsize=9)
     a1.grid(alpha=0.3)
-    if len(above):
-        c = above[0]
-        sl = slice(max(c - int(15e-6 * fs), 0), min(c + int(115e-6 * fs), len(v)))
-        a2.plot((t[sl] - t[c]) * 1e6, v[sl], lw=0.3)
-        a2.set_title("Zoom on the first burst: ≈ 27 MHz chatter for the whole 100 µs pulse, "
-                     "not one clean pulse", fontsize=9)
+    bursts = chatter_bursts(v, fs)
+    if bursts:
+        lens = [(b - a) / fs * 1e6 for a, b in bursts]
+        a, b = max(bursts, key=lambda ab: ab[1] - ab[0])
+        sl = slice(max(a - int(15e-6 * fs), 0), min(a + int(115e-6 * fs), len(v)))
+        a2.plot((t[sl] - t[a]) * 1e6, v[sl], lw=0.3)
+        a2.set_title(f"Zoom on the longest burst: ≈ 27 MHz chatter for {(b - a) / fs * 1e6:.0f} µs of the "
+                     f"100 µs pulse, not one clean pulse.\nThis shot: {len(bursts)} bursts lasting "
+                     f"{min(lens):.0f}–{max(lens):.0f} µs (median {np.median(lens):.0f} µs)", fontsize=9)
     a2.axhline(1.40, color="r", lw=0.8, ls=":")
-    a2.set_xlabel("time from the first edge (µs)")
+    a2.set_xlabel("time from the start of the burst (µs)")
     a2.set_ylabel("OUT+ (V)")
     a2.grid(alpha=0.3)
     fig.tight_layout()
