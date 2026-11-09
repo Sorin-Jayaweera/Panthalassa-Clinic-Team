@@ -134,7 +134,7 @@ def margin_of(label):
 def group_of(row):
     if row["time"] < "20261108_211300":
         return "grabber lead + CH1 probe on the IN+ tee"
-    if "_B" in row["label"]:
+    if "_B" in row["label"] or row["time"] >= "20261108_215600":  # round B onwards: CH1 cable removed
         return "coax only (tee joins detector and J1)"
     return "coax; CH1 cable on the tee"
 
@@ -224,7 +224,7 @@ def plot_osc_vs_pickup():
     axes[1].text(0.02, 0.97, "green: low 1.105 V   magenta: high 1.483 V   red: trigger 1.40 V\n"
                  "pickup swings above AND below the low level; a real flip steps up to ≈ 1.48 V",
                  transform=axes[1].transAxes, fontsize=7, va="top")
-    fig.suptitle("Scope (CH2 on J7, 10× probe), RF off, coax-only IN+", fontsize=10)
+    fig.suptitle("Scope (CH2 on J7, 10× probe), RF off, coax-only IN+", fontsize=10, y=1.06)
     save(fig, "3_osc_vs_pickup.png")
 
 
@@ -235,13 +235,24 @@ def envelope(t, v, bins=4000):
     return tt, vv.min(axis=1), vv.max(axis=1)
 
 
+def first_burst(v, fs, level=1.40, window=2e-6, min_samples=50):
+    """Sample indices above `level`, starting at the first real chatter burst: at least
+    `min_samples` samples above `level` within `window` (a pickup spike has only a few)."""
+    idx = np.flatnonzero(v > level)
+    n = min_samples
+    if len(idx) <= n:
+        return idx[:0]
+    dense = np.flatnonzero(idx[n:] - idx[:-n] < window * fs)
+    return idx[dense[0]:] if len(dense) else idx[:0]
+
+
 def plot_pulses():
     shot = load_shot("cmp_scope_ed_tx0_100us_m335_*")
     if shot is None:
         print("4: ed_tx0_100us_m335 capture not found, skipped")
         return
     t, v, fs, name = shot
-    above = np.flatnonzero(v > 1.40)
+    above = first_burst(v, fs)
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(10, 6))
     tt, lo, hi = envelope(t, v)
     a1.fill_between(tt * 1e3, lo, hi, step="mid", lw=0)
@@ -254,8 +265,9 @@ def plot_pulses():
     a1.set_xlabel("time (ms)")
     a1.set_ylabel("OUT+ (V)")
     a1.set_title(f"Test 4, TX 0 dB, 100 µs on / 100 µs off, 335 mV margin ({name}, shot 0)\n"
-                 "red lines: expected pulse starts (every 200 µs, aligned to the first burst). "
-                 "About 1/3–1/2 of pulses register.", fontsize=9)
+                 "red lines: expected pulse starts (every 200 µs, aligned to the first chatter burst). "
+                 "About 1/3–1/2 of pulses register.\nThin spikes between bursts: pickup, repeating "
+                 "every ≈ 14.5 µs (≈ 69 kHz).", fontsize=9)
     a1.grid(alpha=0.3)
     if len(above):
         c = above[0]
