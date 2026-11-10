@@ -10,6 +10,7 @@ import content_parts as CP
 import content_pluto as CPL
 import content_radar as CRA
 import content_racon as CRC
+import human_notes as HN
 import content_env as CE
 
 HERE = Path(__file__).resolve().parent
@@ -376,12 +377,13 @@ def main():
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>' + status_section()[1])
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
-              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
+              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW + HN.HOWTO}
     tabs = '<div class="tabs" role="tablist">' + "".join(
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"
     body = "".join(f'<div class="panel" id="{tid}"{"" if i == 0 else " hidden"}>\n{panels[tid]}\n</div>\n' for i, (tid, _) in enumerate(TABS))
-    page = (HEAD % (P / "style.css").read_text(encoding="utf-8")) + "<main>\n" + BAR + tabs + body + "</main>\n" + TOOLS \
-        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + (P / "review.js").read_text(encoding="utf-8") + "</script>\n"
+    page = (HEAD % ((P / "style.css").read_text(encoding="utf-8") + HN.CSS)) + "<main>\n" + BAR + tabs + body + "</main>\n" + TOOLS \
+        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + (P / "review.js").read_text(encoding="utf-8") + "</script>\n" + HN.embed()
+    page = page.replace("@@IDS@@", HN.id_list(page))
     (HERE / "index.html").write_text(local_datasheets(page, PAGES_URL + "datasheets/"), encoding="utf-8")
     print("index.html", len(page), "bytes")
     write_standalone(page)

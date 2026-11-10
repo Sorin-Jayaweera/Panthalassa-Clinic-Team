@@ -80,6 +80,83 @@ def hist1(ax, x, color, label, unit, scale=1.0, bins=60):
     ax.grid(alpha=0.25)
 
 
+# --------------------------------------------------------------------------------------------- 0. racon frequency relative to the Furuno
+def fstats(x, bw=0.1):
+    """peak (mode of a 0.1 MHz histogram smoothed over 0.5 MHz), median, mean, sd, 5 %, 95 %, N."""
+    x = np.asarray(x, float)
+    x = x[np.isfinite(x)]
+    edges = np.arange(np.floor(x.min()), np.ceil(x.max()) + bw, bw)
+    h, _ = np.histogram(x, edges)
+    hs = np.convolve(h, np.ones(5) / 5, mode="same")
+    k = int(np.argmax(hs))
+    return dict(n=len(x), peak=float(0.5 * (edges[k] + edges[k + 1])), median=float(np.median(x)), mean=float(np.mean(x)),
+                sd=float(np.std(x, ddof=1)), p5=float(np.percentile(x, 5)), p95=float(np.percentile(x, 95)))
+
+
+def offset_hist(ax, x, color, lab, big=False, xlabel="racon minus the Furuno pulse that triggered it (MHz)"):
+    s = fstats(x)
+    lo, hi = np.percentile(x, 0.25), np.percentile(x, 99.75)
+    bw = 0.1 if big else (0.2 if hi - lo > 5 else 0.01)
+    ax.hist(x, bins=np.arange(lo - bw, hi + 2 * bw, bw), color=color, alpha=0.85)
+    yl = ax.get_ylim()[1]
+    ax.axvspan(s["mean"] - s["sd"], s["mean"] + s["sd"], color="0.5", alpha=0.15, label=f"mean +- 1 sd ({s['sd']:.2f} MHz)")
+    if lo < 0 < hi:
+        ax.axvline(0, color="k", lw=1.2, ls=":", label="Furuno pulse frequency (0)")
+    for key, ls, c in (("peak", "-", "#b30000"), ("median", "--", "k"), ("mean", "-.", "#555555")):
+        ax.axvline(s[key], color=c, lw=1.5, ls=ls, label=f"{key} {s[key]:+.2f} MHz")
+    ax.text(0.99, 0.97, f"N {s['n']}\npeak {s['peak']:+.2f} MHz\nmedian {s['median']:+.2f} MHz\nmean {s['mean']:+.2f} MHz\n"
+                        f"sd {s['sd']:.2f} MHz\n5-95 %: {s['p5']:+.2f} to {s['p95']:+.2f} MHz",
+            transform=ax.transAxes, ha="right", va="top", fontsize=10 if big else 8.5, family="monospace",
+            bbox=dict(boxstyle="round", fc="white", ec="0.6", alpha=0.95))
+    pad = 0.5 if hi - lo > 5 else 0.05
+    ax.set(xlim=(lo - pad, hi + pad), xlabel=xlabel, ylabel="replies")
+    ax.set_title(lab, fontsize=11 if big else 9.5)
+    ax.legend(fontsize=8 if big else 7, loc="upper left")
+    ax.grid(alpha=0.25)
+    return s
+
+
+def fig_freq_offset():
+    R.combined_strip()
+    fig, gs = A.fig_with_strip([1.5, 1, 1], (19, 20))
+    out = []
+    s = offset_hist(fig.add_subplot(gs[0]), [r["dash_off_mhz"] for r in ALL], "#555f6d",
+                    f"Dash (the longest element, best estimate): racon minus Furuno, every complete R from {sum(1 for r in RECS if ROWS[r])} recordings", big=True)
+    out.append(dict(element="dash", group="all", **s))
+    sub = gs[1:3].subgridspec(2, 3, hspace=0.45, wspace=0.22)
+    for i, (k, lab) in enumerate((("dot1_off_mhz", "Dot 1"), ("dot2_off_mhz", "Dot 2"))):
+        s = offset_hist(fig.add_subplot(sub[0, i]), [r[k] for r in ALL], "#555f6d", f"{lab} minus Furuno, all replies")
+        out.append(dict(element=lab.lower(), group="all", **s))
+    s = offset_hist(fig.add_subplot(sub[0, 2]), [r["drift_dot1_to_dot2_mhz"] for r in ALL], "#555f6d", "Drift inside one reply: dot 2 minus dot 1",
+                       xlabel="dot 2 frequency minus dot 1 frequency, same reply (MHz)")
+    out.append(dict(element="drift dot 1 to dot 2", group="all", **s))
+    for i, v in enumerate(("long", "short")):
+        s = offset_hist(fig.add_subplot(sub[1, i]), by(v, "dash_off_mhz"), VCOL[v], f"Dash minus Furuno, {v} R only")
+        out.append(dict(element="dash", group=f"{v} R", **s))
+    ax = fig.add_subplot(sub[1, 2])
+    for j, rec in enumerate(r for r in RECS if ROWS[r]):
+        x = [r["dash_off_mhz"] for r in ROWS[rec]]
+        s = fstats(x)
+        out.append(dict(element="dash", group=SHORT[rec], **s))
+        ax.errorbar(j, s["mean"], yerr=s["sd"], fmt="o", color=REC_COL[rec], capsize=4, ms=6, label="mean +- sd" if j == 0 else None)
+        ax.plot(j + 0.18, s["median"], "k_", ms=12, mew=2, label="median" if j == 0 else None)
+        ax.plot(j - 0.18, s["peak"], "v", color="#b30000", ms=7, label="peak" if j == 0 else None)
+    ax.axhline(0, color="k", lw=1, ls=":")
+    recs = [r for r in RECS if ROWS[r]]
+    ax.set_xticks(range(len(recs)), [SHORT[r] for r in recs], rotation=30, ha="right", fontsize=8)
+    ax.set(ylabel="dash minus Furuno (MHz)", title="Dash minus Furuno, each recording")
+    ax.legend(fontsize=7)
+    ax.grid(alpha=0.25)
+    with open(DATA / "racon_freq_offset.csv", "w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=["element", "group", "n", "peak", "median", "mean", "sd", "p5", "p95"])
+        w.writeheader()
+        for row in out:
+            w.writerow({k: (round(v, 4) if isinstance(v, float) else v) for k, v in row.items()})
+    return save(fig, "fig0_freq_offset", "Racon reply frequency relative to the Furuno pulse that triggered it",
+                "Each element's frequency from the phase slope over its middle 80 %; the Furuno pulse's the same way. "
+                "Peak = mode of a 0.1 MHz histogram smoothed over 0.5 MHz. Positive = racon above the Furuno.")
+
+
 # --------------------------------------------------------------------------------------------- 1. durations
 def fig_durations():
     R.combined_strip()
@@ -165,8 +242,11 @@ def fig_frequency():
         allv = np.concatenate(xs)
         bins = np.linspace(np.percentile(allv, 0.5), np.percentile(allv, 99.5), 70)
         ax.hist(xs, bins=bins, stacked=True, color=[VCOL["long"], VCOL["short"]], label=[f"long R ({len(xs[0])})", f"short R ({len(xs[1])})"])
-        txt = ";  ".join(f"{v} {np.median(x):.2f} (sd {np.std(x, ddof=1):.2f})" for v, x in zip(("long", "short"), xs))
-        ax.set_title(f"{lab}\nmedian {txt} {unit}", fontsize=8.5)
+        st = fstats(allv, 0.1 if unit == "MHz" else 0.005)
+        for key, ls, c in (("peak", "-", "#b30000"), ("median", "--", "k"), ("mean", "-.", "#555555")):
+            ax.axvline(st[key], color=c, lw=1.2, ls=ls)
+        ax.set_title(f"{lab} ({unit}), all replies:\npeak {st['peak']:+.3f}, median {st['median']:+.3f}, mean {st['mean']:+.3f}, sd {st['sd']:.3f}",
+                     fontsize=8.5)
         ax.set(xlabel=unit, ylabel="replies")
         ax.grid(alpha=0.25)
 
@@ -363,5 +443,5 @@ def fig_short_block():
 
 
 if __name__ == "__main__":
-    outs = [fig_durations(), fig_frequency(), fig_levels(), fig_short_block()]
+    outs = [fig_freq_offset(), fig_durations(), fig_frequency(), fig_levels(), fig_short_block()]
     outs.append(fig_edges("--no-edges" not in sys.argv))
