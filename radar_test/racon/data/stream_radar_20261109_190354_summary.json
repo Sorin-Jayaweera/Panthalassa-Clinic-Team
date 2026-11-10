@@ -1,0 +1,173 @@
+{
+ "n_snippets": 4000,
+ "n_radar_pulses": 3964,
+ "n_replies": 123,
+ "noise_dbm_per_sample": -77.37421012904254,
+ "fs": 50000000.0,
+ "center_mhz": 9402.6,
+ "chain_gain_db": -27.8,
+ "meta": {
+  "mode": "stream",
+  "kind": "streaming I/Q 50 MS/s, events 15 dB over noise",
+  "tag": "radar",
+  "samples_lost": 6,
+  "levels": {
+   "atten": "auto from ref level",
+   "ref_dbm": -15.54
+  },
+  "chain_gain_db": -27.8,
+  "setup": {
+   "chain": [
+    [
+     "Vivaldi R120\nfacing the sources",
+     0.0,
+     "antenna port is the reference point"
+    ],
+    [
+     "SMA cable",
+     -1.0,
+     "estimate, about 1 dB at 9.4 GHz; measure on the VNA"
+    ],
+    [
+     "Marki limiter",
+     -0.8,
+     "VNA, radar_test/vna/limiter_S_params.csv"
+    ],
+    [
+     "20 dB pad",
+     -20.0,
+     "nominal"
+    ],
+    [
+     "ZX60-5123LN+ LNA\n6 V",
+     23.0,
+     "test 27 on 25 Oct, about 23 dB (datasheet about 22)"
+    ],
+    [
+     "29 dB of pads",
+     -29.0,
+     "nominal; 29 recommended on 9 Nov (39 puts the signals near the SM200B floor and under the direct leak)"
+    ],
+    [
+     "SM200B\nI/Q, 9.4 GHz",
+     0.0,
+     "reads dBm at its input"
+    ]
+   ],
+   "chain_gain_db": -27.8,
+   "d_radar_m": 11.3,
+   "d_racon_m": 3.0,
+   "d_radar_racon_m": 10.0,
+   "g_rx_dbi": 8.0,
+   "radar_foam": "foam on the radome"
+  },
+  "wall_start": "2026-11-09T19:05:12"
+ },
+ "radar": {
+  "dur_us": 0.74,
+  "rise_ns": 40.0,
+  "fall_ns": 59.99999999999999,
+  "f_mhz": 9408.121257574578,
+  "f_sd_khz": 201.11019845140132,
+  "f_in_pulse_sd_khz": 187.83365194263203,
+  "p_sm_max_dbm": -17.386461473047742,
+  "p_sm_p90_dbm": -35.10888746339907,
+  "p_sm_median_dbm": -45.84750002766364,
+  "pri_us_values": [
+   1606.2,
+   1606.4,
+   1612.8,
+   1612.9,
+   1613.0,
+   1619.5,
+   1619.6,
+   1619.7,
+   1626.2,
+   1626.3,
+   1632.9,
+   1633.0,
+   1639.6,
+   1639.7,
+   1646.3,
+   1646.4,
+   1653.0,
+   1653.1,
+   1659.7,
+   1659.8,
+   1666.4,
+   1666.5,
+   1673.0,
+   1673.1,
+   1673.2,
+   1679.8,
+   1679.9,
+   1686.4,
+   1686.5,
+   1686.6,
+   1693.1,
+   1693.2,
+   1693.3,
+   1699.8,
+   1699.9,
+   1706.5,
+   1706.6
+  ],
+  "pri_us_median": 1659.7400000000207,
+  "p_ant_max_dbm": 10.413538526952259,
+  "eirp_dbm": 75.38784983841401,
+  "g_inferred_dbi": 11.987849838414014,
+  "at_racon_dbm": 9.475107396620643,
+  "trigger_range_m": 9413.591966703183
+ },
+ "racon": {
+  "dot_dash_split_us": 0.1407124727947029,
+  "p_sm_median_dbm": -44.7847497666875,
+  "p_sm_max_dbm": -17.537136971131023,
+  "p_sm_sd_db": 14.894230855652408,
+  "f_mhz": 9409.03730574441,
+  "f_sd_khz": 3156.722886746503,
+  "f_in_element_sd_khz": NaN,
+  "chirp_mhz_per_us": NaN,
+  "rise_ns": 0.0,
+  "fall_ns": 40.0,
+  "dot_us": {
+   "median": 0.09,
+   "sd": 0.02720724857459865,
+   "n": 32
+  },
+  "dash_us": {
+   "median": 0.22,
+   "sd": 0.14081928156378343,
+   "n": 127
+  },
+  "codes": {
+   "-": 84,
+   "--": 15,
+   "-.": 9,
+   "..": 7,
+   ".": 4,
+   ".-": 3
+  },
+  "letter": "T",
+  "gap_us": {
+   "median": null,
+   "sd": null
+  },
+  "reply_len_us": 0.19999999999999998,
+  "delay_from_radar_start_us": {
+   "median": 0.6,
+   "sd": 1.2762179476746793,
+   "n": 87
+  },
+  "f_minus_radar_khz": {
+   "median": 973.3728723749664,
+   "sd": 2028.9781127290128
+  },
+  "reply_rate": 0.02194752774974773,
+  "p_ant_dbm": -16.984749766687496,
+  "eirp_dbm": 36.47041776949912,
+  "g_inferred_dbi": 6.470417769499122,
+  "longest_silence_s": 1.0048622199999997
+ },
+ "file": "stream_radar_20261109_190354"
+}

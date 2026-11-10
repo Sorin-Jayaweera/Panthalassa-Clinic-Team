@@ -1,0 +1,80 @@
+{
+ "n_snippets": 200,
+ "n_radar_pulses": 171,
+ "n_replies": 200,
+ "noise_dbm_per_sample": -72.01475414033685,
+ "fs": 250000000.0,
+ "center_mhz": 9402.6,
+ "chain_gain_db": -17.8,
+ "meta": {
+  "kind": "SYNTHETIC test data, not a measurement",
+  "chain_gain_db": -17.8
+ },
+ "radar": {
+  "dur_us": 0.5479999999999999,
+  "rise_ns": 56.0,
+  "fall_ns": 56.0,
+  "f_mhz": 9402.754270996087,
+  "f_sd_khz": 79.15524952163179,
+  "f_in_pulse_sd_khz": 60.17153617670998,
+  "p_sm_max_dbm": -26.011011761654707,
+  "p_sm_p90_dbm": -26.592590774072008,
+  "p_sm_median_dbm": -38.02741555211205,
+  "pri_us_values": [
+   1656.5
+  ],
+  "pri_us_median": 1656.4999999673091,
+  "p_ant_max_dbm": -8.211011761654706,
+  "eirp_dbm": 56.76329954980706,
+  "g_inferred_dbi": -6.63670045019294,
+  "at_racon_dbm": -9.149442891986311,
+  "trigger_range_m": 1102.8789696099352
+ },
+ "racon": {
+  "dot_dash_split_us": 3.0574996320523082,
+  "p_sm_median_dbm": -35.98601951889437,
+  "p_sm_max_dbm": -34.91835964536794,
+  "p_sm_sd_db": 0.29411199371700686,
+  "f_mhz": 9403.046871128427,
+  "f_sd_khz": 78.00926464231543,
+  "f_in_element_sd_khz": 52.266235835920796,
+  "chirp_mhz_per_us": -9.601419956485808e-05,
+  "rise_ns": 32.0,
+  "fall_ns": 32.0,
+  "dot_us": {
+   "median": 1.748,
+   "sd": 2.220446049250313e-16,
+   "n": 400
+  },
+  "dash_us": {
+   "median": 5.348,
+   "sd": 0.0,
+   "n": 200
+  },
+  "codes": {
+   ".-.": 200
+  },
+  "letter": "R",
+  "gap_us": {
+   "median": 1.856,
+   "sd": 4.440892098500626e-16
+  },
+  "reply_len_us": 12.544,
+  "delay_from_radar_start_us": {
+   "median": 1.172,
+   "sd": 0.001999965801150687,
+   "n": 171
+  },
+  "f_minus_radar_khz": {
+   "median": 300.0840874246933,
+   "sd": 4.155679321009481
+  },
+  "phase_carry_R": 0.9999877964864822,
+  "reply_rate": 1.0,
+  "p_ant_dbm": -18.186019518894373,
+  "eirp_dbm": 35.26914801729224,
+  "g_inferred_dbi": 5.269148017292238,
+  "longest_silence_s": 0.001656500000080996
+ },
+ "file": "synthetic_seg.npz"
+}

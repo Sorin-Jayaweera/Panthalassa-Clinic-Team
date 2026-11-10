@@ -1,0 +1,36 @@
+{
+ "n_snippets": 107,
+ "n_radar_pulses": 105,
+ "n_replies": 0,
+ "noise_dbm_per_sample": -62.218601463662765,
+ "fs": 50000000.0,
+ "center_mhz": 9408.5,
+ "chain_gain_db": -27.8,
+ "meta": {
+  "kind": "raw recording 20261109_213227, triggers with a reply + every 20th other",
+  "chain_gain_db": -27.8,
+  "ref_dbm": 0.0,
+  "triggers": 2143,
+  "raw": "20261109_213227"
+ },
+ "radar": {
+  "dur_us": 0.7,
+  "rise_ns": 59.99999999999999,
+  "fall_ns": 59.99999999999999,
+  "f_mhz": 9403.467003184873,
+  "f_sd_khz": 84.66934736091164,
+  "f_in_pulse_sd_khz": 592.1185629949031,
+  "p_sm_max_dbm": -16.023339771661078,
+  "p_sm_p90_dbm": -23.86937396601946,
+  "p_sm_median_dbm": -46.49474916172754,
+  "pri_us_values": [],
+  "pri_us_median": null,
+  "rotation_s_median": 2.6794622073434344,
+  "p_ant_max_dbm": 11.776660228338923,
+  "eirp_dbm": 77.41659928362725,
+  "g_inferred_dbi": 14.01659928362725,
+  "at_racon_dbm": 7.866985082938427,
+  "trigger_range_m": 11890.300815948705
+ },
+ "file": "raw_20261109_213227.npz"
+}

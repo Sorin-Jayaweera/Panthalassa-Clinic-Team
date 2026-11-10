@@ -1,0 +1,157 @@
+"""Racon tab: the SeaBeacon 2 racon answering the Furuno, recorded over the air on 9 Nov 2026. Numbers are read from
+radar_test/racon/data/racon_stats_summary.csv (written by radar_test/racon/racon_stats.py) when the site is built."""
+import csv
+import json
+import shutil
+from pathlib import Path
+
+from content import item, table, ul, p, h, fig
+
+HERE = Path(__file__).resolve().parent
+RAC = HERE.parent.parent / "radar_test" / "racon"
+PL, DA = RAC / "plots", RAC / "data"
+REPO_PLOTS = "https://github.com/Sorin-Jayaweera/Panthalassa-Clinic-Team/blob/main/radar_test/racon/plots/"
+
+SHOW = ["stats_20261109_215716_stack_envelope", "stats_20261109_215716_morse_timing_long", "stats_20261109_215716_morse_timing_short",
+        "stats_20261109_215716_table", "stats_20261109_215716_stack_freq", "stats_20261109_215716_freq", "stats_20261109_215716_bursts",
+        "stats_20261109_215716_vs_time", "stats_20261109_215716_edges", "stats_20261109_215716_stack_radar",
+        "stats_seg_horn_racon_250M_stack_envelope", "stats_seg_horn_racon_250M_edges", "stats_20261109_214452_stack_envelope",
+        "stats_20261109_214452_morse_timing_long", "racon_all_compare", "racon_all_hist", "racon_all_tracking", "radar_all_9nov",
+        "sweeps_9to10", "sweeps_harm2", "sweeps_wide"]
+for n in SHOW:
+    if (PL / f"{n}.png").exists():
+        shutil.copy2(PL / f"{n}.png", HERE / "img" / f"{n}.png")
+
+
+def F(n, alt):
+    return fig(f"{n}.png", alt) if (HERE / "img" / f"{n}.png").exists() else p(f"<i>{n}.png not made yet</i>")
+
+
+def _summ():
+    out = {}
+    try:
+        for r in csv.DictReader(open(DA / "racon_stats_summary.csv", encoding="utf-8")):
+            out.setdefault(r["recording"], {})[r["quantity"]] = r
+    except FileNotFoundError:
+        pass
+    return out
+
+
+S = _summ()
+
+
+def v(rec, q, k="mean", nd=3):
+    try:
+        return f"{float(S[rec][q][k]):.{nd}f}"
+    except KeyError:
+        return "?"
+
+
+Q = [("delay, radar start to dot 1 start", "us"), ("dot 1", "us"), ("gap 1", "us"), ("dash", "us"), ("gap 2", "us"), ("dot 2", "us"),
+     ("whole R, dot 1 start to dot 2 end", "us"), ("dot 1 start to dash start", "us"), ("dash start to dot 2 start", "us"),
+     ("dot 1 freq minus radar", "MHz"), ("dash freq minus radar", "MHz"), ("dot 2 freq minus radar", "MHz"),
+     ("drift dot 1 to dot 2", "MHz"), ("chirp inside dot 1", "MHz/us"), ("chirp inside the dash", "MHz/us"), ("radar pulse, half power", "us")]
+
+
+def stat_table(rec):
+    rows = [[q, u, v(rec, q, "n", 0), v(rec, q), v(rec, q, "sd"), v(rec, q, "p5"), v(rec, q, "median"), v(rec, q, "p95")] for q, u in Q]
+    return table(["", "unit", "N", "mean", "sd", "5 %", "median", "95 %"], rows, cls="parts")
+
+
+def rec_table():
+    try:
+        codes = json.loads((DA / "racon_stats_codes.json").read_text())
+    except FileNotFoundError:
+        codes = {}
+    import setups_racon_view as SV
+    rows = []
+    for rec, label, ref, ant in SV.RECS:
+        n_long = v(f"{rec} long", "dash", "n", 0)
+        n_short = v(f"{rec} short", "dash", "n", 0)
+        c = codes.get(rec, {})
+        top = ", ".join(f"{k} {n}" for k, n in sorted(c.items(), key=lambda kv: -kv[1])[:3]) or "none"
+        rows.append([rec, ant, f"{ref} dBm", label, n_long, n_short, top])
+    return table(["recording", "antenna", "ref level", "conditions", "long R", "short R", "most common element patterns"], rows, cls="parts",
+                 left=(0, 1, 3, 6))
+
+
+def build():
+    L, Sh = "ALL long", "ALL short"
+    return "".join([
+        "<h2>Racon</h2>",
+        '<p class="sub">SeaBeacon 2 racon answering the Furuno 1722C/NT, received over the air with the SM200B on 9 Nov 2026. '
+        "This is the reply the JACON has to copy: Morse R, its timing, its frequency and its edges. Every plot shows the wiring it was taken with.</p>",
+        item("rac-summary", "Summary: what the racon sends",
+             ul([f"<b>Morse R (dot dash dot) after every radar pulse it hears.</b> {v(L, 'dash', 'n', 0)} long and {v(Sh, 'dash', 'n', 0)} short complete replies measured.",
+                 f"<b>Two versions.</b> Long R: dot {v(L, 'dot 1', 'median', 2)} us, gap {v(L, 'gap 1', 'median', 2)} us, dash {v(L, 'dash', 'median', 2)} us, "
+                 f"whole reply {v(L, 'whole R, dot 1 start to dot 2 end', 'median', 2)} us. Short R: everything about 0.75 times as long "
+                 f"(dot {v(Sh, 'dot 1', 'median', 2)}, gap {v(Sh, 'gap 1', 'median', 2)}, dash {v(Sh, 'dash', 'median', 2)}, whole {v(Sh, 'whole R, dot 1 start to dot 2 end', 'median', 2)} us). "
+                 "About one reply in five is short; they come mixed into the same bursts.",
+                 f"<b>Timing is crystal-steady.</b> Long R gaps and dash vary by about {v(L, 'gap 2', 'sd', 3)} and {v(L, 'dash', 'sd', 3)} us (1 sd), "
+                 "a few nanoseconds once the rare faded replies are left out (see the histograms).",
+                 f"<b>Delay jitters.</b> Dot 1 starts {v(L, 'delay, radar start to dot 1 start', 'median', 2)} us after the radar pulse starts (long R; "
+                 f"5-95 % {v(L, 'delay, radar start to dot 1 start', 'p5', 2)} to {v(L, 'delay, radar start to dot 1 start', 'p95', 2)} us). "
+                 f"Short R start earlier and steadier ({v(Sh, 'delay, radar start to dot 1 start', 'median', 2)} us).",
+                 f"<b>Frequency: above the radar, but loosely.</b> Dash minus radar: median {v('ALL', 'dash freq minus radar', 'median', 2)} MHz, "
+                 f"5-95 % {v('ALL', 'dash freq minus radar', 'p5', 1)} to {v('ALL', 'dash freq minus radar', 'p95', 1)} MHz. The racon picks a new frequency for each reply and does not follow "
+                 "the radar from pulse to pulse.",
+                 f"<b>Inside a reply it climbs steadily:</b> dot 2 is {v('ALL', 'drift dot 1 to dot 2', 'median', 2)} MHz above dot 1 "
+                 f"(sd {v('ALL', 'drift dot 1 to dot 2', 'sd', 2)}), a chirp of about {v('ALL', 'chirp inside the dash', 'median', 3)} MHz/us in the dash and faster in dot 1.",
+                 "<b>Edges are fast:</b> about 30 ns 10-90 % at 250 MS/s (160 MHz bandwidth), close to what the SM200B itself can show. "
+                 "The radar pulse edges read about 55 ns.",
+                 "<b>Level:</b> about &minus;52 dBm at the SM200B with the horn 7 m from the racon (chain gain &minus;27.8 dB, so about &minus;24 dBm at the horn port). "
+                 "The horn gain is not known yet, so no racon EIRP is given."]), open_=True),
+        item("rac-stats", "Statistics tables (all recordings pooled)",
+             h("Long R"), stat_table(L), h("Short R"), stat_table(Sh),
+             p("N = complete replies (exactly dot, dash, dot with dot 4-15 us and dash 18-35 us). Edges at half of each element's own power, interpolated between samples. "
+               "Frequencies from the phase slope over the middle 80 % of each element; chirp from a quadratic phase fit. "
+               "The full table, per recording and per version: <code>radar_test/racon/data/racon_stats_summary.csv</code>; every reply: <code>data/stats_&lt;recording&gt;_replies.csv</code>.")),
+        item("rac-stack", "Stacked replies: one row per reply",
+             F("stats_20261109_215716_stack_envelope", "Every full R reply stacked, lined up on the radar and on dot 1, plus normalised overlays"),
+             F("stats_20261109_214452_stack_envelope", "Same for the long Vivaldi recording"),
+             F("stats_seg_horn_racon_250M_stack_envelope", "Same at 250 MS/s")),
+        item("rac-timing", "Morse timing histograms",
+             F("stats_20261109_215716_morse_timing_long", "Histograms of every timing of the long R, horn recording"),
+             F("stats_20261109_215716_morse_timing_short", "Histograms of every timing of the short R, horn recording"),
+             F("stats_20261109_214452_morse_timing_long", "Long R timing, Vivaldi recording"),
+             F("stats_20261109_215716_table", "Table of statistics, horn recording")),
+        item("rac-freq", "Frequency of the reply",
+             F("stats_20261109_215716_stack_freq", "Instantaneous frequency and spectrum of every reply, stacked"),
+             F("stats_20261109_215716_freq", "Histograms of element frequency, drift and chirp; racon against radar frequency"),
+             F("stats_20261109_215716_bursts", "Three bursts zoomed: radar and racon frequency, offset and delay reply by reply"),
+             F("stats_20261109_215716_vs_time", "Delay, element lengths and frequencies through the 3 minute recording")),
+        item("rac-edges", "Edges: rise and fall times",
+             F("stats_seg_horn_racon_250M_edges", "Averaged edges at 250 MS/s"),
+             F("stats_20261109_215716_edges", "Averaged edges at 50 MS/s"),
+             p("Single replies are too noisy at 250 MS/s to time an edge, so every reply is lined up on its own half-power crossing and averaged. "
+               "The short spike right at each racon edge in the average may be a real turn-on/turn-off transient or a side effect of lining up on a noisy crossing; not yet decided.")),
+        item("rac-all", "Across recordings: is it the same every time?",
+             F("racon_all_compare", "Mean and spread of every quantity per recording"),
+             F("racon_all_hist", "Pooled histograms, stacked by recording"),
+             F("racon_all_tracking", "Racon frequency against radar frequency, all recordings"),
+             rec_table()),
+        item("rac-radar", "The radar pulses in these recordings",
+             F("stats_20261109_215716_stack_radar", "Every radar pulse stacked, its spectrum, and an overlay"),
+             F("radar_all_9nov", "Radar pulse length, frequency and level in every recording")),
+        item("rac-sweeps", "Sweeps, 0.1-20 GHz, and the radar's 2nd harmonic",
+             F("sweeps_9to10", "9-10 GHz sweeps, horn at the radar and at the racon"),
+             F("sweeps_harm2", "18.6-19.0 GHz sweeps: the radar's 2nd harmonic"),
+             F("sweeps_wide", "0.1-20 GHz sweeps"),
+             ul(["Horn at the radar, both on: strongest line 9403.7 MHz, &minus;38.6 dBm at the SM200B (swept, so it reads lower than the I/Q peak).",
+                 "<b>2nd harmonic seen: 18806.8 MHz, &minus;63.0 dBm at the SM200B</b> with the horn on the radar, exactly twice the radar frequency. "
+                 "Not seen (below &minus;87 dBm) with the horn on the racon. The chain's loss at 18.8 GHz is not known (LNA, limiter, horn), so this is not yet a level at the antenna.",
+                 "0.1-20 GHz: besides the radar only 1855 MHz and 2.4-2.56 GHz lines (phones, Wi-Fi). The wide sweep is slow and misses most short pulses, "
+                 "which is why the harmonic is not in it.",
+                 "The 3rd harmonic (28.2 GHz) is above the SM200B's 20 GHz."])),
+        item("rac-files", "Recordings and files",
+             ul(["Raw I/Q, every sample: <code>C:\\racon_raw\\&lt;time&gt;\\iq.c64</code> (complex64, 50 MS/s, 41.5 MHz wide, centre 9408.5 MHz) with <code>meta.json</code>; "
+                 "about 282 GB, backed up to Dropbox. Conditions log: <code>NOTES.txt</code> there.",
+                 "<code>radar_test/racon/</code> in the repository: <code>racon_raw.py</code> (recorder), <code>raw_to_snips.py</code> (cuts each pulse and reply out), "
+                 "<code>racon_analyze.py</code> (first pass), <code>racon_stats.py</code> (these statistics and plots), <code>setups_9nov.py</code> (wiring and distances of each recording), "
+                 "<code>racon_capture.py</code> (sweeps and 250 MS/s segmented captures).",
+                 f"Every plot for every recording: <a href=\"{REPO_PLOTS}\">radar_test/racon/plots</a>.",
+                 "Assumed, not measured: horn gain (15 dBi used where needed), Vivaldi gain (8 dBi), SMA cable loss (1 dB), LNA gain (23 dB)."])),
+    ])
+
+
+RACON = build()

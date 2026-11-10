@@ -1,0 +1,50 @@
+{
+ "file": "iq.c64",
+ "format": "complex64 interleaved float32 I,Q little-endian; I^2+Q^2 = mW at SM200B input",
+ "fs": 50000000.0,
+ "center": 9408500000.0,
+ "bandwidth": 41500000.0,
+ "ref_dbm": -10.0,
+ "atten": "auto",
+ "samples": 2312000000,
+ "seconds": 46.24,
+ "note": "meta written afterwards: recorder was stopped before it could write it; block log lost. radar + racon on, 15 m setup; stopped by Claude by mistake",
+ "chain": [
+  [
+   "Vivaldi R120\nfacing the sources",
+   0.0,
+   "antenna port is the reference point"
+  ],
+  [
+   "SMA cable",
+   -1.0,
+   "estimate, about 1 dB at 9.4 GHz; measure on the VNA"
+  ],
+  [
+   "Marki limiter",
+   -0.8,
+   "VNA, radar_test/vna/limiter_S_params.csv"
+  ],
+  [
+   "20 dB pad",
+   -20.0,
+   "nominal"
+  ],
+  [
+   "ZX60-5123LN+ LNA\n6 V",
+   23.0,
+   "test 27 on 25 Oct, about 23 dB (datasheet about 22)"
+  ],
+  [
+   "29 dB of pads",
+   -29.0,
+   "nominal; 29 recommended on 9 Nov (39 puts the signals near the SM200B floor and under the direct leak)"
+  ],
+  [
+   "SM200B\nI/Q, 9.4 GHz",
+   0.0,
+   "reads dBm at its input"
+  ]
+ ],
+ "chain_gain_db": -27.8
+}

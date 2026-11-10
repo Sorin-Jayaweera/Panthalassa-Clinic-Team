@@ -1,0 +1,8 @@
+23111 triggers, 1155 kept, 0 with a reply; noise -67.0 dBm -> C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\data\raw_20261109_215120.npz
+snippets 1155, radar pulses 1087, replies 0, noise -67.0 dBm/sample
+RADAR  0.700 us, rise 60 ns, 9402.992 MHz (sd 192 kHz), strongest -14.1 dBm at SM200B = 13.7 dBm at antenna, EIRP 72.3 dBm, G +8.9 dBi, PRI median None
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_215120_chain.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_215120_replies.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_215120_stats.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_215120_loudness.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_215120_timeline.png

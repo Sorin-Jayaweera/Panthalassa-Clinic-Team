@@ -9,6 +9,7 @@ import content_more as CM
 import content_parts as CP
 import content_pluto as CPL
 import content_radar as CRA
+import content_racon as CRC
 import content_env as CE
 
 HERE = Path(__file__).resolve().parent
@@ -253,7 +254,7 @@ def lut_tab():
 
 
 TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
-        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
+        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-racon", "Racon"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
         ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
 HEAD = """<title>JACON Engineering Notes</title>
@@ -375,7 +376,7 @@ def main():
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>' + status_section()[1])
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
-              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
+              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW}
     tabs = '<div class="tabs" role="tablist">' + "".join(
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"
     body = "".join(f'<div class="panel" id="{tid}"{"" if i == 0 else " hidden"}>\n{panels[tid]}\n</div>\n' for i, (tid, _) in enumerate(TABS))

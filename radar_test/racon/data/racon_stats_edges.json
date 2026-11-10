@@ -1,0 +1,62 @@
+{
+ "20261109_213542": {
+  "radar pulse rising": 340.32469555466895,
+  "radar pulse falling": 343.2303616373846,
+  "dot 1 rising": 319.82754581684935,
+  "dot 1 falling": 34.02308291487642,
+  "dash rising": 33.3703130138044,
+  "dash falling": 33.60872381869207,
+  "dot 2 rising": 34.00252732608833,
+  "dot 2 falling": 31.560865746687988
+ },
+ "20261109_213625": {
+  "radar pulse rising": 231.75467173752264,
+  "radar pulse falling": 474.90780798572587,
+  "dot 1 rising": 0.0,
+  "dot 1 falling": 38.69690743866948,
+  "dash rising": 43.941827336728664,
+  "dash falling": 39.290109209787936,
+  "dot 2 rising": 42.9448383334657,
+  "dot 2 falling": 39.065666637599676
+ },
+ "20261109_213716": {
+  "radar pulse rising": 219.11754345265626,
+  "radar pulse falling": 306.4502160464806,
+  "dot 1 rising": 331.2465063344987,
+  "dot 1 falling": 47.86485065493777,
+  "dash rising": 147.8431988838891,
+  "dash falling": 52.893611638557715,
+  "dot 2 rising": 54.390151976808454,
+  "dot 2 falling": 47.68036462405111
+ },
+ "20261109_214452": {
+  "radar pulse rising": 240.02569561629724,
+  "radar pulse falling": 358.77110643747847,
+  "dot 1 rising": 320.0218875864524,
+  "dot 1 falling": 33.797000716764394,
+  "dash rising": 32.14625914171857,
+  "dash falling": 33.94424055824261,
+  "dot 2 rising": 33.48867195183702,
+  "dot 2 falling": 34.31536470850865
+ },
+ "20261109_215716": {
+  "radar pulse rising": 191.56570334371935,
+  "radar pulse falling": 343.0326757683678,
+  "dot 1 rising": 25.28967820671108,
+  "dot 1 falling": 24.142630482588494,
+  "dash rising": 22.337918592924087,
+  "dash falling": 23.933907701877857,
+  "dot 2 rising": 22.320893422985435,
+  "dot 2 falling": 23.8765604193948
+ },
+ "seg_horn_racon_250M": {
+  "radar pulse rising": 52.51971725171245,
+  "radar pulse falling": 62.91625480855227,
+  "dot 1 rising": 0.0,
+  "dot 1 falling": 27.885286992963728,
+  "dash rising": 31.38725401851656,
+  "dash falling": 31.41199510907941,
+  "dot 2 rising": 27.35493118968793,
+  "dot 2 falling": 32.97550118104011
+ }
+}

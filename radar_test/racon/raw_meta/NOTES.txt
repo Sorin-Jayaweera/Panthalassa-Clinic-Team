@@ -1,0 +1,11 @@
+2026-11-09 21:44:39  START 5 min: racon AND Furuno on. Triangle: radar 40 ft, racon 23 ft, radar-racon 50 ft. Chain Vivaldi-limiter-20dB-ZX60-5123LN+ 6V-29dB-SM200B. ref -25 dBm
+2026-11-09 21:48:31  STOP (user). 5-min racon+Furuno run stopped early
+2026-11-09 21:50:56  START 60 s: HORN antenna (replaces Vivaldi) pointed at the Furuno, racon OFF, ref -5 dBm (radar pulses not clipped). Same chain after the antenna.
+2026-11-09 21:52:57  20261109_215120 was horn with SMA pointing DOWN. NEXT: 60 s horn rotated (SMA pointing RIGHT), racon off, ref -5
+2026-11-09 21:55:39  20261109_215332 = horn SMA pointing RIGHT, racon off, 60 s
+2026-11-09 21:57:07  NOTE (user): in 20261109_215120 the horn was rotated to the proper orientation midway; that is the jump in power (about -28 -> -14 dBm). START 3 min: racon ON, horn (SMA right) pointed AT THE RACON, Furuno on, ref -25
+2026-11-09 22:03:25  20261109_215716 = horn (SMA right) at RACON, racon on, Furuno on, ref -25
+
+22:10 horn at radar (SMA right), racon on: sweeps 9-10 GHz, 18.6-19.0 GHz (2nd harmonic, through LNA chain), 0.1-20 GHz. Full chain unchanged.
+22:17 horn at racon (SMA right), racon + radar on: same three sweeps.
+22:24 horn at racon: 250 MS/s segmented captures, 80 us windows, centre 9404 MHz

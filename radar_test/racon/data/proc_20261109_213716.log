@@ -1,0 +1,10 @@
+16764 triggers, 1432 kept, 630 with a reply; noise -82.4 dBm -> C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\data\raw_20261109_213716.npz
+snippets 1432, radar pulses 1203, replies 648, noise -82.4 dBm/sample
+RADAR  0.700 us, rise 60 ns, 9403.180 MHz (sd 254 kHz), strongest -18.2 dBm at SM200B = 9.6 dBm at antenna, EIRP 75.2 dBm, G +11.8 dBi, PRI median 1659.7400000009088
+RACON  code {'---': 231, '--': 66, '-.': 52, '.-.': 41, '.--': 22, '----': 19} -> O; dot 0.94 dash 8.32 gap 8.610000000000001 us; reply 59.56 us; delay 2.42 us; 9404.828 MHz, 1727.1971310929075 kHz from radar; -72.8 dBm at SM200B = -45.0 at antenna, EIRP 15.8 dBm, G -14.2 dBi; reply rate 0.46; phase carried 0.08956171460921201
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_chain.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_parts.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_replies.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_stats.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_loudness.png
+plot C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\raw_20261109_213716_timeline.png
