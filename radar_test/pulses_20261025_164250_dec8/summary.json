@@ -1,0 +1,14 @@
+{
+ "center_hz": 9407800000.0,
+ "temp_start_c": 46.99,
+ "supply_v": 11.86,
+ "supply_a": 1.15,
+ "sample_rate": 6250000.0,
+ "bandwidth": 4800000.0,
+ "decimation": 8,
+ "noise_dbm_per_sample": -61.59491156301195,
+ "capture_s": 6.13,
+ "temp_end_c": 46.31,
+ "samples_lost": 0,
+ "pulses_found": 0
+}

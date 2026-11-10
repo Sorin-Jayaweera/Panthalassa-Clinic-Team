@@ -12,13 +12,15 @@ RAC = HERE.parent.parent / "radar_test" / "racon"
 PL, DA = RAC / "plots", RAC / "data"
 REPO_PLOTS = "https://github.com/Sorin-Jayaweera/Panthalassa-Clinic-Team/blob/main/radar_test/racon/plots/"
 
-SHOW = ["stats_20261109_215716_stack_envelope", "stats_20261109_215716_morse_timing_long", "stats_20261109_215716_morse_timing_short",
+SHOW = ["racon_fig1_durations", "racon_fig2_edges", "racon_fig3_frequency", "racon_fig4_levels", "racon_fig5_short_block",
+        "stats_20261109_215716_stack_envelope", "stats_20261109_215716_morse_timing_long", "stats_20261109_215716_morse_timing_short",
         "stats_20261109_215716_table", "stats_20261109_215716_stack_freq", "stats_20261109_215716_freq", "stats_20261109_215716_bursts",
         "stats_20261109_215716_vs_time", "stats_20261109_215716_edges", "stats_20261109_215716_stack_radar",
         "stats_seg_horn_racon_250M_stack_envelope", "stats_seg_horn_racon_250M_edges", "stats_20261109_214452_stack_envelope",
         "stats_20261109_214452_morse_timing_long", "racon_all_compare", "racon_all_hist", "racon_all_tracking", "radar_all_9nov",
         "sweeps_9to10", "sweeps_harm2", "sweeps_wide"]
-for n in SHOW:
+ALLP = sorted(q.stem for q in PL.glob("*.png") if q.stem.startswith(("stats_", "racon_", "radar_all", "sweeps_")))
+for n in sorted(set(SHOW) | set(ALLP)):
     if (PL / f"{n}.png").exists():
         shutil.copy2(PL / f"{n}.png", HERE / "img" / f"{n}.png")
 
@@ -86,7 +88,7 @@ def build():
                  f"<b>Two versions.</b> Long R: dot {v(L, 'dot 1', 'median', 2)} us, gap {v(L, 'gap 1', 'median', 2)} us, dash {v(L, 'dash', 'median', 2)} us, "
                  f"whole reply {v(L, 'whole R, dot 1 start to dot 2 end', 'median', 2)} us. Short R: everything about 0.75 times as long "
                  f"(dot {v(Sh, 'dot 1', 'median', 2)}, gap {v(Sh, 'gap 1', 'median', 2)}, dash {v(Sh, 'dash', 'median', 2)}, whole {v(Sh, 'whole R, dot 1 start to dot 2 end', 'median', 2)} us). "
-                 "About one reply in five is short; they come mixed into the same bursts.",
+                 "About one reply in five is short; the short ones come in one block per pass of the radar beam (see below).",
                  f"<b>Timing is crystal-steady.</b> Long R gaps and dash vary by about {v(L, 'gap 2', 'sd', 3)} and {v(L, 'dash', 'sd', 3)} us (1 sd), "
                  "a few nanoseconds once the rare faded replies are left out (see the histograms).",
                  f"<b>Delay jitters.</b> Dot 1 starts {v(L, 'delay, radar start to dot 1 start', 'median', 2)} us after the radar pulse starts (long R; "
@@ -101,6 +103,41 @@ def build():
                  "The radar pulse edges read about 55 ns.",
                  "<b>Level:</b> about &minus;52 dBm at the SM200B with the horn 7 m from the racon (chain gain &minus;27.8 dB, so about &minus;24 dBm at the horn port). "
                  "The horn gain is not known yet, so no racon EIRP is given."]), open_=True),
+        item("rac-where", "Where the data is saved (full paths)",
+             table(["what", "where"], [
+                 ["Raw I/Q, every sample, 9 Nov (complex64, 50 MS/s, 41.5 MHz wide, centre 9408.5 MHz), one folder per recording with iq.c64 + meta.json; NOTES.txt = conditions log",
+                  "<code>C:\racon_raw\</code> (275.9 GB, recording computer)"],
+                 ["Backup of the raw I/Q in Dropbox (complete copy, checked: 24 files, 0 failed)",
+                  "<code>C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\racon_raw_9nov\</code>"],
+                 ["Cut-out pulses and replies (raw_&lt;recording&gt;.npz), per-reply CSVs (stats_&lt;recording&gt;_replies.csv), radar CSVs, summary tables, short-block list, edge times",
+                  "<code>C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\data\</code>"],
+                 ["250 MS/s segmented captures (c00-c10.npz)",
+                  "<code>...\claude\radar_test\racon\data\seg_horn_racon_250M_20261109_222441\</code>"],
+                 ["Sweeps 9-10 GHz, 18.6-19.0 GHz, 0.1-20 GHz",
+                  "<code>...\claude\radar_test\racon\data\survey_horn_radar_*</code> and <code>survey_horn_racon_*</code>"],
+                 ["Every plot", "<code>C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\radar_test\racon\plots\</code>"],
+                 ["Recording settings copied from each meta.json", "<code>...\claude\radar_test\racon\raw_meta\</code>"],
+                 ["Scripts: racon_stats.py (statistics and per-recording plots), racon_figs.py (one-figure-per-idea plots), setups_9nov.py (wiring per recording)",
+                  "<code>...\claude\radar_test\racon\</code>"],
+             ], cls="parts", left=(0, 1)),
+             p("Everything under <code>claude\</code> except the raw I/Q is also in the GitHub repository at the same relative path."), open_=True),
+        item("rac-short", "Why some replies stop early: the short R comes once per pass of the radar beam",
+             F("racon_fig5_short_block", "Long and short R timing, every burst with its short block, and how the short block differs"),
+             ul(["The gap that cuts into the dash in the stacked plots is the <b>short R</b>. It is the same Morse R played 0.75 times as long, "
+                 "so it is over by 45 us while the long R is still in its dash.",
+                 "It is not random. It comes as <b>one solid block of about 18 replies in a row (about 28 ms)</b> once per burst, at a different place in each burst, "
+                 "and then a few stray short replies 5 to 15 replies later. Every block is in <code>radar_test/racon/data/racon_short_blocks.csv</code>.",
+                 "28 ms is about 3.9 degrees of the radar's 2.59 s turn, roughly the width of the radar's main beam. Inside the block the racon answers sooner "
+                 "(1.34 us, very steady, against 1.72 us with a wide spread) and the radar reads about 7 dB stronger at the SM200B. "
+                 "Both point the same way: <b>the short R is the answer to the radar's main beam, and the long R is the answer to its sidelobes</b>. "
+                 "The racon is only 15 m from the radar, so the sidelobes are strong enough to trigger it all round the turn.",
+                 "Not proven: the radar level is measured at the SM200B, not at the racon, and the radar's beamwidth has not been measured. "
+                 "The stray short replies after the block may be a near sidelobe. The SeaBeacon manual may say whether it shortens its code on strong interrogations."])),
+        item("rac-figs", "One figure per idea (all recordings pooled)",
+             F("racon_fig1_durations", "Every Morse duration, long and short R"),
+             F("racon_fig2_edges", "Rise and fall times of the radar pulse and every racon element"),
+             F("racon_fig3_frequency", "Racon frequency offset, drift, chirp and tracking"),
+             F("racon_fig4_levels", "Racon and radar levels")),
         item("rac-stats", "Statistics tables (all recordings pooled)",
              h("Long R"), stat_table(L), h("Short R"), stat_table(Sh),
              p("N = complete replies (exactly dot, dash, dot with dot 4-15 us and dash 18-35 us). Edges at half of each element's own power, interpolated between samples. "
@@ -143,6 +180,10 @@ def build():
                  "0.1-20 GHz: besides the radar only 1855 MHz and 2.4-2.56 GHz lines (phones, Wi-Fi). The wide sweep is slow and misses most short pulses, "
                  "which is why the harmonic is not in it.",
                  "The 3rd harmonic (28.2 GHz) is above the SM200B's 20 GHz."])),
+        item("rac-every", f"Every plot ({len(ALLP)})",
+             p("Per recording: stack_envelope, stack_freq, stack_radar, morse_timing_long/short, freq, vs_time, table, bursts, edges. "
+               "Recordings without full replies have fewer."),
+             *[F(n, n) for n in ALLP]),
         item("rac-files", "Recordings and files",
              ul(["Raw I/Q, every sample: <code>C:\\racon_raw\\&lt;time&gt;\\iq.c64</code> (complex64, 50 MS/s, 41.5 MHz wide, centre 9408.5 MHz) with <code>meta.json</code>; "
                  "about 282 GB, backed up to Dropbox. Conditions log: <code>NOTES.txt</code> there.",

@@ -1,0 +1,2 @@
+timestamp,freq_mhz,pluto_att_db,pluto_want_dbm,detector_mean_v,tone_found_mhz,tone_dbm,double_found_mhz,double_dbm,low_found_mhz,low_dbm
+2026-11-01T16:41:19,300.0,60.25,-59.33,0.03791675714285715,299.9958038330078,-25.44,599.9917984008789,-14.27,3.9992294311523438,-52.74

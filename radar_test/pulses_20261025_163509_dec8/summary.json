@@ -1,0 +1,128 @@
+{
+ "center_hz": 9407800000.0,
+ "temp_start_c": 46.99,
+ "supply_v": 11.86,
+ "supply_a": 1.154,
+ "sample_rate": 6250000.0,
+ "bandwidth": 4800000.0,
+ "decimation": 8,
+ "noise_dbm_per_sample": -61.532782204265565,
+ "capture_s": 6.12,
+ "temp_end_c": 47.66,
+ "samples_lost": 0,
+ "pulses_found": 593,
+ "pri_us_median": 1666.4,
+ "pri_us_spread": [
+  1612.8,
+  1706.56
+ ],
+ "prf_hz": 600.1,
+ "passes": [
+  {
+   "t_peak": 0.119,
+   "peak_dbm": -38.82,
+   "pulses": 90,
+   "dur_ms": 464.6,
+   "dur_3db_ms": 160.0
+  },
+  {
+   "t_peak": 1.3265,
+   "peak_dbm": -41.78,
+   "pulses": 37,
+   "dur_ms": 150.3,
+   "dur_3db_ms": 79.3
+  },
+  {
+   "t_peak": 2.6011,
+   "peak_dbm": -30.83,
+   "pulses": 226,
+   "dur_ms": 1136.2,
+   "dur_3db_ms": 101.5
+  },
+  {
+   "t_peak": 3.9693,
+   "peak_dbm": -39.55,
+   "pulses": 32,
+   "dur_ms": 144.5,
+   "dur_3db_ms": 15.0
+  },
+  {
+   "t_peak": 5.1482,
+   "peak_dbm": -30.18,
+   "pulses": 208,
+   "dur_ms": 817.9,
+   "dur_3db_ms": 106.3
+  }
+ ],
+ "rotation_s": 2.547,
+ "rpm": 23.56,
+ "peak_dbm_max": -30.18,
+ "strong_pulses": 36,
+ "freq_mhz_strong": [
+  NaN,
+  NaN,
+  NaN
+ ],
+ "chirp_khz_strong": [
+  NaN,
+  NaN,
+  NaN
+ ],
+ "pri_us_commonest": [
+  [
+   1660.0,
+   48
+  ],
+  [
+   1680.0,
+   45
+  ],
+  [
+   1707.0,
+   39
+  ],
+  [
+   1693.0,
+   37
+  ],
+  [
+   1673.0,
+   33
+  ],
+  [
+   1626.0,
+   31
+  ],
+  [
+   1640.0,
+   31
+  ],
+  [
+   1653.0,
+   31
+  ],
+  [
+   1700.0,
+   30
+  ],
+  [
+   1666.0,
+   28
+  ]
+ ],
+ "width_ns": [
+  640.0,
+  480.0,
+  800.0
+ ],
+ "rise_ns": [
+  320.0,
+  160.0,
+  640.0
+ ],
+ "fall_ns": [
+  160.0,
+  0.0,
+  480.0
+ ]
+}

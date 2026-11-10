@@ -33,7 +33,7 @@ PLOTS, DATA = A.PLOTS, A.DATA
 DOT, DASH = (4.0, 15.0), (18.0, 35.0)
 SPLIT_US = 17.0
 VSPLIT_US = 22.4      # two versions of the R seen: long (dash 25.6 us) and short (dash 19.2 us, everything x 0.75)
-VCOL = {"long": "#264653", "short": "#e9c46a"}
+VCOL = {"long": "#1f6fb4", "short": "#e8710a"}   # blue / orange: distinct, colour-blind safe
 RECS = ["20261109_211913", "20261109_212012", "20261109_212124", "20261109_213227", "20261109_213542", "20261109_213625",
         "20261109_213716", "20261109_214452", "20261109_215120", "20261109_215332", "20261109_215716", "seg_horn_racon_250M"]
 SHORT = {"20261109_213542": "Vivaldi 21:35", "20261109_213625": "Vivaldi 21:36", "20261109_213716": "Vivaldi 21:37",
@@ -192,7 +192,7 @@ def process(rec):
             row[f"{n}_rise_ns"] = e["rise_ns"]
             row[f"{n}_fall_ns"] = e["fall_ns"]
         row["drift_dot1_to_dot2_mhz"] = row["dot2_off_mhz"] - row["dot1_off_mhz"]
-        row["dash_minus_2dots_us"] = row["dash_us"] - row["dot1_us"] - row["dot2_us"]
+        row["dash_over_dot"] = row["dash_us"] / (0.5 * (row["dot1_us"] + row["dot2_us"]))
         row["variant"] = "long" if row["dash_us"] > VSPLIT_US else "short"
         rows.append(row)
     codes = Counter(code_of(m["els"]) for m in ms if m["els"])
@@ -285,24 +285,25 @@ def plot_stacks(D):
           xlabel="Time from the start of dot 1 (us)")
     rows = D["rows"]
     N = np.abs(X2) ** 2 / np.array([10 ** (r["dash_dbm"] / 10) for r in rows])[:, None]
+    isv = np.array([r["variant"] for r in rows])
     pick = np.linspace(0, len(N) - 1, min(300, len(N))).astype(int)
     for i in pick:
-        c.plot(t2, N[i], lw=0.3, alpha=0.25, color="0.4")
-    mu, sd = np.nanmean(N, 0), np.nanstd(N, 0)
-    c.plot(t2, mu, color="k", lw=1.4, label=f"mean of all {len(N)}")
-    c.fill_between(t2, mu - sd, mu + sd, color="tab:orange", alpha=0.35, label="mean +- 1 sd")
-    for key, col in (("dot1_us", C_EL["dot1"]),):
-        pass
-    st = {k: np.mean([r[k] for r in rows]) for k in ("dot1_us", "gap1_us", "dash_us", "gap2_us", "dot2_us")}
-    e = np.cumsum([0, st["dot1_us"], st["gap1_us"], st["dash_us"], st["gap2_us"], st["dot2_us"]])
-    for v in e:
-        c.axvline(v, color="tab:blue", lw=0.7, ls="--")
-    for (n, k), x0, x1 in zip([("dot 1", "dot1_us"), ("gap 1", "gap1_us"), ("dash", "dash_us"), ("gap 2", "gap2_us"), ("dot 2", "dot2_us")], e[:-1], e[1:]):
-        v = [r[k] for r in rows]
-        c.text((x0 + x1) / 2, 1.32, f"{n}\n{np.mean(v):.2f} +- {np.std(v):.2f} us", ha="center", fontsize=8)
+        c.plot(t2, N[i], lw=0.3, alpha=0.18, color=VCOL[isv[i]])
+    for v, yl in (("long", 1.36), ("short", 1.2)):
+        sel = isv == v
+        if sel.sum() < 2:
+            continue
+        mu = np.nanmean(N[sel], 0)
+        c.plot(t2, mu, color=VCOL[v], lw=1.8, label=f"mean of the {sel.sum()} {v} R")
+        vr = [r for r in rows if r["variant"] == v]
+        st = {k: np.mean([r[k] for r in vr]) for k in ("dot1_us", "gap1_us", "dash_us", "gap2_us", "dot2_us")}
+        e = np.cumsum([0, st["dot1_us"], st["gap1_us"], st["dash_us"], st["gap2_us"], st["dot2_us"]])
+        for (n, k), x0, x1 in zip([("dot 1", "dot1_us"), ("gap 1", "gap1_us"), ("dash", "dash_us"), ("gap 2", "gap2_us"), ("dot 2", "dot2_us")], e[:-1], e[1:]):
+            x = [r[k] for r in vr]
+            c.text((x0 + x1) / 2, yl, f"{n} {np.mean(x):.2f} +- {np.std(x):.3f}", ha="center", fontsize=7, color=VCOL[v])
     c.set(ylim=(-0.05, 1.5), xlim=(t2[0], t2[-1]), xlabel="Time from the start of dot 1 (us)", ylabel="Power / that reply's dash level",
-          title=f"{len(pick)} replies overlaid (grey), normalised to their own dash level; blue dashed = mean edges")
-    c.legend(fontsize=8, loc="center right")
+          title=f"{len(pick)} replies overlaid, normalised to their own dash level: blue = long R, orange = short R (lengths in us)")
+    c.legend(fontsize=8, loc="center right", framealpha=0.9)
     for ax in (a, b, c):
         ax.grid(alpha=0.25)
     outs.append(save(fig, D, "stack_envelope"))
@@ -443,7 +444,7 @@ def plot_stats(D):
              ("gap1_us", "Gap 1", "us"), ("dash_us", "Dash length", "us"), ("gap2_us", "Gap 2", "us"), ("dot2_us", "Dot 2 length", "us"),
              ("total_us", "Whole R: dot 1 start to dot 2 end", "us"), ("end_us", "Radar start to end of reply", "us"),
              ("dot1_to_dash_us", "Dot 1 start to dash start", "us"), ("dash_to_dot2_us", "Dash start to dot 2 start", "us"),
-             ("dash_minus_2dots_us", "Dash minus the two dots", "us"), ("radar_dur_us", "Radar pulse length (these replies)", "us"),
+             ("dash_over_dot", "Dash length / mean dot length (Morse says 3)", "ratio"), ("radar_dur_us", "Radar pulse length (these replies)", "us"),
              ("dash_dbm", "Dash level at the SM200B", "dBm"), ("dash_off_mhz", "Dash frequency minus radar", "MHz"),
              ("drift_dot1_to_dot2_mhz", "Drift, dot 2 minus dot 1", "MHz")]
     for v in ("long", "short"):
@@ -458,9 +459,9 @@ def plot_stats(D):
             if u == "ns":                                   # edge times have a long tail from fades and overlaps: show 0-400 ns
                 lab = f"{lab}, median {np.median(vals):.0f} ns; {np.mean(vals > 400) * 100:.0f} % above 400 ns not shown"
                 vals = vals[vals <= 400]
-            hist(ax, vals, lab, u, VCOL[v] if v == "long" else "#c99a2e")
+            hist(ax, vals, lab, u, VCOL[v])
         ax = fig.add_subplot(sub[3, 3])
-        ax.scatter([r["delay_us"] for r in vr], [r["dash_us"] for r in vr], s=3, alpha=0.4, color=VCOL[v] if v == "long" else "#c99a2e")
+        ax.scatter([r["delay_us"] for r in vr], [r["dash_us"] for r in vr], s=3, alpha=0.4, color=VCOL[v])
         ax.set(xlabel="delay (us)", ylabel="dash (us)", title="Delay vs dash length")
         ax.grid(alpha=0.25)
         fig.text(0.07, 0.955, f"Morse timing of the {len(vr)} {v} R replies ({100 * len(vr) / len(rows):.0f} % of {len(rows)} full R). "
@@ -613,13 +614,14 @@ def plot_bursts(D):
         rr = [rows[i] for i in g]
         tt = np.array([r["t_s"] for r in rr]) - rr[0]["t_s"]
         a, b, c = (fig.add_subplot(sub[i, j]) for i in range(3))
-        a.plot(tt, [r["radar_f_mhz"] for r in rr], ".", ms=3, color="#1f4e9c", label="radar pulse")
+        a.plot(tt, [r["radar_f_mhz"] for r in rr], ".", ms=2.5, color="0.15", label="radar pulse")
         for v in ("long", "short"):
             sel = [i for i, r in enumerate(rr) if r["variant"] == v]
-            a.plot(tt[sel], [rr[i]["dash_f_mhz"] for i in sel], "o", ms=3, mfc="none", color=VCOL[v], label=f"racon dash, {v} R")
-            b.plot(tt[sel], [rr[i]["dash_off_mhz"] for i in sel], "o", ms=3, mfc="none", color=VCOL[v])
-            c.plot(tt[sel], [rr[i]["delay_us"] for i in sel], "o", ms=3, mfc="none", color=VCOL[v])
-        a.set(title=f"burst at {rr[0]['t_s']:.1f} s: {len(rr)} replies over {tt[-1]:.2f} s", ylabel="MHz")
+            kw = dict(ls="none", marker="o", ms=3.2, mew=0, color=VCOL[v], alpha=0.85)
+            a.plot(tt[sel], [rr[i]["dash_f_mhz"] for i in sel], label=f"racon dash, {v} R", **kw)
+            b.plot(tt[sel], [rr[i]["dash_off_mhz"] for i in sel], **kw)
+            c.plot(tt[sel], [rr[i]["delay_us"] for i in sel], **kw)
+        a.set(title=f"burst at {rr[0]['t_s']:.1f} s: {len(rr)} replies over {tt[-1]:.2f} s", ylabel="frequency (MHz)")
         b.set(ylabel="racon minus radar (MHz)")
         c.set(ylabel="delay (us)", xlabel="seconds into the burst")
         if j == 0:
@@ -658,7 +660,9 @@ def plot_all(Ds):
                 ax.plot([j + dx, j + dx], [s["p5"], s["p95"]], color=cols[j], lw=0.6, alpha=0.6)
         ax.set_xticks(range(len(Ds)), [SHORT.get(D["rec"], D["rec"]) for D in Ds], rotation=35, ha="right", fontsize=7)
         lab = dict((a, b) for a, b, _ in STAT_KEYS)[k]
-        ax.set_title(lab + f" ({dict((a, c) for a, _, c in STAT_KEYS)[k]})", fontsize=9)
+        unit = dict((a, c) for a, _, c in STAT_KEYS)[k]
+        ax.set_title(lab, fontsize=9)
+        ax.set_ylabel({"us": "microseconds", "MHz": "MHz", "MHz/us": "MHz per us", "dBm": "dBm at SM200B"}.get(unit, unit))
         ax.grid(alpha=0.25)
     fig.text(0.07, 0.955, "Each recording, long R (filled circle, left) and short R (open square, right): marker = median, bar = +-1 sd, thin line = 5-95 %", fontsize=9)
     fig.suptitle("Racon reply across recordings: is the timing and frequency the same every time?", fontsize=10)
