@@ -24,3 +24,6 @@ radar_test/racon/data/*.npz
 
 # single-file copy of the site with every image inlined: over 100 MB, kept in Dropbox only
 JACON_notes_backup.html
+
+# not part of the racon project: never on GitHub
+chaos_scope/
