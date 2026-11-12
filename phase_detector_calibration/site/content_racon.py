@@ -95,6 +95,37 @@ except (FileNotFoundError, StopIteration):
     FO = {}
 
 
+KIND = [("stack_envelope", "Envelope of every reply, stacked"), ("stack_freq", "Instantaneous frequency and spectrum of every reply, stacked"),
+        ("freq", "Element frequency, drift and chirp"), ("bursts", "Busiest bursts, reply by reply"),
+        ("morse_timing_long", "Long R timing histograms"), ("morse_timing_short", "Short R timing histograms"),
+        ("vs_time", "Delay, lengths and frequency through the recording"), ("edges", "Averaged edges"), ("table", "Statistics table"),
+        ("stack_radar", "Furuno pulses, stacked")]
+
+
+def other_names():
+    """Plots not already shown in another section of this tab."""
+    import re
+    shown = set(re.findall(r'F\("([^"]+)"', Path(__file__).read_text(encoding="utf-8")))
+    return [n for n in ALLP if n not in shown]
+
+
+def other_plots():
+    import setups_racon_view as SV
+    left = set(other_names())
+    out = [p("Every plot not already shown above, one group per recording, frequency plots first. "
+             "Recordings where the racon was off or not picked up only have the Furuno pulse plot.")]
+    for rec, label, ref, ant in SV.RECS:
+        names = [(f"stats_{rec}_{k}", t) for k, t in KIND if f"stats_{rec}_{k}" in left]
+        if names:
+            out.append(h(f"{rec}: {ant}, {label}"))
+            out += [F(n, f"{t}, {rec}") for n, t in names]
+            left -= {n for n, _ in names}
+    if left:
+        out.append(h("Other"))
+        out += [F(n, n) for n in sorted(left)]
+    return "".join(out)
+
+
 def build():
     L, Sh = "ALL long", "ALL short"
     return "".join([
@@ -203,10 +234,7 @@ def build():
                   "<code>...&#92;claude&#92;radar_test&#92;racon&#92;</code>"],
              ], cls="parts", left=(0, 1)),
              p("Everything under <code>claude&#92;</code> except the raw I/Q is also in the GitHub repository at the same relative path."), open_=False),
-        item("rac-every", f"All plots ({len(ALLP)})",
-             p("Per recording: stack_envelope, stack_freq, stack_radar, morse_timing_long/short, freq, vs_time, table, bursts, edges. "
-               "Recordings without full replies have fewer."),
-             *[F(n, n) for n in ALLP]),
+        item("rac-other", f"Other plots, by recording ({len(other_names())})", other_plots()),
         item("rac-files", "Scripts and recording files",
              ul(["Raw I/Q, every sample: <code>C:\\racon_raw\\&lt;time&gt;\\iq.c64</code> (complex64, 50 MS/s, 41.5 MHz wide, centre 9408.5 MHz) with <code>meta.json</code>; "
                  "about 282 GB, backed up to Dropbox. Conditions log: <code>NOTES.txt</code> there.",
