@@ -12,7 +12,7 @@ RAC = HERE.parent.parent / "radar_test" / "racon"
 PL, DA = RAC / "plots", RAC / "data"
 REPO_PLOTS = "https://github.com/Sorin-Jayaweera/Panthalassa-Clinic-Team/blob/main/radar_test/racon/plots/"
 
-SHOW = ["racon_fig1_durations", "racon_fig2_edges", "racon_fig3_frequency", "racon_fig4_levels", "racon_fig5_short_block",
+SHOW = ["racon_fig6_iq_time", "racon_fig1_durations", "racon_fig2_edges", "racon_fig3_frequency", "racon_fig4_levels", "racon_fig5_short_block",
         "stats_20261109_215716_stack_envelope", "stats_20261109_215716_morse_timing_long", "stats_20261109_215716_morse_timing_short",
         "stats_20261109_215716_table", "stats_20261109_215716_stack_freq", "stats_20261109_215716_freq", "stats_20261109_215716_bursts",
         "stats_20261109_215716_vs_time", "stats_20261109_215716_edges", "stats_20261109_215716_stack_radar",
@@ -159,6 +159,9 @@ def build():
                "so the offset does not depend on the SM200B's tuning. Peak = mode of a 0.1 MHz histogram smoothed over 0.5 MHz. "
                "Table: <code>radar_test/racon/data/racon_freq_offset.csv</code>."),
              F("racon_fig3_frequency", "Offset, drift and chirp histograms; racon against Furuno frequency"),
+             F("racon_fig6_iq_time", "I and Q against time, one long R and one short R (250 MS/s): whole reply as recorded, whole reply referenced to the Furuno frequency, the whole Furuno pulse, and 1 us of the dash"),
+             p("In the Furuno-referenced row the I/Q rotation rate is the racon-minus-Furuno offset: the long R dash makes about 25 turns in 25.7 us (+0.95 MHz). "
+               "Script <code>radar_test/racon/racon_iq.py</code>; plotted samples in <code>radar_test/racon/data/racon_iq_examples.csv</code>."),
              F("stats_20261109_215716_stack_freq", "Instantaneous frequency and spectrum of every reply, stacked"),
              F("stats_20261109_215716_freq", "Horn recording: element frequency, drift and chirp"),
              F("stats_20261109_215716_bursts", "Three bursts reply by reply: Furuno and racon frequency, offset, delay"),
