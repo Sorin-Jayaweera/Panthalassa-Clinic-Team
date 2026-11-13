@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Racon raw I/Q viewer</title>
+<style>
+:root{--bg:#ffffff;--fg:#1d2329;--muted:#5b6670;--grid:#e8ebee;--axis:#9aa3ab;--panel:#f4f6f8;--I:#1f6fb4;--Q:#d1495b;--A:#262b30;--selb:#1f6fb4;--sel:rgba(31,111,180,.13);--div:#b9c1c8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181c;--fg:#e4e8ec;--muted:#9aa5ae;--grid:#262d33;--axis:#5d6872;--panel:#1d2329;--I:#5aa5e6;--Q:#ef7b8b;--A:#d8dde2;--selb:#5aa5e6;--sel:rgba(90,165,230,.18);--div:#3c464f}}
+:root[data-theme="dark"]{--bg:#14181c;--fg:#e4e8ec;--muted:#9aa5ae;--grid:#262d33;--axis:#5d6872;--panel:#1d2329;--I:#5aa5e6;--Q:#ef7b8b;--A:#d8dde2;--selb:#5aa5e6;--sel:rgba(90,165,230,.18);--div:#3c464f}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1700px;margin:0 auto;padding:10px 16px 40px}
+h1{font-size:19px;margin:4px 0 2px}
+h2{font-size:15px;margin:18px 0 4px}
+.sub{color:var(--muted);margin:0 0 6px}
+a{color:var(--selb)}
+.bar{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:6px 0}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+button,select,input{font:inherit;font-size:13px;color:var(--fg);background:var(--panel);border:1px solid var(--axis);border-radius:5px;padding:3px 9px}
+button{cursor:pointer}
+button:hover{border-color:var(--fg)}
+button.on{background:var(--selb);color:#fff;border-color:var(--selb)}
+input[type=number]{width:76px}
+label{white-space:nowrap;font-size:13px}
+.sw{display:inline-block;width:16px;height:3px;vertical-align:middle;margin:0 3px 0 1px;border-radius:2px}
+#ovw{position:relative;height:54px;margin:4px 0}
+#ovw canvas,#wrap canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+#ovc{cursor:pointer;touch-action:none}
+#wrap{position:relative;height:60vh;min-height:300px}
+#over{cursor:crosshair;touch-action:none}
+#status{font:12px/1.45 ui-monospace,Consolas,monospace;color:var(--muted);min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere}
+.help{color:var(--muted);font-size:13px}
+.help kbd{border:1px solid var(--axis);border-radius:3px;padding:0 4px;font-size:12px}
+img.wiring{width:100%;max-width:1600px;background:#fff;border-radius:4px}
+#load{color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<h1>Racon raw I/Q: the whole 250 MS/s horn recording</h1>
+<p class="sub">SeaBeacon 2 racon answering the Furuno 1722C/NT, 9 Nov 2026, horn aimed at the racon, SM200B segmented I/Q at 250 MS/s (160 MHz wide), centre 9404.0 MHz.
+Every recorded sample, unfiltered. I&sup2; + Q&sup2; = power in &micro;W at the SM200B input (chain gain antenna port to SM200B in the wiring diagram below).
+<span id="load">Loading&hellip;</span></p>
+
+<div class="bar">
+  <div class="grp"><button id="bWhole" title="Home">Whole recording</button><button id="bBack" title="Backspace">Back</button></div>
+  <div class="grp"><button id="bPrev" title="P">&#9664; Prev</button><button id="bNext" title="N">Next &#9654;</button>
+    <select id="sStep" title="Which snippets Prev / Next step through"><option value="all">every snippet</option><option value="long">long R only</option><option value="short">short R only</option><option value="none">no full R</option></select></div>
+  <div class="grp"><label>Snippet <input id="iSnip" type="number" min="1" step="1"></label><button id="bGo">Go</button>
+    <button id="bSnip" title="S">Fit snippet</button><button id="bPulse" title="F">Furuno pulse</button><button id="bReply" title="R: y range set by everything after the Furuno pulse, so the reply fills the plot">Reply scale</button></div>
+  <div class="grp"><label><input type="checkbox" id="cI" checked><span class="sw" style="background:var(--I)"></span>I</label>
+    <label><input type="checkbox" id="cQ" checked><span class="sw" style="background:var(--Q)"></span>Q</label>
+    <label><input type="checkbox" id="cA"><span class="sw" style="background:var(--A)"></span>|I + jQ|</label>
+    <label title="A"><input type="checkbox" id="cY" checked>Auto y</label></div>
+  <div class="grp"><select id="sTime"><option value="gapless">Time axis: snippets back to back</option><option value="real">Time axis: real time (gaps shown)</option></select>
+    <span>Drag:</span><button id="bBox" class="on">Zoom box</button><button id="bPan">Pan</button></div>
+</div>
+<div id="ovw"><canvas id="ovcbg"></canvas><canvas id="ovc"></canvas></div>
+<div id="wrap"><canvas id="plot"></canvas><canvas id="over"></canvas></div>
+<div id="status"></div>
+
+<p class="help"><b>Zoom:</b> drag a box (a wide flat box zooms time only, a tall thin box zooms the y axis only), or scroll the wheel (time) / <kbd>Shift</kbd>+wheel (y).
+<b>Move:</b> right-drag, <kbd>Shift</kbd>+drag, or the Pan button; <kbd>&larr;</kbd> <kbd>&rarr;</kbd>; click or drag the strip above the plot to jump.
+<b>Keys:</b> <kbd>N</kbd>/<kbd>P</kbd> next/previous snippet, <kbd>S</kbd> fit snippet, <kbd>F</kbd> Furuno pulse, <kbd>R</kbd> reply scale (y set by everything after the Furuno pulse), <kbd>+</kbd>/<kbd>-</kbd> zoom, <kbd>A</kbd> auto y, <kbd>Backspace</kbd> or double-click back, <kbd>Home</kbd> whole recording.
+Zoomed out, each pixel column shows the min-to-max range of the samples under it; zoomed in past about 1 sample per pixel it draws every sample (dots below 0.35 samples per pixel). The address bar keeps the current view, so a link reopens it.</p>
+
+<h2>What was recorded</h2>
+<p class="help">The SM200B was in segmented mode: each time its video trigger (&minus;29.9 dBm) saw a Furuno pulse it kept 83 &micro;s (20 750 samples): 3 &micro;s before the trigger and 80 &micro;s after,
+which holds the Furuno pulse and the racon's reply. Between snippets nothing was recorded. Snippets come about 1.67 ms apart (the Furuno pulse spacing) while the beam passes the horn,
+then a gap of about 2.59 s (one antenna turn). 2671 snippets over 208 s. The default time axis puts the snippets back to back; switch to real time to see the gaps.
+Snippet 1 has no valid time stamp in the file (start of the first capture), so it is placed one pulse period before snippet 2.
+Reply type (long R, short R) comes from <code>radar_test/racon/data/stats_seg_horn_racon_250M_replies.csv</code>; a snippet with no type had no complete R.</p>
+<p class="help">Files: export script <code>radar_test/racon/racon_iq_web.py</code>; data <code>docs/racon_iq/</code> (meta.json, overview.bin = min/max per 0.5 &micro;s, chunks/cNNN.bin = int16 I,Q interleaved, 32 snippets each, scale in meta.json).
+Original recording: <code>radar_test/racon/data/seg_horn_racon_250M_*</code>. Local copy of this page: <code>C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\docs\racon_iq\index.html</code>
+(open through a local server, e.g. <code>python -m http.server</code> in that folder; browsers block the data files when opened straight from disk).
+<a href="../index.html">Back to the JACON notes (Racon tab)</a>.</p>
+<h2>Wiring</h2>
+<img class="wiring" src="wiring.png" alt="Wiring: Furuno 1722C/NT radar and SeaBeacon 2 racon, horn antenna aimed at the racon, SMA cable, Marki limiter, 20 dB pad, ZX60-5123LN+ LNA, 29 dB of pads, SM200B">
+</main>
+
+<script>
+(async function () {
+  const $ = (id) => document.getElementById(id);
+  const cssv = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let M, OV;
+  try {
+    M = await (await fetch("meta.json")).json();
+    const r = await fetch("overview.bin");
+    if (!r.ok) throw new Error("overview");
+    OV = new Int16Array(await r.arrayBuffer());
+  } catch (e) {
+    $("load").textContent = "Could not load the data files. If this page was opened straight from disk, run \"python -m http.server\" in its folder and open http://localhost:8000/.";
+    return;
+  }
+  $("load").textContent = "";
+  const fs = M.fs, N = M.n, NS = M.nsnip, NB = M.nbins, BIN = M.bin, CH = M.chunk, U = M.scale_mw05 * 1e3, SEG = N / fs, PRE = M.pre / fs;
+  const S2 = M.scale_mw05 * M.scale_mw05;
+  let gapless = true;
+  const X0 = new Float64Array(NS);
+  const setX = () => { for (let k = 0; k < NS; k++) X0[k] = gapless ? k * SEG : M.t0[k]; ovCache = null; };
+  let ovCache = null;
+  setX();
+  const dom = () => [X0[0], X0[NS - 1] + SEG];
+  let V = { xa: 0, xb: 1, ya: -1, yb: 1, auto: true };
+  const hist = [];
+  const show = { I: true, Q: true, A: false };
+  let dragMode = "box";
+
+  // ---------------------------------------------------------------- raw chunks, loaded on demand
+  const cache = new Map(), pending = new Set();
+  function chunk(c) {
+    if (cache.has(c)) { const v = cache.get(c); cache.delete(c); cache.set(c, v); return v; }
+    if (!pending.has(c)) {
+      pending.add(c);
+      fetch("chunks/c" + String(c).padStart(3, "0") + ".bin")
+        .then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+        .then((b) => { cache.set(c, new Int16Array(b)); pending.delete(c); while (cache.size > 40) cache.delete(cache.keys().next().value); req(); })
+        .catch(() => { pending.delete(c); });
+    }
+    return null;
+  }
+  function raw(k) { const c = Math.floor(k / CH), a = chunk(c); if (!a) return null; const o = (k - c * CH) * N * 2; return a.subarray(o, o + N * 2); }
+  function rawIfLoaded(k) { const c = Math.floor(k / CH); if (!cache.has(c)) return null; const a = cache.get(c), o = (k - c * CH) * N * 2; return a.subarray(o, o + N * 2); }
+  function first(x) { let lo = 0, hi = NS; while (lo < hi) { const m = (lo + hi) >> 1; if (X0[m] + SEG > x) hi = m; else lo = m + 1; } return lo; }
+
+  // ---------------------------------------------------------------- canvases
+  const cv = $("plot"), ovl = $("over"), oc = $("ovc"), ocb = $("ovcbg");
+  const ML = 66, MR = 14, MT = 24, MB = 42;
+  let W = 0, H = 0, dpr = 1, OW = 0, OH = 0;
+  function size() {
+    dpr = window.devicePixelRatio || 1;
+    for (const c of [cv, ovl, oc, ocb]) { const r = c.getBoundingClientRect(); c.width = Math.round(r.width * dpr); c.height = Math.round(r.height * dpr); }
+    W = cv.width / dpr; H = cv.height / dpr; OW = oc.width / dpr; OH = oc.height / dpr; ovCache = null;
+  }
+  const PW = () => Math.max(10, Math.floor(W - ML - MR));
+  const PH = () => Math.max(10, H - MT - MB);
+  function nice(span, n) { const r = span / n, p = Math.pow(10, Math.floor(Math.log10(r))), f = r / p; return (f < 1.5 ? 1 : f < 3.5 ? 2 : f < 7.5 ? 5 : 10) * p; }
+  function dec(step) { return Math.min(9, Math.max(0, -Math.floor(Math.log10(step) + 1e-9))); }
+
+  let raf = 0;
+  function req() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; render(); drawOverview(); saveHash(); }); }
+
+  let lastInfo = "";
+  function render() {
+    const g = cv.getContext("2d");
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    const pw = PW(), ph = PH();
+    const { xa, xb } = V, xpp = (xb - xa) / pw, spp = xpp * fs;
+    const mnI = new Float32Array(pw).fill(Infinity), mxI = new Float32Array(pw).fill(-Infinity);
+    const mnQ = new Float32Array(pw).fill(Infinity), mxQ = new Float32Array(pw).fill(-Infinity);
+    const am = new Float32Array(pw).fill(-Infinity);
+    const k0 = first(xa);
+    let nvis = 0;
+    for (let k = k0; k < NS && X0[k] < xb; k++) nvis++;
+    const wantRaw = spp < BIN * 3 && nvis <= 3 * CH;
+    const lineMode = spp <= 1.5;
+    let missing = false, usedRaw = false, usedBins = false;
+    const lines = [];
+    for (let k = k0; k < k0 + nvis; k++) {
+      const x0 = X0[k], off = (x0 - xa) * fs;
+      const i0 = Math.max(0, Math.floor((xa - x0) * fs)), i1 = Math.min(N, Math.ceil((xb - x0) * fs) + 1);
+      if (i1 <= i0) continue;
+      const r = wantRaw ? raw(k) : null;
+      if (wantRaw && !r) missing = true;
+      if (r) {
+        usedRaw = true;
+        if (lineMode) lines.push([k, r, Math.max(0, i0 - 1), Math.min(N, i1 + 1)]);
+        for (let i = i0; i < i1; i++) {
+          const p = Math.floor((off + i) / spp);
+          if (p < 0 || p >= pw) continue;
+          const I = r[2 * i], Q = r[2 * i + 1];
+          if (I < mnI[p]) mnI[p] = I; if (I > mxI[p]) mxI[p] = I;
+          if (Q < mnQ[p]) mnQ[p] = Q; if (Q > mxQ[p]) mxQ[p] = Q;
+          const a = Math.sqrt(I * I + Q * Q); if (a > am[p]) am[p] = a;
+        }
+      } else {
+        usedBins = true;
+        const b0 = Math.floor(i0 / BIN), b1 = Math.min(NB - 1, Math.floor((i1 - 1) / BIN));
+        for (let b = b0; b <= b1; b++) {
+          let pa = Math.floor((off + b * BIN) / spp), pb = Math.floor((off + (b + 1) * BIN - 1) / spp);
+          if (pb < 0 || pa >= pw) continue;
+          pa = Math.max(0, pa); pb = Math.min(pw - 1, pb);
+          const o = (k * NB + b) * 5;
+          const a0 = OV[o], a1 = OV[o + 1], q0 = OV[o + 2], q1 = OV[o + 3], ae = OV[o + 4];
+          for (let p = pa; p <= pb; p++) {
+            if (a0 < mnI[p]) mnI[p] = a0; if (a1 > mxI[p]) mxI[p] = a1;
+            if (q0 < mnQ[p]) mnQ[p] = q0; if (q1 > mxQ[p]) mxQ[p] = q1;
+            if (ae > am[p]) am[p] = ae;
+          }
+        }
+      }
+    }
+    if (V.auto) {
+      let lo = Infinity, hi = -Infinity;
+      for (let p = 0; p < pw; p++) {
+        if (show.I && mnI[p] !== Infinity) { lo = Math.min(lo, mnI[p]); hi = Math.max(hi, mxI[p]); }
+        if (show.Q && mnQ[p] !== Infinity) { lo = Math.min(lo, mnQ[p]); hi = Math.max(hi, mxQ[p]); }
+        if (show.A && am[p] !== -Infinity) { lo = Math.min(lo, show.I || show.Q ? am[p] : 0, 0); hi = Math.max(hi, am[p]); }
+      }
+      if (lo < hi) { const pad = (hi - lo) * 0.06; V.ya = (lo - pad) * U; V.yb = (hi + pad) * U; }
+    }
+    const ya = V.ya, yb = V.yb;
+    const Y = (v) => MT + (yb - v * U) / (yb - ya) * ph;   // v in counts
+    const Yu = (u) => MT + (yb - u) / (yb - ya) * ph;      // u in uW^0.5
+
+    // grid and axes
+    const cGrid = cssv("--grid"), cAxis = cssv("--axis"), cFg = cssv("--fg"), cMuted = cssv("--muted"), cDiv = cssv("--div");
+    g.font = "12px system-ui,Segoe UI,sans-serif";
+    g.lineWidth = 1;
+    const ys = nice(yb - ya, Math.max(3, Math.round(ph / 55))), yd = dec(ys);
+    g.textAlign = "right"; g.textBaseline = "middle";
+    for (let v = Math.ceil(ya / ys) * ys; v <= yb + 1e-12; v += ys) {
+      const y = Math.round(Yu(v)) + 0.5;
+      g.strokeStyle = Math.abs(v) < ys * 1e-6 ? cAxis : cGrid;
+      g.beginPath(); g.moveTo(ML, y); g.lineTo(ML + pw, y); g.stroke();
+      g.fillStyle = cMuted; g.fillText(v.toFixed(yd), ML - 6, y);
+    }
+    g.save(); g.translate(14, MT + ph / 2); g.rotate(-Math.PI / 2); g.textAlign = "center"; g.fillStyle = cFg;
+    g.fillText("I, Q  (\u00b5W^0.5)", 0, 0); g.restore();
+
+    // x ticks: inside about two snippets, label in us from that snippet's trigger; otherwise seconds
+    g.textAlign = "center"; g.textBaseline = "top";
+    const span = xb - xa;
+    let xlabel;
+    if (span < 2.5 * SEG && nvis >= 1) {
+      const st = nice(span * 1e6, Math.max(3, Math.round(pw / 95))), d = dec(st);
+      for (let k = k0; k < k0 + nvis; k++) {
+        const a = Math.max(xa, X0[k]), b = Math.min(xb, X0[k] + SEG);
+        const ra = (a - X0[k] - PRE) * 1e6, rb = (b - X0[k] - PRE) * 1e6;
+        for (let r = Math.ceil(ra / st) * st; r <= rb + 1e-9; r += st) {
+          const x = Math.round(ML + (X0[k] + PRE + r * 1e-6 - xa) / xpp) + 0.5;
+          g.strokeStyle = Math.abs(r) < st * 1e-6 ? cAxis : cGrid;
+          g.beginPath(); g.moveTo(x, MT); g.lineTo(x, MT + ph); g.stroke();
+          g.fillStyle = cMuted; g.fillText(r.toFixed(d), x, MT + ph + 5);
+        }
+      }
+      xlabel = "\u00b5s from the SM200B trigger (the Furuno pulse's leading edge) in each snippet";
+    } else {
+      const st = nice(span, Math.max(3, Math.round(pw / 110))), d = dec(st);
+      for (let x = Math.ceil(xa / st) * st; x <= xb; x += st) {
+        const px = Math.round(ML + (x - xa) / xpp) + 0.5;
+        g.strokeStyle = cGrid; g.beginPath(); g.moveTo(px, MT); g.lineTo(px, MT + ph); g.stroke();
+        g.fillStyle = cMuted; g.fillText(x.toFixed(d), px, MT + ph + 5);
+      }
+      xlabel = gapless ? "recorded time, s (snippets placed back to back; the gaps between them are left out)" : "time since the first trigger, s (real time: blank = not recorded)";
+    }
+    g.fillStyle = cFg; g.fillText(xlabel, ML + pw / 2, MT + ph + 22);
+    g.strokeStyle = cAxis; g.strokeRect(ML + 0.5, MT + 0.5, pw, ph);
+
+    // data
+    g.save(); g.beginPath(); g.rect(ML, MT, pw, ph); g.clip();
+    if (nvis <= 60) {           // snippet boundaries and labels
+      g.setLineDash([4, 4]); g.strokeStyle = cDiv; g.fillStyle = cMuted; g.textAlign = "left"; g.textBaseline = "top";
+      for (let k = k0; k < k0 + nvis; k++) {
+        const x = Math.round(ML + (X0[k] - xa) / xpp) + 0.5;
+        g.beginPath(); g.moveTo(x, MT); g.lineTo(x, MT + ph); g.stroke();
+        const wpx = SEG / xpp;
+        if (wpx > 70) g.fillText("#" + (k + 1) + (M.kind[k] ? "  " + M.kind[k] + " R" : "  no full R"), Math.max(ML + 3, x + 3), MT + 3);
+      }
+      g.setLineDash([]);
+    }
+    const chans = [];
+    if (show.I) chans.push([mnI, mxI, cssv("--I"), 0]);
+    if (show.Q) chans.push([mnQ, mxQ, cssv("--Q"), 1]);
+    if (lineMode && usedRaw) {
+      g.lineWidth = 1.3;
+      for (const [k, r, i0, i1] of lines) {
+        const x0 = X0[k];
+        for (const [, , col, ch] of chans) {
+          g.strokeStyle = col; g.globalAlpha = 0.95; g.beginPath();
+          for (let i = i0; i < i1; i++) { const X = ML + (x0 + i / fs - xa) / xpp, Yv = Y(r[2 * i + ch]); if (i === i0) g.moveTo(X, Yv); else g.lineTo(X, Yv); }
+          g.stroke();
+          if (spp < 0.35) { g.fillStyle = col; for (let i = i0; i < i1; i++) { const X = ML + (x0 + i / fs - xa) / xpp; g.beginPath(); g.arc(X, Y(r[2 * i + ch]), 2.4, 0, 6.3); g.fill(); } }
+        }
+        if (show.A) {
+          g.strokeStyle = cssv("--A"); g.globalAlpha = 0.9; g.beginPath();
+          for (let i = i0; i < i1; i++) { const I = r[2 * i], Q = r[2 * i + 1], X = ML + (x0 + i / fs - xa) / xpp, Yv = Y(Math.sqrt(I * I + Q * Q)); if (i === i0) g.moveTo(X, Yv); else g.lineTo(X, Yv); }
+          g.stroke();
+        }
+      }
+      // pixels still drawn from bins (chunk not loaded yet)
+    }
+    if (!(lineMode && usedRaw && !usedBins)) {
+      for (const [mn, mx, col] of chans) {
+        g.fillStyle = col; g.globalAlpha = chans.length > 1 ? 0.6 : 0.9;
+        for (let p = 0; p < pw; p++) {
+          if (mn[p] === Infinity) continue;
+          if (lineMode && usedRaw && !usedBins) continue;
+          const y1 = Y(mx[p]), y2 = Y(mn[p]);
+          g.fillRect(ML + p, y1, 1, Math.max(1, y2 - y1));
+        }
+      }
+      if (show.A) {
+        g.strokeStyle = cssv("--A"); g.globalAlpha = 0.9; g.lineWidth = 1; g.beginPath();
+        let on = false;
+        for (let p = 0; p < pw; p++) {
+          if (am[p] === -Infinity) { on = false; continue; }
+          const y = Y(am[p]);
+          if (on) g.lineTo(ML + p + 0.5, y); else { g.moveTo(ML + p + 0.5, y); on = true; }
+        }
+        g.stroke();
+      }
+    }
+    g.globalAlpha = 1;
+    g.restore();
+    const res = usedRaw && !usedBins ? (lineMode ? "every sample drawn" : "raw samples, min-max per pixel") : (usedRaw ? "raw samples (some still loading)" : "min-max of 0.5 \u00b5s blocks");
+    lastInfo = `window ${fmtSpan(span)}, ${nvis} snippet${nvis === 1 ? "" : "s"}, ${spp < 10 ? spp.toFixed(2) : Math.round(spp)} samples per pixel, ${res}` +
+      (missing ? ", loading raw samples\u2026" : "") + (nvis ? `; snippets ${k0 + 1}-${k0 + nvis} of ${NS}` : "");
+    if (!hover) $("status").textContent = lastInfo;
+  }
+  function fmtSpan(s) { return s >= 1 ? s.toFixed(2) + " s" : s >= 1e-3 ? (s * 1e3).toFixed(2) + " ms" : s >= 1e-6 ? (s * 1e6).toFixed(2) + " \u00b5s" : (s * 1e9).toFixed(0) + " ns"; }
+
+  // ---------------------------------------------------------------- overview strip (dB of the peak in each pixel)
+  function drawOverview() {
+    const [da, db] = dom(), w = OW - ML - MR, xpp = (db - da) / w;
+    if (!(w > 10)) return;
+    if (!ovCache) {
+      const g = ocb.getContext("2d");
+      g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, OW, OH);
+      const pk = new Float32Array(Math.ceil(w)).fill(0);
+      for (let k = 0; k < NS; k++) {
+        for (let b = 0; b < NB; b++) {
+          const p = Math.floor((X0[k] + (b * BIN) / fs - da) / xpp);
+          const a = OV[(k * NB + b) * 5 + 4];
+          if (p >= 0 && p < pk.length && a > pk[p]) pk[p] = a;
+        }
+      }
+      const lo = 20 * Math.log10(40), hi = 20 * Math.log10(32767);
+      g.fillStyle = cssv("--panel"); g.fillRect(ML, 0, w, OH);
+      g.fillStyle = cssv("--axis");
+      for (let p = 0; p < pk.length; p++) {
+        if (!pk[p]) continue;
+        const f = Math.max(0.04, Math.min(1, (20 * Math.log10(pk[p]) - lo) / (hi - lo)));
+        g.fillRect(ML + p, OH - f * (OH - 4), 1, f * (OH - 4));
+      }
+      g.fillStyle = cssv("--muted"); g.font = "11px system-ui,sans-serif"; g.textAlign = "right"; g.textBaseline = "middle";
+      g.fillText("whole", ML - 6, OH / 2 - 7); g.fillText("recording", ML - 6, OH / 2 + 7);
+      ovCache = true;
+    }
+    const g = oc.getContext("2d");
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, OW, OH);
+    const a = ML + (V.xa - da) / xpp, b = ML + (V.xb - da) / xpp;
+    g.fillStyle = cssv("--sel"); g.strokeStyle = cssv("--selb"); g.lineWidth = 1.5;
+    const ww = Math.max(3, b - a);
+    g.fillRect(a, 0, ww, OH); g.strokeRect(a + 0.5, 0.5, ww, OH - 1);
+  }
+
+  // ---------------------------------------------------------------- view changes
+  function clampV() {
+    const [da, db] = dom(), full = (db - da) * 1.1, minS = 8 / fs;
+    let s = V.xb - V.xa;
+    if (s < minS) { const c = (V.xa + V.xb) / 2; V.xa = c - minS / 2; V.xb = c + minS / 2; s = minS; }
+    if (s > full) { const c = (da + db) / 2; V.xa = c - full / 2; V.xb = c + full / 2; s = full; }
+    if (V.xa < da - s * 0.5) { V.xa = da - s * 0.5; V.xb = V.xa + s; }
+    if (V.xb > db + s * 0.5) { V.xb = db + s * 0.5; V.xa = V.xb - s; }
+  }
+  function push() { hist.push({ ...V }); if (hist.length > 200) hist.shift(); }
+  function setView(xa, xb, keepY) { push(); V.xa = xa; V.xb = xb; if (!keepY) { V.auto = true; $("cY").checked = true; } clampV(); req(); }
+  function whole() { const [a, b] = dom(), p = (b - a) * 0.005; V = { xa: a - p, xb: b + p, ya: V.ya, yb: V.yb, auto: true }; $("cY").checked = true; }
+  function curSnip() { const c = (V.xa + V.xb) / 2; let k = first(c); if (k >= NS) k = NS - 1; return k; }
+  function fitSnip(k) { setView(X0[k] - SEG * 0.01, X0[k] + SEG * 1.01); }
+  function stepSnip(dir) {
+    const want = $("sStep").value, c = (V.xa + V.xb) / 2;
+    let k = first(c); if (k >= NS) k = NS - 1;
+    const inside = X0[k] <= c;
+    if (dir > 0) k = inside ? k + 1 : k; else k = k - 1;
+    const ok = (j) => want === "all" || (want === "none" ? !M.kind[j] : M.kind[j] === want);
+    while (k >= 0 && k < NS && !ok(k)) k += dir;
+    if (k < 0 || k >= NS) return;
+    const s = Math.min(V.xb - V.xa, SEG * 1.02);
+    const off = s >= SEG ? -SEG * 0.01 : (c - X0[Math.min(NS - 1, Math.max(0, first(c)))]) - s / 2;
+    const xa = X0[k] + (s >= SEG ? -SEG * 0.01 : Math.max(-SEG * 0.01, Math.min(SEG - s, off)));
+    setView(xa, xa + s, false);
+  }
+
+  // ---------------------------------------------------------------- mouse
+  let drag = null, hover = false;
+  ovl.addEventListener("contextmenu", (e) => e.preventDefault());
+  const pos = (e, el) => { const r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  ovl.addEventListener("pointerdown", (e) => {
+    ovl.setPointerCapture(e.pointerId);
+    const [x, y] = pos(e, ovl);
+    const pan = e.button === 1 || e.button === 2 || e.shiftKey || dragMode === "pan";
+    drag = { pan, x0: x, y0: y, x, y, V0: { ...V }, moved: false };
+    if (pan) push();
+  });
+  ovl.addEventListener("pointermove", (e) => {
+    const [x, y] = pos(e, ovl);
+    readout(x, y);
+    if (!drag) return;
+    drag.x = x; drag.y = y;
+    if (Math.abs(x - drag.x0) > 2 || Math.abs(y - drag.y0) > 2) drag.moved = true;
+    if (drag.pan) {
+      const dx = (x - drag.x0) * (drag.V0.xb - drag.V0.xa) / PW();
+      V.xa = drag.V0.xa - dx; V.xb = drag.V0.xb - dx;
+      if (!V.auto) { const dy = (y - drag.y0) * (drag.V0.yb - drag.V0.ya) / PH(); V.ya = drag.V0.ya + dy; V.yb = drag.V0.yb + dy; }
+      clampV(); req();
+    } else overlay();
+  });
+  ovl.addEventListener("pointerup", (e) => {
+    if (!drag) return;
+    const d = drag; drag = null; overlay();
+    if (d.pan) { if (!d.moved) hist.pop(); return; }
+    const pw = PW(), ph = PH(), dx = Math.abs(d.x - d.x0), dy = Math.abs(d.y - d.y0);
+    if (dx < 5 && dy < 8) return;
+    push();
+    const toX = (px) => V.xa + (Math.min(Math.max(px, ML), ML + pw) - ML) / pw * (V.xb - V.xa);
+    const toY = (py) => V.yb - (Math.min(Math.max(py, MT), MT + ph) - MT) / ph * (V.yb - V.ya);
+    if (dx >= 5) { const a = toX(Math.min(d.x, d.x0)), b = toX(Math.max(d.x, d.x0)); V.xa = a; V.xb = b; }
+    if (dy >= 8 && dy > 0.12 * ph) { const a = toY(Math.max(d.y, d.y0)), b = toY(Math.min(d.y, d.y0)); V.ya = a; V.yb = b; V.auto = false; $("cY").checked = false; }
+    clampV(); req();
+  });
+  ovl.addEventListener("dblclick", () => back());
+  ovl.addEventListener("pointerleave", () => { hover = false; overlay(); $("status").textContent = lastInfo; });
+  ovl.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const [x, y] = pos(e, ovl), f = e.deltaY > 0 ? 1.25 : 0.8;
+    if (e.shiftKey || e.ctrlKey) {
+      const u = V.yb - (y - MT) / PH() * (V.yb - V.ya);
+      V.ya = u - (u - V.ya) * f; V.yb = u + (V.yb - u) * f; V.auto = false; $("cY").checked = false;
+    } else {
+      const c = V.xa + (x - ML) / PW() * (V.xb - V.xa);
+      V.xa = c - (c - V.xa) * f; V.xb = c + (V.xb - c) * f; clampV();
+    }
+    req();
+  }, { passive: false });
+
+  function overlay(cx, cy) {
+    const g = ovl.getContext("2d");
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+    if (drag && !drag.pan) {
+      const tall = Math.abs(drag.y - drag.y0) >= 8 && Math.abs(drag.y - drag.y0) > 0.12 * PH();
+      const wide = Math.abs(drag.x - drag.x0) >= 5;
+      const x0 = wide ? Math.min(drag.x, drag.x0) : ML, x1 = wide ? Math.max(drag.x, drag.x0) : ML + PW();
+      const y0 = tall ? Math.min(drag.y, drag.y0) : MT, y1 = tall ? Math.max(drag.y, drag.y0) : MT + PH();
+      g.fillStyle = cssv("--sel"); g.strokeStyle = cssv("--selb"); g.lineWidth = 1;
+      g.fillRect(x0, y0, x1 - x0, y1 - y0); g.strokeRect(x0 + 0.5, y0 + 0.5, x1 - x0, y1 - y0);
+    } else if (cx !== undefined && cx >= ML && cx <= ML + PW() && cy >= MT && cy <= MT + PH()) {
+      g.strokeStyle = cssv("--axis"); g.lineWidth = 1; g.setLineDash([3, 3]);
+      g.beginPath(); g.moveTo(Math.round(cx) + 0.5, MT); g.lineTo(Math.round(cx) + 0.5, MT + PH()); g.stroke();
+    }
+  }
+  function readout(px, py) {
+    if (px < ML || px > ML + PW() || py < MT || py > MT + PH()) { hover = false; overlay(); $("status").textContent = lastInfo; return; }
+    hover = true; overlay(px, py);
+    const x = V.xa + (px - ML) / PW() * (V.xb - V.xa), u = V.yb - (py - MT) / PH() * (V.yb - V.ya);
+    const k = first(x);
+    let s;
+    if (k < NS && X0[k] <= x) {
+      const i = Math.min(N - 1, Math.max(0, Math.round((x - X0[k]) * fs)));
+      const rel = (i / fs - PRE) * 1e6, t = M.t0[k] + i / fs;
+      s = `snippet ${k + 1} of ${NS} (file index ${M.orig[k]}), ${M.kind[k] ? M.kind[k] + " R" : "no full R"}${M.bad_time.includes(k) ? ", time stamp missing" : ""}\n` +
+        `t = ${t.toFixed(7)} s since the first trigger, ${rel.toFixed(3)} \u00b5s from this snippet's trigger, sample ${i}`;
+      const r = rawIfLoaded(k);
+      if (r) {
+        const I = r[2 * i], Q = r[2 * i + 1], p = (I * I + Q * Q) * S2;
+        s += `:  I = ${(I * U).toFixed(3)}  Q = ${(Q * U).toFixed(3)}  |I+jQ| = ${(Math.sqrt(I * I + Q * Q) * U).toFixed(3)} \u00b5W^0.5  (${p > 0 ? (10 * Math.log10(p)).toFixed(1) : "-inf"} dBm)`;
+      }
+    } else s = "between snippets: not recorded";
+    $("status").textContent = s + `\ncursor y = ${u.toFixed(3)} \u00b5W^0.5.   ` + lastInfo;
+  }
+
+  // ---------------------------------------------------------------- overview strip mouse
+  let odrag = false;
+  function ovJump(e) {
+    const [x] = pos(e, oc), [da, db] = dom(), w = OW - ML - MR;
+    const c = da + (x - ML) / w * (db - da), s = V.xb - V.xa;
+    V.xa = c - s / 2; V.xb = c + s / 2; clampV(); req();
+  }
+  oc.addEventListener("pointerdown", (e) => { oc.setPointerCapture(e.pointerId); odrag = true; push(); ovJump(e); });
+  oc.addEventListener("pointermove", (e) => { if (odrag) ovJump(e); });
+  oc.addEventListener("pointerup", () => { odrag = false; });
+
+  // ---------------------------------------------------------------- buttons and keys
+  function back() { if (hist.length) { V = hist.pop(); $("cY").checked = V.auto; req(); } }
+  $("bWhole").onclick = () => { push(); whole(); req(); };
+  $("bBack").onclick = back;
+  $("bPrev").onclick = () => stepSnip(-1);
+  $("bNext").onclick = () => stepSnip(1);
+  $("bSnip").onclick = () => fitSnip(curSnip());
+  $("bPulse").onclick = () => { const k = curSnip(); setView(X0[k] + PRE - 0.4e-6, X0[k] + PRE + 1.2e-6); };
+  $("bReply").onclick = () => {
+    // y range from every sample later than 1.5 us after the trigger in the visible snippets (leaves the Furuno pulse off scale)
+    let m = 0, k = first(V.xa), any = false;
+    for (; k < NS && X0[k] < V.xb; k++) {
+      const r = raw(k);
+      if (!r) { const o0 = k * NB * 5; for (let b = Math.ceil((PRE + 1.5e-6) * fs / BIN); b < NB; b++) m = Math.max(m, OV[o0 + b * 5 + 4]); any = true; continue; }
+      const i0 = Math.max(Math.ceil((PRE + 1.5e-6) * fs), Math.floor((V.xa - X0[k]) * fs)), i1 = Math.min(N, Math.ceil((V.xb - X0[k]) * fs));
+      for (let i = i0; i < i1; i++) { const I = r[2 * i], Q = r[2 * i + 1]; m = Math.max(m, Math.abs(I), Math.abs(Q), show.A ? Math.sqrt(I * I + Q * Q) : 0); }
+      any = true;
+    }
+    if (!any || !m) return;
+    push(); V.ya = -1.08 * m * U; V.yb = 1.08 * m * U; V.auto = false; $("cY").checked = false; req();
+  };
+  $("bGo").onclick = () => { const k = Math.round(+$("iSnip").value) - 1; if (k >= 0 && k < NS) fitSnip(k); };
+  $("iSnip").max = NS;
+  $("iSnip").addEventListener("keydown", (e) => { if (e.key === "Enter") $("bGo").onclick(); e.stopPropagation(); });
+  for (const [id, key] of [["cI", "I"], ["cQ", "Q"], ["cA", "A"]]) $(id).onchange = () => { show[key] = $(id).checked; req(); };
+  $("cY").onchange = () => { V.auto = $("cY").checked; req(); };
+  $("sTime").onchange = () => {
+    const k = curSnip(), rel = (V.xa + V.xb) / 2 - X0[k], s = V.xb - V.xa;
+    gapless = $("sTime").value === "gapless"; setX();
+    const c = X0[k] + rel; V.xa = c - s / 2; V.xb = c + s / 2; clampV(); req();
+  };
+  $("bBox").onclick = () => { dragMode = "box"; $("bBox").classList.add("on"); $("bPan").classList.remove("on"); ovl.style.cursor = "crosshair"; };
+  $("bPan").onclick = () => { dragMode = "pan"; $("bPan").classList.add("on"); $("bBox").classList.remove("on"); ovl.style.cursor = "grab"; };
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" && e.target.type === "number") return;
+    const s = V.xb - V.xa, c = (V.xa + V.xb) / 2;
+    const k = e.key;
+    if (k === "ArrowLeft" || k === "ArrowRight") { const d = (k === "ArrowLeft" ? -0.5 : 0.5) * s; V.xa += d; V.xb += d; clampV(); req(); }
+    else if (k === "+" || k === "=") { setView(c - s / 4, c + s / 4, !V.auto); }
+    else if (k === "-" || k === "_") { setView(c - s, c + s, !V.auto); }
+    else if (k === "n" || k === "N") stepSnip(1);
+    else if (k === "p" || k === "P") stepSnip(-1);
+    else if (k === "s" || k === "S") fitSnip(curSnip());
+    else if (k === "f" || k === "F") $("bPulse").onclick();
+    else if (k === "r" || k === "R") $("bReply").onclick();
+    else if (k === "a" || k === "A") { V.auto = !V.auto; $("cY").checked = V.auto; req(); }
+    else if (k === "Backspace") back();
+    else if (k === "Home") { push(); whole(); req(); }
+    else return;
+    e.preventDefault();
+  });
+
+  // ---------------------------------------------------------------- view in the address bar
+  let hashT = 0;
+  function saveHash() {
+    clearTimeout(hashT);
+    hashT = setTimeout(() => {
+      const h = `#t=${gapless ? "g" : "r"}&x=${V.xa.toPrecision(10)},${V.xb.toPrecision(10)}` + (V.auto ? "" : `&y=${V.ya.toPrecision(5)},${V.yb.toPrecision(5)}`) +
+        `&c=${(show.I ? "i" : "") + (show.Q ? "q" : "") + (show.A ? "a" : "")}`;
+      history.replaceState(null, "", h);
+    }, 300);
+  }
+  function loadHash() {
+    const h = new URLSearchParams(location.hash.slice(1));
+    if (h.get("t") === "r") { gapless = false; $("sTime").value = "real"; setX(); }
+    whole();
+    const x = (h.get("x") || "").split(",").map(Number);
+    if (x.length === 2 && x.every(isFinite) && x[1] > x[0]) { V.xa = x[0]; V.xb = x[1]; }
+    const y = (h.get("y") || "").split(",").map(Number);
+    if (y.length === 2 && y.every(isFinite) && y[1] > y[0]) { V.ya = y[0]; V.yb = y[1]; V.auto = false; $("cY").checked = false; }
+    const c = h.get("c");
+    if (c !== null) { show.I = c.includes("i"); show.Q = c.includes("q"); show.A = c.includes("a"); $("cI").checked = show.I; $("cQ").checked = show.Q; $("cA").checked = show.A; }
+    clampV();
+  }
+
+  size(); loadHash(); req();
+  window.addEventListener("resize", () => { size(); req(); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { ovCache = null; req(); });
+})();
+</script>
+</body>
+</html>

@@ -53,8 +53,8 @@ def main():
     D = R.process(REC)
     fs, fc = D["R"]["fs"], D["R"]["fc"]
     ms = {m["k"]: m for m in D["ms"]}
-    fig, gs = A.fig_with_strip([1, 1, 1, 1], (19, 21))
-    sub = gs[:4].subgridspec(4, 2, hspace=0.55, wspace=0.12)
+    fig, gs = A.fig_with_strip([1, 1, 1, 1, 1], (19, 25))
+    sub = gs[:5].subgridspec(5, 2, hspace=0.6, wspace=0.12)
     dump = []
     for c, v in enumerate(("long", "short")):
         row = pick(D["rows"], v)
@@ -95,14 +95,22 @@ def main():
                      f"{m['radar']['dur_us']:.2f} us at half power, {f_r/1e6:+.2f} MHz from the SM200B centre, {row['radar_dbm']:.1f} dBm at the SM200B",
                xlabel=XL, ylabel=f"I, Q ({u})")
 
+        ax = fig.add_subplot(sub[3, c])
+        iq(ax, t[z], xr[z], lw=0.9, alpha=0.9, marker="o")
+        ax.plot(t[z], np.abs(xr[z]), color="k", lw=0.8, label="|I + jQ|")
+        ph = np.unwrap(np.angle(xr[(t > 0.15) & (t < m["radar"]["dur_us"] - 0.15)]))
+        ax.set(title=f"Same Furuno pulse, mixed down by its own frequency (as in row 2), full scale, every sample\n"
+                     f"Furuno at 0 Hz: I and Q stay nearly flat; phase moves {np.degrees(ph.max() - ph.min()):.0f} deg across the middle of the pulse",
+               xlabel=XL, ylabel=f"I, Q ({u})")
+
         tm = ((da["i0"] + da["i1"]) / 2 - r0) / fs * 1e6
         z = (t > tm - 0.5) & (t < tm + 0.5)
-        ax = fig.add_subplot(sub[3, c])
+        ax = fig.add_subplot(sub[4, c])
         iq(ax, t[z], x[z], lw=0.8, alpha=0.9, marker="o")
         f_d = da["f_bb"]
         ax.set(title=f"1 us in the middle of the dash, every sample as recorded (4 ns apart)\n"
                      f"dash at {f_d/1e6:+.2f} MHz from the SM200B centre: one I/Q turn every {1e3/abs(f_d/1e6):.0f} ns", xlabel=XL, ylabel=f"I, Q ({u})")
-        for a_ in fig.axes[-4:]:
+        for a_ in fig.axes[-5:]:
             a_.title.set_fontsize(9)
             a_.grid(alpha=0.25)
             a_.legend(fontsize=8, loc="upper right")
@@ -113,8 +121,8 @@ def main():
         w.writeheader()
         w.writerows(dump)
     return F.save(fig, "fig6_iq_time", "I and Q of one racon reply against time: long R (left) and short R (right), 250 MS/s horn recording",
-                  "I^2 + Q^2 = power in uW at the SM200B input. The Furuno pulse is about 45 dB above the reply, so rows 1-2 are scaled to the reply and row 3 "
-                  "shows the pulse at full scale. CSV of the plotted samples: data/racon_iq_examples.csv")
+                  "I^2 + Q^2 = power in uW at the SM200B input. The Furuno pulse is about 45 dB above the reply, so rows 1-2 are scaled to the reply and rows 3-4 "
+                  "show the pulse at full scale. CSV of the plotted samples: data/racon_iq_examples.csv")
 
 
 if __name__ == "__main__":

@@ -133,6 +133,7 @@ def build():
         '<p class="sub">SeaBeacon 2 racon answering the Furuno 1722C/NT, received over the air with the SM200B on 9 Nov 2026. '
         "This is the reply the JACON has to copy: Morse R, its timing, its frequency and its edges. Every plot shows the wiring it was taken with.</p>",
         item("rac-summary", "Summary",
+             '<p style="font-size:15px"><b><a href="https://sorin-jayaweera.github.io/Panthalassa-Clinic-Team/racon_iq/">Interactive raw I/Q viewer: the whole 250 MS/s horn recording</a></b> (every sample of all 2671 snippets; zoom on a selection, pan, step reply by reply, jump to the Furuno pulse).</p>',
              ul([f"<b>Frequency relative to the Furuno: dash minus Furuno peak {FO.get('peak', '?')}, median {v('ALL', 'dash freq minus radar', 'median', 2)}, mean {v('ALL', 'dash freq minus radar', 'mean', 2)}, sd {v('ALL', 'dash freq minus radar', 'sd', 2)} MHz;</b> "
                  f"5-95 % {v('ALL', 'dash freq minus radar', 'p5', 1)} to {v('ALL', 'dash freq minus radar', 'p95', 1)} MHz. The racon picks a new frequency for each reply and does not follow "
                  "the radar from pulse to pulse.",
@@ -159,7 +160,8 @@ def build():
                "so the offset does not depend on the SM200B's tuning. Peak = mode of a 0.1 MHz histogram smoothed over 0.5 MHz. "
                "Table: <code>radar_test/racon/data/racon_freq_offset.csv</code>."),
              F("racon_fig3_frequency", "Offset, drift and chirp histograms; racon against Furuno frequency"),
-             F("racon_fig6_iq_time", "I and Q against time, one long R and one short R (250 MS/s): whole reply as recorded, whole reply referenced to the Furuno frequency, the whole Furuno pulse, and 1 us of the dash"),
+             F("racon_fig6_iq_time", "I and Q against time, one long R and one short R (250 MS/s): whole reply as recorded, whole reply referenced to the Furuno frequency, the whole Furuno pulse as recorded and referenced to its own frequency, and 1 us of the dash"),
+             '<p style="font-size:15px"><b><a href="https://sorin-jayaweera.github.io/Panthalassa-Clinic-Team/racon_iq/">Interactive raw I/Q viewer: the whole 250 MS/s horn recording</a></b> (every sample of all 2671 snippets; zoom on a selection, pan, step reply by reply, jump to the Furuno pulse).</p>',
              p("In the Furuno-referenced row the I/Q rotation rate is the racon-minus-Furuno offset: the long R dash makes about 25 turns in 25.7 us (+0.95 MHz). "
                "Script <code>radar_test/racon/racon_iq.py</code>; plotted samples in <code>radar_test/racon/data/racon_iq_examples.csv</code>."),
              F("stats_20261109_215716_stack_freq", "Instantaneous frequency and spectrum of every reply, stacked"),
