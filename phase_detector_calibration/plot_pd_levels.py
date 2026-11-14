@@ -12,7 +12,10 @@ import numpy as np
 import wiring
 
 HERE = Path(__file__).resolve().parent
-R = list(csv.DictReader(open(HERE / "pd_dither_14nov.csv")))
+ALL = list(csv.DictReader(open(HERE / "pd_dither_14nov.csv")))
+BREAK = "2026-11-14T15:00"       # run stopped 14:53, Pluto replugged, resumed 15:18: the curve came back about 11 mV higher
+R = [r for r in ALL if r["timestamp"] < BREAK]
+AFTER = [r for r in ALL if r["timestamp"] >= BREAK and r["stage"] == "levels"]
 OLD = [r for r in csv.DictReader(open(HERE / "pd_overnight_13nov.csv")) if r["stage"] == "band1"]
 WIRING = [["Pluto TX\n-60 to -36 dBm", "4 x ZX60-P162LN+\n4.03 V, 0.23 A", "ZFRSC-42-S+\nsplitter",
            ["right arm (LO): cable D\n3 dB pad at the LO port", "left arm (RF): cable B + E\n6 dB pad at the RF port"],
@@ -57,7 +60,10 @@ def main():
     cm = plt.cm.viridis(np.linspace(0, 0.9, len(lv)))
     for c, w, v in zip(cm, lv, V):
         ax[2].plot(fl, v, "-o", color=c, ms=2.5, lw=1.1, label=f"{w:.0f} dBm")
-    ax[2].set(ylabel="detector minus tone-off (mV)", title="Band at seven Pluto levels, 4 MHz steps, dithered")
+    if AFTER:
+        af, av = fv(AFTER)
+        ax[2].plot(af, av - z, "--", color="#b30000", lw=1.4, label="-36 dBm after the 15:00 replug (about 11 mV higher)")
+    ax[2].set(ylabel="detector minus tone-off (mV)", title="Band at seven Pluto levels, 4 MHz steps, dithered (all before 14:53 except the dashed line)")
     ax[2].legend(fontsize=8, ncol=4)
     for c, w, e in zip(cm, lv, err):
         ax[3].plot(fl, e, "-o", color=c, ms=2.5, lw=1.1, label=f"{w:.0f} dBm")

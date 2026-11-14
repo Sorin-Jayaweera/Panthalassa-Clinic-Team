@@ -70,7 +70,17 @@ def stages():
     yield "off", 0, [(0.0, -999.0)] * 12, False, "tone off, 1 min, 50 mV/div, 4-offset dither"
     yield "band1", 1, [(f, -50.0) for f in rng(lo, hi, 1)], False, "band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div"
     yield "levels", 0, [(f, w) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0) for f in rng(1220, 1452, 4)], False, "power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered"
-    yield "off", 1, [(0.0, -999.0)] * 12, False, "tone off at the end, 1 min"
+    yield "off", 1, [(0.0, -999.0)] * 12, False, "tone off after the levels, 1 min"
+    yield "recheck", 0, [(f, w) for f in (1260.0, 1300.0, 1340.0, 1380.0, 1420.0) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0)], False, "recheck after the replug: 5 frequencies x 7 levels, same points as the 14:00 levels run"
+    W = (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0)
+    for rep, step, a, b in ((1, 4.0, 1220, 1452), (2, 2.0, 1236, 1436), (3, 1.0, 1236, 1436)):   # finer and finer, all levels
+        yield "drift_band", 100 + rep, [(f, -50.0) for f in rng(1240, 1430, 2)], False, f"band at -50 dBm before levels pass {rep}"
+        yield "levels", rep, [(f, w) for w in W for f in rng(a, b, step)], False, f"levels pass {rep}: -60 to -36 dBm, {a}-{b} MHz every {step:g} MHz, dithered"
+        yield "off", 10 + rep, [(0.0, -999.0)] * 6, False, f"tone off after levels pass {rep}"
+    for rep in __import__("itertools").count(1):                      # drift: until told to stop
+        yield "drift_band", rep, [(f, -50.0) for f in rng(1240, 1430, 2)], False, f"drift, band 1240-1430 MHz every 2 MHz, -50 dBm, repeat {rep}"
+        yield "drift_hold", rep, [(1340.0, -50.0)] * 60, False, f"drift, hold 1340 MHz, about 8 min, repeat {rep}"
+        yield "drift_off", rep, [(0.0, -999.0)] * 6, False, f"drift, tone off, repeat {rep}"
 
 
 def keep_awake(on):

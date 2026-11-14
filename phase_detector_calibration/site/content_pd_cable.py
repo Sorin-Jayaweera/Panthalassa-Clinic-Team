@@ -65,6 +65,14 @@ PD_LEVELS = item(
         "So the input must stay at or above about &minus;56 dBm at the Pluto position for &plusmn;2 MHz; then 176 MHz of the band (1248&ndash;1424 MHz) holds &plusmn;2 MHz against power, a little short of the 200 MHz goal. The worst points are at the ends of the rise, where the slope is small.",
         "Above &minus;36 dBm was not measured (the Pluto's limit). Sorin, 14 Nov: the &minus;20 dBm asked about was arbitrary; the aim is a stable curve over the input range expected.",
         "Not yet in this error budget: drift between sessions (2 to 7 mV, about 2 to 8 MHz, from 13 Nov evening to 14 Nov midday)."]),
+    h("After a 25 min break: the whole curve moved up about 6 mV (14 Nov 15:29)"),
+    p("The run was stopped at 14:53 and the Pluto replugged; the wiring was not changed (Sorin checked it). On restart the four amplifiers drew 0.26 A instead of 0.23 A at the same 4.03 V. "
+      "A recheck at 1260, 1300, 1340, 1380 and 1420 MHz at all seven levels read 5.4 to 7.6 mV higher than before at every level from &minus;56 to &minus;36 dBm (&minus;60 dBm: &minus;0.6 to +6.0 mV). "
+      "The tone-off reading moved only 0.3 mV, so the change is in the detector's response, not the scope. As frequency that is 5 to 13 MHz, far outside &plusmn;2 MHz; but the shift is nearly the same at every level, "
+      "so the power dependence did not change: the whole curve moved. A shift like this can be removed by calibrating against one known tone. "
+      "With the tone off the IF port showed a comb of lines on multiples of 40 MHz from 1200 to 1680 MHz, up to about &minus;35 dBm at the IF port (spectrum in <code>if_toneoff_spectrum_14nov_1530.csv</code>; source not known, 40 MHz is the Pluto's reference clock). "
+      "Finer power-level passes (4, 2, then 1 MHz) are running to follow it."),
+    fig("pd_recheck_14nov.png", "14 Nov: power-level curves before the 14:53 stop and after the 15:18 restart, the shift at each level in mV and as frequency, with the wiring"),
 )
 
 PD_FRONTEND = item(
