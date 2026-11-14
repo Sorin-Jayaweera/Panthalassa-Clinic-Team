@@ -37,11 +37,12 @@ WORST_DBM = 11.0
 STOP_MV = 700.0
 STOP_IF_DBM = 5.0
 DEADLINE = dt.datetime(2099, 1, 1)   # runs until Sorin says stop
-OUT = HERE / "pd_fine_14nov.csv"
+OUT = HERE / "pd_dither_14nov.csv"
 STOP_FILE = HERE / "STOP_PD_RUN"   # create this file to end the run cleanly between points
 VDIV = 0.05                        # 50 mV/div: ADC step 2 mV (0.2 V/div gave 8 mV steps = the staircase)
 OFST = -0.06                       # screen centre +60 mV, so the screen covers about -140 to +260 mV
 CLIP_MV = 250.0
+DITHER = 4                         # read at 4 offsets 1 mV apart (half an ADC step) and average: smooths the 2 mV steps
 BAND = (1150.0, 1550.0)
 COLS = ["timestamp", "stage", "rep", "freq_mhz", "pluto_att_db", "pluto_want_dbm", "level_known", "detector_mean_v", "repeat_sd_v", "rms_v",
         "if_tone_dbm", "if_double_dbm", "if_triple_dbm"]
@@ -66,7 +67,7 @@ def rng(a, b, s):
 def stages():
     """(stage, rep, list of (freq, want_dbm), kitty, label). Order = coarse first."""
     lo, hi = BAND
-    yield "off", 0, [(0.0, -999.0)] * 12, False, "tone off, 1 min, at 50 mV/div"
+    yield "off", 0, [(0.0, -999.0)] * 12, False, "tone off, 1 min, 50 mV/div, 4-offset dither"
     yield "band1", 1, [(f, -50.0) for f in rng(lo, hi, 1)], False, "band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div"
     yield "band_quarter", 0, [(f, -50.0) for f in rng(1220, 1450, 0.25)], False, "1220-1450 MHz, 0.25 MHz, -50 dBm"
     yield "hold", 0, [(1340.0, -50.0)] * 120, False, "hold 1340 MHz -50 dBm, one reading every 5 s, 10 min"
@@ -93,9 +94,16 @@ class FineScope(full.Scope):
         if self.s is None:
             self.s = full.SDS()
             full.setup_scope(self.s, self.ch, self.vdiv)
-            self.s.write(f"C{self.ch}:OFST {OFST:.2E}V")
             time.sleep(0.5)
-        return full.read(self.s, self.ch)
+        step = self.vdiv / 25.0
+        vals, rms = [], []
+        for k in range(DITHER):
+            self.s.write(f"C{self.ch}:OFST {OFST - k * 0.001:.4E}V")   # offset resolution is 1 mV (half a 2 mV step)
+            time.sleep(0.2)
+            _, v = self.s.waveform(self.ch)      # scaling uses the offset read back from the scope
+            vals.append(v.mean())
+            rms.append(v.std())
+        return float(np.mean(vals)), float(np.std(vals)), float(np.mean(rms))
 
 
 class Kitty:

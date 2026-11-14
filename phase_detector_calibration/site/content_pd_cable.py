@@ -37,3 +37,13 @@ PD_CABLE = item(
         ["<code>phase_detector_calibration/pd_fine_14nov.csv</code>", "14 Nov from 12:52: the same stages at 50 mV/div"],
         ["<code>phase_detector_calibration/plot_pd_cable.py</code>, <code>plot_pd_dense.py</code>, <code>plot_pd_overnight.py</code>", "The plots"]], left=(0, 1)),
 )
+
+PD_OLD = item(
+    "pd-old-raw", "Three-cable setup before cable E (D | B + C, no pads), 1 Nov: every raw reading at every Pluto level",
+    p("All readings from the first delay-line setup, as saved, nothing averaged or subtracted: the 700&ndash;1600 MHz map at 13 levels from &minus;85 to &minus;30 dBm (5 MHz steps), "
+      "the 900&ndash;1200 MHz sweeps at six levels from &minus;70 to &minus;36 dBm (1 MHz steps), every &minus;60 dBm repeat sweep, the run read with the SM200B at four levels, the power ramp at 1054 MHz, "
+      "and every held-tone and tone-off reading through the evening, including the run with the amplifiers unpowered. "
+      "Data: <code>phase_detector_calibration/p162x4_map_1nov.csv</code>, <code>p162x4_fine_1nov.csv</code>, <code>p162x4_sm200b_1nov.csv</code>, <code>p162x4_ramp_1nov.csv</code>, "
+      "<code>p162x4_tone_off_watch_1nov.csv</code>. Plot: <code>plot_pd_old_all.py</code>."),
+    fig("pd_old_setup_all_raw.png", "1 Nov, cable D on the right and B + C on the left, no pads: every raw scope reading at every Pluto level, repeats, SM200B run, power ramp, holds and tone-off readings, with the wiring"),
+)
