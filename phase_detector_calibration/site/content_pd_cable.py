@@ -26,16 +26,17 @@ PD_CABLE = item(
     fig("pd_overnight_wide.png", "14 Nov: detector output 300-4000 MHz at 10 MHz steps and 600-2100 MHz at 5 MHz steps, and the tone, 2f and 3f at the IF port on the SM200B, with the wiring"),
     h("Findings"),
     ul(["The staircase in the slope (about 9.3 MHz period) is the scope, not the detector: every flat step sits on an exact multiple of 8.0 mV, one ADC step at 0.2 V/div, and the noise (0.3 mV) is too small to smooth across steps. "
-        "From 14 Nov 12:52 the runs use 50 mV/div with an offset (2 mV steps); data in <code>pd_fine_14nov.csv</code>. A reading front end needs an ADC step well under 8 mV.",
+        "At 50 mV/div (2 mV steps) the steps were still there, 2.0 mV apart. From 13:01 every point is read at four scope offsets 1 mV apart and averaged (dither); the staircase is gone (see the next section). A reading front end needs an ADC step well under 8 mV.",
         "Hold at 1340 MHz for 20 min: sd 0.33 mV, no visible drift. Tone off: sd 0.26 mV.",
         "Between 13 Nov evening and 14 Nov midday the band sits 2 to 7 mV higher. That is session-to-session drift, not noise.",
-        "Median slope in 1228&ndash;1440 MHz: 0.54 mV/MHz read at 0.2 V/div (staircase included), about 0.86 mV/MHz from end to end."]),
+        "Slope in 1240&ndash;1430 MHz from the dithered sweep: 0.17 to 1.19 mV/MHz, median 0.82 mV/MHz (the 0.54 mV/MHz read at 0.2 V/div was pulled down by the staircase)."]),
     table(["File", "What"], [
         ["<code>phase_detector_calibration/pd_cable_13nov_E_pads.csv</code>", "13 Nov evening: 2 MHz sweep and power passes"],
         ["<code>phase_detector_calibration/pd_kitty_13nov_E_pads.csv</code>", "13 Nov: 25 MHz steps with the SM200B on the IF port"],
         ["<code>phase_detector_calibration/pd_overnight_13nov.csv</code>", "14 Nov 10:51&ndash;12:51: whole range, power ramp, band, hold, tone off (0.2 V/div)"],
-        ["<code>phase_detector_calibration/pd_fine_14nov.csv</code>", "14 Nov from 12:52: the same stages at 50 mV/div"],
-        ["<code>phase_detector_calibration/plot_pd_cable.py</code>, <code>plot_pd_dense.py</code>, <code>plot_pd_overnight.py</code>", "The plots"]], left=(0, 1)),
+        ["<code>phase_detector_calibration/pd_fine_14nov.csv</code>", "14 Nov 12:52&ndash;13:00: 50 mV/div without dither (staircase still there, 2 mV steps)"],
+        ["<code>phase_detector_calibration/pd_dither_14nov.csv</code>", "14 Nov 13:01&ndash;14:53: dithered 1 MHz band sweep and the band at seven levels"],
+        ["<code>phase_detector_calibration/plot_pd_cable.py</code>, <code>plot_pd_dense.py</code>, <code>plot_pd_overnight.py</code>, <code>plot_pd_levels.py</code>", "The plots"]], left=(0, 1)),
 )
 
 PD_OLD = item(
@@ -46,4 +47,57 @@ PD_OLD = item(
       "Data: <code>phase_detector_calibration/p162x4_map_1nov.csv</code>, <code>p162x4_fine_1nov.csv</code>, <code>p162x4_sm200b_1nov.csv</code>, <code>p162x4_ramp_1nov.csv</code>, "
       "<code>p162x4_tone_off_watch_1nov.csv</code>. Plot: <code>plot_pd_old_all.py</code>."),
     fig("pd_old_setup_all_raw.png", "1 Nov, cable D on the right and B + C on the left, no pads: every raw scope reading at every Pluto level, repeats, SM200B run, power ramp, holds and tone-off readings, with the wiring"),
+)
+
+
+PD_LEVELS = item(
+    "pd-power-levels", "Frequency error from input power, cable E with pads, dithered reading (14 Nov): within &plusmn;2 MHz over 1248&ndash;1424 MHz for &minus;56 to &minus;40 dBm",
+    p("Same wiring as above. Every point read at 50 mV/div at four scope offsets 1 mV apart, averaged, so the scope's 2 mV ADC steps average out. "
+      "First a 1 MHz sweep of 1150&ndash;1550 MHz at &minus;50 dBm, then the band 1220&ndash;1452 MHz every 4 MHz at &minus;60, &minus;56, &minus;52, &minus;48, &minus;44, &minus;40 and &minus;36 dBm (the Pluto's top level; stopped after 14 of 59 points, up to 1272 MHz). "
+      "Frequency error = (reading at that level &minus; median of the &minus;60 to &minus;40 dBm readings at that frequency) &divide; local slope."),
+    fig("pd_levels_14nov.png", "14 Nov: dithered 1 MHz sweep against the 8 mV-step sweep, its slope, the band at seven Pluto levels, and the frequency error each level causes, with the wiring"),
+    table(["Pluto levels", "Best (peak-to-peak)", "Worst (peak-to-peak)", "Median", "Range within &plusmn;2 MHz"], [
+        ["&minus;60 to &minus;40 dBm", "1.3 MHz at 1256 MHz", "12.2 MHz at 1240 MHz", "3.6 MHz", "1252&ndash;1336 and 1388&ndash;1416 MHz"],
+        ["&minus;56 to &minus;40 dBm", "0.5 MHz at 1332 MHz", "9.6 MHz at 1240 MHz", "2.2 MHz", "1248&ndash;1424 MHz (176 MHz)"],
+        ["&minus;52 to &minus;40 dBm", "0.1 MHz at 1336 MHz", "6.6 MHz at 1240 MHz", "1.6 MHz", "1248&ndash;1424 MHz (176 MHz)"]], left=(0, 4)),
+    ul(["The dithered sweep is smooth: the staircase seen at 0.2 V/div was the scope's ADC, not the detector.",
+        "&minus;60 dBm is the outlier: it reads 2 to 7 MHz low across the band, because the four amplifiers are not yet fully saturated there. From &minus;56 dBm up the curves lie on top of each other.",
+        "So the input must stay at or above about &minus;56 dBm at the Pluto position for &plusmn;2 MHz; then 176 MHz of the band (1248&ndash;1424 MHz) holds &plusmn;2 MHz against power, a little short of the 200 MHz goal. The worst points are at the ends of the rise, where the slope is small.",
+        "Above &minus;36 dBm was not measured (the Pluto's limit). Sorin, 14 Nov: the &minus;20 dBm asked about was arbitrary; the aim is a stable curve over the input range expected.",
+        "Not yet in this error budget: drift between sessions (2 to 7 mV, about 2 to 8 MHz, from 13 Nov evening to 14 Nov midday)."]),
+)
+
+PD_FRONTEND = item(
+    "pd-frontend", "Reading the detector in the 700 ns budget: op-amp scaling stage 0.5&ndash;2.0 V, op-amp choice, timing (14 Nov)",
+    p("The racon has 700 ns from receiving a radar pulse to sending the reply, so the detector voltage is read once (or averaged over a few samples) and used at once. "
+      "Dithering as done on the scope is a bench fix only. In the real front end a gain stage makes the ADC step small against the slope, and the stage's own noise smooths the steps."),
+    h("Scaling stage"),
+    p("Detector 0 to 160 mV (the 1228&ndash;1440 MHz rise) to 0.5 to 2.0 V: V<sub>out</sub> = 0.5 V + 9.375 V<sub>in</sub>. Two halves of a dual op-amp, 3.3 V single supply: "
+      "A is a unity-gain buffer on the detector (so the offset resistors do not pull about 30 &micro;A into the mixer IF port); B is non-inverting, with the buffer output through R1 and 3.3 V through R2 summed at the + input, Rg from &minus; to ground, Rf from output to &minus;."),
+    table(["Part", "Slow op-amp (MCP6002)", "Fast op-amp (OPA2356 etc.)", "Job"], [
+        ["R1", "1.62 k&Omega;", "162 &Omega;", "buffer output to + input"], ["R2", "100 k&Omega;", "10 k&Omega;", "3.3 V to + input (sets 0.5 V)"],
+        ["Rg", "1.2 k&Omega;", "120 &Omega;", "&minus; input to ground"], ["Rf", "10.2 k&Omega;", "1.02 k&Omega;", "output to &minus; input"]], left=(0, 3)),
+    ul(["Gain 1 + Rf/Rg = 9.5; 0 mV gives 0.500 V, 160 mV gives 1.996 V; 8.0 mV per MHz at the ADC.",
+        "On 5 V: R1 = 1.07 k&Omega; (107 &Omega;), the rest unchanged.",
+        "The offset comes from the supply: 10 mV of supply noise moves the output about 1.6 mV (0.2 MHz). A reference (e.g. LM4040) is better.",
+        "Out of band the detector reaches about 180 mV, i.e. 2.2 V out: clamp or check the ADC input limit.",
+        "1% resistors give up to about 2% gain error (about &plusmn;2 MHz across the band); the look-up table must be measured through this exact stage, which calibrates it out."]),
+    h("Op-amp choice (DigiKey, read 14 Nov; settle = slew time for 1.5 V + 6.9 time constants at gain 9.5, to 0.1% = 1.5 mV, about 0.2 MHz)"),
+    table(["Part", "Package", "GBW (MHz)", "Slew (V/&micro;s)", "Settle to 0.1%", "Price (qty 1)", "Stock", "Use"], [
+        ["OPA2356AIDR", "SOIC-8", "200", "360", "about 56 ns", "$3.52", "2,159", "PCB, and breadboard on a SparkFun 13655 SOIC-to-DIP adapter ($3.75 for 4)"],
+        ["OPA2356AIDGKR", "MSOP-8", "200", "360", "about 56 ns", "$3.52", "2,400", "PCB with MSOP pads"],
+        ["OPA2836IDR", "SOIC-8", "118", "560", "about 90 ns", "$5.56", "1,896", "low power"],
+        ["ADA4891-2ARMZ-RL", "MSOP-8", "105", "210", "about 100 ns", "$2.66", "2,355", "cheapest fast one"],
+        ["AD8056ANZ / AD8055ANZ", "PDIP-8", "about 300 (est.)", "1400", "about 36 ns", "$8.76 / $4.93", "157 / 387", "breadboard, needs &plusmn;5 V"],
+        ["AD8032ANZ", "PDIP-8", "80", "35", "about 173 ns", "$8.12", "187", "breadboard, one 3.3 or 5 V supply"],
+        ["LT1632CN8", "PDIP-8", "45", "45", "about 265 ns", "$12.52", "0", "slow, none in stock"],
+        ["MCP6002-I/P", "PDIP-8", "1", "0.6", "about 13 &micro;s", "", "", "too slow for the racon"]], left=(0, 1, 7)),
+    p("Spreadsheets with links: <code>phase_detector_calibration/opamp_options_14nov.xlsx</code> (PCB) and <code>opamp_breadboard_options_14nov.xlsx</code> (breadboard). First-order estimates; a breadboard adds 2&ndash;5 pF per contact and can ring, so measure a step on the scope."),
+    h("Timing budget (estimate)"),
+    table(["Step", "Time"], [["Detector plus 10&ndash;20 MHz RC filter (detector rise 89&ndash;140 ns, 10&ndash;90%, measured 10 Oct)", "about 150 ns"],
+                             ["Op-amp settling (OPA2356)", "about 50 ns"], ["4 to 8 ADC samples at 65 MSPS", "60&ndash;120 ns"], ["ADC pipeline delay (6&ndash;7 clocks)", "about 100 ns"],
+                             ["FPGA average and look-up", "about 20 ns"], ["Total", "about 380&ndash;440 ns of the 700 ns"]], left=(0,)),
+    ul(["Noise: the scope saw about 0.8 mV rms per sample with the tone on (20 MHz bandwidth), about 0.9 MHz rms per sample. Averaging 4 samples gives about 0.47 MHz rms, 8 samples about 0.33 MHz rms.",
+        "After the &times;9.5 stage that noise is about 8 mV rms at the ADC, about one step of an 8-bit 2 V ADC (7.8 mV), enough to smooth the steps when averaging.",
+        "Drift between sessions (2&ndash;7 mV) is bigger than the &plusmn;2 MHz budget, so the system needs a calibration (for example a known tone between pulses) or a stable temperature."]),
 )

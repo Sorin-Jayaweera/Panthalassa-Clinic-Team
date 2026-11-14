@@ -69,16 +69,8 @@ def stages():
     lo, hi = BAND
     yield "off", 0, [(0.0, -999.0)] * 12, False, "tone off, 1 min, 50 mV/div, 4-offset dither"
     yield "band1", 1, [(f, -50.0) for f in rng(lo, hi, 1)], False, "band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div"
-    yield "band_quarter", 0, [(f, -50.0) for f in rng(1220, 1450, 0.25)], False, "1220-1450 MHz, 0.25 MHz, -50 dBm"
-    yield "hold", 0, [(1340.0, -50.0)] * 120, False, "hold 1340 MHz -50 dBm, one reading every 5 s, 10 min"
-    yield "wide5", 0, [(f, -50.0) for f in rng(600, 2100, 5)], False, "600-2100 MHz, 5 MHz, -50 dBm"
-    yield "band1", 2, [(f, -50.0) for f in rng(lo, hi, 1)], False, "band, repeat 2"
-    yield "band_levels", 0, [(f, w) for w in (-65.0, -58.0, -52.0, -48.0, -42.0, -38.0) for f in rng(lo, hi, 2)], False, "band, 2 MHz, -65 -58 -52 -48 -42 -38 dBm"
-    yield "wide1", 0, [(f, -50.0) for f in rng(600, 2100, 1)], False, "600-2100 MHz, 1 MHz, -50 dBm"
-    yield "wide2_kitty", 0, [(f, -50.0) for f in rng(600, 2100, 2)], True, "600-2100 MHz, 2 MHz, scope + SM200B"
-    for rep in __import__("itertools").count(3):
-        yield "band1", rep, [(f, -50.0) for f in rng(lo, hi, 1)], False, f"band, repeat {rep} (drift)"
-        yield "hold", rep, [(1340.0, -50.0)] * 24, False, f"hold 1340 MHz, 2 min, after repeat {rep}"
+    yield "levels", 0, [(f, w) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0) for f in rng(1220, 1452, 4)], False, "power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered"
+    yield "off", 1, [(0.0, -999.0)] * 12, False, "tone off at the end, 1 min"
 
 
 def keep_awake(on):
