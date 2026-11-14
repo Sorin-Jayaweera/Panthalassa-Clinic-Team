@@ -1,0 +1,6 @@
+{
+ "tag": "13nov_baseline",
+ "note": "Baseline, cable pair as on 1 Nov (one arm 4.5 in longer, per the 1 Nov notes; not re-measured). 4 x ZX60-P162LN+ at 4.03 V, 0.23 A total. IF to scope CH1 and SM200B.",
+ "started": "2026-11-13T20:24:02",
+ "wiring": "Pluto -> 4 x ZX60-P162LN+ -> ZFRSC-42-S+ -> cable pair -> ZX05-30W-S+ -> SDS1104X-E CH1 1 Mohm + SM200B via pads"
+}

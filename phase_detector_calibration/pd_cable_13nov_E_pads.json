@@ -1,0 +1,6 @@
+{
+ "tag": "13nov_E_pads",
+ "note": "Right D (3 dB pad at LO), left B + E (6 dB pad at RF); D = B in length. SM200B on IF through 20 dB.",
+ "started": "2026-11-13T21:19:09",
+ "wiring": "Pluto -> 4 x ZX60-P162LN+ (4.03 V, 0.23 A) -> ZFRSC-42-S+ -> cable pair -> ZX05-30W-S+ -> SDS1104X-E CH1 1 Mohm + SM200B"
+}

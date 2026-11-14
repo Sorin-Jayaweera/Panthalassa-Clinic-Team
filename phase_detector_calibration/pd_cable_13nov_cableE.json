@@ -1,0 +1,7 @@
+{
+ "tag": "13nov_cableE",
+ "note": "Cable C (about 12 mm, Sorin's figure) replaced by new cable E (about 8 mm). Cables A and B (same, about 15 mm) also in. Sorin's lengths; which arm each is in not recorded.",
+ "started": "2026-11-13T20:34:45",
+ "wiring": "Pluto -> 4 x ZX60-P162LN+ (4.03 V, 0.23 A) -> ZFRSC-42-S+ -> cable pair -> ZX05-30W-S+ -> SDS1104X-E CH1 1 Mohm + SM200B",
+ "arms": "right arm: cable D (always D; Sorin said A by mistake); left arm: B + E. 1 Nov: right D, left B + C."
+}

@@ -1,5 +1,6 @@
 """Per-part tabs. Every part has the same four sections: Specs, Expected behavior, Test plan, Results."""
 import content as C
+import content_pd_cable as PDC
 from content import item, table, ul, ol, p, h, link, math, fig, D
 
 PDF = "https://www.minicircuits.com/pdfs/"
@@ -288,7 +289,7 @@ PHASEDET = part_tab(
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S11.png", "8720ES: mixer S11, IF port, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S21.png", "8720ES: mixer S21, IF to RF, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S12.png", "8720ES: mixer S12, RF to IF, LO open") +
-    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS)
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS + PDC.PD_CABLE)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",

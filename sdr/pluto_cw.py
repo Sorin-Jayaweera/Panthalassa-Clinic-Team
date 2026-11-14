@@ -14,7 +14,64 @@ ATT_MIN_DB = max(0.0, P_WORST_MAX_DBM - P_LIMIT_DBM)
 TONE_OFFSET_HZ = 1_000_000
 
 
+IIO_PY = r"C:\Users\Sorin\radioconda\Lib\site-packages\iio.py"
+IIO_DLL_DIR = r"C:\Users\Sorin\radioconda\Library\bin"
+_iio = None        # libiio Python binding, loaded once
+_ctx = None        # one network context kept open (each iio_attr call opened a new one, ~15 per tone change)
+_persistent = True
+
+
+def _load_iio():
+    global _iio
+    if _iio is None:
+        import importlib.util
+        import os
+        os.environ["PATH"] = IIO_DLL_DIR + os.pathsep + os.environ.get("PATH", "")
+        os.add_dll_directory(IIO_DLL_DIR)
+        spec = importlib.util.spec_from_file_location("iio", IIO_PY)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        _iio = mod
+    return _iio
+
+
+def drop_context():
+    global _ctx
+    _ctx = None
+
+
+def _attr_ctx(args):
+    """Same arguments as iio_attr: [-c] [-o] device channel attribute [value]. All channels used here are outputs."""
+    global _ctx
+    a = [x for x in args if x not in ("-c", "-o")]
+    dev_name, ch_name, attr = a[0], a[1], a[2]
+    val = a[3] if len(a) > 3 else None
+    if _ctx is None:
+        _ctx = _load_iio().Context(URI)
+    try:
+        dev = _ctx.find_device(dev_name)
+        ch = dev.find_channel(ch_name, True)
+        at = ch.attrs[attr]
+        if val is not None:
+            at.value = val
+        return at.value.strip()
+    except OSError as e:
+        _ctx = None                  # connection lost: reopen next call
+        raise RuntimeError(f"libiio {' '.join(a)} failed: {e}")
+
+
 def _attr(*args):
+    global _persistent
+    if _persistent:
+        try:
+            return _attr_ctx(args)
+        except RuntimeError:
+            raise
+        except OSError as e:
+            drop_context()
+            raise RuntimeError(f"libiio context {URI} failed: {e}")
+        except (ImportError, AttributeError, KeyError, TypeError):
+            _persistent = False      # binding not usable: fall back to iio_attr for the rest of the run
     r = subprocess.run([IIO_ATTR, "-u", URI, *args], capture_output=True, text=True, timeout=30)
     if r.returncode != 0:
         raise RuntimeError(f"iio_attr {' '.join(args)} failed: {r.stderr.strip() or r.stdout.strip()}")
