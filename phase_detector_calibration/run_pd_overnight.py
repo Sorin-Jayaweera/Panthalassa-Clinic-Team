@@ -67,6 +67,16 @@ def rng(a, b, s):
 def stages():
     """(stage, rep, list of (freq, want_dbm), kitty, label). Order = coarse first."""
     lo, hi = BAND
+    cr = __import__("os").environ.get("COARSE_REP")
+    if cr:   # 15 Nov: coarse repeat sweeps, one python launch per rep (fresh Pluto and scope connections each time)
+        n = int(cr)
+        if __import__("os").environ.get("NOPADS"):   # 15 Nov 12:10: 3 dB (LO) and 6 dB (RF) pads removed at the mixer ports
+            yield "off", 60 + n, [(0.0, -999.0)] * 12, False, f"tone off before no-pads coarse sweep {n}"
+            yield "coarse_np", n, [(f, w) for f in rng(1150, 1550, 25) for w in (-36.0, -43.0, -50.0, -57.0, -64.0)], False, f"no pads, coarse sweep {n}: 1150-1550 MHz every 25 MHz x 5 levels"
+            return
+        yield "off", 50 + n, [(0.0, -999.0)] * 12, False, f"tone off before coarse sweep {n}"
+        yield "coarse", n, [(f, w) for f in rng(1150, 1550, 25) for w in (-36.0, -43.0, -50.0, -57.0, -64.0)], False, f"coarse sweep {n}: 1150-1550 MHz every 25 MHz x 5 levels"
+        return
     yield "off", 0, [(0.0, -999.0)] * 12, False, "tone off, 1 min, 50 mV/div, 4-offset dither"
     yield "band1", 1, [(f, -50.0) for f in rng(lo, hi, 1)], False, "band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div"
     yield "levels", 0, [(f, w) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0) for f in rng(1220, 1452, 4)], False, "power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered"

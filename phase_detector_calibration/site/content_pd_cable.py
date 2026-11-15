@@ -116,7 +116,7 @@ PD_FIVE = item(
       "First run (15:50&ndash;17:59): 1150&ndash;1550 MHz every 2 MHz, stopped at 1412 MHz when the PC crashed. "
       "Second run (from 19:14), filled in coarse to fine by halving, as Sorin asked: both ends, the middle, the quarters, &hellip; down to 6.25 MHz (1.6% of the 400 MHz span), then 3.1 and 1.6 MHz on the rise only. "
       "Each halving step starts by re-reading 1350 MHz at the five levels as a drift check. Every point is dithered (four scope offsets 1 mV apart)."),
-    fig("pd_all_config_raw.png", "Every reading taken with cable E and the pads, 13 Nov 21:00 to 14 Nov 21:51 (5026 readings), raw: against time, the 13 Nov sweeps, the wide sweeps, the SM200B readings, every -50 dBm band sweep, the power ramp, the seven-level and five-level runs, and a 20 min hold, with the wiring"),
+    fig("pd_all_config_raw.png", "Every phase detector reading of 13-15 Nov (5312 readings), raw: against time; every tone-on reading against frequency, coloured by level; the 13 Nov sweeps, the wide sweeps, the SM200B readings, every -50 dBm band sweep, the power ramp, the seven-level and five-level runs, a 20 min hold, the 15 Nov coarse repeats, and the 13 Nov sweeps before the pads were fitted, with both wirings"),
     fig("pd_bisect_14nov.png", "14 Nov evening: five Pluto levels filled in by halving down to 6.25 MHz, with the 2 MHz sweep from before the crash (thin lines), each level against -50 dBm, the frequency error, the 1350 MHz drift check, and the wiring"),
     fig("pd_sweep5_14nov.png", "14 Nov 15:50-17:59: five Pluto levels every 2 MHz from 1150 MHz up to 1412 MHz (stopped by the PC crash), slope, each level against -50 dBm, frequency error, with the wiring"),
     table(["Pluto levels", "Best (peak-to-peak)", "Worst (peak-to-peak)", "Median", "Points within &plusmn;2 MHz (1240&ndash;1430 MHz)"], [
@@ -139,4 +139,14 @@ PD_FIVE = item(
         "The measurement scripts are not the cause: the later crashes happened with no script running. The laptop also logged five &ldquo;driver power state&rdquo; crashes (0x9F) from 17 Oct to 11 Nov and Intel graphics hangs from August to October. "
         "The charger connection dropped repeatedly on 14 Nov afternoon.",
         "Since 18:48 (charger reseated, instruments replugged at 19:10) there have been no errors. The run script now also keeps the display on, since the screen turning off puts this laptop into Modern Standby."]),
+    h("Repeat check, 15 Nov: the curve came back"),
+    p("Same wiring, cables re-checked by hand. Windows Update restarted the PC at 02:01. Two coarse sweeps (1150&ndash;1550 MHz every 25 MHz, the same five levels), each a fresh launch of the run script with its own 1 min tone-off reading first."),
+    fig("pd_coarse_15nov.png", "15 Nov 11:42-12:09: two coarse sweeps at five levels against the 14 Nov evening run (dashed), each sweep minus their average, the raw 1350 MHz / -50 dBm reading in every session, and the raw tone-off reading in every session, with the wiring"),
+    ul(["The two sweeps agree to 0.13&ndash;0.23 mV (median) at &minus;36 to &minus;57 dBm, worst 0.74 mV; &minus;64 dBm is noisier (up to 5 mV near the peak).",
+        "Both sit about 1 mV (about 1 MHz) above the 14 Nov evening run at every frequency and level, across a PC restart. The 12 mV jump did not recur.",
+        "The session that stands out is 14 Nov afternoon (80 mV at 1350 MHz, &minus;50 dBm, against 68.5&ndash;69.5 mV in every session since). The jump came with the 14 Nov crashes and restarts, not with every new session."]),
+    h("Pluto dropouts (19:38 and 21:51, 14 Nov)"),
+    ul(["Both times Windows logged the Pluto as &ldquo;surprise removed, missing on the bus&rdquo;, and the program then lost its connection (Windows error 10053). Nothing was unplugged. The Pluto came back only when its USB hub was reset (19:53) or the PC restarted (02:01).",
+        "The Pluto (firmware v0.39) and the scope share one USB hub (WCH 1A86:8098). Windows USB selective suspend is on for the hub and the Pluto. Both drops happened during a Pluto LO frequency change.",
+        "Next: turn off USB power saving for the hub and the Pluto (fix_usb_power_admin.ps1, admin), and log the Pluto's USB state with each failure to tell a Windows-side drop from a Pluto firmware hang."]),
 )

@@ -52,10 +52,10 @@ def add_strip(fig, stages, title="Wiring", height=1.5):
     draw(fig.add_axes([0.03, 0.005, 0.94, (1 - frac) * 0.95]), stages, title)
 
 
-def figure(rows, stages_list, size=(13, 8), titles=None):
+def figure(rows, stages_list, size=(13, 8), titles=None, strip=None):
     """Figure with `rows` plot axes above one wiring strip per setup. Returns fig, list of plot axes."""
     n = len(stages_list)
-    fig, axes = plt.subplots(rows + n, 1, figsize=size, gridspec_kw={"height_ratios": [1] * rows + [0.27 * 2 / max(rows, 1)] * n})
+    fig, axes = plt.subplots(rows + n, 1, figsize=size, gridspec_kw={"height_ratios": [1] * rows + [strip if strip else 0.27 * 2 / max(rows, 1)] * n})
     for k, stages in enumerate(stages_list):
         draw(axes[rows + k], stages, titles[k] if titles else "Wiring")
     return fig, list(axes[:rows])

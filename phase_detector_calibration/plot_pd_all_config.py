@@ -1,6 +1,7 @@
-"""Every reading taken with the present phase detector configuration (cable E with the 3 dB LO pad and 6 dB RF pad,
-13 Nov 21:00 onward), raw: detector volts as read, nothing subtracted, nothing averaged across points.
-Files: pd_kitty_13nov_E_pads.csv, pd_cable_13nov_E_pads.csv, pd_overnight_13nov.csv, pd_fine_14nov.csv, pd_dither_14nov.csv.
+"""Every phase detector reading of 13-15 Nov, raw: detector volts as read, nothing subtracted, nothing averaged across points.
+Cable E without pads (13 Nov 20:38-20:50), then cable E with the 3 dB LO pad and 6 dB RF pad (13 Nov 21:00 to 15 Nov 12:09).
+Files: pd_cable_13nov_cableE.csv, pd_kitty_13nov_cableE.csv, pd_kitty_13nov_E_pads.csv, pd_cable_13nov_E_pads.csv,
+pd_overnight_13nov.csv, pd_fine_14nov.csv, pd_dither_14nov.csv (14 Nov dithered runs and the 15 Nov coarse repeats).
 Saves pd_all_config_raw.png."""
 import csv
 import datetime as dt
@@ -40,14 +41,22 @@ CAB = rows("pd_cable_13nov_E_pads.csv")
 OVN = rows("pd_overnight_13nov.csv")
 FIN = rows("pd_fine_14nov.csv")
 DIT = rows("pd_dither_14nov.csv")
-for r in CAB:
+NPC = rows("pd_cable_13nov_cableE.csv")
+NPK = rows("pd_kitty_13nov_cableE.csv")
+for r in CAB + NPC:
     r["stage"] = r["pass"]
 for r in KIT:
     r["stage"] = "kitty13"
+for r in NPK:
+    r["stage"] = "kitty13_np"
 WIRING = [["Pluto TX\n-80 to -36 dBm", "4 x ZX60-P162LN+\n4.03 V, 0.22-0.29 A", "ZFRSC-42-S+\nsplitter",
            ["right arm (LO): cable D\n3 dB pad at the LO port", "left arm (RF): cable B + E\n6 dB pad at the RF port"],
-           "ZX05-30W-S+\nLO and RF in, IF out", ["SDS1104X-E CH1, 1 Mohm\n0.2 V/div to 12:51 14 Nov; 50 mV/div after;\ndithered from 13:01", "20 dB of pads\nthen SM200B (read in the 'kitty' runs)"]]]
-WT = ["Wiring, 13 Nov 21:00 to 14 Nov 22:00 (this configuration: cable E in the RF arm, 3 dB pad at LO, 6 dB pad at RF)"]
+           "ZX05-30W-S+\nLO and RF in, IF out", ["SDS1104X-E CH1, 1 Mohm\n0.2 V/div to 12:51 14 Nov; 50 mV/div after;\ndithered from 13:01", "20 dB of pads\nthen SM200B (read in the 'kitty' runs)"]],
+          ["Pluto TX\n-50 dBm", "4 x ZX60-P162LN+\n4.03 V", "ZFRSC-42-S+\nsplitter",
+           ["right arm (LO): cable D\nno pad", "left arm (RF): cable B + E\nno pad"],
+           "ZX05-30W-S+\nLO and RF in, IF out", ["SDS1104X-E CH1, 1 Mohm\n0.2 V/div", "SM200B (20:46 run)"]]]
+WT = ["Wiring with pads, 13 Nov 21:00 - 15 Nov 12:09 (all panels but the last)",
+      "Wiring without pads, 13 Nov 20:38-20:50 (last panel)"]
 LV = lambda ws: dict(zip(ws, plt.cm.viridis(np.linspace(0, 0.9, len(ws)))))
 
 
@@ -60,23 +69,53 @@ def by_level(ax, rs, ws, style="-", ms=2, lw=1.0, suffix=""):
 
 
 def main():
-    fig, ax = wiring.figure(10, WIRING, size=(14, 52), titles=WT)
+    fig, AX = wiring.figure(13, WIRING, size=(14, 68), titles=WT, strip=0.3)
+    ax = [AX[0]] + AX[2:11]
+    W5 = (-36.0, -43.0, -50.0, -57.0, -64.0)
+    WALL = sorted({float(r["pluto_want_dbm"]) for r in CAB + OVN + FIN + DIT if -900 < float(r["pluto_want_dbm"])}, reverse=True)
+    call = LV(WALL)
 
     # 0: every reading against time
     groups = [("13 Nov evening (scope 0.2 V/div)", KIT + CAB, "#7570b3"), ("14 Nov 10:51-12:51 (0.2 V/div)", OVN, "#999999"),
-              ("14 Nov 12:52-13:00 (50 mV/div)", FIN, "#e7298a"), ("14 Nov dithered, 50 mV/div", DIT, "#1b9e77")]
+              ("14 Nov 12:52-13:00 (50 mV/div)", FIN, "#e7298a"), ("14-15 Nov dithered, 50 mV/div", DIT, "#1b9e77"),
+              ("13 Nov 20:38, before the pads", NPC + NPK, "#a6761d")]
     for lab, rs, c in groups:
         on = [r for r in rs if float(r["pluto_want_dbm"]) > -900]
         off = [r for r in rs if float(r["pluto_want_dbm"]) <= -900]
         ax[0].plot([hrs(r) for r in on], [mv(r) for r in on], ".", color=c, ms=2, label=lab + ", tone on")
         ax[0].plot([hrs(r) for r in off], [mv(r) for r in off], "x", color="k", ms=4)
     ax[0].plot([], [], "x", color="k", label="tone off")
-    for t, txt in ((24 + 14 + 53 / 60, "stop/replug"), (24 + 17 + 21 / 60, "PC sleep"), (24 + 17 + 59 / 60, "PC crashes"), (24 + 19 + 38 / 60, "Pluto drop"), (24 + 21 + 51 / 60, "Pluto drop")):
+    for t, txt in ((24 + 14 + 53 / 60, "stop/replug"), (24 + 17 + 21 / 60, "PC sleep"), (24 + 17 + 59 / 60, "PC crashes"), (24 + 19 + 38 / 60, "Pluto drop"), (24 + 21 + 51 / 60, "Pluto drop"), (48 + 2 + 1 / 60, "Windows Update restart"), (48 + 11 + 40 / 60, "15 Nov coarse repeats")):
         ax[0].axvline(t, color="#d95f02", lw=0.8, ls="--")
         ax[0].text(t, ax[0].get_ylim()[1] if False else 175, txt, rotation=90, fontsize=7, color="#d95f02", va="top")
     ax[0].set(xlabel="hours from 13 Nov 00:00 (24 = midnight)", ylabel="detector (mV, raw)",
               title=f"All {sum(len(g[1]) for g in groups)} readings against time (every frequency and level; tone-off readings as x)")
     ax[0].legend(fontsize=7, ncol=3)
+
+    # overview: every tone-on reading against frequency, colour = Pluto level
+    for w in WALL:
+        a = fv([r for r in CAB + OVN + FIN + DIT if float(r["pluto_want_dbm"]) == w and float(r["freq_mhz"]) > 0])
+        if len(a):
+            AX[1].plot(a[:, 0], a[:, 1], ".", color=call[w], ms=2.5, label=f"{w:.0f} dBm ({len(a)})")
+    AX[1].set(ylabel="detector (mV, raw)", xlim=(1140, 1560),
+              title="Everything with the pads, 13-15 Nov: every tone-on reading against frequency (all runs, all sessions), colour = Pluto level")
+    AX[1].legend(fontsize=7, ncol=6)
+
+    # 15 Nov coarse repeats
+    by_level(AX[11], [r for r in DIT if r["stage"] == "coarse" and r["rep"] == "1"], W5, "-o", 3, suffix=", sweep 1 (11:42)")
+    by_level(AX[11], [r for r in DIT if r["stage"] == "coarse" and r["rep"] == "2"], W5, "--s", 3, suffix=", sweep 2 (11:56)")
+    AX[11].set(xlim=(1140, 1560), ylabel="detector (mV, raw)",
+               title="15 Nov 11:42-12:09: two coarse sweeps (25 MHz, five levels, dithered), each a fresh launch after the 02:01 restart")
+    AX[11].legend(fontsize=7, ncol=5)
+
+    # before the pads
+    a = fv([r for r in NPC if r["stage"] == "coarse"])
+    AX[12].plot(a[:, 0], a[:, 1], "-o", ms=3, lw=1, color="#a6761d", label="scope only, 20:38")
+    a = fv(NPK)
+    AX[12].plot(a[:, 0], a[:, 1], "-s", ms=3, lw=1, color="#7570b3", label="with SM200B on the IF, 20:46")
+    AX[12].axvspan(1150, 1550, color="#1b9e77", alpha=0.08)
+    AX[12].set(ylabel="detector (mV, raw)", title="13 Nov 20:38-20:50, BEFORE the pads (cable E, no pads), -50 dBm, 600-1700 MHz, 0.2 V/div; shaded = 1150-1550 MHz")
+    AX[12].legend(fontsize=7)
 
     # 1: 13 Nov evening sweeps
     for st, c in (("dense2", "#1b9e77"), ("power-60", "#d95f02"), ("power-55", "#7570b3")):
@@ -109,7 +148,7 @@ def main():
     # 4: every -50 dBm band sweep, raw
     sweeps = [(CAB, "dense2", None, "13 Nov 21:19, 0.2 V/div"), (OVN, "band1", None, "14 Nov 11:35, 0.2 V/div"), (FIN, "band1", None, "14 Nov 12:53, 50 mV/div"),
               (DIT, "band1", None, "14 Nov 13:03, dithered"), (DIT, "drift_band", "101", "14 Nov 15:34, dithered"), (DIT, "sweep5", None, "14 Nov 15:50, dithered"),
-              (DIT, "bisect5", None, "14 Nov 19:16, dithered")]
+              (DIT, "bisect5", None, "14 Nov 19:16, dithered"), (DIT, "coarse", "1", "15 Nov 11:42, dithered"), (DIT, "coarse", "2", "15 Nov 11:56, dithered")]
     cs = plt.cm.plasma(np.linspace(0, 0.85, len(sweeps)))
     for (rs, st, rep, lab), c in zip(sweeps, cs):
         a = fv([r for r in rs if r["stage"] == st and (rep is None or r["rep"] == rep) and abs(float(r["pluto_want_dbm"]) + 50) < 0.1])
@@ -159,7 +198,7 @@ def main():
     ax9b.set(xlabel="minutes from 12:02, 14 Nov", ylabel="detector (mV, raw)",
              title=f"14 Nov 12:02: one frequency held for 20 min (0.2 V/div). Spread {np.ptp([mv(r) for r in h]):.1f} mV peak-to-peak; band_quarter run (1220-1230 MHz, 0.25 MHz) is in the time plot")
     ax9b.legend(fontsize=7)
-    for a in ax[:10]:
+    for a in AX:
         a.grid(alpha=0.3)
         if not a.get_xlabel():
             a.set_xlabel("Pluto frequency (MHz)")
