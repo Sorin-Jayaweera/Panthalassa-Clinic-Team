@@ -95,6 +95,29 @@ def stages():
         if depth == 6:
             yield "off", 32, [(0.0, -999.0)] * 12, False, "tone off at the 6.25 MHz (2%) mark"
     yield "off", 23, [(0.0, -999.0)] * 12, False, "tone off at the end, 1 min"
+    # overnight (Sorin, 21:20: "the rest of the night for high density of data across each power level"):
+    # finish the sides at 3.1 and 1.6 MHz, the rise at 0.78 MHz, the sides at 0.78 MHz, with a repeat of the 6.25 MHz
+    # grid in between and at the end to show drift over the night
+    def grid(depth):
+        step = 400.0 / 2 ** depth
+        return [round(1150 + k * step, 4) for k in range(2 ** depth + 1)]
+    def chk():
+        return [(1350.0, w) for w in L5]
+    for depth in (7, 8):
+        new_f = [f for f in grid(depth) if not (1220 <= f <= 1450) and f not in done]
+        done.update(new_f)
+        yield "bisect5s", depth, chk() + [(f, w) for f in new_f for w in L5], False, f"sides (outside 1220-1450 MHz) at the {400 / 2 ** depth:g} MHz grid, {len(new_f)} new frequencies x 5 levels"
+    yield "off", 41, [(0.0, -999.0)] * 12, False, "tone off before the 0.78 MHz rise pass"
+    new_f = [f for f in grid(9) if 1220 <= f <= 1450 and f not in done]
+    done.update(new_f)
+    yield "bisect5", 9, chk() + [(f, w) for f in new_f for w in L5], False, f"halving depth 9: 0.78 MHz grid on the rise, {len(new_f)} new frequencies x 5 levels"
+    yield "repeat6", 1, [(f, w) for f in grid(6) for w in L5], False, "repeat of the 6.25 MHz grid over 1150-1550 MHz (drift since 20:00)"
+    new_f = [f for f in grid(9) if not (1220 <= f <= 1450) and f not in done]
+    done.update(new_f)
+    yield "bisect5s", 9, chk() + [(f, w) for f in new_f for w in L5], False, f"sides at the 0.78 MHz grid, {len(new_f)} new frequencies x 5 levels"
+    yield "off", 42, [(0.0, -999.0)] * 12, False, "tone off before the last repeat"
+    yield "repeat6", 2, [(f, w) for f in grid(6) for w in L5], False, "repeat of the 6.25 MHz grid at the end of the night"
+    yield "off", 43, [(0.0, -999.0)] * 12, False, "tone off at the very end"
 
 
 def keep_awake(on):

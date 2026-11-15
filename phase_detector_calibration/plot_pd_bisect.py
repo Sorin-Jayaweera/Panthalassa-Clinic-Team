@@ -34,7 +34,7 @@ def zero(reps):
 
 
 def main():
-    B = [r for r in ALL if r["stage"] == "bisect5"]
+    B = [r for r in ALL if r["stage"] in ("bisect5", "bisect5s")]
     zb = zero(("31", "32", "33"))
     zs = zero(("21",))
     depth_of = {}
@@ -43,7 +43,7 @@ def main():
     for r in B:
         f, w, d = float(r["freq_mhz"]), float(r["pluto_want_dbm"]), int(r["rep"])
         if f == 1350.0 and d >= 2:
-            chk[w].append((d, r["timestamp"][11:16], mv(r) - zb))
+            chk[w].append((int(r["timestamp"][11:13]) + int(r["timestamp"][14:16]) / 60 + (24 if r["timestamp"][8:10] == "15" else 0), r["timestamp"][11:16], mv(r) - zb))
             if f in pts[w]:
                 continue
         pts[w][f] = mv(r) - zb
@@ -103,8 +103,8 @@ def main():
         if chk[w]:
             a = np.array([(d, v) for d, _, v in chk[w]])
             ax[3].plot(a[:, 0], a[:, 1], "-o", color=col[w], ms=5, lw=1.2, label=f"{w:.0f} dBm")
-    ax[3].set(xlabel="halving depth (the 1350 MHz check is read at the start of each depth)", ylabel="1350 MHz reading (mV)",
-              title="Drift check: 1350 MHz at the five levels, re-read at the start of every depth")
+    ax[3].set(xlabel="clock time on 14 Nov (hours; 24 = midnight), one check at the start of each step", ylabel="1350 MHz reading (mV)",
+              title="Drift check: 1350 MHz at the five levels, re-read at the start of every step")
     ax[3].legend(fontsize=8, ncol=5)
     for a in ax[:3]:
         a.set_xlabel("Pluto frequency (MHz)")
