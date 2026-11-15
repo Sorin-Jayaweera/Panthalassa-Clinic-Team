@@ -109,3 +109,33 @@ PD_FRONTEND = item(
         "After the &times;9.5 stage that noise is about 8 mV rms at the ADC, about one step of an 8-bit 2 V ADC (7.8 mV), enough to smooth the steps when averaging.",
         "Drift between sessions (2&ndash;7 mV) is bigger than the &plusmn;2 MHz budget, so the system needs a calibration (for example a known tone between pulses) or a stable temperature."]),
 )
+
+PD_FIVE = item(
+    "pd-five-levels", "Five Pluto levels across 1150&ndash;1550 MHz, coarse to fine (14 Nov evening): the rise runs 1215&ndash;1445 MHz with no flat sides; &minus;36 to &minus;57 dBm agree within &plusmn;2 MHz on 90% of it",
+    p("Same wiring. Five Pluto levels: &minus;36 dBm (the Pluto's top), &minus;43, &minus;50, &minus;57 and &minus;64 dBm. At each frequency all five are read back to back (seconds apart), so slow drift moves them together. "
+      "First run (15:50&ndash;17:59): 1150&ndash;1550 MHz every 2 MHz, stopped at 1412 MHz when the PC crashed. "
+      "Second run (from 19:14), filled in coarse to fine by halving, as Sorin asked: both ends, the middle, the quarters, &hellip; down to 6.25 MHz (1.6% of the 400 MHz span), then 3.1 and 1.6 MHz on the rise only. "
+      "Each halving step starts by re-reading 1350 MHz at the five levels as a drift check. Every point is dithered (four scope offsets 1 mV apart)."),
+    fig("pd_bisect_14nov.png", "14 Nov evening: five Pluto levels filled in by halving down to 6.25 MHz, with the 2 MHz sweep from before the crash (thin lines), each level against -50 dBm, the frequency error, the 1350 MHz drift check, and the wiring"),
+    fig("pd_sweep5_14nov.png", "14 Nov 15:50-17:59: five Pluto levels every 2 MHz from 1150 MHz up to 1412 MHz (stopped by the PC crash), slope, each level against -50 dBm, frequency error, with the wiring"),
+    table(["Pluto levels", "Best (peak-to-peak)", "Worst (peak-to-peak)", "Median", "Points within &plusmn;2 MHz (1240&ndash;1430 MHz)"], [
+        ["&minus;36 to &minus;64 dBm", "1.5 MHz", "36 MHz at 1425 MHz", "12.1 MHz", "23%"],
+        ["&minus;36 to &minus;57 dBm", "0.4 MHz", "6.0 MHz at 1406 MHz", "1.9 MHz", "90%"],
+        ["&minus;43 to &minus;57 dBm", "0.1 MHz", "5.8 MHz at 1406 MHz", "1.7 MHz", "93%"]], left=(0, 4)),
+    ul(["There are no flat sides. The curve is lowest near 1215 MHz, rises to a peak near 1440&ndash;1450 MHz (about 150&ndash;160 mV) and falls again on both sides. "
+        "This is the ~375 MHz ripple (see above). The one-to-one range is about 1215&ndash;1445 MHz (about 230 MHz); a frequency outside it gives a voltage that also occurs inside it.",
+        "&minus;36 to &minus;57 dBm lie on top of each other over most of the rise (within &plusmn;2 MHz on 90% of the 1240&ndash;1430 MHz points). "
+        "The levels part near the ends: below about 1250 MHz (small slope) and above about 1400 MHz, where &minus;36 and &minus;43 dBm flatten and dip before the peak.",
+        "&minus;64 dBm is not usable: it reads up to 18 MHz high at the bottom of the rise and 50&ndash;60 mV low above 1350 MHz. The amplifiers are not saturated there. The input must stay above about &minus;57 dBm at the Pluto position.",
+        "Within one session the curve is steady: the 1350 MHz check moved less than 0.5 mV (about 0.6 MHz) over 70 minutes, across a Pluto USB dropout and replug at 19:38&ndash;19:54.",
+        "Between sessions it is not: after the PC restarts (18:00&ndash;18:48) the whole curve came back about 12 mV lower (about 15 MHz at 1350 MHz) than at 17:00, with the same shape. "
+        "This is the third such jump on 14 Nov. A reference reading at start-up (or a known tone between pulses) would remove it.",
+        "Amplifier current: 0.22 A with no tone, 0.24&ndash;0.29 A with the tone on, rising with Pluto level and changing with frequency (Sorin, 19:20&ndash;19:58). "
+        "The 0.23 to 0.26 A change noted at 15:30 was the tone being on, not a fault; it is not the cause of the 15:18 offset."]),
+    h("PC crashes, 14 Nov 17:20&ndash;18:48"),
+    ul(["17:19&ndash;17:21 and 17:59: the PC entered Modern Standby, logged as &ldquo;Reason: Lid&rdquo;; the first run stopped at 17:21 and resumed 17:54 with no lost points.",
+        "17:59: hard crash in standby; on restart Windows logged a fatal hardware error (WHEA, processor machine-check record). 18:25, 18:33, 18:37, 18:40: further freezes or forced restarts, some while no measurement was running.",
+        "The measurement scripts are not the cause: the later crashes happened with no script running. The laptop also logged five &ldquo;driver power state&rdquo; crashes (0x9F) from 17 Oct to 11 Nov and Intel graphics hangs from August to October. "
+        "The charger connection dropped repeatedly on 14 Nov afternoon.",
+        "Since 18:48 (charger reseated, instruments replugged at 19:10) there have been no errors. The run script now also keeps the display on, since the screen turning off puts this laptop into Modern Standby."]),
+)

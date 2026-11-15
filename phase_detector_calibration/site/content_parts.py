@@ -289,7 +289,7 @@ PHASEDET = part_tab(
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S11.png", "8720ES: mixer S11, IF port, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S21.png", "8720ES: mixer S21, IF to RF, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S12.png", "8720ES: mixer S12, RF to IF, LO open") +
-    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS + PDC.PD_OLD + PDC.PD_CABLE + PDC.PD_LEVELS + PDC.PD_FRONTEND)
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS + PDC.PD_OLD + PDC.PD_CABLE + PDC.PD_LEVELS + PDC.PD_FIVE + PDC.PD_FRONTEND)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",

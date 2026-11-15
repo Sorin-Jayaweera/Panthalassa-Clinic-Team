@@ -72,20 +72,34 @@ def stages():
     yield "levels", 0, [(f, w) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0) for f in rng(1220, 1452, 4)], False, "power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered"
     yield "off", 1, [(0.0, -999.0)] * 12, False, "tone off after the levels, 1 min"
     yield "recheck", 0, [(f, w) for f in (1260.0, 1300.0, 1340.0, 1380.0, 1420.0) for w in (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0)], False, "recheck after the replug: 5 frequencies x 7 levels, same points as the 14:00 levels run"
-    W = (-60.0, -56.0, -52.0, -48.0, -44.0, -40.0, -36.0)
-    for rep, step, a, b in ((1, 4.0, 1220, 1452), (2, 2.0, 1236, 1436), (3, 1.0, 1236, 1436)):   # finer and finer, all levels
-        yield "drift_band", 100 + rep, [(f, -50.0) for f in rng(1240, 1430, 2)], False, f"band at -50 dBm before levels pass {rep}"
-        yield "levels", rep, [(f, w) for w in W for f in rng(a, b, step)], False, f"levels pass {rep}: -60 to -36 dBm, {a}-{b} MHz every {step:g} MHz, dithered"
-        yield "off", 10 + rep, [(0.0, -999.0)] * 6, False, f"tone off after levels pass {rep}"
-    for rep in __import__("itertools").count(1):                      # drift: until told to stop
-        yield "drift_band", rep, [(f, -50.0) for f in rng(1240, 1430, 2)], False, f"drift, band 1240-1430 MHz every 2 MHz, -50 dBm, repeat {rep}"
-        yield "drift_hold", rep, [(1340.0, -50.0)] * 60, False, f"drift, hold 1340 MHz, about 8 min, repeat {rep}"
-        yield "drift_off", rep, [(0.0, -999.0)] * 6, False, f"drift, tone off, repeat {rep}"
+    yield "drift_band", 101, [(f, -50.0) for f in rng(1240, 1430, 2)], False, "band at -50 dBm after the recheck"
+    # final: five levels from the Pluto top (-36 dBm) down to -64 dBm, interleaved at each frequency so drift hits all levels alike;
+    # 1150-1550 MHz covers the flat part below the rise, the rise (about 1228-1440) and the flat part above it
+    L5 = (-36.0, -43.0, -50.0, -57.0, -64.0)
+    yield "off", 21, [(0.0, -999.0)] * 12, False, "tone off before the five-level sweep"
+    # (ended by the crash; not resumed) yield "sweep5", 1, [(f, w) for f in rng(1150, 1550, 2) for w in L5], False, "five levels -36 to -64 dBm, 1150-1550 MHz every 2 MHz, interleaved (stopped at 1412 MHz by a PC crash, 17:59)"
+    # after the crash: coarse-to-fine by halving (Sorin, 14 Nov): ends, middle, quarters, ... down to 6.25 MHz (1.6% of the
+    # 400 MHz span) over 1150-1550, then 3.125 and 1.5625 MHz only on the rise. Each depth is a stage, five levels at each
+    # frequency back to back, and each depth starts with 1350 MHz at the five levels again as a drift check.
+    yield "off", 31, [(0.0, -999.0)] * 12, False, "tone off after the reboot"
+    done = set()
+    for depth in range(9):
+        step = 400.0 / 2 ** depth
+        fs = [round(1150 + k * step, 4) for k in range(2 ** depth + 1)]
+        if depth >= 7:
+            fs = [f for f in fs if 1220 <= f <= 1450]
+        new_f = [f for f in fs if f not in done]
+        done.update(new_f)
+        chk = [(1350.0, w) for w in L5] if depth >= 2 else []
+        yield "bisect5", depth, chk + [(f, w) for f in new_f for w in L5], False, f"halving depth {depth}: {step:g} MHz grid, {len(new_f)} new frequencies x 5 levels" + (" (rise only)" if depth >= 7 else "")
+        if depth == 6:
+            yield "off", 32, [(0.0, -999.0)] * 12, False, "tone off at the 6.25 MHz (2%) mark"
+    yield "off", 23, [(0.0, -999.0)] * 12, False, "tone off at the end, 1 min"
 
 
 def keep_awake(on):
     try:
-        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | (0x00000001 if on else 0))
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | (0x00000003 if on else 0))   # system + display required: a dark screen lets this laptop enter Modern Standby
     except Exception:
         pass
 
