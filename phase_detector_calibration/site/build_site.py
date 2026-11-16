@@ -255,7 +255,7 @@ def lut_tab():
 
 
 TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
-        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-racon", "Racon"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
+        ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-racon", "Racon"), ("tab-vna", "VNA"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
         ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
 HEAD = """<title>JACON Engineering Notes</title>
@@ -290,6 +290,44 @@ TOOLS = """<div id="seltools" hidden>
   <button type="button" data-act="suggest" hidden>Suggest a change</button>
 </div>
 """
+
+
+def _details(html, iid):
+    """The whole <details id=iid> element (nested details included)."""
+    i = html.index(f'<details class="item" id="{iid}"')
+    depth, j = 0, i
+    while True:
+        a, b = html.find("<details", j), html.find("</details>", j)
+        if a != -1 and a < b:
+            depth, j = depth + 1, a + 8
+        else:
+            depth, j = depth - 1, b + 10
+            if depth == 0:
+                return html[i:j]
+
+
+def _body(details):
+    return details[details.index('<div class="body">') + len('<div class="body">'):-len("</div></details>")]
+
+
+def _copy(html, prefix):
+    """A copy of a chunk with its ids renamed, so the original keeps its ids."""
+    return html.replace(' id="', f' id="{prefix}')
+
+
+def vna_tab():
+    """Copies of every VNA measurement on the site, grouped by part. The originals stay on their own tabs."""
+    lim = CP.LIMITER
+    a = lim.index("<h4>VNA small-signal sweep")
+    b = lim.index("</figure>", lim.index("vna_limiter_delta_S22.png")) + len("</figure>")
+    parts = [
+        C.item("vna-limiter", "Power limiter HLM-20PSM (EVAL-HLM-20P board), 31 Oct; also on the Limiter tab", _copy(lim[a:b], "vna-lim-")),
+        C.item("vna-mixer", "Phase detector mixer ZX05-30W-S+, ports, mixer not driven, 31 Oct; also on the Phase detector tab", _copy(_body(_details(CP.PHASEDET, "pd-vna")), "vna-mix-")),
+        C.item("vna-pads", "Attenuator pads 3, 6 and 10 dB; also on the Radar tab", _copy(_body(_details(CRA.RADAR, "rad-pads")), "vna-pad-")),
+        C.item("vna-vivaldi", "Vivaldi antenna S11; also on the Radar tab", _copy(_body(_details(CRA.RADAR, "rad-vivaldi-s11")), "vna-viv-")),
+    ]
+    return ("<h2>VNA readings</h2>" + C.p("Every network analyzer (HP 8720ES) measurement, with the setup photos, gathered from the part tabs. "
+            "The same plots and tables also stay on each part&rsquo;s own tab.") + "".join(parts))
 
 
 REVIEW = f"""<h2>Review notes</h2>
@@ -377,7 +415,7 @@ def main():
              + f'<div class="schematic" id="schem" data-mode="specs">{schematic()}</div>' + status_section()[1])
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
-              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW + HN.HOWTO}
+              "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-vna": vna_tab(), "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW + HN.HOWTO}
     tabs = '<div class="tabs" role="tablist">' + "".join(
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"
     body = "".join(f'<div class="panel" id="{tid}"{"" if i == 0 else " hidden"}>\n{panels[tid]}\n</div>\n' for i, (tid, _) in enumerate(TABS))

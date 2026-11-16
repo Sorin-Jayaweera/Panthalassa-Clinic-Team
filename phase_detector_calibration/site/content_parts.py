@@ -6,7 +6,14 @@ from content import item, table, ul, ol, p, h, link, math, fig, D
 PDF = "https://www.minicircuits.com/pdfs/"
 
 
-def part_tab(title, sub, pid, specs, expected, plan, results):
+def part_tab(title, sub, pid, specs, expected, plan, results, top=None):
+    """With `top`: the key results first (open), then all results, then specs, expected behavior and the test plan."""
+    if top is not None:
+        return "".join([f"<h2>{title}</h2>", f'<p class="sub">{sub}</p>', top,
+                        item(pid + "-results", "All results, most important first", results, open_=True),
+                        item(pid + "-specs", "Specs", specs),
+                        item(pid + "-expected", "Expected behavior", expected),
+                        item(pid + "-plan", "Test plan", plan)])
     return "".join([f"<h2>{title}</h2>", f'<p class="sub">{sub}</p>',
                     item(pid + "-specs", "Specs", specs, open_=True),
                     item(pid + "-expected", "Expected behavior", expected),
@@ -251,11 +258,13 @@ PHASEDET = part_tab(
     math(r"V_\text{out} \approx V_0 + A(P)\cos(2\pi f\tau) \qquad \tau = 0.55\ \text{ns}"),
     ol(["Output vs frequency with the Pluto at four power levels, by hand. Done in September.", "Output vs frequency with the VCO as source, by computer, 744 to 920 MHz. Done 10 Oct.",
         "Step response, noise and drift. Done 10 Oct.", "Not done: the same in 1.0&ndash;1.2 GHz, with fixed power, and with different delay cables. See " + link("#t-pd1", "Tests to run, PD1 to PD5") + "."]),
-    table(["Quantity", "Value", "Date"],
+    PDC.PD_FIVE + PDC.PD_LEVELS + PDC.PD_FRONTEND + PDC.PD_CABLE + PDC.PD_OLD + MIX_ITEMS +
+    item("pd-oct", "First results with the VCO as source, 744&ndash;920 MHz, no amplifiers (10 Oct)", table(["Quantity", "Value", "Date"],
           [["Output range, VCO source", "30.3 to 145.7 mV over 744&ndash;920 MHz", "10 Oct"], ["Range where one voltage = one frequency", "744 to 788 MHz", "10 Oct"],
            ["Slope in that range", "2.66 mV/MHz mean", "10 Oct"], ["Power at each input", "+0.6 dBm (wanted: +7 on LO)", "6 Oct"], ["Noise", "84 to 142 &micro;V rms = 38 to 66 kHz", "10 Oct"],
            ["10&ndash;90 % time after a step", "89 to 140 ns (input edge is 145 ns)", "10 Oct"], ["Delay, input to output", "26 ns", "10 Oct"]], left=(0, 1, 2)) +
-    p("The measured curve does not match the expected smooth cosine. It has turning points 14 to 34 MHz apart. The cause is not known.") +
+    p("The measured curve does not match the expected smooth cosine. It has turning points 14 to 34 MHz apart. The cause is not known.")) +
+    item("pd-vna", "VNA of the mixer ports, mixer not driven (8720ES, 31 Oct); also on the VNA tab",
     h("VNA, LO and RF ports, mixer not driven (8720ES, 31 Oct)") +
     p("Port 1 = LO, port 2 = RF. No LO drive, so the diodes are off and these are not operating values: do not compare them with the datasheet&rsquo;s +7 dBm figures. The setup photo shows the IF port open, not loaded; repeat with 50 &Omega; on IF. S22, S21 and S12 screens show Cor and * rather than C2, so a sweep may not have finished.") +
     table(["Marker", "Frequency", "S11 (LO match)", "S21 (LO to RF)", "S12 (RF to LO)", "S22 (RF match)"], [
@@ -289,7 +298,7 @@ PHASEDET = part_tab(
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S11.png", "8720ES: mixer S11, IF port, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S21.png", "8720ES: mixer S21, IF to RF, LO open") +
     fig("vna_mixer30W_IFport1_RFport2_LOopen_S12.png", "8720ES: mixer S12, RF to IF, LO open") +
-    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open") + MIX_ITEMS + PDC.PD_OLD + PDC.PD_CABLE + PDC.PD_LEVELS + PDC.PD_FIVE + PDC.PD_FRONTEND)
+    fig("vna_mixer30W_IFport1_RFport2_LOopen_S22.png", "8720ES: mixer S22, RF port, LO open")), top=PDC.PD_KEY)
 
 # ------------------------------------------------------------------ expected levels through the RX chain
 RX_LEVELS = item("pi-levels", "Expected power through the RX chain",

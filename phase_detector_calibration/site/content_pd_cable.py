@@ -110,6 +110,20 @@ PD_FRONTEND = item(
         "Drift between sessions (2&ndash;7 mV) is bigger than the &plusmn;2 MHz budget, so the system needs a calibration (for example a known tone between pulses) or a stable temperature."]),
 )
 
+PD_KEY = item(
+    "pd-key", "Main result: detector voltage vs frequency, cable E with pads (14 Nov)",
+    p("Raw detector output, nothing subtracted. Each plot is one run. Top: the cleanest data, the 14 Nov evening run (dithered reading, 50 mV/div), five Pluto levels from the Pluto&rsquo;s top (&minus;36 dBm) down to &minus;64 dBm, then the same data zoomed on the one-to-one region. "
+      "Bottom: the widest sweep, 300&ndash;4000 MHz at &minus;50 dBm, not dithered (0.2 V/div). Each run sits a few mV higher or lower than the others (see the session-to-session section below), so different runs are not overlaid here."),
+    fig("pd_key_dithered.png", "Phase detector output vs frequency, 1150-1550 MHz, five Pluto levels, 14 Nov evening, dithered; and the same data zoomed on 1215-1445 MHz; with the wiring"),
+    ul(["One voltage = one frequency over about 1215&ndash;1445 MHz (about 230 MHz). Over 1240&ndash;1430 MHz the slope is 0.3&ndash;1.2 mV/MHz, median 0.84 mV/MHz (&minus;50 dBm).",
+        "&minus;36 to &minus;57 dBm agree within &plusmn;2 MHz on 90% of 1240&ndash;1430 MHz. &minus;64 dBm (faded) is too weak to use.",
+        "Repeat sweeps on 15 Nov agree with each other to 0.2 mV and with this run to about 1 mV (about 1 MHz)."]),
+    fig("pd_key_wide.png", "Phase detector output vs frequency, 300-4000 MHz at -50 dBm, 14 Nov morning, not dithered, with the wiring"),
+    ul(["Outside 1150&ndash;1550 MHz the curve keeps rippling (the ~375 MHz ripple), so the one-to-one region cannot be widened by going lower or higher.",
+        "Above 2100 MHz the Pluto has no level table, so the script turned it down by 61 dB: the flat line there is not a detector reading."]),
+    open_=True,
+)
+
 PD_FIVE = item(
     "pd-five-levels", "Five Pluto levels across 1150&ndash;1550 MHz, coarse to fine (14 Nov evening): the rise runs 1215&ndash;1445 MHz with no flat sides; &minus;36 to &minus;57 dBm agree within &plusmn;2 MHz on 90% of it",
     p("Same wiring. Five Pluto levels: &minus;36 dBm (the Pluto's top), &minus;43, &minus;50, &minus;57 and &minus;64 dBm. At each frequency all five are read back to back (seconds apart), so slow drift moves them together. "
