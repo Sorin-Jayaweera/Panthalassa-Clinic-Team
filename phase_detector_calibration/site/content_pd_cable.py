@@ -164,10 +164,26 @@ PD_RESOLUTION = item(
            ["E, no pads, short IF (1340&ndash;1480 MHz), 3 levels", "1.90", "7.9", "7.3", "0.69", "21 / 30", "11 / 29", "54 / 80"]]),
     ul(["Widths are contiguous MHz. None of the setups gives 1&ndash;2 MHz over 200 MHz with the power unknown from &minus;36 to &minus;57 dBm.",
         "The limit is the spread between power levels, not the reading noise. &minus;36 dBm (the amplifiers&rsquo; hardest drive) is the level that breaks away; leaving it out triples the usable width without pads.",
-        "Best engineering choice: cable E without pads, on the rising edge, with the input kept at or below about &minus;50 dBm at the Pluto (or equivalent attenuation before the splitter): about 80 MHz with error &le;2 MHz and about 50 MHz with &le;1 MHz at dV = 0.5 mV. Slope about 2&ndash;3 mV/MHz, about 3&times; the padded setup.",
+        "Cable E without pads, on the rising edge, gives the most: about 80 MHz with error &le;2 MHz and about 50 MHz with &le;1 MHz at dV = 0.5 mV when &minus;50 and &minus;57 dBm are compared; slope about 2&ndash;3 mV/MHz, about 3&times; the padded setup. "
+        "Sorin (16 Nov): the received power is not under our control, so a lower input is not a fix; the amplifiers are meant to saturate so every input level lands on the same curve. "
+        "&minus;50 and &minus;57 dBm do land on the same curve (spread about 2 mV); the &minus;36 dBm departure has to be fixed in hardware.",
         "With pads the curve is the most linear and smoothest (spread 1.6 mV) but the slope is only 0.8 mV/MHz, so 1&ndash;2 mV of spread already costs 2 MHz.",
         "Cable C is the worst: steep at 960&ndash;1015 MHz, then a flat shelf, and 9.5 mV between levels.",
         "The short and long IF cables give the same answer, as expected from the unchanged ripple."]),
+)
+
+PD_DELAY = item(
+    "pd-delay", "The &lsquo;ripple&rsquo; is the interferometer itself: the arms differ by about 2.75 ns, not 0.55 ns (16 Nov)",
+    p("Fit of every wide sweep with one delay: V(f) = a + b f + A cos(2&pi; f &tau; + &phi;), &tau; scanned 1.5&ndash;4 ns. The ~360 MHz pattern is not a ripple on top of a slow 0.55 ns curve; it is the main term (about 150 mV amplitude), and a 0.55 ns term is not found."),
+    table(["Run", "Range (MHz)", "Best &tau; (ns)", "Full cycle (MHz)", "Amplitude (mV)"],
+          [["Cable C, 1 Nov, &minus;50 dBm", "700&ndash;1600", "3.00", "333", "74"],
+           ["Cable C, 1 Nov, &minus;60 dBm", "700&ndash;1600", "3.00", "333", "69"],
+           ["Cable E, no pads, 13 Nov", "600&ndash;1700", "2.68", "373", "125"],
+           ["Cable E, no pads, short IF cable, 15 Nov, &minus;50 dBm", "600&ndash;1600", "2.77", "361", "153"]]),
+    ul(["The delay moves with the arm cable: C to E shortens it by 0.23&ndash;0.32 ns. C is about 12 cm and E about 8 cm, so 4 cm of coax is about 0.19 ns. The 2.75 ns is therefore the real difference between the two arms, not an outside reflection.",
+        "That also explains the usable width: half a cycle of 2.75 ns is about 180 MHz, the one-to-one width seen in every run. A 0.55 ns difference would give about 900 MHz.",
+        "Ruled out: the long IF cable (same curve with a short one).",
+        "Next: measure each arm on the VNA, from the splitter output port to the mixer port with the cables and adapters exactly as used, and find where the extra ~2.2 ns (about 45 cm of coax) is."]),
 )
 
 PD_NOPADS = item(
