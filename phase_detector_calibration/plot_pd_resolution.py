@@ -6,7 +6,8 @@ and how far do the power levels spread.
 
 Method, for each setup:
   1. Calibration curve = the mean of the power levels at each frequency (the one table the FPGA would hold).
-  2. One-to-one region = the longest stretch where that curve keeps one direction with slope above 0.15 mV/MHz.
+  2. One-to-one region = the longest stretch where that curve keeps one direction with slope above 0.15 mV/MHz; for the two
+     no-pads runs the steep rising edge 1340-1480 MHz is used instead (the automatic pick is the shallower 960-1135 MHz edge).
   3. For every true frequency f in it, every power level w, and a reading off by +/- dV: invert the calibration curve and take the
      worst |f_estimated - f|. That is the frequency error with unknown power and reading uncertainty dV.
   4. Usable width = the longest contiguous stretch where that worst error is <= 1 MHz and <= 2 MHz.
@@ -15,7 +16,8 @@ Method, for each setup:
 Data (each setup its own run; nothing is overlaid across runs):
   C:            p162x4_fine_1nov.csv, 900-1200 MHz every 1 MHz, levels -36/-40/-50/-60 dBm (no dither).
   E, pads:      pd_dither_14nov.csv stages bisect5/bisect5s, 1150-1550 MHz, 1.6-6.25 MHz steps, -36/-43/-50/-57 dBm (dithered).
-  E, no pads:   pd_dither_14nov.csv stages hdr_pri/hdr_rest (15 Nov night), 600-1600 MHz, 0.6-10 MHz steps, -36/-50/-57 dBm (no dither).
+  E, no pads:   pd_dither_14nov.csv stages hdr_pri/hdr_rest (15 Nov night, long IF cable) and ifs_pri/ifs_rest (short IF cable),
+                600-1600 MHz, 0.6-10 MHz steps, -36/-50/-57 dBm (no dither).
 Saves pd_resolution_compare.png and prints a table."""
 import csv
 from pathlib import Path
@@ -108,12 +110,14 @@ def longest(f, ok):
 def setups():
     S = []
     C = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in rd("p162x4_fine_1nov.csv")]
-    S.append(("Cable C, no pads (1 Nov)", (-36.0, -40.0, -50.0, -60.0), C, "#7570b3", "C", False, "0.1-0.2 V/div, no dither"))
+    S.append(("Cable C, no pads (1 Nov)", (-36.0, -40.0, -50.0, -60.0), C, "#7570b3", "C", False, "0.1-0.2 V/div, no dither", None))
     D = rd("pd_dither_14nov.csv")
     EP = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("bisect5", "bisect5s")]
-    S.append(("Cable E with pads (14 Nov)", (-36.0, -43.0, -50.0, -57.0), EP, "#1b9e77", "E", True, "50 mV/div, dithered"))
+    S.append(("Cable E with pads (14 Nov)", (-36.0, -43.0, -50.0, -57.0), EP, "#1b9e77", "E", True, "50 mV/div, dithered", None))
     EN = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("hdr_pri", "hdr_rest")]
-    S.append(("Cable E, no pads (15 Nov night)", (-36.0, -50.0, -57.0), EN, "#d95f02", "E", False, "100 mV/div, no dither"))
+    S.append(("Cable E, no pads, long IF cable (15 Nov night)", (-36.0, -50.0, -57.0), EN, "#d95f02", "E", False, "100 mV/div, no dither, long IF cable", (1340, 1480)))
+    ES = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("ifs_pri", "ifs_rest")]
+    S.append(("Cable E, no pads, short IF cable (15 Nov night)", (-36.0, -50.0, -57.0), ES, "#e7298a", "E", False, "100 mV/div, no dither, ~16 cm IF cable", (1340, 1480)))
     return S
 
 
@@ -128,7 +132,7 @@ def main():
     fig, AX = wiring.figure(4 * len(S), [setup_wiring(s[4], s[5], s[6]) for s in S], size=(15, 13 * len(S)),
                             titles=[f"Wiring, {s[0]}" for s in S], strip=0.12)
     table = []
-    for n, (name, levels, rows, col, arm, pads, scope) in enumerate(S):
+    for n, (name, levels, rows, col, arm, pads, scope, region) in enumerate(S):
         ax = AX[4 * n:4 * n + 4]
         f, V = curves(rows, levels)
         if len(f) < 10:
@@ -136,6 +140,11 @@ def main():
         cal = V.mean(axis=0)
         half = max(5.0, 3 * np.median(np.diff(f)))
         span, i, j, sg = one_to_one(f, cal, half)
+        if region:      # the steep rising edge, chosen by hand: the automatic pick lands on the shallower 960-1135 MHz edge
+            idx = np.where((f >= region[0]) & (f <= region[1]))[0]
+            i, j = idx[0], idx[-1]
+            sg = 1 if cal[j] > cal[i] else -1
+            span = f[j] - f[i]
         lo, hi = f[i], f[j]
         cm = plt.cm.viridis(np.linspace(0, 0.85, len(levels)))
         for w, v, c in zip(levels, V, cm):
@@ -161,6 +170,14 @@ def main():
             for lim in (1.0, 2.0):
                 w_, a_, b_ = longest(f[m], e <= lim)
                 row.append(f"{w_:.0f}" + (f" ({a_:.0f}-{b_:.0f})" if w_ > 0 else ""))
+        if -36.0 in levels and len(levels) > 2:
+            keep = np.array([w != -36.0 for w in levels])
+            cal2 = V[keep].mean(axis=0)
+            e2 = worst_error(f, V[keep], cal2, i, j, sg, 0.5)
+            ax[2].plot(f[m], np.where(np.isfinite(e2), e2, np.nan), "-", color="#888888", lw=1.2, label="worst error, +/- 0.5 mV, -36 dBm left out")
+            row.append(f"{longest(f[m], e2 <= 1)[0]:.0f}/{longest(f[m], e2 <= 2)[0]:.0f}")
+        else:
+            row.append("-")
         table.append(row)
         ax[2].axhspan(0, 1, color="#1b9e77", alpha=0.10, label="<= 1 MHz")
         ax[2].axhspan(1, 2, color="#e6ab02", alpha=0.10, label="1-2 MHz")
@@ -177,7 +194,7 @@ def main():
     fig.tight_layout()
     fig.savefig(HERE / "pd_resolution_compare.png", dpi=85)
     head = ["setup", "one-to-one MHz", "median slope mV/MHz", "median level spread mV", "straight-line rms MHz", "smoothness rms MHz"] + \
-           [f"width err<={l:g} MHz at dV={d:g} mV" for d in DVS for l in (1, 2)]
+           [f"width err<={l:g} MHz at dV={d:g} mV" for d in DVS for l in (1, 2)] + ["without -36 dBm, dV=0.5: width err<=1/<=2"]
     print(" | ".join(head))
     for r in table:
         print(" | ".join(r))

@@ -37,8 +37,9 @@ def load(D, tag):
 def peaks(a):
     f, v = a[:, 0], a[:, 1]
     out = []
-    for k in range(2, len(f) - 2):
-        if v[k] == v[k - 2:k + 3].max() and v[k] - v[max(0, k - 8):k + 9].min() > 30:
+    for k in range(len(f)):
+        w = np.abs(f - f[k]) <= 60
+        if v[k] == v[w].max() and v[k] - v[w].min() > 30 and 0 < k < len(f) - 1:
             out.append(f[k])
     return out
 

@@ -597,3 +597,24 @@ tone off
 20:53:35 off rep 92: 75%
 20:53:50 off rep 92: 100%
 20:53:52 STAGE ifs_pri rep 2: priority 900-1200 + 1300-1500 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
+20:57:02 ifs_pri rep 2: 25%
+21:00:12 ifs_pri rep 2: 50%
+21:03:13 ifs_pri rep 2: 75%
+21:06:17 ifs_pri rep 2: 100%
+21:06:17 STAGE ifs_rest rep 2: rest of 600-1600 at 5 MHz: 50 new frequencies x 3 levels (-36, -50, -57 dBm), 153 points (from 0)
+21:07:55 ifs_rest rep 2: 25%
+21:09:30 ifs_rest rep 2: 50%
+21:11:10 ifs_rest rep 2: 75%
+21:12:42 ifs_rest rep 2: 100%
+21:12:42 STAGE off rep 93: tone off after pass 2, 12 points (from 0)
+21:12:55 off rep 93: 25%
+21:13:10 off rep 93: 50%
+21:13:25 off rep 93: 75%
+21:13:40 off rep 93: 100%
+21:13:42 STAGE ifs_pri rep 3: priority 900-1200 + 1300-1500 at 1.25 MHz: 200 new frequencies x 3 levels (-36, -50, -57 dBm), 603 points (from 0)
+21:19:58 ifs_pri rep 3: 25%
+21:26:31 ifs_pri rep 3: 50%
+21:32:41 ifs_pri rep 3: 75%
+21:38:49 ifs_pri rep 3: 100%
+21:38:49 STAGE ifs_rest rep 3: rest of 600-1600 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
+21:41:59 ifs_rest rep 3: 25%

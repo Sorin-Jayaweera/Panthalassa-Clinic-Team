@@ -125,25 +125,49 @@ PD_KEY = item(
 )
 
 PD_HD_NIGHT = item(
-    "pd-hd-night", "Pads removed, high density 600&ndash;1600 MHz at three levels (15 Nov night, in progress)",
+    "pd-hd-night", "Pads removed, long IF cable: 600&ndash;1600 MHz at three levels (15 Nov, 20:03&ndash;20:31)",
     p("Sorin did not trust the 25 MHz no-pads sweeps, so this run fills 600&ndash;1600 MHz densely: 900&ndash;1200 and 1300&ndash;1500 MHz first (5, 2.5, 1.25, 0.625 MHz), then the rest (10, 5, 2.5 MHz). "
       "Pluto at &minus;36, &minus;50 and &minus;57 dBm, read back to back at each frequency. One scope reading per point (no dither, as Sorin asked; 2.5 s per point), 100 mV/div because the swing without pads is about 430 mV. "
       "The trace noise (about 1.9 mV rms) is half the 4 mV ADC step, so the averaged reading is not stuck on ADC steps. "
-      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>hdr_pri</code> and <code>hdr_rest</code>. Plot: <code>plot_pd_hd_night.py</code>. The plot is updated as the run fills in."),
+      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>hdr_pri</code> and <code>hdr_rest</code>. Plot: <code>plot_pd_hd_night.py hdr</code>. Sorin stopped this run after pass 2 to swap in a short IF cable (next section), so it reached 5 MHz in the priority regions and 10 MHz elsewhere."),
     fig("pd_hd_night_15nov.png", "Pads removed: 600-1600 MHz at -36, -50 and -57 dBm, one reading per point, with zooms on 900-1200 and 1300-1500 MHz and the wiring"),
 )
 
 PD_IFS = item(
-    "pd-ifs", "Short IF cable (15 Nov night): the ~360 MHz ripple is NOT caused by the long IF cable",
+    "pd-ifs", "Short IF cable (15 Nov night): the ~360 MHz ripple is NOT caused by the long IF cable; densest data so far",
     p("Test of the idea that the ~360 MHz ripple (about 2.8 ns of delay, far more than the arm difference) comes from reflections on the long IF cable to the scope. "
       "Sorin replaced it with an SMA-BNC adapter and an SMA cable about 16 cm long (about twice cable E); nothing else changed (cable E, no pads). "
       "Same plan as the long-cable run: 600&ndash;1600 MHz at &minus;36, &minus;50 and &minus;57 dBm, one reading per point, 100 mV/div. "
-      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>ifs_pri</code>, <code>ifs_rest</code> and later <code>ifs_rep</code>; tone-off readings are stage <code>off</code>, rep 91 and up. Plot: <code>plot_pd_ifs.py</code>."),
+      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>ifs_pri</code> and <code>ifs_rest</code>; tone-off readings are stage <code>off</code>, reps 91&ndash;93. Plots: <code>plot_pd_ifs.py</code>, <code>plot_pd_hd_night.py ifs</code>. "
+      "The run went from 20:33 to 21:43 and then stopped when the PC shut down for a Windows update overnight: 1618 readings. 900&ndash;1200 and 1300&ndash;1500 MHz are complete at 1.25 MHz steps; the rest of 600&ndash;1600 MHz is at 5 MHz (2.5 MHz in part)."),
+    fig("pd_ifs_night_15nov.png", "Short IF cable: 600-1600 MHz at -36, -50 and -57 dBm, one reading per point, with zooms on 900-1200 and 1300-1500 MHz at 1.25 MHz steps, and the wiring"),
     fig("pd_ifs_vs_long_15nov.png", "Phase detector with the long and with a short IF cable: 600-1600 MHz at three levels, and the two overlaid at -50 dBm, with both wirings"),
-    ul(["Peaks at &minus;50 dBm: 760, 1162 and 1495 MHz with the long cable; 770, 1160 and 1500 MHz with the short one. The ripple period and positions are unchanged, so the IF cable is not the cause.",
+    ul(["Peaks at &minus;50 dBm: 760, 1162 and 1495 MHz with the long cable; 765, 1164 and 1499 MHz with the short one. The ripple period and positions are unchanged, so the IF cable is not the cause.",
         "The swing is about 10&ndash;20% larger with the short cable, and the tone-off reading moved from &minus;23.7 to about &minus;45 mV.",
         "The levels still lie on top of each other except on the 1100&ndash;1150 MHz shoulder at &minus;36 dBm and near the peaks at &minus;57 dBm.",
         "Remaining suspects for the 2.8 ns delay: standing waves between the splitter and the mixer ports, or reflections in the shared path before the splitter. The amplifier supply current rose to 0.39 A during this run (0.22 A idle earlier)."]),
+)
+
+PD_RESOLUTION = item(
+    "pd-resolution", "Which setup gives 1&ndash;2 MHz with the power unknown? Cable C, cable E with pads, cable E without pads (long and short IF cable)",
+    p("Question (Sorin, 15 Nov): measure one detector voltage with a small reading error dV, and do not assume the power level (only that it is inside the measured range). What frequency error results? "
+      "Method: the calibration curve is the mean of the levels; for every true frequency, every level and a reading off by &plusmn;dV, invert the calibration curve and take the worst frequency error; "
+      "then find the longest contiguous stretch where that worst error stays &le;1 and &le;2 MHz. Linearity is the residual from a straight line, smoothness the residual from a 15 MHz running line, both in MHz. "
+      "Each setup is its own run; nothing is overlaid across runs. For the no-pads runs the steep rising edge 1340&ndash;1480 MHz is analysed (the automatic pick lands on the shallower 960&ndash;1135 MHz edge). "
+      "Script: <code>plot_pd_resolution.py</code>."),
+    fig("pd_resolution_compare.png", "Frequency error with the power unknown: cable C, cable E with pads, cable E without pads (long and short IF cable); each with every level, a zoom on the one-to-one region, worst error vs reading error, and linearity; with the wirings"),
+    table(["Setup (region)", "Slope, median (mV/MHz)", "Spread between levels, median (mV)", "Straight line off by (MHz rms)", "Smoothness (MHz rms)",
+           "Width with error &le;1 / &le;2 MHz, dV = 0.5 mV", "Same, dV = 1 mV", "Same, dV = 0.5 mV, &minus;36 dBm left out"],
+          [["C, no pads (900&ndash;1027 MHz), 4 levels &minus;36 to &minus;60", "1.12", "9.5", "8.8", "0.73", "0 / 19", "0 / 12", "1 / 17"],
+           ["E with pads (1236&ndash;1438 MHz), 4 levels &minus;36 to &minus;57", "0.83", "1.6", "5.7", "0.27", "0 / 55", "0 / 17", "3 / 61"],
+           ["E, no pads, long IF (1340&ndash;1480 MHz), 3 levels", "2.06", "7.8", "6.5", "0.40", "15 / 25", "15 / 25", "50 / 80"],
+           ["E, no pads, short IF (1340&ndash;1480 MHz), 3 levels", "1.90", "7.9", "7.3", "0.69", "21 / 30", "11 / 29", "54 / 80"]]),
+    ul(["Widths are contiguous MHz. None of the setups gives 1&ndash;2 MHz over 200 MHz with the power unknown from &minus;36 to &minus;57 dBm.",
+        "The limit is the spread between power levels, not the reading noise. &minus;36 dBm (the amplifiers&rsquo; hardest drive) is the level that breaks away; leaving it out triples the usable width without pads.",
+        "Best engineering choice: cable E without pads, on the rising edge, with the input kept at or below about &minus;50 dBm at the Pluto (or equivalent attenuation before the splitter): about 80 MHz with error &le;2 MHz and about 50 MHz with &le;1 MHz at dV = 0.5 mV. Slope about 2&ndash;3 mV/MHz, about 3&times; the padded setup.",
+        "With pads the curve is the most linear and smoothest (spread 1.6 mV) but the slope is only 0.8 mV/MHz, so 1&ndash;2 mV of spread already costs 2 MHz.",
+        "Cable C is the worst: steep at 960&ndash;1015 MHz, then a flat shelf, and 9.5 mV between levels.",
+        "The short and long IF cables give the same answer, as expected from the unchanged ripple."]),
 )
 
 PD_NOPADS = item(
