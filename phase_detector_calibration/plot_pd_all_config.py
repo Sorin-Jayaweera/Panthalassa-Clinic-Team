@@ -41,6 +41,8 @@ CAB = rows("pd_cable_13nov_E_pads.csv")
 OVN = rows("pd_overnight_13nov.csv")
 FIN = rows("pd_fine_14nov.csv")
 DIT = rows("pd_dither_14nov.csv")
+DNP = [r for r in DIT if r["stage"] == "coarse_np" or (r["stage"] == "off" and int(r["rep"]) >= 61)]   # 15 Nov 18:51 on: pads removed
+DIT = [r for r in DIT if r not in DNP]
 NPC = rows("pd_cable_13nov_cableE.csv")
 NPK = rows("pd_kitty_13nov_cableE.csv")
 for r in CAB + NPC:
@@ -77,7 +79,7 @@ def main():
 
     # 0: every reading against time
     groups = [("13 Nov evening (scope 0.2 V/div)", KIT + CAB, "#7570b3"), ("14 Nov 10:51-12:51 (0.2 V/div)", OVN, "#999999"),
-              ("14 Nov 12:52-13:00 (50 mV/div)", FIN, "#e7298a"), ("14-15 Nov dithered, 50 mV/div", DIT, "#1b9e77"),
+              ("14 Nov 12:52-13:00 (50 mV/div)", FIN, "#e7298a"), ("14-15 Nov dithered, 50 mV/div", DIT, "#1b9e77"), ("15 Nov 18:51, pads removed (own plot)", DNP, "#e6ab02"),
               ("13 Nov 20:38, before the pads", NPC + NPK, "#a6761d")]
     for lab, rs, c in groups:
         on = [r for r in rs if float(r["pluto_want_dbm"]) > -900]

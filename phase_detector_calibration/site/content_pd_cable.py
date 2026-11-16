@@ -124,6 +124,20 @@ PD_KEY = item(
     open_=True,
 )
 
+PD_NOPADS = item(
+    "pd-no-pads", "Pads removed (15 Nov evening): twice the swing, and the curve moves about 110 MHz",
+    p("Sorin removed the 3 dB pad at the LO port and the 6 dB pad at the RF port; nothing else changed. "
+      "The same coarse sweep was run twice (1150&ndash;1550 MHz every 25 MHz, five Pluto levels, dithered, each sweep with its own 1 min tone-off reading) and compared with the two sweeps taken with the pads that morning."),
+    fig("pd_nopads_15nov.png", "Phase detector without pads: two coarse sweeps at five levels; without against with the pads; and the change at each frequency and level; with both wirings"),
+    ul(["The two no-pads sweeps agree within 0.5 mV (median) at every level, worst 2.0 mV.",
+        "Swing: about 340 mV peak to peak without pads (&minus;88 to +254 mV, tone-off subtracted) against about 160 mV with them. On the rise the slope is about 2.7&ndash;2.8 mV/MHz (25 MHz steps, 1350&ndash;1450 MHz), about three times the 0.84 mV/MHz median with pads.",
+        "The curve moved: the low point is now near 1325&ndash;1350 MHz (1225 MHz with pads) and the peak near 1500 MHz (1425&ndash;1450 MHz with pads). "
+        "Rising one-to-one part about 1335&ndash;1500 MHz (about 165 MHz); a falling one-to-one part runs from below 1150 to about 1325 MHz.",
+        "&minus;36 to &minus;57 dBm still lie on top of each other; &minus;64 dBm is still off.",
+        "Tone-off reading: &minus;24.7 mV without pads, &minus;9.9 mV with.",
+        "The highest raw reading is about 229 mV, close to the top of the scope screen (260 mV) and to the 250 mV stop rule."]),
+)
+
 PD_FIVE = item(
     "pd-five-levels", "Five Pluto levels across 1150&ndash;1550 MHz, coarse to fine (14 Nov evening): the rise runs 1215&ndash;1445 MHz with no flat sides; &minus;36 to &minus;57 dBm agree within &plusmn;2 MHz on 90% of it",
     p("Same wiring. Five Pluto levels: &minus;36 dBm (the Pluto's top), &minus;43, &minus;50, &minus;57 and &minus;64 dBm. At each frequency all five are read back to back (seconds apart), so slow drift moves them together. "
