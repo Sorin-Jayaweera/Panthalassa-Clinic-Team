@@ -1,0 +1,564 @@
+=== wrapper ended 08:30:46
+=== launch 1 10:51:02
+10:51:04 STAGE wide10_kitty rep 0: 300-4000 MHz, 10 MHz, -50 dBm, scope + SM200B, 371 points (from 0)
+10:58:38 wide10_kitty rep 0: 25%
+11:05:07 wide10_kitty rep 0: 50%
+11:12:48 wide10_kitty rep 0: 75%
+11:20:25 wide10_kitty rep 0: 100%
+11:20:25 STAGE band_ramp rep 0: power ramp -80 to -36 dBm, 2 dB, at 1225-1450 MHz every 25 MHz, 230 points (from 0)
+11:24:14 band_ramp rep 0: 25%
+11:28:00 band_ramp rep 0: 50%
+11:31:47 band_ramp rep 0: 75%
+11:35:33 band_ramp rep 0: 100%
+11:35:33 STAGE band1 rep 1: band 1150-1550 MHz, 1 MHz, -50 dBm, repeat 1, 401 points (from 0)
+11:42:11 band1 rep 1: 25%
+11:48:46 band1 rep 1: 50%
+11:55:26 band1 rep 1: 75%
+12:02:06 band1 rep 1: 100%
+12:02:06 STAGE hold rep 0: hold 1340 MHz -50 dBm, one reading every 5 s, 20 min, 240 points (from 0)
+12:07:05 hold rep 0: 25%
+12:12:05 hold rep 0: 50%
+12:17:05 hold rep 0: 75%
+12:22:05 hold rep 0: 100%
+12:22:06 STAGE off rep 0: tone off, one reading every 5 s, 5 min, 60 points (from 0)
+12:23:20 off rep 0: 25%
+12:24:35 off rep 0: 50%
+12:25:51 off rep 0: 75%
+12:27:05 off rep 0: 100%
+12:27:06 STAGE wide5 rep 0: 600-2100 MHz, 5 MHz, -50 dBm, 301 points (from 0)
+12:33:08 wide5 rep 0: 25%
+12:38:14 wide5 rep 0: 50%
+12:43:12 wide5 rep 0: 75%
+12:48:09 wide5 rep 0: 100%
+12:48:09 STAGE band_quarter rep 0: 1220-1450 MHz, 0.25 MHz, -50 dBm, 921 points (from 0)
+=== launch 2 12:52:02
+12:52:03 STAGE off rep 0: tone off, 1 min, at 50 mV/div, 12 points (from 0)
+12:52:23 off rep 0: 25%
+12:52:38 off rep 0: 50%
+12:52:53 off rep 0: 75%
+12:53:08 off rep 0: 100%
+12:53:08 STAGE band1 rep 1: band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div, 401 points (from 0)
+12:59:58 band1 rep 1: 25%
+deadline reached or stop file
+13:00:27 ALL STAGES FINISHED
+tone off
+=== wrapper ended 13:00:27
+=== dither launch 1 13:01:02
+13:01:03 STAGE off rep 0: tone off, 1 min, 50 mV/div, 4-offset dither, 12 points (from 0)
+13:01:34 off rep 0: 25%
+13:02:02 off rep 0: 50%
+13:02:28 off rep 0: 75%
+13:02:54 off rep 0: 100%
+13:02:54 STAGE band1 rep 1: band 1150-1550 MHz, 1 MHz, -50 dBm, 50 mV/div, 401 points (from 0)
+13:17:12 band1 rep 1: 25%
+13:31:48 band1 rep 1: 50%
+13:45:09 band1 rep 1: 75%
+13:59:02 band1 rep 1: 100%
+13:59:02 STAGE band_quarter rep 0: 1220-1450 MHz, 0.25 MHz, -50 dBm, 921 points (from 0)
+deadline reached or stop file
+13:59:11 ALL STAGES FINISHED
+tone off
+=== wrapper ended 13:59:11
+=== levels launch 1 13:59:13
+13:59:14 STAGE levels rep 0: power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered, 413 points (from 0)
+14:14:35 levels rep 0: 25%
+14:29:42 levels rep 0: 50%
+14:44:48 levels rep 0: 75%
+deadline reached or stop file
+14:53:21 ALL STAGES FINISHED
+tone off
+=== wrapper ended 14:53:21
+=== drift launch 1 15:18:49
+15:18:50 STAGE levels rep 0: power levels -60 to -36 dBm (Pluto top), 1220-1452 MHz every 4 MHz, dithered, 413 points (from 368)
+15:19:04 levels rep 0: 75%
+15:25:25 levels rep 0: 100%
+15:25:25 STAGE off rep 1: tone off after the levels, 1 min, 12 points (from 0)
+15:25:53 off rep 1: 25%
+15:26:21 off rep 1: 50%
+15:26:48 off rep 1: 75%
+15:27:15 off rep 1: 100%
+15:27:15 STAGE drift_band rep 1: drift, band 1240-1430 MHz every 2 MHz, -50 dBm, repeat 1, 96 points (from 0)
+deadline reached or stop file
+15:28:23 ALL STAGES FINISHED
+tone off
+=== wrapper ended 15:28:24
+=== recheck launch 1 15:29:08
+15:29:09 STAGE recheck rep 0: recheck after the replug: 5 frequencies x 7 levels, same points as the 14:00 levels run, 35 points (from 0)
+15:30:41 recheck rep 0: 25%
+15:32:05 recheck rep 0: 50%
+15:33:20 recheck rep 0: 75%
+15:34:26 recheck rep 0: 100%
+15:34:26 STAGE drift_band rep 1: drift, band 1240-1430 MHz every 2 MHz, -50 dBm, repeat 1, 96 points (from 8)
+deadline reached or stop file
+15:34:36 ALL STAGES FINISHED
+tone off
+=== wrapper ended 15:34:36
+=== fine levels launch 1 15:34:37
+15:34:38 STAGE drift_band rep 101: band at -50 dBm before levels pass 1, 96 points (from 0)
+15:38:13 drift_band rep 101: 25%
+15:42:01 drift_band rep 101: 50%
+15:45:16 drift_band rep 101: 75%
+15:48:34 drift_band rep 101: 100%
+15:48:34 STAGE levels rep 1: levels pass 1: -60 to -36 dBm, 1220-1452 MHz every 4 MHz, dithered, 413 points (from 0)
+deadline reached or stop file
+15:48:42 ALL STAGES FINISHED
+tone off
+=== wrapper ended 15:48:43
+=== final launch 1 15:48:45
+15:48:46 STAGE off rep 21: tone off before the five-level sweep, 12 points (from 0)
+15:49:18 off rep 21: 25%
+15:49:44 off rep 21: 50%
+15:50:11 off rep 21: 75%
+15:50:37 off rep 21: 100%
+15:50:37 STAGE sweep5 rep 1: five levels -36 to -64 dBm, 1150-1550 MHz every 2 MHz, interleaved, 1005 points (from 0)
+16:26:05 sweep5 rep 1: 25%
+17:03:28 sweep5 rep 1: 50%
+tone 1398.0: try 1 failed, libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+scope: gave up after 1 tries: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 197, in main
+    m, sd, r = retry(rd, "scope")[0]
+               ~~~~~^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 163, in rd
+    return scope.read()
+           ~~~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 105, in read
+    _, v = self.s.waveform(self.ch)      # scaling uses the offset read back from the scope
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 87, in waveform
+    codes, vdiv, ofst, fs, t0 = self.waveform_raw(ch)
+                                ~~~~~~~~~~~~~~~~~^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 74, in waveform_raw
+    raw = self.inst.read_raw()
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 430, in read_raw
+    return bytes(self._read_raw(size))
+                 ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 475, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\functions.py", line 2339, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\highlevel.py", line 227, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\highlevel.py", line 252, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 197, in main
+    m, sd, r = retry(rd, "scope")[0]
+               ~~~~~^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 163, in rd
+    return scope.read()
+           ~~~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 105, in read
+    _, v = self.s.waveform(self.ch)      # scaling uses the offset read back from the scope
+           ~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 87, in waveform
+    codes, vdiv, ofst, fs, t0 = self.waveform_raw(ch)
+                                ~~~~~~~~~~~~~~~~~^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 74, in waveform_raw
+    raw = self.inst.read_raw()
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 430, in read_raw
+    return bytes(self._read_raw(size))
+                 ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 475, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\functions.py", line 2339, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\highlevel.py", line 227, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\highlevel.py", line 252, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 56, in _attr_ctx
+    at.value = val
+    ^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 704, in <lambda>
+    lambda self, x: self._write(x),
+                    ~~~~~~~~~~~^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 736, in _write
+    _c_write_attr(self._channel, self._name_ascii, value.encode("ascii"))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 62, in _check_negative
+    raise OSError(-result, _strerror(-result))
+ConnectionResetError: [Errno 10054] Unknown error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 223, in <module>
+    main()
+    ~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 217, in main
+    tone_off()
+    ~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 91, in tone_off
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 60, in _attr_ctx
+    raise RuntimeError(f"libiio {' '.join(a)} failed: {e}")
+RuntimeError: libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+=== final launch 2 17:54:19
+17:54:21 STAGE sweep5 rep 1: five levels -36 to -64 dBm, 1150-1550 MHz every 2 MHz, interleaved, 1005 points (from 625)
+17:54:35 sweep5 rep 1: 50%
+=== halving run launch 19:13:52 (after the 18:00-18:48 crashes)
+=== halving launch 1 19:13:59
+19:14:01 STAGE off rep 31: tone off after the reboot, 12 points (from 0)
+19:14:33 off rep 31: 25%
+19:15:01 off rep 31: 50%
+19:15:29 off rep 31: 75%
+19:15:55 off rep 31: 100%
+19:15:55 STAGE bisect5 rep 0: halving depth 0: 400 MHz grid, 2 new frequencies x 5 levels, 10 points (from 0)
+19:16:21 bisect5 rep 0: 25%
+19:16:38 bisect5 rep 0: 50%
+19:17:03 bisect5 rep 0: 75%
+19:17:20 bisect5 rep 0: 100%
+19:17:20 STAGE bisect5 rep 1: halving depth 1: 200 MHz grid, 1 new frequencies x 5 levels, 5 points (from 0)
+19:17:36 bisect5 rep 1: 25%
+19:17:44 bisect5 rep 1: 50%
+19:17:53 bisect5 rep 1: 75%
+19:18:04 bisect5 rep 1: 100%
+19:18:04 STAGE bisect5 rep 2: halving depth 2: 100 MHz grid, 2 new frequencies x 5 levels, 15 points (from 0)
+19:18:37 bisect5 rep 2: 25%
+19:19:17 bisect5 rep 2: 50%
+19:19:51 bisect5 rep 2: 75%
+19:20:16 bisect5 rep 2: 100%
+19:20:16 STAGE bisect5 rep 3: halving depth 3: 50 MHz grid, 4 new frequencies x 5 levels, 25 points (from 0)
+19:21:17 bisect5 rep 3: 25%
+19:22:10 bisect5 rep 3: 50%
+19:23:00 bisect5 rep 3: 75%
+19:23:50 bisect5 rep 3: 100%
+19:23:50 STAGE bisect5 rep 4: halving depth 4: 25 MHz grid, 8 new frequencies x 5 levels, 45 points (from 0)
+19:25:31 bisect5 rep 4: 25%
+19:27:09 bisect5 rep 4: 50%
+19:28:41 bisect5 rep 4: 75%
+19:30:13 bisect5 rep 4: 100%
+19:30:13 STAGE bisect5 rep 5: halving depth 5: 12.5 MHz grid, 16 new frequencies x 5 levels, 85 points (from 0)
+19:33:24 bisect5 rep 5: 25%
+19:36:31 bisect5 rep 5: 50%
+ERROR: READ LINE: -10053
+tone 1412.5: try 1 failed, libiio ad9361-phy altvoltage1 frequency 1411500000 failed: [Errno 10053] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+tone 1412.5: try 2 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1412.5: try 3 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1412.5: try 4 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+=== halving launch (waits for Pluto) 1 19:54:14
+19:54:15 STAGE bisect5 rep 5: halving depth 5: 12.5 MHz grid, 16 new frequencies x 5 levels, 85 points (from 55)
+19:54:29 bisect5 rep 5: 50%
+19:55:34 bisect5 rep 5: 75%
+19:58:34 bisect5 rep 5: 100%
+19:58:34 STAGE bisect5 rep 6: halving depth 6: 6.25 MHz grid, 32 new frequencies x 5 levels, 165 points (from 0)
+20:04:57 bisect5 rep 6: 25%
+20:11:11 bisect5 rep 6: 50%
+20:17:05 bisect5 rep 6: 75%
+20:22:58 bisect5 rep 6: 100%
+20:22:58 STAGE off rep 32: tone off at the 6.25 MHz (2%) mark, 12 points (from 0)
+20:23:26 off rep 32: 25%
+20:23:52 off rep 32: 50%
+20:24:19 off rep 32: 75%
+20:24:46 off rep 32: 100%
+20:24:46 STAGE bisect5 rep 7: halving depth 7: 3.125 MHz grid, 37 new frequencies x 5 levels (rise only), 190 points (from 0)
+20:31:54 bisect5 rep 7: 25%
+20:39:08 bisect5 rep 7: 50%
+20:46:20 bisect5 rep 7: 75%
+20:53:00 bisect5 rep 7: 100%
+20:53:00 STAGE bisect5 rep 8: halving depth 8: 1.5625 MHz grid, 74 new frequencies x 5 levels (rise only), 375 points (from 0)
+21:07:02 bisect5 rep 8: 25%
+21:21:32 bisect5 rep 8: 50%
+21:35:32 bisect5 rep 8: 75%
+21:48:47 bisect5 rep 8: 100%
+21:48:47 STAGE off rep 23: tone off at the end, 1 min, 12 points (from 0)
+21:49:14 off rep 23: 25%
+21:49:41 off rep 23: 50%
+21:50:07 off rep 23: 75%
+21:50:34 off rep 23: 100%
+21:50:34 ALL STAGES FINISHED
+tone off
+=== wrapper ended 21:50:34
+=== overnight density launch 1 21:50:59
+21:50:59 STAGE bisect5s rep 7: sides (outside 1220-1450 MHz) at the 3.125 MHz grid, 27 new frequencies x 5 levels, 140 points (from 0)
+ERROR: READ LINE: -10053
+tone 1153.125: try 1 failed, libiio ad9361-phy altvoltage1 frequency 1152125000 failed: [Errno 10053] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+tone 1153.125: try 2 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 3 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 4 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 5 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 6 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 7 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 8 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 9 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 10 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 11 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 12 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 13 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 14 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 15 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 16 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 17 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 18 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 19 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 20 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 21 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 22 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 23 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 24 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 25 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 26 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 27 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 28 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 29 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 30 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 31 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 32 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 33 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 34 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 35 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 36 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 37 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 38 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 39 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 40 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 41 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 42 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 43 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 44 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 45 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 46 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 47 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 48 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 49 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 50 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 51 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 52 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 53 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 54 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 55 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 56 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 57 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 58 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 59 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 60 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 61 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 62 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 63 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 64 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 65 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 66 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 67 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 68 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 69 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 70 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 71 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 72 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 73 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 74 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 75 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 76 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 77 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 78 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 79 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 80 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 81 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 82 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 83 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 84 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 85 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 86 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 87 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 88 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 89 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: try 90 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No error
+tone 1153.125: gave up after 91 tries: libiio context ip:192.168.2.1 failed: [Errno 0] No error
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 50, in _attr_ctx
+    _ctx = _load_iio().Context(URI)
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 1328, in __init__
+    self._context = _new_uri(_context.encode("ascii"))
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 56, in _check_null
+    raise OSError(err, _strerror(err))
+OSError: [Errno 0] No error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 232, in main
+    retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 232, in <lambda>
+    retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
+                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 100, in tone_on
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 72, in _attr
+    raise RuntimeError(f"libiio context {URI} failed: {e}")
+RuntimeError: libiio context ip:192.168.2.1 failed: [Errno 0] No error
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 50, in _attr_ctx
+    _ctx = _load_iio().Context(URI)
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 1328, in __init__
+    self._context = _new_uri(_context.encode("ascii"))
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 56, in _check_null
+    raise OSError(err, _strerror(err))
+OSError: [Errno 0] No error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 232, in main
+    retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 232, in <lambda>
+    retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
+                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 100, in tone_on
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 72, in _attr
+    raise RuntimeError(f"libiio context {URI} failed: {e}")
+RuntimeError: libiio context ip:192.168.2.1 failed: [Errno 0] No error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 50, in _attr_ctx
+    _ctx = _load_iio().Context(URI)
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 1328, in __init__
+    self._context = _new_uri(_context.encode("ascii"))
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 56, in _check_null
+    raise OSError(err, _strerror(err))
+OSError: [Errno 0] No error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 260, in <module>
+    main()
+    ~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 254, in main
+    tone_off()
+    ~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 91, in tone_off
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 72, in _attr
+    raise RuntimeError(f"libiio context {URI} failed: {e}")
+RuntimeError: libiio context ip:192.168.2.1 failed: [Errno 0] No error
+=== coarse rep 1 launch 1 11:40:43
+11:40:44 STAGE off rep 51: tone off before coarse sweep 1, 12 points (from 0)
+11:41:16 off rep 51: 25%
+11:41:42 off rep 51: 50%
+11:42:09 off rep 51: 75%
+11:42:34 off rep 51: 100%
+11:42:34 STAGE coarse rep 1: coarse sweep 1: 1150-1550 MHz every 25 MHz x 5 levels, 85 points (from 0)
+11:45:46 coarse rep 1: 25%
+11:48:53 coarse rep 1: 50%
+11:51:48 coarse rep 1: 75%
+11:54:43 coarse rep 1: 100%
+11:54:43 ALL STAGES FINISHED
+tone off
+=== coarse rep 2 launch 1 11:54:43
+11:54:44 STAGE off rep 52: tone off before coarse sweep 2, 12 points (from 0)
+11:55:15 off rep 52: 25%
+11:55:42 off rep 52: 50%
+11:56:09 off rep 52: 75%
+11:56:36 off rep 52: 100%
+11:56:36 STAGE coarse rep 2: coarse sweep 2: 1150-1550 MHz every 25 MHz x 5 levels, 85 points (from 0)
+11:59:48 coarse rep 2: 25%
+12:02:54 coarse rep 2: 50%
+12:05:55 coarse rep 2: 75%
+12:08:52 coarse rep 2: 100%
+12:08:52 ALL STAGES FINISHED
+tone off
+=== coarse rep 3 launch 1 12:08:52
+12:08:53 STAGE off rep 53: tone off before coarse sweep 3, 12 points (from 0)
+deadline reached or stop file
+12:09:07 ALL STAGES FINISHED
+tone off
+=== coarse wrapper ended 12:09:07
+=== no-pads coarse rep 1 launch 1 18:51:24
+18:51:25 STAGE off rep 61: tone off before no-pads coarse sweep 1, 12 points (from 0)
+18:51:58 off rep 61: 25%
+18:52:24 off rep 61: 50%
+18:52:51 off rep 61: 75%
+18:53:17 off rep 61: 100%
+18:53:17 STAGE coarse_np rep 1: no pads, coarse sweep 1: 1150-1550 MHz every 25 MHz x 5 levels, 85 points (from 0)
+18:56:39 coarse_np rep 1: 25%
+18:59:37 coarse_np rep 1: 50%
+19:02:33 coarse_np rep 1: 75%
+19:05:28 coarse_np rep 1: 100%
+19:05:28 ALL STAGES FINISHED
+tone off
+=== no-pads coarse rep 2 launch 1 19:05:28
+19:05:29 STAGE off rep 62: tone off before no-pads coarse sweep 2, 12 points (from 0)
+19:06:00 off rep 62: 25%
+19:06:25 off rep 62: 50%
+19:06:51 off rep 62: 75%
+19:07:17 off rep 62: 100%
+19:07:17 STAGE coarse_np rep 2: no pads, coarse sweep 2: 1150-1550 MHz every 25 MHz x 5 levels, 85 points (from 0)
+19:10:33 coarse_np rep 2: 25%
+19:13:39 coarse_np rep 2: 50%
+19:16:37 coarse_np rep 2: 75%
+19:19:31 coarse_np rep 2: 100%
+19:19:31 ALL STAGES FINISHED
+tone off
+=== no-pads wrapper ended 19:19:35
+=== high-density launch 1 19:59:34
+19:59:35 STAGE off rep 71: tone off before the high-density night run (no pads, 100 mV/div), 12 points (from 0)
+20:00:10 off rep 71: 25%
+20:00:41 off rep 71: 50%
+20:01:11 off rep 71: 75%
+20:01:41 off rep 71: 100%
+20:01:41 STAGE hd_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+deadline reached or stop file
+20:01:59 ALL STAGES FINISHED
+tone off
+=== high-density wrapper ended 20:01:59
+=== high-density launch 1 20:02:10
+20:02:11 STAGE off rep 81: tone off before the high-density night run (no pads, 100 mV/div, no dither), 12 points (from 0)
+20:02:27 off rep 81: 25%
+20:02:42 off rep 81: 50%
+20:02:56 off rep 81: 75%
+20:03:11 off rep 81: 100%
+20:03:13 STAGE hdr_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+20:06:37 hdr_pri rep 1: 25%
+20:10:02 hdr_pri rep 1: 50%
+20:13:24 hdr_pri rep 1: 75%
+20:16:46 hdr_pri rep 1: 100%
+20:16:46 STAGE hdr_rest rep 1: rest of 600-1600 at 10 MHz: 49 new frequencies x 3 levels (-36, -50, -57 dBm), 150 points (from 0)
+20:18:25 hdr_rest rep 1: 25%
+20:20:00 hdr_rest rep 1: 50%
+20:21:47 hdr_rest rep 1: 75%

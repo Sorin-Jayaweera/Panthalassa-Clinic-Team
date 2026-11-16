@@ -124,6 +124,15 @@ PD_KEY = item(
     open_=True,
 )
 
+PD_HD_NIGHT = item(
+    "pd-hd-night", "Pads removed, high density 600&ndash;1600 MHz at three levels (15 Nov night, in progress)",
+    p("Sorin did not trust the 25 MHz no-pads sweeps, so this run fills 600&ndash;1600 MHz densely: 900&ndash;1200 and 1300&ndash;1500 MHz first (5, 2.5, 1.25, 0.625 MHz), then the rest (10, 5, 2.5 MHz). "
+      "Pluto at &minus;36, &minus;50 and &minus;57 dBm, read back to back at each frequency. One scope reading per point (no dither, as Sorin asked; 2.5 s per point), 100 mV/div because the swing without pads is about 430 mV. "
+      "The trace noise (about 1.9 mV rms) is half the 4 mV ADC step, so the averaged reading is not stuck on ADC steps. "
+      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>hdr_pri</code> and <code>hdr_rest</code>. Plot: <code>plot_pd_hd_night.py</code>. The plot is updated as the run fills in."),
+    fig("pd_hd_night_15nov.png", "Pads removed: 600-1600 MHz at -36, -50 and -57 dBm, one reading per point, with zooms on 900-1200 and 1300-1500 MHz and the wiring"),
+)
+
 PD_NOPADS = item(
     "pd-no-pads", "Pads removed (15 Nov evening): twice the swing, and the curve moves about 110 MHz",
     p("Sorin removed the 3 dB pad at the LO port and the 6 dB pad at the RF port; nothing else changed. "

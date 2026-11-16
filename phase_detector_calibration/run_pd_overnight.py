@@ -39,10 +39,13 @@ STOP_IF_DBM = 5.0
 DEADLINE = dt.datetime(2099, 1, 1)   # runs until Sorin says stop
 OUT = HERE / "pd_dither_14nov.csv"
 STOP_FILE = HERE / "STOP_PD_RUN"   # create this file to end the run cleanly between points
-VDIV = 0.05                        # 50 mV/div: ADC step 2 mV (0.2 V/div gave 8 mV steps = the staircase)
-OFST = -0.06                       # screen centre +60 mV, so the screen covers about -140 to +260 mV
-CLIP_MV = 250.0
-DITHER = 4                         # read at 4 offsets 1 mV apart (half an ADC step) and average: smooths the 2 mV steps
+VDIV = float(__import__("os").environ.get("PD_VDIV", "0.05"))  # 15 Nov night, no pads: 0.1 (the swing is about 430 mV)
+#VDIV = 0.05                        # 50 mV/div: ADC step 2 mV (0.2 V/div gave 8 mV steps = the staircase)
+OFST = float(__import__("os").environ.get("PD_OFST", "-0.06"))
+#OFST = -0.06                       # screen centre +60 mV, so the screen covers about -140 to +260 mV
+CLIP_MV = float(__import__("os").environ.get("PD_CLIP_MV", "250"))
+DITHER = int(__import__("os").environ.get("PD_DITHER", "4"))  # 15 Nov 20:05, Sorin: no dithering, one reading per point
+#DITHER = 4                         # read at 4 offsets 1 mV apart (half an ADC step) and average: smooths the 2 mV steps
 BAND = (1150.0, 1550.0)
 COLS = ["timestamp", "stage", "rep", "freq_mhz", "pluto_att_db", "pluto_want_dbm", "level_known", "detector_mean_v", "repeat_sd_v", "rms_v",
         "if_tone_dbm", "if_double_dbm", "if_triple_dbm"]
@@ -67,6 +70,20 @@ def rng(a, b, s):
 def stages():
     """(stage, rep, list of (freq, want_dbm), kitty, label). Order = coarse first."""
     lo, hi = BAND
+    if __import__("os").environ.get("HD_NIGHT"):   # 15 Nov night, no pads, 100 mV/div: dense where it matters, coarse to fine
+        L3 = (-36.0, -50.0, -57.0)
+        pri = lambda f: 900 <= f <= 1200 or 1300 <= f <= 1500
+        done = set()
+        plan = [("hdr_pri", 1, 5.0, True), ("hdr_rest", 1, 10.0, False), ("hdr_pri", 2, 2.5, True), ("hdr_rest", 2, 5.0, False),
+                ("hdr_pri", 3, 1.25, True), ("hdr_rest", 3, 2.5, False), ("hdr_pri", 4, 0.625, True)]   # hdr = one reading per point (no dither)
+        yield "off", 81, [(0.0, -999.0)] * 12, False, "tone off before the high-density night run (no pads, 100 mV/div, no dither)"
+        for st, rep, step, want_pri in plan:
+            fs = [f for f in rng(600, 1600, step) if pri(f) == want_pri and f not in done]
+            done.update(fs)
+            yield st, rep, [(1350.0, w) for w in L3] + [(f, w) for f in fs for w in L3], False, f"{'priority 900-1200 + 1300-1500' if want_pri else 'rest of 600-1600'} at {step:g} MHz: {len(fs)} new frequencies x 3 levels (-36, -50, -57 dBm)"
+            if st == "hdr_rest":
+                yield "off", 81 + rep, [(0.0, -999.0)] * 12, False, f"tone off after pass {rep}"
+        return
     cr = __import__("os").environ.get("COARSE_REP")
     if cr:   # 15 Nov: coarse repeat sweeps, one python launch per rep (fresh Pluto and scope connections each time)
         n = int(cr)
