@@ -183,7 +183,12 @@ PD_DELAY = item(
     ul(["The delay moves with the arm cable: C to E shortens it by 0.23&ndash;0.32 ns. C is about 12 cm and E about 8 cm, so 4 cm of coax is about 0.19 ns. The 2.75 ns is therefore the real difference between the two arms, not an outside reflection.",
         "That also explains the usable width: half a cycle of 2.75 ns is about 180 MHz, the one-to-one width seen in every run. A 0.55 ns difference would give about 900 MHz.",
         "Ruled out: the long IF cable (same curve with a short one).",
-        "Next: measure each arm on the VNA, from the splitter output port to the mixer port with the cables and adapters exactly as used, and find where the extra ~2.2 ns (about 45 cm of coax) is."]),
+        "Cable lengths (Sorin, 16 Nov): B and D are both 15 cm, E about 8 cm, C about 12 cm. So the direct arm difference with E is only 8 cm, about 0.38 ns; it cannot give 2.75 ns.",
+        "Likely cause: the ZFRSC-42-S+ is a resistive splitter with only about 6 dB between its outputs. A reflection off one mixer port goes back up its arm, crosses the splitter 6 dB down and reaches the other mixer port. "
+        "Mixed against the direct signal, that path differs by the SUM of the two arms (D + B + E = 38 cm, about 1.8 ns of cable, plus the splitter, adapters and the paths inside the mixer to its diodes), not their difference. "
+        "A sum of arms near 2.75 ns needs about 0.9 ns more than the cables alone, so this is likely but not yet proven.",
+        "Test that separates the two with no new parts: lengthen arm D only. If the ~360 MHz pattern gets slower (longer cycle), it is the direct difference; if it gets faster, it is the reflection path through the splitter (sum of arms). "
+        "Fix if it is the reflection path: a high-isolation (Wilkinson or hybrid) splitter in place of the resistive one, or attenuators right at the mixer ports (each dB of pad takes 2 dB off the reflected path)."]),
 )
 
 PD_NOPADS = item(
