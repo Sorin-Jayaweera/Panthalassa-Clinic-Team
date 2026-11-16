@@ -133,6 +133,19 @@ PD_HD_NIGHT = item(
     fig("pd_hd_night_15nov.png", "Pads removed: 600-1600 MHz at -36, -50 and -57 dBm, one reading per point, with zooms on 900-1200 and 1300-1500 MHz and the wiring"),
 )
 
+PD_IFS = item(
+    "pd-ifs", "Short IF cable (15 Nov night): the ~360 MHz ripple is NOT caused by the long IF cable",
+    p("Test of the idea that the ~360 MHz ripple (about 2.8 ns of delay, far more than the arm difference) comes from reflections on the long IF cable to the scope. "
+      "Sorin replaced it with an SMA-BNC adapter and an SMA cable about 16 cm long (about twice cable E); nothing else changed (cable E, no pads). "
+      "Same plan as the long-cable run: 600&ndash;1600 MHz at &minus;36, &minus;50 and &minus;57 dBm, one reading per point, 100 mV/div. "
+      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>ifs_pri</code>, <code>ifs_rest</code> and later <code>ifs_rep</code>; tone-off readings are stage <code>off</code>, rep 91 and up. Plot: <code>plot_pd_ifs.py</code>."),
+    fig("pd_ifs_vs_long_15nov.png", "Phase detector with the long and with a short IF cable: 600-1600 MHz at three levels, and the two overlaid at -50 dBm, with both wirings"),
+    ul(["Peaks at &minus;50 dBm: 760, 1162 and 1495 MHz with the long cable; 770, 1160 and 1500 MHz with the short one. The ripple period and positions are unchanged, so the IF cable is not the cause.",
+        "The swing is about 10&ndash;20% larger with the short cable, and the tone-off reading moved from &minus;23.7 to about &minus;45 mV.",
+        "The levels still lie on top of each other except on the 1100&ndash;1150 MHz shoulder at &minus;36 dBm and near the peaks at &minus;57 dBm.",
+        "Remaining suspects for the 2.8 ns delay: standing waves between the splitter and the mixer ports, or reflections in the shared path before the splitter. The amplifier supply current rose to 0.39 A during this run (0.22 A idle earlier)."]),
+)
+
 PD_NOPADS = item(
     "pd-no-pads", "Pads removed (15 Nov evening): twice the swing, and the curve moves about 110 MHz",
     p("Sorin removed the 3 dB pad at the LO port and the 6 dB pad at the RF port; nothing else changed. "

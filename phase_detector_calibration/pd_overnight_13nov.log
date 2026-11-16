@@ -562,3 +562,38 @@ tone off
 20:18:25 hdr_rest rep 1: 25%
 20:20:00 hdr_rest rep 1: 50%
 20:21:47 hdr_rest rep 1: 75%
+20:23:18 hdr_rest rep 1: 100%
+20:23:18 STAGE off rep 82: tone off after pass 1, 12 points (from 0)
+20:23:31 off rep 82: 25%
+20:23:46 off rep 82: 50%
+20:24:01 off rep 82: 75%
+20:24:16 off rep 82: 100%
+20:24:18 STAGE hdr_pri rep 2: priority 900-1200 + 1300-1500 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
+20:27:30 hdr_pri rep 2: 25%
+20:30:47 hdr_pri rep 2: 50%
+deadline reached or stop file
+20:31:08 ALL STAGES FINISHED
+tone off
+=== high-density wrapper ended 20:31:09
+=== short-IF-cable launch 1 20:32:35
+20:32:35 STAGE off rep 91: tone off before the high-density run (ifs: no pads, 100 mV/div, no dither), 12 points (from 0)
+20:32:51 off rep 91: 25%
+20:33:06 off rep 91: 50%
+20:33:20 off rep 91: 75%
+20:33:35 off rep 91: 100%
+20:33:38 STAGE ifs_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+20:36:57 ifs_pri rep 1: 25%
+20:40:18 ifs_pri rep 1: 50%
+20:43:24 ifs_pri rep 1: 75%
+20:46:33 ifs_pri rep 1: 100%
+20:46:33 STAGE ifs_rest rep 1: rest of 600-1600 at 10 MHz: 49 new frequencies x 3 levels (-36, -50, -57 dBm), 150 points (from 0)
+20:48:09 ifs_rest rep 1: 25%
+20:49:40 ifs_rest rep 1: 50%
+20:51:21 ifs_rest rep 1: 75%
+20:52:52 ifs_rest rep 1: 100%
+20:52:52 STAGE off rep 92: tone off after pass 1, 12 points (from 0)
+20:53:05 off rep 92: 25%
+20:53:20 off rep 92: 50%
+20:53:35 off rep 92: 75%
+20:53:50 off rep 92: 100%
+20:53:52 STAGE ifs_pri rep 2: priority 900-1200 + 1300-1500 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
