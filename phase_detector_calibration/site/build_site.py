@@ -254,7 +254,7 @@ def lut_tab():
     ])
 
 
-TABS = [("tab-schem", "Schematic"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
+TABS = [("tab-schem", "Schematic"), ("tab-plots", "All plots"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
         ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-racon", "Racon"), ("tab-vna", "VNA"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
         ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-review", "Review notes")]
 
@@ -416,6 +416,21 @@ def main():
     panels = {"tab-schem": schem, "tab-parts": C.PARTINFO.replace("@@RX_LEVELS@@", CP.RX_LEVELS), "tab-limiter": CP.LIMITER, "tab-lna": CP.LNA, "tab-rxmixer": CP.RXMIXER,
               "tab-ifamp": CP.IFAMP, "tab-lobuf": CM.LOBUF, "tab-filter": CM.FILTER, "tab-vco": CP.VCO, "tab-splitter": CP.SPLITTER, "tab-mixer": CP.PHASEDET, "tab-env": CE.ENV, "tab-comp": CE.COMP,
               "tab-pluto": CPL.PLUTO, "tab-radar": CRA.RADAR, "tab-racon": CRC.RACON, "tab-vna": vna_tab(), "tab-gear": C.GEAR, "tab-lut": lut_tab(), "tab-tests": C.TESTS, "tab-errors": C.ERRORS, "tab-review": REVIEW + HN.HOWTO}
+    import json as _json
+    import datetime as _dt
+    dates = {f.name: _dt.datetime.fromtimestamp(f.stat().st_mtime).isoformat(timespec="minutes") for f in (HERE / "img").iterdir() if f.is_file()}
+    shared = _json.loads((HERE / "stars.json").read_text(encoding="utf-8")) if (HERE / "stars.json").exists() else []
+    panels["tab-plots"] = ("<h2>All plots</h2>"
+        + C.p("Every plot on this site, newest first (by the date of the image file). Type to search titles, file names, sections and tabs. "
+              "Click a plot to go to it in its section. Click the &#9734; to star it: it then also shows under &lsquo;Starred plots&rsquo; at the top of its own tab and in the starred list below. "
+              "Your stars are kept in this browser; &lsquo;Copy my stars&rsquo; copies the list so it can be added to the shared list (site/stars.json) that everyone sees.")
+        + '<div class="bar plotbar"><input id="plot-search" type="search" placeholder="search plots (e.g. pluto drift, 15 nov, cable E)" aria-label="Search plots">'
+          '<button type="button" id="plot-starred-only" aria-pressed="false">Starred only</button>'
+          '<label>Columns <input id="plot-cols" type="range" min="2" max="8" value="4"></label>'
+          '<button type="button" id="plot-copy-stars">Copy my stars</button><span id="plot-count"></span></div>'
+        + '<details class="item" open><summary>All starred plots (<span id="plot-starred-n">0</span>)</summary><div class="body"><div class="pgrid small" id="plot-starred-all"></div></div></details>'
+        + '<div class="pgrid" id="plotgrid"></div>'
+        + "<script>window.PLOT_DATES=" + _json.dumps(dates) + ";window.PLOT_STARS_SHARED=" + _json.dumps(shared) + ";</script>")
     import content_data_index as CDX          # data sets found by the 16 Nov audit, appended to their tabs
     for tid, extra in CDX.tabs().items():
         panels[tid] = panels[tid] + extra
@@ -423,7 +438,7 @@ def main():
         f'<button type="button" role="tab" data-panel="{tid}" aria-selected="{"true" if i == 0 else "false"}">{name}</button>' for i, (tid, name) in enumerate(TABS)) + "</div>\n"
     body = "".join(f'<div class="panel" id="{tid}"{"" if i == 0 else " hidden"}>\n{panels[tid]}\n</div>\n' for i, (tid, _) in enumerate(TABS))
     page = (HEAD % ((P / "style.css").read_text(encoding="utf-8") + HN.CSS)) + "<main>\n" + BAR + tabs + body + "</main>\n" + TOOLS \
-        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + (P / "review.js").read_text(encoding="utf-8") + "</script>\n" + HN.embed()
+        + "<!--APP-->\n<script>\n" + (P / "app.js").read_text(encoding="utf-8") + (P / "plots.js").read_text(encoding="utf-8") + (P / "review.js").read_text(encoding="utf-8") + "</script>\n" + HN.embed()
     page = page.replace("@@IDS@@", HN.id_list(page))
     (HERE / "index.html").write_text(local_datasheets(page, PAGES_URL + "datasheets/"), encoding="utf-8")
     print("index.html", len(page), "bytes")

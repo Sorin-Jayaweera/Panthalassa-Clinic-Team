@@ -153,3 +153,20 @@ details.item.ai > summary { color: var(--accent); font-size: 0.85rem; }
 .sw.have, .stpill.have { background: var(--st-have); border-color: var(--st-have-line); }
 .sw.none, .stpill.none { background: transparent; border: 2px dashed var(--st-have-line); }
 .stpill { display: inline-block; white-space: nowrap; padding: 0.05rem 0.45rem; border-radius: 2px; border: 1.5px solid; font-size: 0.8rem; color: var(--fg); }
+
+/* all plots grid and stars (16 Nov) */
+.plotbar input[type=search] { font: inherit; font-size: 0.9rem; padding: 0.3rem 0.5rem; min-width: 18rem; flex: 1; background: var(--bg); color: var(--fg); border: 1px solid var(--rule); }
+.pgrid { --pcols: 4; display: grid; grid-template-columns: repeat(var(--pcols), minmax(0, 1fr)); gap: 0.6rem; }
+.pgrid.small { --pcols: 5; }
+@media (max-width: 700px) { .pgrid, .pgrid.small { --pcols: 2; } .plotbar input[type=search] { min-width: 0; } }
+.ptile { position: relative; background: var(--surface); border: 1px solid var(--rule); display: flex; flex-direction: column; }
+.ptile[hidden] { display: none; }
+.pthumb { display: block; background: var(--plot-bg); aspect-ratio: 4 / 3; overflow: hidden; }
+.pthumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.pcap { font-size: 0.72rem; line-height: 1.35; padding: 0.3rem 0.4rem; color: var(--muted); overflow-wrap: anywhere; }
+.ptab { font-family: var(--mono); color: var(--fg); }
+figure.starrable { position: relative; }
+button.star { position: absolute; top: 0.25rem; right: 0.25rem; font-size: 1.15rem; line-height: 1; padding: 0.15rem 0.3rem; cursor: pointer;
+  background: var(--surface); color: var(--muted); border: 1px solid var(--rule); }
+button.star.on { color: #c98a00; border-color: #c98a00; }
+button.star:focus-visible { outline: 2px solid var(--accent); }

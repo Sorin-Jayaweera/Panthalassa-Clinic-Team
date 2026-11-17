@@ -7,7 +7,7 @@ def esc(s):
 
 
 def fig(name, alt):
-    return f'<figure><a href="img/{name}"><img src="img/{name}" alt="{alt}"></a></figure>'
+    return f'<figure><a href="img/{name}"><img loading="lazy" src="img/{name}" alt="{alt}"></a></figure>'
 
 
 def ul(items):
