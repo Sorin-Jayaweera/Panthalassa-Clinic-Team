@@ -74,15 +74,22 @@ def stages():
         L3 = (-36.0, -50.0, -57.0)
         pri = lambda f: 900 <= f <= 1200 or 1300 <= f <= 1500
         done = set()
+        tag = __import__("os").environ.get("HD_TAG", "hdr")   # "ifs" = 15 Nov 20:50, short IF cable (about 16 cm) straight to the scope
+        base = {"hdr": 81, "ifs": 91}[tag]
         plan = [("hdr_pri", 1, 5.0, True), ("hdr_rest", 1, 10.0, False), ("hdr_pri", 2, 2.5, True), ("hdr_rest", 2, 5.0, False),
                 ("hdr_pri", 3, 1.25, True), ("hdr_rest", 3, 2.5, False), ("hdr_pri", 4, 0.625, True)]   # hdr = one reading per point (no dither)
-        yield "off", 81, [(0.0, -999.0)] * 12, False, "tone off before the high-density night run (no pads, 100 mV/div, no dither)"
+        plan = [(st.replace("hdr", tag), rp, stp, wp) for st, rp, stp, wp in plan]
+        yield "off", base, [(0.0, -999.0)] * 12, False, f"tone off before the high-density run ({tag}: no pads, 100 mV/div, no dither)"
         for st, rep, step, want_pri in plan:
             fs = [f for f in rng(600, 1600, step) if pri(f) == want_pri and f not in done]
             done.update(fs)
             yield st, rep, [(1350.0, w) for w in L3] + [(f, w) for f in fs for w in L3], False, f"{'priority 900-1200 + 1300-1500' if want_pri else 'rest of 600-1600'} at {step:g} MHz: {len(fs)} new frequencies x 3 levels (-36, -50, -57 dBm)"
-            if st == "hdr_rest":
-                yield "off", 81 + rep, [(0.0, -999.0)] * 12, False, f"tone off after pass {rep}"
+            if st.endswith("_rest"):
+                yield "off", base + rep, [(0.0, -999.0)] * 12, False, f"tone off after pass {rep}"
+        if tag == "ifs":   # Sorin 20:35: "take data for the rest of the night": then repeat the 5 MHz grid over 600-1600 MHz all night (drift)
+            for n in range(1, 21):
+                yield f"{tag}_rep", n, [(f, w) for f in rng(600, 1600, 5) for w in L3], False, f"repeat {n}: 600-1600 MHz every 5 MHz x 3 levels (drift through the night)"
+                yield "off", 100 + n, [(0.0, -999.0)] * 12, False, f"tone off after repeat {n}"
         return
     cr = __import__("os").environ.get("COARSE_REP")
     if cr:   # 15 Nov: coarse repeat sweeps, one python launch per rep (fresh Pluto and scope connections each time)
