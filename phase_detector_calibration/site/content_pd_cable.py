@@ -245,3 +245,16 @@ PD_FIVE = item(
         "The Pluto (firmware v0.39) and the scope share one USB hub (WCH 1A86:8098). Windows USB selective suspend is on for the hub and the Pluto. Both drops happened during a Pluto LO frequency change.",
         "Next: turn off USB power saving for the hub and the Pluto (fix_usb_power_admin.ps1, admin), and log the Pluto's USB state with each failure to tell a Windows-side drop from a Pluto firmware hang."]),
 )
+
+PD_PLUTO = item(
+    "pd-vs-pluto", "Is the ~360 MHz pattern the Pluto&rsquo;s own level ripple? No (16 Nov)",
+    p("Sorin asked whether the pattern comes from the Pluto, as with the comparator. The Pluto&rsquo;s output against frequency was measured on 12 Oct straight into the Siglent spectrum analyzer, 350&ndash;2090 MHz in 10 MHz steps "
+      "(<code>pluto_characterization/pluto_map_table.csv</code>; Pluto tab, Results). It has a ripple of its own. Here it is set against the phase detector curve (cable E, no pads, short IF cable, 15 Nov). "
+      "Script: <code>phase_detector_calibration/plot_pd_vs_pluto_level.py</code>."),
+    fig("pd_vs_pluto_level.png", "Pluto output ripple against frequency, the phase detector curve, the detector change for a 7 dB level change, and their correlation, with both wirings"),
+    ul(["Pluto ripple: 0.45&ndash;0.49 dB rms after a smooth trend, up to about 1.5 dB near 1450 MHz. Its bumps are about 150&ndash;200 MHz apart below 1150 MHz and 80&ndash;150 MHz apart above; not 360 MHz.",
+        "Detector sensitivity to the Pluto level: going from &minus;57 to &minus;50 dBm (7 dB) moves the detector by a median 2.9 mV (0.4 mV per dB), at most about 28 mV near 810 MHz and 20 mV near 1500 MHz (about 4 mV per dB). "
+        "So the Pluto ripple can add at most a few mV; the detector pattern swings by about 500 mV.",
+        "Correlation between the two after removing smooth trends: |r| &le; 0.3 at every shift up to &plusmn;200 MHz.",
+        "The pattern also changed with the arm cable (C to E), which a source effect would not do. The Pluto&rsquo;s line near 3&times; the tone (10&ndash;16 dB down) is still a possible contributor to the shape and to the &minus;36 dBm departure; a low-pass filter after the Pluto would test it."]),
+)
