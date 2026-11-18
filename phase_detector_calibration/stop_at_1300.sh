@@ -1,7 +1,7 @@
 #!/bin/bash
 # 18 Nov: Sorin needs the bench by 13:00. Hard stop at 12:59:00, then turn the Pluto tone off.
 cd "$(dirname "$0")"
-while [ "$(date +%H%M)" -lt 1259 ]; do sleep 5; done
+while [ "$(date +%H%M)" -lt "${1:-1259}" ]; do sleep 5; done
 touch STOP_PD_RUN
 powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \"Name='python.exe'\" | Where-Object { \$_.CommandLine -like '*run_pd_overnight*' } | ForEach-Object { Stop-Process -Id \$_.ProcessId -Force }"
 sleep 3
