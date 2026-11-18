@@ -268,3 +268,31 @@ PD_SC = item(
       "Plots are redrawn by <code>make_plots.py</code> from the run table <code>pd_runs.py</code>; the comparison with the earlier runs is in the section below."),
     fig("pd_short_cables_detail_18nov.png", "Phase detector with very short cables at the mixer and a 50 ohm IF load: 600-1600 MHz at three levels with zooms, and the wiring"),
 )
+
+PD_STATUS = item(
+    "pd-status", "Status, methods and open issues (read this first when coming back to the phase detector; updated 18 Nov)",
+    h("Goal"),
+    p("One detector voltage per frequency over about 200 MHz, read to &plusmn;1&ndash;2 MHz after op-amp scaling into an FPGA ADC, "
+      "whatever the received power. The amplifiers are meant to rail, so every input level should land on the same curve. Absolute frequency does not matter (the PLL shifts it)."),
+    h("Chain as built"),
+    p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V) &rarr; ZFRSC-42-S+ resistive splitter (about 6 dB between outputs) &rarr; "
+      "two arms (LO: cable D 15 cm; RF: cable B 15 cm + E 8 cm; on 18 Nov replaced by very short cables) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed since 15 Nov."),
+    h("How data is taken and plotted"),
+    ul(["<code>run_pd_overnight.py</code> (run from <code>signal_hound/</code>, system Python): stages written to <code>pd_dither_14nov.csv</code>, one row per reading; tone-off checks as stage <code>off</code>.",
+        "High-density plan (<code>HD_NIGHT=1 HD_TAG=tag</code>): 600&ndash;1600 MHz at &minus;36/&minus;50/&minus;57 dBm, 900&ndash;1200 and 1300&ndash;1500 MHz first, coarse to fine, then repeats.",
+        "Each bench configuration is one row in <code>pd_runs.py</code>. <code>make_plots.py</code> redraws every plot from the CSV, rebuilds this site and pushes (<code>--push</code>; <code>--watch</code> during a run)."]),
+    h("What is known"),
+    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.38 ns the arm lengths give. It moves when the arm cable changes (C to E), so it is in the arms or the parts at their ends.",
+        "Not the long IF cable (15 Nov), and not the Pluto's own level ripple (16 Nov).",
+        "Main suspect: reflections off the mixer ports crossing the resistive splitter; that path's delay is the sum of the arms. The VNA shows the unpowered RF port is poorly matched at 1&ndash;1.5 GHz (S22 &minus;11 to &minus;6 dB).",
+        "&minus;50 and &minus;57 dBm agree within about 2 mV; &minus;36 dBm departs on the shoulders (deepest compression; supply current rises to 0.39 A).",
+        "Best so far: cable E, no pads, rising edge 1340&ndash;1480 MHz, about 80 MHz with error &le;2 MHz at &plusmn;0.5 mV (&minus;50/&minus;57 dBm). Pads give a smoother but 3&times; shallower curve."]),
+    h("Open"),
+    ul(["18 Nov: very short cables at every mixer connection and a 50 ohm IF load. Does the ~360 MHz pattern change?",
+        "Then: lengthen arm D only (direct path slower, reflection path faster); a high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers."]),
+    h("Pitfalls"),
+    ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped; the wrapper relaunches.",
+        "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",
+        "Never stash, reset or check out while a run writes the CSV (18 Nov: a stash caught the live file; no data lost, but the progress log was cut)."]),
+    open_=True,
+)
