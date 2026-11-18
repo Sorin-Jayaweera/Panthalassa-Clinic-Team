@@ -141,7 +141,7 @@ PD_IFS = item(
       "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>ifs_pri</code> and <code>ifs_rest</code>; tone-off readings are stage <code>off</code>, reps 91&ndash;93. Plots: <code>plot_pd_ifs.py</code>, <code>plot_pd_hd_night.py ifs</code>. "
       "The run went from 20:33 to 21:43 and then stopped when the PC shut down for a Windows update overnight: 1618 readings. 900&ndash;1200 and 1300&ndash;1500 MHz are complete at 1.25 MHz steps; the rest of 600&ndash;1600 MHz is at 5 MHz (2.5 MHz in part)."),
     fig("pd_ifs_night_15nov.png", "Short IF cable: 600-1600 MHz at -36, -50 and -57 dBm, one reading per point, with zooms on 900-1200 and 1300-1500 MHz at 1.25 MHz steps, and the wiring"),
-    fig("pd_ifs_vs_long_15nov.png", "Phase detector with the long and with a short IF cable: 600-1600 MHz at three levels, and the two overlaid at -50 dBm, with both wirings"),
+    fig("pd_ifs_vs_long_15nov.png", "Every high-density no-pads run (long IF cable, short IF cable, very short cables with 50 ohm IF load): each at three levels, then all at -50 dBm scaled to their own swing, with the wirings"),
     ul(["Peaks at &minus;50 dBm: 760, 1162 and 1495 MHz with the long cable; 765, 1164 and 1499 MHz with the short one. The ripple period and positions are unchanged, so the IF cable is not the cause.",
         "The swing is about 10&ndash;20% larger with the short cable, and the tone-off reading moved from &minus;23.7 to about &minus;45 mV.",
         "The levels still lie on top of each other except on the 1100&ndash;1150 MHz shoulder at &minus;36 dBm and near the peaks at &minus;57 dBm.",
@@ -257,4 +257,14 @@ PD_PLUTO = item(
         "So the Pluto ripple can add at most a few mV; the detector pattern swings by about 500 mV.",
         "Correlation between the two after removing smooth trends: |r| &le; 0.3 at every shift up to &plusmn;200 MHz.",
         "The pattern also changed with the arm cable (C to E), which a source effect would not do. The Pluto&rsquo;s line near 3&times; the tone (10&ndash;16 dB down) is still a possible contributor to the shape and to the &minus;36 dBm departure; a low-pass filter after the Pluto would test it."]),
+)
+
+PD_SC = item(
+    "pd-short-cables", "Very short cables at every mixer connection, 50 ohm load on the IF (18 Nov, running until 13:00)",
+    p("Test of whether the ~360 MHz pattern (best single delay about 2.75 ns) comes from reflections on the cables at the mixer. "
+      "Sorin replaced every connection at the mixer with very short cables and put a 50 ohm load on the IF line into the scope (SDS1104X-E). "
+      "Same plan as the 15 Nov runs: 600&ndash;1600 MHz at &minus;36, &minus;50 and &minus;57 dBm, one reading per point, 100 mV/div; 900&ndash;1200 and 1300&ndash;1500 MHz filled first, then repeat sweeps every 5 MHz. "
+      "Data: <code>phase_detector_calibration/pd_dither_14nov.csv</code>, stages <code>sc_pri</code>, <code>sc_rest</code>, <code>sc_rep</code>; tone-off is stage <code>off</code>, reps 141 and up. "
+      "Plots are redrawn by <code>make_plots.py</code> from the run table <code>pd_runs.py</code>; the comparison with the earlier runs is in the section below."),
+    fig("pd_short_cables_detail_18nov.png", "Phase detector with very short cables at the mixer and a 50 ohm IF load: 600-1600 MHz at three levels with zooms, and the wiring"),
 )
