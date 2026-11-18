@@ -260,7 +260,12 @@ PD_PLUTO = item(
 )
 
 PD_SC = item(
-    "pd-short-cables", "Very short cables at every mixer connection, 50 ohm load on the IF (18 Nov, running until 13:00)",
+    "pd-short-cables", "Very short cables at every mixer connection, 50 ohm load on the IF (18 Nov, until 13:00): pattern unchanged",
+    p("<b>Result (first full pass, 11:02):</b> the pattern did not change. Peaks at &minus;50 dBm at 770, 1160 and 1510 MHz (15 Nov: 760&ndash;765, 1162&ndash;1164, 1495&ndash;1499); "
+      "best single delay 2.74 ns (15 Nov: 2.77 ns); swing about 450 mV; tone-off &minus;9.2 mV. "
+      "So the cables at the mixer and the IF termination are not the source, and nor is any reflection path whose delay is the sum of the arms. "
+      "New suspect: the amplifier chain itself. Its saturated output power can ripple with frequency (reflections between the four stages), the curve would then be the same at every input level and independent of the arm and IF cables, as seen. "
+      "Test: amplifier chain output into the SM200B through pads, swept 600&ndash;1600 MHz; or drive the splitter straight from the Pluto with the amplifiers bypassed."),
     p("Test of whether the ~360 MHz pattern (best single delay about 2.75 ns) comes from reflections on the cables at the mixer. "
       "Sorin replaced every connection at the mixer with very short cables and put a 50 ohm load on the IF line into the scope (SDS1104X-E). "
       "Same plan as the 15 Nov runs: 600&ndash;1600 MHz at &minus;36, &minus;50 and &minus;57 dBm, one reading per point, 100 mV/div; 900&ndash;1200 and 1300&ndash;1500 MHz filled first, then repeat sweeps every 5 MHz. "
@@ -282,14 +287,15 @@ PD_STATUS = item(
         "High-density plan (<code>HD_NIGHT=1 HD_TAG=tag</code>): 600&ndash;1600 MHz at &minus;36/&minus;50/&minus;57 dBm, 900&ndash;1200 and 1300&ndash;1500 MHz first, coarse to fine, then repeats.",
         "Each bench configuration is one row in <code>pd_runs.py</code>. <code>make_plots.py</code> redraws every plot from the CSV, rebuilds this site and pushes (<code>--push</code>; <code>--watch</code> during a run)."]),
     h("What is known"),
-    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.38 ns the arm lengths give. It moves when the arm cable changes (C to E), so it is in the arms or the parts at their ends.",
-        "Not the long IF cable (15 Nov), and not the Pluto's own level ripple (16 Nov).",
-        "Main suspect: reflections off the mixer ports crossing the resistive splitter; that path's delay is the sum of the arms. The VNA shows the unpowered RF port is poorly matched at 1&ndash;1.5 GHz (S22 &minus;11 to &minus;6 dB).",
+    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.38 ns the arm lengths give. It shifted only slightly with the arm cable (C 3.00 ns, E 2.77 ns) and not at all with very short cables (2.74 ns, 18 Nov).",
+        "Not the long IF cable (15 Nov), not the Pluto's own level ripple (16 Nov), not the cables at the mixer or the IF termination, and not reflections through the arms (18 Nov).",
+        "Main suspect (18 Nov): the railed amplifier chain's output power rippling with frequency (reflections between stages), which every input level would share. The mixer's DC output depends on its drive level, so that ripple shows up in the curve.",
         "&minus;50 and &minus;57 dBm agree within about 2 mV; &minus;36 dBm departs on the shoulders (deepest compression; supply current rises to 0.39 A).",
         "Best so far: cable E, no pads, rising edge 1340&ndash;1480 MHz, about 80 MHz with error &le;2 MHz at &plusmn;0.5 mV (&minus;50/&minus;57 dBm). Pads give a smoother but 3&times; shallower curve."]),
     h("Open"),
-    ul(["18 Nov: very short cables at every mixer connection and a 50 ohm IF load. Does the ~360 MHz pattern change?",
-        "Then: lengthen arm D only (direct path slower, reflection path faster); a high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers."]),
+    ul(["Measure the amplifier chain output against frequency: SM200B through pads, 600&ndash;1600 MHz, at two input levels. A ~360 MHz ripple there confirms the suspect.",
+        "Or bypass the amplifiers (Pluto straight into the splitter at a level the mixer can use) and repeat the sweep.",
+        "Then: a high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers."]),
     h("Pitfalls"),
     ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped; the wrapper relaunches.",
         "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",
