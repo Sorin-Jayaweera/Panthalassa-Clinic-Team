@@ -502,3 +502,9 @@ Warning 3: b'Uncal data, potential USB data loss' in sm_get_IQ()
 stop file
 14:53:11 tone off, SM200B closed
 === amp ramp wrapper ended 14:53:31
+tone off: -38.1 dBm in 41.5 MHz at amp output (working chain: about -3)
+1160 MHz -50 dBm: tone -68.8 dBm out (working chain: about +21)
+-- no signal yet 14:57:24
+tone off: -38.1 dBm in 41.5 MHz at amp output (working chain: about -3)
+1160 MHz -50 dBm: tone -68.6 dBm out (working chain: about +21)
+-- no signal yet 14:59:27

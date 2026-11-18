@@ -94,6 +94,10 @@ def main():
                 p = 10 * np.log10(np.abs(x) ** 2 + 1e-20)
                 t = line(x, fs, OFS)
                 h2, h3 = (line(*iq(h, k * f * 1e6 - OFS, 8192), OFS) + PAD_DB for k in (2, 3))
+                if want >= -60 and t + PAD_DB < 0:   # a working chain is railed near +20 dBm here; this means no signal (14:40 on 18 Nov)
+                    print(f"NO SIGNAL: {t + PAD_DB:.1f} dBm out at {f} MHz {want} dBm in; stopping, check amp supply and cables", flush=True)
+                    STOP.touch()
+                    break
                 wr.writerow([dt.datetime.now().isoformat(timespec="seconds"), f, att, want, round(t + PAD_DB, 2), round(10 * np.log10(np.mean(np.abs(x) ** 2)) + PAD_DB, 2),
                              *np.round(np.percentile(p, [1, 50, 99]) + PAD_DB, 2), round(float(p.max()) + PAD_DB, 2), round(h2, 2), round(h3, 2), round(t, 2)] + ([n] if MODE == "ramp" else []))
                 fh.flush()
