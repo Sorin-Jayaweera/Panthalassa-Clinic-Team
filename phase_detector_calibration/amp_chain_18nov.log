@@ -520,3 +520,26 @@ tone off: -38.1 dBm in 41.5 MHz at amp output (working chain: about -3)
 tone off: -38.1 dBm in 41.5 MHz at amp output (working chain: about -3)
 1160 MHz -50 dBm: tone -69.9 dBm out (working chain: about +21)
 -- no signal yet 15:07:39
+tone off: -38.1 dBm in 41.5 MHz at amp output (working chain: about -3)
+1160 MHz -50 dBm: tone -68.6 dBm out (working chain: about +21)
+-- no signal yet 15:09:42
+tone off: -3.3 dBm in 41.5 MHz at amp output (working chain: about -3)
+1160 MHz -50 dBm: tone 21.2 dBm out (working chain: about +21)
+=== signal back 15:11:45, resuming ramp
+=== amp ramp launch 1 15:11:46
+15:11:48 28970 points to go
+15:11:49 750 MHz -75 dBm: tone 19.8 dBm out, 2f 1.0, 3f -0.9  (0/28970)
+15:12:15 770 MHz -75 dBm: tone 19.3 dBm out, 2f -0.7, 3f -3.7  (55/28970)
+15:12:17 770 MHz -70 dBm: tone 20.1 dBm out, 2f 2.0, 3f 2.6  (60/28970)
+15:12:40 800 MHz -75 dBm: tone 18.9 dBm out, 2f -3.7, 3f -4.0  (110/28970)
+15:12:44 800 MHz -65 dBm: tone 20.4 dBm out, 2f -2.7, 3f 6.7  (120/28970)
+tone 850.0: try 1 failed, libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+15:13:28 850 MHz -75 dBm: tone 17.8 dBm out, 2f -10.9, 3f -5.8  (165/28970)
+15:13:35 850 MHz -60 dBm: tone 19.7 dBm out, 2f -6.0, 3f 7.8  (180/28970)
+15:13:53 900 MHz -75 dBm: tone 19.3 dBm out, 2f -17.3, 3f -2.6  (220/28970)
+15:14:03 900 MHz -55 dBm: tone 20.3 dBm out, 2f -5.2, 3f 6.9  (240/28970)
+15:14:20 950 MHz -75 dBm: tone 17.9 dBm out, 2f -6.9, 3f -9.9  (275/28970)
+15:14:32 950 MHz -50 dBm: tone 20.5 dBm out, 2f -7.8, 3f 6.8  (300/28970)
+15:14:47 960 MHz -75 dBm: tone 17.0 dBm out, 2f -7.4, 3f -12.3  (330/28970)
+15:15:01 960 MHz -45 dBm: tone 20.7 dBm out, 2f -7.1, 3f 7.1  (360/28970)

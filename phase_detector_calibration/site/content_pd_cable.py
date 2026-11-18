@@ -305,8 +305,8 @@ PD_AMP = item(
       "Data <code>amp_ramp_18nov.csv</code>, raw IQ <code>amp_ramp\\</code> (local only), wrapper <code>amp_ramp_wrapper.sh</code> (<code>AMP_MODE=ramp</code>)."),
     p("Pass 1 (all 24 frequencies): the chain rails at +19.5 to +22 dBm everywhere; it is within 1 dB of that from about &minus;70 dBm in below 1000 MHz, but needs &minus;60 to &minus;63 dBm above 1200 MHz. "
       "At &minus;90 dBm in the output falls from +11 dBm at 700 MHz to &minus;7 dBm at 1500 MHz."),
-    p("<b>Signal lost at 14:40:13</b> (rep 9, 750 MHz), mid-step: the SM200B saw only its own floor, not even the amplifiers' noise (tone off &minus;38 dBm against &minus;3 dBm normally), "
-      "so the amplifiers lost power or the path to the SM200B opened. Run stopped at 14:53; the 1689 rows after 14:40:13 were removed (backup <code>backups\\amp_ramp_18nov_before_trim_1453.csv</code>, "
+    p("<b>Gap 14:40&ndash;15:11</b> (rep 9, 750 MHz): the amplifier supply was disconnected at the bench (a status reply was read as &ldquo;the run is finished&rdquo;); "
+      "the SM200B saw only its own floor, not even the amplifiers' noise (tone off &minus;38 dBm against &minus;3 dBm normally). Reconnected unchanged (4.04 V, 0.23 A); resumed 15:11:46. Run stopped at 14:53; the 1689 rows after 14:40:13 were removed (backup <code>backups\\amp_ramp_18nov_before_trim_1453.csv</code>, "
       "raw IQ moved to <code>amp_ramp\\no_signal_1440\\</code>). <code>amp_resume.sh</code> probes every 2 min with <code>amp_probe.py</code> and resumes the ramp when the output is back; "
       "the run now stops itself if the output at &minus;60 dBm or more drops below 0 dBm."),
     fig("amp_ramp_18nov.png", "Amplifier chain alone against Pluto level: compression curve per frequency, noise share, tone against frequency at fixed levels, repeatability, raw IQ power distribution, and the wiring"),
