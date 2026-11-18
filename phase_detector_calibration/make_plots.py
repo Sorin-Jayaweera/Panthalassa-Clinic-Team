@@ -9,8 +9,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT, SITE = HERE.parent, HERE / "site"
-DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log"]
-JOBS = ["plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py"]
+DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log", HERE / "amp_chain_18nov.csv", HERE / "amp_chain_18nov.log"]
+JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py"]
 
 
 def run(*a, cwd=HERE):

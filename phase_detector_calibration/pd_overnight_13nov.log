@@ -666,3 +666,4 @@ scope: try 32 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an i
 scope: try 33 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
 scope: try 34 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
 12:56:59 hard stop for 13:00 deadline, tone off
+12:59:09 hard stop for 13:00 deadline, tone off

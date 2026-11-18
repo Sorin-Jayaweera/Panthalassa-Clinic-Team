@@ -274,6 +274,22 @@ PD_SC = item(
     fig("pd_short_cables_detail_18nov.png", "Phase detector with very short cables at the mixer and a 50 ohm IF load: 600-1600 MHz at three levels with zooms, and the wiring"),
 )
 
+PD_AMP = item(
+    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov, set up, waiting for the SM200B on USB)",
+    p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; every cable 7 cm) &rarr; 10 + 10 + 3 + 6 = 29 dB of pads &rarr; SM200B. No splitter, arms or mixer. "
+      "Expected: the chain rails near +20 dBm (datasheet P1dB +19.9 dBm per stage at 1 GHz), so about &minus;9 dBm at the SM200B, nearly the same at every input level. "
+      "If the amplifiers cause the detector pattern, the output level should ripple with a ~2.75 ns delay (peaks near 770, 1160, 1510 MHz)."),
+    p("Plan: 600&ndash;1600 MHz every 25 MHz, then every 5 MHz; Pluto &minus;36, &minus;43, &minus;50, &minus;57, &minus;64, &minus;71 dBm at each frequency. "
+      "At each point 16384 raw IQ samples (50 MS/s, 328 &micro;s, tone 10 MHz above the centre) are saved, and the instantaneous power |I+jQ|&sup2; of every sample is used, not only an average; "
+      "the 2nd and 3rd harmonics are read too (the Pluto has a line near 3&times; the tone, 10&ndash;16 dB down, and a railed amplifier makes harmonics). "
+      "Script <code>run_amp_chain_iq.py</code> (wrapper <code>amp_wrapper.sh</code>, waits for the SM200B, resumes after USB drops); data <code>amp_chain_18nov.csv</code>; raw IQ in "
+      "<code>C:\\ThatFamily Dropbox\\Sorin Jayaweera\\allSaves\\mudd\\senior\\clinic\\claude\\phase_detector_calibration\\amp_chain\\</code> (local only, about 150 MB); plot <code>plot_amp_chain.py</code>."),
+    p("The Pluto alone, from the Pluto tab (12&ndash;13 Oct, into the spectrum analyzer): level repeatable to 0.03 dB on returning to a frequency, settled within 5 ms, "
+      "and across 600&ndash;1600 MHz its ripple after a smooth trend is 0.5 dB rms with only 0.11 dB at a 2.75 ns delay (its strongest component is 1.4 ns, 0.22 dB). "
+      "With the amplifiers railed that is attenuated further, so the Pluto itself is not the source."),
+    fig("amp_chain_18nov.png", "Amplifier chain alone: output tone, instantaneous power, harmonics and ripple against frequency at six Pluto levels, raw IQ example, and the wiring"),
+)
+
 PD_STATUS = item(
     "pd-status", "Status, methods and open issues (read this first when coming back to the phase detector; updated 18 Nov)",
     h("Goal"),
