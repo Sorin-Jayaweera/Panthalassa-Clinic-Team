@@ -1,0 +1,69 @@
+=== SM200B on USB 13:05:53
+=== amp chain launch 1 13:05:54
+tone off: mean -3.4 dBm, max 5.5 dBm (referred to amp output)
+13:06:12 1206 points to go
+13:06:13 600 MHz -36 dBm: tone 16.9 dBm out, 2f 11.6, 3f -18.5  (0/1206)
+13:06:40 850 MHz -36 dBm: tone 21.2 dBm out, 2f 8.0, 3f 7.1  (60/1206)
+13:07:08 1100 MHz -36 dBm: tone 20.7 dBm out, 2f 2.5, 3f 1.9  (120/1206)
+13:07:35 1350 MHz -36 dBm: tone 20.9 dBm out, 2f -2.0, 3f 3.4  (180/1206)
+tone 1525.0: try 1 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 2 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 3 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 4 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 5 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 6 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 7 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 8 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 9 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 10 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 11 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 12 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 13 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 14 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 15 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 16 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 17 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 18 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 19 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 20 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 21 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 22 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 23 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 24 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 25 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 26 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 27 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 28 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 29 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 30 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 31 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 32 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 33 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 34 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 35 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: try 36 failed, refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+tone 1525.0: gave up after 37 tries: refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+13:10:54 tone off, SM200B closed
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 104, in <module>
+    print(f"{dt.datetime.now():%H:%M:%S} {f:.0f} MHz {want:.0f} dBm: tone {t + PAD_DB:.1f} dBm out, 2f {h2:.1f}, 3f {h3:.1f}  ({i}/{len(todo)})", flush=True)
+    
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 80, in main
+    np.save(RAW / "tone_off_1000.npy", x)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 80, in <lambda>
+    np.save(RAW / "tone_off_1000.npy", x)
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 99, in tone_on
+    raise ValueError(f"refusing {att_db} dB: the floor is {ATT_MIN_DB} dB (limit {P_LIMIT_DBM} dBm)")
+ValueError: refusing 30.75 dB: the floor is 31.0 dB (limit -20.0 dBm)
+=== amp chain launch 2 13:11:14
+13:11:15 984 points to go
+13:11:16 1525 MHz -36 dBm: tone 20.2 dBm out, 2f -4.1, 3f 3.0  (0/984)
+13:11:44 640 MHz -36 dBm: tone 19.4 dBm out, 2f 9.1, 3f -20.5  (60/984)
+13:12:12 705 MHz -36 dBm: tone 21.6 dBm out, 2f 2.2, 3f 0.7  (120/984)
+13:12:40 765 MHz -36 dBm: tone 21.4 dBm out, 2f 2.4, 3f 5.0  (180/984)
+13:13:07 830 MHz -36 dBm: tone 20.7 dBm out, 2f 7.3, 3f 6.1  (240/984)
