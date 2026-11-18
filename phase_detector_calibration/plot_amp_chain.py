@@ -48,16 +48,16 @@ def main():
         iq = np.load(x[0])
         p = 10 * np.log10(np.abs(iq) ** 2 + 1e-20) + 29.0
         ax[4].plot(np.arange(len(p)) / 50.0, p, lw=0.4, color="#21918c")
-        ax[4].set(xlabel="time (us)", ylabel="instantaneous power at amp output (dBm)",
+        ax[4].set(xlabel="time (us)", ylabel="instantaneous power at amp output (dBm, measured + 29 dB)",
                   title=f"Raw IQ, {x[0].stem.replace('_', ' MHz, ')} dBm in: every sample |I+jQ|^2 (+29 dB pads); mean {10 * np.log10(np.mean(np.abs(iq) ** 2)) + 29:.2f} dBm")
     for a in ax[:4]:
         for pk in PD_PEAKS:
             a.axvline(pk, color="#b30000", lw=0.8, ls=":")
         a.set_xlabel("Pluto frequency (MHz)")
         a.grid(alpha=0.3)
-    ax[0].set(ylabel="tone at amp output (dBm)", title="Tone at the amplifier output (FFT line, pads added back). Red dotted: phase detector peaks 770, 1160, 1510 MHz")
-    ax[1].set(ylabel="instantaneous power (dBm)", title="Instantaneous power over each 328 us capture: median (line), 1st to 99th percentile (band)")
-    ax[2].set(ylabel="harmonic at amp output (dBm)", title="2nd harmonic (solid) and 3rd harmonic (dashed) at the amplifier output")
+    ax[0].set(ylabel="tone at amp output (dBm, measured + 29 dB)", title="Tone at the amplifier output (FFT line, pads added back). Red dotted: phase detector peaks 770, 1160, 1510 MHz")
+    ax[1].set(ylabel="instantaneous power at amp output (dBm, measured + 29 dB)", title="Instantaneous power over each 328 us capture: median (line), 1st to 99th percentile (band)")
+    ax[2].set(ylabel="harmonic at amp output (dBm, measured + 29 dB)", title="2nd harmonic (solid) and 3rd harmonic (dashed) at the amplifier output")
     ax[3].set(ylabel="tone minus quadratic trend (dB)", title="Ripple left after a smooth trend: a ~2.75 ns (~360 MHz) delay here would mean the amplifiers cause the detector pattern")
     for a in ax[:4:3]:
         a.legend(fontsize=7)
@@ -94,11 +94,11 @@ def ramp():
     for p, c in zip(x[::9], matplotlib.colormaps["viridis"](np.linspace(0, 0.9, len(x[::9])))):
         q = 10 * np.log10(np.abs(np.load(p)) ** 2 + 1e-20) + 29.0
         ax[4].hist(q, bins=150, range=(-20, 30), histtype="step", color=c, density=True, label=f"{p.stem.split('_')[2]} dBm in")
-    ax[0].set(xlabel="Pluto level (dBm)", ylabel="tone at amp output (dBm)", title="Compression curve: tone out against Pluto level at each frequency (rep 1)")
+    ax[0].set(xlabel="Pluto level (dBm)", ylabel="tone at amp output (dBm, measured + 29 dB)", title="Compression curve: tone out against Pluto level at each frequency (rep 1)")
     ax[1].set(xlabel="Pluto level (dBm)", ylabel="all power minus tone (dB)", title="Mean instantaneous power in 41.5 MHz minus the tone line: how much of the output is noise and spurs, not the tone")
-    ax[2].set(xlabel="Pluto frequency (MHz)", ylabel="tone at amp output (dBm)", title="Tone against frequency at fixed Pluto levels (rep 1). Red dotted: phase detector peaks")
+    ax[2].set(xlabel="Pluto frequency (MHz)", ylabel="tone at amp output (dBm, measured + 29 dB)", title="Tone against frequency at fixed Pluto levels (rep 1). Red dotted: phase detector peaks")
     ax[3].set(xlabel="Pluto level (dBm)", ylabel="spread over reps (dB)", title=f"Repeatability: max minus min tone over {len(reps)} reps, per frequency")
-    ax[4].set(xlabel="instantaneous power at amp output (dBm)", ylabel="density", title="Raw IQ at 1160 MHz: distribution of |I+jQ|^2 per sample, rep 1, every 9th level")
+    ax[4].set(xlabel="instantaneous power at amp output (dBm, measured + 29 dB)", ylabel="density", title="Raw IQ at 1160 MHz: distribution of |I+jQ|^2 per sample, rep 1, every 9th level")
     for pk in PD_PEAKS:
         ax[2].axvline(pk, color="#b30000", lw=0.8, ls=":")
     for a in ax[:5]:

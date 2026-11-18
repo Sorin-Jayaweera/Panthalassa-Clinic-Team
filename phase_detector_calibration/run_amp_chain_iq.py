@@ -19,7 +19,9 @@ from run_p162_sm200b import att_for  # noqa: E402
 from run_pluto_full_range import ATT_MIN_DB, SCALE, retry, tone_off, tone_on  # noqa: E402
 from smdevice.sm_api import *  # noqa: E402,F403
 
-PAD_DB, TOP_DBM, STOP_DBM, N, OFS = 29.0, -36.0, 5.0, 16384, 10e6
+PAD_DB, TOP_DBM, N, OFS = 29.0, -36.0, 16384, 10e6
+# SM200B input, as measured (no pads added back): stop everything at +10 dBm; +15 dBm must never be reached (Sorin, 18 Nov)
+SM_STOP_DBM, PAD_CHECK_DBM = 10.0, -10.0
 LEVELS = (-36.0, -43.0, -50.0, -57.0, -64.0, -71.0)
 # AMP_MODE=ramp: output against Pluto level, -90 to -36 dBm in 1 dB steps at fixed frequencies, repeated (rep 1 keeps 16384 IQ samples, later reps 4096)
 MODE = __import__("os").environ.get("AMP_MODE", "sweep")
@@ -80,6 +82,17 @@ def main():
                 np.save(RAW / "tone_off_1000.npy", x)
                 p = 10 * np.log10(np.abs(x) ** 2 + 1e-20) + PAD_DB
                 print(f"tone off: mean {10 * np.log10(np.mean(np.abs(x) ** 2)) + PAD_DB:.1f} dBm, max {p.max():.1f} dBm (referred to amp output)", flush=True)
+            # pads present? Pluto -90 dBm railed through the amps reads about -24 dBm measured with 29 dB of pads, about +5 dBm without
+            retry(lambda: tone_on(1000e6, max(att_for(1000.0, -90.0), ATT_MIN_DB), SCALE), "pad check")
+            time.sleep(0.3)
+            x, fs = iq(h, 1000e6 - OFS, 4096)
+            tone_off()
+            pk = float(10 * np.log10(np.max(np.abs(x) ** 2) + 1e-20))
+            print(f"pad check: {pk:.1f} dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm", flush=True)
+            if pk > PAD_CHECK_DBM:
+                print(f"STOP RULE: pad check {pk:.1f} dBm measured > {PAD_CHECK_DBM:.0f} dBm; pads missing?", flush=True)
+                STOP.touch()
+                return
             todo = list(dict.fromkeys(k for k in plan() if k not in done))
             print(f"{dt.datetime.now():%H:%M:%S} {len(todo)} points to go", flush=True)
             for i, (n, f, want) in enumerate(todo):
@@ -95,17 +108,19 @@ def main():
                 t = line(x, fs, OFS)
                 h2, h3 = (line(*iq(h, k * f * 1e6 - OFS, 8192), OFS) + PAD_DB for k in (2, 3))
                 if want >= -60 and t + PAD_DB < 0:   # a working chain is railed near +20 dBm here; this means no signal (14:40 on 18 Nov)
-                    print(f"NO SIGNAL: {t + PAD_DB:.1f} dBm out at {f} MHz {want} dBm in; stopping, check amp supply and cables", flush=True)
+                    print(f"NO SIGNAL: amp out {t + PAD_DB:.1f} dBm (measured + 29 dB) at {f} MHz {want} dBm in; stopping, check amp supply and cables", flush=True)
                     STOP.touch()
                     break
                 wr.writerow([dt.datetime.now().isoformat(timespec="seconds"), f, att, want, round(t + PAD_DB, 2), round(10 * np.log10(np.mean(np.abs(x) ** 2)) + PAD_DB, 2),
                              *np.round(np.percentile(p, [1, 50, 99]) + PAD_DB, 2), round(float(p.max()) + PAD_DB, 2), round(h2, 2), round(h3, 2), round(t, 2)] + ([n] if MODE == "ramp" else []))
                 fh.flush()
-                if t > STOP_DBM:
-                    print(f"STOP RULE: {t:.1f} dBm at the SM200B at {f} MHz {want} dBm", flush=True)
+                if p.max() > SM_STOP_DBM:
+                    tone_off()
+                    print(f"STOP RULE: instantaneous {p.max():.1f} dBm measured at the SM200B input at {f} MHz {want} dBm (limit {SM_STOP_DBM:+.0f} dBm measured)", flush=True)
+                    STOP.touch()
                     break
                 if i % 60 == 0 or (MODE == "ramp" and i % len(RAMP_W) == 0):
-                    print(f"{dt.datetime.now():%H:%M:%S} {f:.0f} MHz {want:.0f} dBm: tone {t + PAD_DB:.1f} dBm out, 2f {h2:.1f}, 3f {h3:.1f}  ({i}/{len(todo)})", flush=True)
+                    print(f"{dt.datetime.now():%H:%M:%S} {f:.0f} MHz {want:.0f} dBm: tone {t:.1f} measured (amp out {t + PAD_DB:.1f} = measured + 29 dB), peak {p.max():.1f} measured, 2f {h2:.1f}, 3f {h3:.1f} (+29 dB)  ({i}/{len(todo)})", flush=True)
             else:
                 DONE.touch()
     finally:
