@@ -27,3 +27,7 @@ JACON_notes_backup.html
 
 # not part of the racon project: never on GitHub
 chaos_scope/
+
+# raw SM200B IQ captures (about 150 MB per sweep): kept on this computer only
+phase_detector_calibration/amp_chain/
+phase_detector_calibration/amp_ramp/

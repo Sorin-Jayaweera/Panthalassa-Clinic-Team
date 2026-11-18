@@ -72,5 +72,50 @@ def main():
     print("amp_chain_18nov.png", {w: len(a) for w, a in T.items()})
 
 
+def ramp():
+    """Output against Pluto level (AMP_MODE=ramp): compression curve per frequency, noise share, ripple at fixed input, repeatability, raw IQ."""
+    src = HERE / "amp_ramp_18nov.csv"
+    if not src.exists():
+        return print("no amp ramp data yet")
+    d = np.genfromtxt(src, delimiter=",", names=True, dtype=None, encoding="utf-8")
+    F, reps = np.unique(d["freq_mhz"]), np.unique(d["rep"])
+    one = d[d["rep"] == 1]
+    cf = dict(zip(F, matplotlib.colormaps["plasma"](np.linspace(0, 0.9, len(F)))))
+    fig, ax = wiring.figure(5, [[WIRING[0].replace("-36 to -71", "-90 to -36"), *WIRING[1:]]], size=(14, 25),
+                            titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B; Pluto level stepped 1 dB at fixed frequencies"])
+    for f in F:
+        m = one["freq_mhz"] == f
+        ax[0].plot(one["pluto_want_dbm"][m], one["tone_dbm"][m], "-", color=cf[f], lw=1.2 if f in PD_PEAKS else 0.8, label=f"{f:.0f} MHz" + (" (detector peak)" if f in PD_PEAKS else ""))
+        ax[1].plot(one["pluto_want_dbm"][m], one["p_mean_dbm"][m] - one["tone_dbm"][m], "-", color=cf[f], lw=0.8)
+    for w, c in zip((-85.0, -75.0, -65.0, -55.0, -45.0, -36.0), matplotlib.colormaps["viridis"](np.linspace(0, 0.9, 6))):
+        m = one["pluto_want_dbm"] == w
+        ax[2].plot(one["freq_mhz"][m], one["tone_dbm"][m], "-o", ms=3, color=c, label=f"{w:.0f} dBm in")
+    if len(reps) > 1:
+        for f in F:
+            m = d["freq_mhz"] == f
+            lv = np.unique(d["pluto_want_dbm"][m])
+            sp = [np.ptp(d["tone_dbm"][m & (d["pluto_want_dbm"] == w)]) for w in lv]
+            ax[3].plot(lv, sp, "-", color=cf[f], lw=0.8)
+    x = sorted((HERE / "amp_ramp").glob("1_1160_*.npy"), key=lambda p: float(p.stem.split("_")[2]))
+    for p, c in zip(x[::9], matplotlib.colormaps["viridis"](np.linspace(0, 0.9, len(x[::9])))):
+        q = 10 * np.log10(np.abs(np.load(p)) ** 2 + 1e-20) + 29.0
+        ax[4].hist(q, bins=150, range=(-20, 30), histtype="step", color=c, density=True, label=f"{p.stem.split('_')[2]} dBm in")
+    ax[0].set(xlabel="Pluto level (dBm)", ylabel="tone at amp output (dBm)", title="Compression curve: tone out against Pluto level at each frequency (rep 1)")
+    ax[1].set(xlabel="Pluto level (dBm)", ylabel="all power minus tone (dB)", title="Mean instantaneous power in 41.5 MHz minus the tone line: how much of the output is noise and spurs, not the tone")
+    ax[2].set(xlabel="Pluto frequency (MHz)", ylabel="tone at amp output (dBm)", title="Tone against frequency at fixed Pluto levels (rep 1). Red dotted: phase detector peaks")
+    ax[3].set(xlabel="Pluto level (dBm)", ylabel="spread over reps (dB)", title=f"Repeatability: max minus min tone over {len(reps)} reps, per frequency")
+    ax[4].set(xlabel="instantaneous power at amp output (dBm)", ylabel="density", title="Raw IQ at 1160 MHz: distribution of |I+jQ|^2 per sample, rep 1, every 9th level")
+    for pk in PD_PEAKS:
+        ax[2].axvline(pk, color="#b30000", lw=0.8, ls=":")
+    for a in ax[:5]:
+        a.grid(alpha=0.3)
+    for a in (ax[0], ax[2], ax[4]):
+        a.legend(fontsize=7, ncol=3)
+    fig.tight_layout()
+    fig.savefig(HERE / "amp_ramp_18nov.png", dpi=90)
+    print("amp_ramp_18nov.png", len(F), "frequencies,", len(reps), "reps")
+
+
 if __name__ == "__main__":
     main()
+    ramp()

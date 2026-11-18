@@ -275,7 +275,7 @@ PD_SC = item(
 )
 
 PD_AMP = item(
-    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov, set up, waiting for the SM200B on USB)",
+    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov from 13:06, running)",
     p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; every cable 7 cm) &rarr; 10 + 10 + 3 + 6 = 29 dB of pads &rarr; SM200B. No splitter, arms or mixer. "
       "Expected: the chain rails near +20 dBm (datasheet P1dB +19.9 dBm per stage at 1 GHz), so about &minus;9 dBm at the SM200B, nearly the same at every input level. "
       "If the amplifiers cause the detector pattern, the output level should ripple with a ~2.75 ns delay (peaks near 770, 1160, 1510 MHz)."),
@@ -288,6 +288,14 @@ PD_AMP = item(
       "and across 600&ndash;1600 MHz its ripple after a smooth trend is 0.5 dB rms with only 0.11 dB at a 2.75 ns delay (its strongest component is 1.4 ns, 0.22 dB). "
       "With the amplifiers railed that is attenuated further, so the Pluto itself is not the source."),
     fig("amp_chain_18nov.png", "Amplifier chain alone: output tone, instantaneous power, harmonics and ripple against frequency at six Pluto levels, raw IQ example, and the wiring"),
+    p("First readings: the chain puts out +17 to +21 dBm (railed). With no tone it still puts out about &minus;3 dBm in the SM200B's 41.5 MHz window: 90 dB of gain amplifies its own thermal noise, "
+      "so over the amplifiers' ~1 GHz bandwidth the noise alone is near +6 dBm, close to saturation. Below about 800 MHz the 2nd harmonic lands inside the amplifiers' band and comes out only 5&ndash;9 dB under the tone. "
+      "Where 30.75 dB of Pluto attenuation would be needed (&minus;36 dBm near 1525 MHz) the Pluto script's 31 dB safety floor is used instead, 0.25 dB lower; the CSV keeps the setting used."),
+    h("Output against Pluto level"),
+    p("After the frequency sweep: Pluto &minus;90 to &minus;36 dBm in 1 dB steps at 700&ndash;1600 MHz every 50 MHz plus 770, 960, 1160, 1340 and 1510 MHz (detector peaks and troughs), repeated up to 30 times "
+      "(rep 1 keeps 16384 IQ samples per point, later reps 4096). Shows where the chain starts to rail, how much of the output is noise rather than tone at each level, and how repeatable it is. "
+      "Data <code>amp_ramp_18nov.csv</code>, raw IQ <code>amp_ramp\\</code> (local only), wrapper <code>amp_ramp_wrapper.sh</code> (<code>AMP_MODE=ramp</code>)."),
+    fig("amp_ramp_18nov.png", "Amplifier chain alone against Pluto level: compression curve per frequency, noise share, tone against frequency at fixed levels, repeatability, raw IQ power distribution, and the wiring"),
 )
 
 PD_STATUS = item(

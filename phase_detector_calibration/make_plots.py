@@ -9,7 +9,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT, SITE = HERE.parent, HERE / "site"
-DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log", HERE / "amp_chain_18nov.csv", HERE / "amp_chain_18nov.log"]
+DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log", HERE / "amp_chain_18nov.csv", HERE / "amp_chain_18nov.log", HERE / "amp_ramp_18nov.csv"]
 JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py"]
 
 
@@ -29,7 +29,7 @@ def once(push):
     print(run(sys.executable, "build_site.py", cwd=SITE).stdout.strip().splitlines()[-1])
     if push:
         paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html",
-                 *HERE.glob("plot_pd_*.py"), HERE / "pd_runs.py", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
+                 *HERE.glob("plot_pd_*.py"), *[HERE / n for n in ("plot_amp_chain.py", "run_amp_chain_iq.py", "amp_wrapper.sh", "amp_ramp_wrapper.sh")], HERE / "pdlib.py", HERE / "pd_runs.py", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
         rel = [str(p.relative_to(ROOT)) for p in paths if p.exists()]
         g = lambda *a: run("git", *a, cwd=ROOT)
         # never stash, reset or rebase: a running sweep appends to the CSV; commit only these paths, then merge the remote
@@ -41,7 +41,7 @@ def once(push):
 if __name__ == "__main__":
     push, watch, seen = "--push" in sys.argv, "--watch" in sys.argv, 0
     while True:
-        m = DATA[0].stat().st_mtime
+        m = max(p.stat().st_mtime for p in DATA if p.exists())
         if m != seen:
             seen = m
             once(push)
