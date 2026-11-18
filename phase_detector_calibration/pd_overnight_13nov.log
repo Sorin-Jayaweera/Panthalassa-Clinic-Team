@@ -629,3 +629,40 @@ tone off
 10:48:45 sc_pri rep 1: 50%
 10:52:06 sc_pri rep 1: 75%
 12:40:19 stopped for 13:00 deadline, tone off
+=== short-cables-50ohm launch 1 12:50:12
+12:50:13 STAGE sc_pri rep 4: priority 900-1200 + 1300-1500 at 0.625 MHz: 400 new frequencies x 3 levels (-36, -50, -57 dBm), 1203 points (from 788)
+scope: try 1 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 2 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 3 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 4 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 5 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 6 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 7 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 8 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 9 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 10 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 11 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 12 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 13 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 14 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 15 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 16 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 17 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 18 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 19 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 20 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 21 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 22 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 23 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 24 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 25 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 26 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 27 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 28 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 29 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 30 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 31 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 32 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 33 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+scope: try 34 failed, VI_ERROR_INP_PROT_VIOL (-1073807305): Device reported an input protocol error during transfer.
+12:56:59 hard stop for 13:00 deadline, tone off

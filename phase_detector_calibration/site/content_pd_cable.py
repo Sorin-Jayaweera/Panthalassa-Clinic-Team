@@ -280,7 +280,8 @@ PD_STATUS = item(
     p("One detector voltage per frequency over about 200 MHz, read to &plusmn;1&ndash;2 MHz after op-amp scaling into an FPGA ADC, "
       "whatever the received power. The amplifiers are meant to rail, so every input level should land on the same curve. Absolute frequency does not matter (the PLL shifts it)."),
     h("Chain as built"),
-    p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V) &rarr; ZFRSC-42-S+ resistive splitter (about 6 dB between outputs) &rarr; "
+    p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; about 22.5 dB gain and P1dB +19.9 dBm each at 1 GHz, so the chain rails near +20 dBm at every level used) &rarr; ZFRSC-42-S+ resistive splitter (about 6 dB between outputs) &rarr; "
+      "every cable from the Pluto through the amplifiers to the splitter is 7 cm (Sorin, 18 Nov) &rarr; "
       "two arms (LO: cable D 15 cm; RF: cable B 15 cm + E 8 cm; on 18 Nov replaced by very short cables) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed since 15 Nov."),
     h("How data is taken and plotted"),
     ul(["<code>run_pd_overnight.py</code> (run from <code>signal_hound/</code>, system Python): stages written to <code>pd_dither_14nov.csv</code>, one row per reading; tone-off checks as stage <code>off</code>.",

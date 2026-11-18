@@ -30,7 +30,7 @@ def rows():
 
 
 def wiring_for(run):
-    return ["Pluto TX\n-36, -50, -57 dBm", "4 x ZX60-P162LN+\n4.03 V", "ZFRSC-42-S+\nsplitter", run["arms"],
+    return ["Pluto TX\n-36, -50, -57 dBm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter", "ZFRSC-42-S+\nsplitter", run["arms"],
             "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {run['ifl']}", f"SDS1104X-E CH1, {run['inp']}\n100 mV/div, one reading per point"]
 
 
