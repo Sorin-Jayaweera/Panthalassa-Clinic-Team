@@ -618,3 +618,13 @@ tone off
 21:38:49 ifs_pri rep 3: 100%
 21:38:49 STAGE ifs_rest rep 3: rest of 600-1600 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
 21:41:59 ifs_rest rep 3: 25%
+=== short-cables-50ohm launch 1 10:39:06
+10:39:13 STAGE off rep 141: tone off before the high-density run (sc: no pads, 100 mV/div, no dither), 12 points (from 0)
+10:39:31 off rep 141: 25%
+10:39:47 off rep 141: 50%
+10:40:03 off rep 141: 75%
+10:40:19 off rep 141: 100%
+10:40:19 STAGE sc_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+10:45:12 sc_pri rep 1: 25%
+10:48:45 sc_pri rep 1: 50%
+10:52:06 sc_pri rep 1: 75%

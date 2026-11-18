@@ -28,13 +28,14 @@ def once(push):
         (SITE / "img" / p.name).write_bytes(p.read_bytes())
     print(run(sys.executable, "build_site.py", cwd=SITE).stdout.strip().splitlines()[-1])
     if push:
-        paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html", *HERE.glob("plot_pd_*.py"), HERE / "pd_runs.py", HERE / "make_plots.py"]
+        paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html",
+                 *HERE.glob("plot_pd_*.py"), HERE / "pd_runs.py", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
         rel = [str(p.relative_to(ROOT)) for p in paths if p.exists()]
         g = lambda *a: run("git", *a, cwd=ROOT)
-        g("stash"), g("pull", "--rebase", "-q"), g("stash", "pop")
+        # never stash, reset or rebase: a running sweep appends to the CSV; commit only these paths, then merge the remote
         g("add", "--", *rel)
-        msg = f"Phase detector plots and data, {time.strftime('%d %b %H:%M')}\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
-        print("push:", g("commit", "-qm", msg).returncode == 0 and g("push", "-q").returncode == 0)
+        g("commit", "-qm", f"Phase detector plots and data, {time.strftime('%d %b %H:%M')}\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>", "--", *rel)
+        print("push:", g("pull", "--no-rebase", "--no-edit", "-q").returncode == 0 and g("push", "-q").returncode == 0)
 
 
 if __name__ == "__main__":

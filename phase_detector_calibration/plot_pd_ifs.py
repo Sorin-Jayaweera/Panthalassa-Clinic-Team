@@ -1,8 +1,11 @@
-"""15 Nov night, pads removed, cable E: does the ~360 MHz ripple come from the long IF cable?
-Long IF cable (stages hdr_*) against a short IF cable (~16 cm SMA + SMA-BNC adapter into the scope, stages ifs_*).
-Same sweep plan (600-1600 MHz, -36/-50/-57 dBm, one reading per point, 100 mV/div). Each run in its own panel; the last
-panel overlays the two at -50 dBm because comparing them is the point of that panel. Raw readings, nothing subtracted.
-Saves pd_ifs_vs_long_15nov.png."""
+"""Pads removed: every high-density 600-1600 MHz run, one panel each, then their -50 dBm curves together.
+  hdr  15 Nov 20:03  cable E arm (B, D 15 cm), long IF cable to the scope (and SM200B), 1 Mohm
+  ifs  15 Nov 20:33  same, short IF cable (~16 cm SMA + SMA-BNC), 1 Mohm
+  sc   18 Nov 10:39  very short cables at every mixer connection, IF into the scope with a 50 ohm load
+Same sweep plan for all (run_pd_overnight.py HD_NIGHT, tag = HD_TAG): -36/-50/-57 dBm, one reading per point, 100 mV/div.
+A new run is one more row in pd_runs.RUNS. The comparison panel scales each run to its own swing (the 50 ohm load lowers the
+voltage), because comparing the shapes is the point of that panel. Raw readings in the other panels.
+Saves pd_ifs_vs_long_15nov.png (all runs) and prints the -50 dBm peaks and best single delay of each run."""
 import csv
 from pathlib import Path
 
@@ -13,25 +16,9 @@ import numpy as np
 
 import wiring
 
+import pd_runs as R
+
 HERE = Path(__file__).resolve().parent
-L3 = (-36.0, -50.0, -57.0)
-COL = dict(zip(L3, ("#440154", "#21918c", "#5ec962")))
-
-
-def wiring_for(ifc):
-    return ["Pluto TX\n-36, -50, -57 dBm", "4 x ZX60-P162LN+\n4.03 V", "ZFRSC-42-S+\nsplitter",
-            ["right arm (LO): cable D\nno pad", "left arm (RF): cable B + E\nno pad"],
-            "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {ifc}", "SDS1104X-E CH1, 1 Mohm\n100 mV/div, one reading per point"]
-
-
-def load(D, tag):
-    pts = {w: {} for w in L3}
-    ts = []
-    for r in D:
-        if r["stage"] in (f"{tag}_pri", f"{tag}_rest"):
-            pts[float(r["pluto_want_dbm"])].setdefault(float(r["freq_mhz"]), float(r["detector_mean_v"]) * 1e3)
-            ts.append(r["timestamp"][11:16])
-    return {w: np.array(sorted(p.items())) for w, p in pts.items()}, (min(ts), max(ts)) if ts else ("", "")
 
 
 def peaks(a):
@@ -39,38 +26,58 @@ def peaks(a):
     out = []
     for k in range(len(f)):
         w = np.abs(f - f[k]) <= 60
-        if v[k] == v[w].max() and v[k] - v[w].min() > 30 and 0 < k < len(f) - 1:
+        if v[k] == v[w].max() and v[k] - v[w].min() > 0.06 * np.ptp(v) and 0 < k < len(f) - 1:
             out.append(f[k])
     return out
 
 
+def best_delay(a):
+    """Best single delay tau in V = a + b f + A cos(2 pi f tau + phi), tau 0.3-4 ns. Returns (tau ns, amplitude mV)."""
+    f, v = a[:, 0] / 1e3, a[:, 1]
+    best = (np.inf, np.nan, np.nan)
+    for t in np.arange(0.3, 4.0, 0.002):
+        A = np.array([np.ones_like(f), f, np.cos(2 * np.pi * f * t), np.sin(2 * np.pi * f * t)]).T
+        c, *_ = np.linalg.lstsq(A, v, rcond=None)
+        s = (v - A @ c).std()
+        if s < best[0]:
+            best = (s, t, np.hypot(*c[2:]))
+    return best[1], best[2]
+
+
 def main():
-    D = list(csv.DictReader(open(HERE / "pd_dither_14nov.csv")))
-    off = {t: np.median([float(r["detector_mean_v"]) * 1e3 for r in D if r["stage"] == "off" and lo <= int(r["rep"]) < hi])
-           for t, (lo, hi) in (("hdr", (81, 91)), ("ifs", (91, 200)))}
-    runs = [("hdr", "long IF cable to the scope (and SM200B)"), ("ifs", "SHORT IF cable: ~16 cm SMA + SMA-BNC adapter")]
-    fig, ax = wiring.figure(3, [wiring_for("long cable"), wiring_for("~16 cm SMA cable\n+ SMA-BNC adapter")], size=(14, 16),
-                            titles=["Wiring, panel 1: long IF cable", "Wiring, panels 2 and 3: short IF cable"], strip=0.22)
+    D = R.rows()
+    runs = R.present(D)
+    n = len(runs)
+    fig, ax = wiring.figure(n + 1, [R.wiring_for(r) for r in runs], size=(14, 5.2 * (n + 1) + 2),
+                            titles=[f"Wiring, panel {k + 1} ({r['day']}): {r['desc']}" for k, r in enumerate(runs)], strip=0.2)
     data = {}
-    for k, (tag, name) in enumerate(runs):
-        P, (t0, t1) = load(D, tag)
-        data[tag] = P
-        for w in L3:
+    for k, run in enumerate(runs):
+        P, (t0, t1) = R.load(D, run)
+        data[run["tag"]] = P
+        for w in R.LEVELS:
             if len(P[w]):
-                ax[k].plot(P[w][:, 0], P[w][:, 1], "-o", ms=1.8, lw=1.0, color=COL[w], label=f"{w:.0f} dBm ({len(P[w])} points)")
-        pk = peaks(P[-50.0]) if len(P[-50.0]) > 10 else []
-        ax[k].set(title=f"{name}, 15 Nov {t0}-{t1}; tone-off {off[tag]:.1f} mV; -50 dBm peaks near {', '.join(f'{p:.0f}' for p in pk)} MHz")
-        print(tag, "peaks -50:", pk, "tone-off", off[tag], {w: len(P[w]) for w in L3})
-    for tag, ls, nm in (("hdr", "--", "long IF cable"), ("ifs", "-", "short IF cable")):
-        a = data[tag][-50.0]
-        ax[2].plot(a[:, 0], a[:, 1], ls, lw=1.3, color="#d95f02" if tag == "ifs" else "#555555", label=f"-50 dBm, {nm}")
-    ax[2].set(title="Comparison at -50 dBm: long against short IF cable (two runs overlaid on purpose)")
-    for a in ax[:3]:
-        a.set(xlim=(595, 1605), xlabel="Pluto frequency (MHz)", ylabel="detector (mV, raw)")
+                ax[k].plot(P[w][:, 0], P[w][:, 1], "-o", ms=1.8, lw=1.0, color=R.LEVEL_COLOURS[w], label=f"{w:.0f} dBm ({len(P[w])} points)")
+        a = P[-50.0]
+        pk = peaks(a) if len(a) > 10 else []
+        tau, amp = best_delay(a) if len(a) > 20 and np.ptp(a[:, 0]) > 500 else (np.nan, np.nan)
+        dl = f"; best single delay {tau:.2f} ns ({1e3 / tau:.0f} MHz cycle)" if tau == tau else "; too little range yet for a delay fit"
+        ax[k].set(title=f"{run['day']} {t0}-{t1}: {run['desc']}; tone-off {R.tone_off(D, run):.1f} mV; "
+                        f"-50 dBm peaks near {', '.join(f'{p:.0f}' for p in pk) or '-'} MHz{dl}", ylabel="detector (mV, raw)")
+        print(run["tag"], run["day"], "peaks -50:", [float(x) for x in pk], "delay ns:", round(tau, 3) if tau == tau else None,
+              "amp mV:", round(amp, 1) if amp == amp else None, "tone-off:", round(R.tone_off(D, run), 1), {w: len(P[w]) for w in R.LEVELS})
+    for run in runs:
+        a = data[run["tag"]][-50.0]
+        if len(a) > 2:
+            ax[n].plot(a[:, 0], (a[:, 1] - np.median(a[:, 1])) / np.ptp(a[:, 1]), run["ls"], lw=1.3, color=run["col"],
+                       label=f"{run['day']}: {run['desc']} (swing {np.ptp(a[:, 1]):.0f} mV)")
+    ax[n].set(title="All runs at -50 dBm, each scaled to its own swing (runs overlaid on purpose: is the ~360 MHz pattern still there?)",
+              ylabel="detector / its own swing")
+    for a in ax[:n + 1]:
+        a.set(xlim=(595, 1605), xlabel="Pluto frequency (MHz)")
         a.grid(alpha=0.3)
         a.legend(fontsize=8)
     fig.tight_layout()
-    fig.savefig(HERE / "pd_ifs_vs_long_15nov.png", dpi=95)
+    fig.savefig(HERE / "pd_ifs_vs_long_15nov.png", dpi=90)
 
 
 if __name__ == "__main__":

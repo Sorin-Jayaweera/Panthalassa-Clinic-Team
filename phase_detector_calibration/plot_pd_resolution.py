@@ -28,6 +28,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import pd_runs as R
 import wiring
 
 HERE = Path(__file__).resolve().parent
@@ -110,14 +111,13 @@ def longest(f, ok):
 def setups():
     S = []
     C = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in rd("p162x4_fine_1nov.csv")]
-    S.append(("Cable C, no pads (1 Nov)", (-36.0, -40.0, -50.0, -60.0), C, "#7570b3", "C", False, "0.1-0.2 V/div, no dither", None))
+    S.append(("Cable C, no pads (1 Nov)", (-36.0, -40.0, -50.0, -60.0), C, "#7570b3", setup_wiring("C", False, "0.1-0.2 V/div, no dither"), None))
     D = rd("pd_dither_14nov.csv")
     EP = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("bisect5", "bisect5s")]
-    S.append(("Cable E with pads (14 Nov)", (-36.0, -43.0, -50.0, -57.0), EP, "#1b9e77", "E", True, "50 mV/div, dithered", None))
-    EN = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("hdr_pri", "hdr_rest")]
-    S.append(("Cable E, no pads, long IF cable (15 Nov night)", (-36.0, -50.0, -57.0), EN, "#d95f02", "E", False, "100 mV/div, no dither, long IF cable", (1340, 1480)))
-    ES = [(float(r["freq_mhz"]), float(r["pluto_want_dbm"]), float(r["detector_mean_v"]) * 1e3) for r in D if r["stage"] in ("ifs_pri", "ifs_rest")]
-    S.append(("Cable E, no pads, short IF cable (15 Nov night)", (-36.0, -50.0, -57.0), ES, "#e7298a", "E", False, "100 mV/div, no dither, ~16 cm IF cable", (1340, 1480)))
+    S.append(("Cable E with pads (14 Nov)", (-36.0, -43.0, -50.0, -57.0), EP, "#1b9e77", setup_wiring("E", True, "50 mV/div, dithered"), None))
+    for r in R.present(D):
+        S.append((f"No pads, {r['desc']} ({r['day']})", R.LEVELS, [(float(x["freq_mhz"]), float(x["pluto_want_dbm"]), float(x["detector_mean_v"]) * 1e3)
+                  for x in D if x["stage"] in (f"{r['tag']}_pri", f"{r['tag']}_rest")], r["col"], R.wiring_for(r), r["region"]))
     return S
 
 
@@ -129,10 +129,10 @@ def setup_wiring(arm, pads, scope):
 
 def main():
     S = [s for s in setups() if len(s[2])]
-    fig, AX = wiring.figure(4 * len(S), [setup_wiring(s[4], s[5], s[6]) for s in S], size=(15, 13 * len(S)),
+    fig, AX = wiring.figure(4 * len(S), [s[4] for s in S], size=(15, 13 * len(S)),
                             titles=[f"Wiring, {s[0]}" for s in S], strip=0.12)
     table = []
-    for n, (name, levels, rows, col, arm, pads, scope, region) in enumerate(S):
+    for n, (name, levels, rows, col, _, region) in enumerate(S):
         ax = AX[4 * n:4 * n + 4]
         f, V = curves(rows, levels)
         if len(f) < 10:
