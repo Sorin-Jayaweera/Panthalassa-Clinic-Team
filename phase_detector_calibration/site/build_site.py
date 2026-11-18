@@ -256,7 +256,7 @@ def lut_tab():
 
 TABS = [("tab-schem", "Schematic"), ("tab-plots", "All plots"), ("tab-parts", "Part info"), ("tab-limiter", "Limiter"), ("tab-lna", "LNA"), ("tab-rxmixer", "RX mixer"), ("tab-ifamp", "IF amp"), ("tab-lobuf", "LO buffer"), ("tab-filter", "Image filter"),
         ("tab-splitter", "Splitter"), ("tab-mixer", "Phase detector"), ("tab-env", "Envelope detector"), ("tab-comp", "Comparator"), ("tab-vco", "VCO"), ("tab-pluto", "Pluto"), ("tab-radar", "Radar"), ("tab-racon", "Racon"), ("tab-vna", "VNA"), ("tab-gear", "Test gear"), ("tab-lut", "Look up tables"),
-        ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-code", "Code library"), ("tab-review", "Review notes")]
+        ("tab-tests", "Tests to run"), ("tab-errors", "Errors"), ("tab-code", "Code library"), ("tab-files", "File locations"), ("tab-review", "Review notes")]
 
 HEAD = """<title>JACON Engineering Notes</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -433,6 +433,9 @@ def main():
         + "<script>window.PLOT_DATES=" + _json.dumps(dates) + ";window.PLOT_STARS_SHARED=" + _json.dumps(shared) + ";</script>")
     import content_code_index as CCI
     panels["tab-code"] = CCI.tab()
+    import content_files as CF           # every data set: location, USB copy, setup; also FILE_LOCATIONS.html
+    panels["tab-files"] = CF.tab()
+    CF.standalone()
     import content_data_index as CDX          # data sets found by the 16 Nov audit, appended to their tabs
     for tid, extra in CDX.tabs().items():
         panels[tid] = panels[tid] + extra
