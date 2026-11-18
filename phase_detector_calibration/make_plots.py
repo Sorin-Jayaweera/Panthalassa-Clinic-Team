@@ -1,0 +1,49 @@
+"""Redraw every phase detector plot from the CSVs, put them on the site, rebuild it.
+  python make_plots.py            once
+  python make_plots.py --push     and commit + push the plots, data and site (explicit paths only)
+  python make_plots.py --watch    repeat whenever the data file changes (with --push: publish each time)"""
+import subprocess as sp
+import sys
+import time
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT, SITE = HERE.parent, HERE / "site"
+DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log"]
+JOBS = ["plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py"]
+
+
+def run(*a, cwd=HERE):
+    return sp.run([*a], cwd=cwd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+def once(push):
+    t0 = time.time()
+    for j in JOBS:
+        r = run(sys.executable, j)
+        print(f"{j}: {'ok' if r.returncode == 0 else 'FAILED ' + r.stderr.strip().splitlines()[-1]}")
+    used = "".join(p.read_text(encoding="utf-8", errors="ignore") for p in SITE.glob("content*.py"))
+    new = [p for p in HERE.glob("*.png") if p.stat().st_mtime >= t0 and f'"{p.name}"' in used]
+    for p in new:
+        (SITE / "img" / p.name).write_bytes(p.read_bytes())
+    print(run(sys.executable, "build_site.py", cwd=SITE).stdout.strip().splitlines()[-1])
+    if push:
+        paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html", *HERE.glob("plot_pd_*.py"), HERE / "pd_runs.py", HERE / "make_plots.py"]
+        rel = [str(p.relative_to(ROOT)) for p in paths if p.exists()]
+        g = lambda *a: run("git", *a, cwd=ROOT)
+        g("stash"), g("pull", "--rebase", "-q"), g("stash", "pop")
+        g("add", "--", *rel)
+        msg = f"Phase detector plots and data, {time.strftime('%d %b %H:%M')}\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+        print("push:", g("commit", "-qm", msg).returncode == 0 and g("push", "-q").returncode == 0)
+
+
+if __name__ == "__main__":
+    push, watch, seen = "--push" in sys.argv, "--watch" in sys.argv, 0
+    while True:
+        m = DATA[0].stat().st_mtime
+        if m != seen:
+            seen = m
+            once(push)
+        if not watch:
+            break
+        time.sleep(300)
