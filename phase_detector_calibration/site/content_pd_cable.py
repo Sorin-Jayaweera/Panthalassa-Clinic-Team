@@ -260,9 +260,9 @@ PD_PLUTO = item(
 )
 
 PD_SC = item(
-    "pd-short-cables", "Very short cables at every mixer connection, 50 ohm load on the IF (18 Nov, until 13:00): pattern unchanged",
+    "pd-short-cables", "Very short cables at every mixer connection, 50 ohm load on the IF (18 Nov 10:39-12:40): pattern unchanged",
     p("<b>Result (first full pass, 11:02):</b> the pattern did not change. Peaks at &minus;50 dBm at 770, 1160 and 1510 MHz (15 Nov: 760&ndash;765, 1162&ndash;1164, 1495&ndash;1499); "
-      "best single delay 2.74 ns (15 Nov: 2.77 ns); swing about 450 mV; tone-off &minus;9.2 mV. "
+      "best single delay 2.74 ns (15 Nov: 2.77 ns); swing about 450 mV. Tone-off was &minus;8 mV at 10:39 and &minus;25 mV from 11:02 onward, steady after that; the tone-on curve did not move (later passes match pass 1 within about 1 mV median), so only the zero reading changed. "
       "So the cables at the mixer and the IF termination are not the source, and nor is any reflection path whose delay is the sum of the arms. "
       "New suspect: the amplifier chain itself. Its saturated output power can ripple with frequency (reflections between the four stages), the curve would then be the same at every input level and independent of the arm and IF cables, as seen. "
       "Test: amplifier chain output into the SM200B through pads, swept 600&ndash;1600 MHz; or drive the splitter straight from the Pluto with the amplifiers bypassed."),
