@@ -17,6 +17,7 @@ import numpy as np
 import wiring
 
 import pd_runs as R
+from pdlib import delay
 
 HERE = Path(__file__).resolve().parent
 
@@ -29,19 +30,6 @@ def peaks(a):
         if v[k] == v[w].max() and v[k] - v[w].min() > 0.06 * np.ptp(v) and 0 < k < len(f) - 1:
             out.append(f[k])
     return out
-
-
-def best_delay(a):
-    """Best single delay tau in V = a + b f + A cos(2 pi f tau + phi), tau 0.3-4 ns. Returns (tau ns, amplitude mV)."""
-    f, v = a[:, 0] / 1e3, a[:, 1]
-    best = (np.inf, np.nan, np.nan)
-    for t in np.arange(0.3, 4.0, 0.002):
-        A = np.array([np.ones_like(f), f, np.cos(2 * np.pi * f * t), np.sin(2 * np.pi * f * t)]).T
-        c, *_ = np.linalg.lstsq(A, v, rcond=None)
-        s = (v - A @ c).std()
-        if s < best[0]:
-            best = (s, t, np.hypot(*c[2:]))
-    return best[1], best[2]
 
 
 def main():
@@ -59,7 +47,7 @@ def main():
                 ax[k].plot(P[w][:, 0], P[w][:, 1], "-o", ms=1.8, lw=1.0, color=R.LEVEL_COLOURS[w], label=f"{w:.0f} dBm ({len(P[w])} points)")
         a = P[-50.0]
         pk = peaks(a) if len(a) > 10 else []
-        tau, amp = best_delay(a) if len(a) > 20 and np.ptp(a[:, 0]) > 500 else (np.nan, np.nan)
+        tau, amp = delay(a[:, 0], a[:, 1]) if len(a) > 20 and np.ptp(a[:, 0]) > 500 else (np.nan, np.nan)
         dl = f"; best single delay {tau:.2f} ns ({1e3 / tau:.0f} MHz cycle)" if tau == tau else "; too little range yet for a delay fit"
         ax[k].set(title=f"{run['day']} {t0}-{t1}: {run['desc']}; tone-off {R.tone_off(D, run):.1f} mV; "
                         f"-50 dBm peaks near {', '.join(f'{p:.0f}' for p in pk) or '-'} MHz{dl}", ylabel="detector (mV, raw)")

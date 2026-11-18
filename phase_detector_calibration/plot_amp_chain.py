@@ -10,6 +10,7 @@ matplotlib.use("Agg")
 import numpy as np
 
 import wiring
+from pdlib import delay
 
 HERE = Path(__file__).resolve().parent
 OUT, RAW = HERE / "amp_chain_18nov.csv", HERE / "amp_chain"
@@ -23,13 +24,6 @@ def table():
     lv = sorted({float(r["pluto_want_dbm"]) for r in D}, reverse=True)
     k = ["freq_mhz", "tone_dbm", "p01_dbm", "p50_dbm", "p99_dbm", "h2_dbm", "h3_dbm"]
     return {w: np.array(sorted({float(r["freq_mhz"]): [float(r[c]) for c in k] for r in D if float(r["pluto_want_dbm"]) == w}.values())) for w in lv}
-
-
-def delay(f, y):
-    """Strongest single delay (ns) and amplitude in the trend-removed ripple."""
-    taus = np.arange(0.3, 4, 0.01)
-    amp = 2 * np.abs(np.exp(-2j * np.pi * np.outer(taus, f * 1e-3)) @ y) / len(y)
-    return taus[amp.argmax()], amp.max()
 
 
 def main():
@@ -47,7 +41,7 @@ def main():
         ax[2].plot(f, a[:, 6], "--", color=c, lw=1)
         if len(f) > 8:
             r = a[:, 1] - np.polyval(np.polyfit(f, a[:, 1], 2), f)
-            tau, A = delay(f, r)
+            tau, A = delay(f, a[:, 1], deg=2)
             ax[3].plot(f, r, "-o", ms=2, color=c, label=f"{w:.0f} dBm: rms {r.std():.2f} dB, strongest delay {tau:.2f} ns ({1e3 / tau:.0f} MHz period), {A:.2f} dB")
     x = sorted(RAW.glob("1160_-50.npy")) or sorted(RAW.glob("*_-50.npy"))[:1]
     if x:

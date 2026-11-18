@@ -48,6 +48,20 @@ def slope(f, v, half, nmin=0):
     return np.where(n >= nmin, s, np.nan)
 
 
+def delay(f, v, deg=1, taus=np.arange(0.3, 4.0, 0.002)):
+    """Best single delay: v = polynomial(f, deg) + A cos(2 pi f tau + phi), f in MHz. Returns (tau ns, A).
+    The polynomial is projected out (Frisch-Waugh), leaving a 2 x 2 least-squares solve per tau, done for every tau at once."""
+    x = f / 1e3
+    Q = np.linalg.qr(np.vander(x, deg + 1))[0]
+    P = lambda y: y - Q @ (Q.T @ y)
+    ph = 2 * np.pi * np.outer(x, taus)
+    C, S, r = P(np.cos(ph)), P(np.sin(ph)), P(v)
+    a, b, c, p, q = (C * C).sum(0), (C * S).sum(0), (S * S).sum(0), C.T @ r, S.T @ r
+    ac, asn = (c * p - b * q) / (a * c - b * b), (a * q - b * p) / (a * c - b * b)
+    k = np.argmax(ac * p + asn * q)   # largest explained variance = smallest residual
+    return taus[k], np.hypot(ac[k], asn[k])
+
+
 def runs(f, ok):
     """Contiguous (start, end) stretches of f where ok is true."""
     e = np.diff(np.r_[0, np.asarray(ok, int), 0])
