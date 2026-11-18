@@ -275,7 +275,7 @@ PD_SC = item(
 )
 
 PD_AMP = item(
-    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov from 13:06, running)",
+    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov from 13:06): no, the pattern comes after them",
     p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; every cable 7 cm) &rarr; 10 + 10 + 3 + 6 = 29 dB of pads &rarr; SM200B. No splitter, arms or mixer. "
       "Expected: the chain rails near +20 dBm (datasheet P1dB +19.9 dBm per stage at 1 GHz), so about &minus;9 dBm at the SM200B, nearly the same at every input level. "
       "If the amplifiers cause the detector pattern, the output level should ripple with a ~2.75 ns delay (peaks near 770, 1160, 1510 MHz)."),
@@ -288,6 +288,14 @@ PD_AMP = item(
       "and across 600&ndash;1600 MHz its ripple after a smooth trend is 0.5 dB rms with only 0.11 dB at a 2.75 ns delay (its strongest component is 1.4 ns, 0.22 dB). "
       "With the amplifiers railed that is attenuated further, so the Pluto itself is not the source."),
     fig("amp_chain_18nov.png", "Amplifier chain alone: output tone, instantaneous power, harmonics and ripple against frequency at six Pluto levels, raw IQ example, and the wiring"),
+    p("<b>Result (sweep 13:06&ndash;13:19, 1206 points): the amplifiers do not cause the detector's ~360 MHz pattern.</b> "
+      "With &minus;57 dBm or more into the chain the output is railed at +20 to +22 dBm across 650&ndash;1600 MHz, with about &plusmn;0.5&ndash;0.8 dB of ripple whose strongest single delay is 4.4 ns (about 225 MHz period), "
+      "not the detector's 2.75 ns; the ripple's correlation with the detector curve (18 Nov short-cable run, 800&ndash;1600 MHz, trends removed) is 0.08. "
+      "Anything before the splitter is common to both arms, so the amplifiers' phase cancels in the detector; only their level could matter, and it does not match. "
+      "The pattern therefore comes from the splitter, the mixer or the ports between them. It stayed at 2.74&ndash;2.77 ns with cable E and with very short arm cables, so it looks fixed inside those parts "
+      "(for example a different delay from the mixer's LO and RF ports to its core) rather than set by the arm lengths."),
+    p("Not railed at low input: with &minus;64 dBm in, the output falls to about +18 dBm above 1300 MHz; with &minus;71 dBm it falls from +20 dBm below 1000 MHz to +12 dBm at 1600 MHz. "
+      "So the chain holds a constant output only down to about &minus;60 dBm at the top of the band; the ramp below maps exactly where."),
     p("First readings: the chain puts out +17 to +21 dBm (railed). With no tone it still puts out about &minus;3 dBm in the SM200B's 41.5 MHz window: 90 dB of gain amplifies its own thermal noise, "
       "so over the amplifiers' ~1 GHz bandwidth the noise alone is near +6 dBm, close to saturation. Below about 800 MHz the 2nd harmonic lands inside the amplifiers' band and comes out only 5&ndash;9 dB under the tone. "
       "Where 30.75 dB of Pluto attenuation would be needed (&minus;36 dBm near 1525 MHz) the Pluto script's 31 dB safety floor is used instead, 0.25 dB lower; the CSV keeps the setting used."),
@@ -314,13 +322,15 @@ PD_STATUS = item(
     h("What is known"),
     ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.38 ns the arm lengths give. It shifted only slightly with the arm cable (C 3.00 ns, E 2.77 ns) and not at all with very short cables (2.74 ns, 18 Nov).",
         "Not the long IF cable (15 Nov), not the Pluto's own level ripple (16 Nov), not the cables at the mixer or the IF termination, and not reflections through the arms (18 Nov).",
-        "Main suspect (18 Nov): the railed amplifier chain's output power rippling with frequency (reflections between stages), which every input level would share. The mixer's DC output depends on its drive level, so that ripple shows up in the curve.",
+        "Not the amplifier chain (18 Nov, SM200B on the chain alone): railed at +20 to +22 dBm, ripple &plusmn;0.5&ndash;0.8 dB with its strongest delay at 4.4 ns, correlation 0.08 with the detector curve. The chain rails over the whole band only with &minus;57 dBm or more in.",
+        "Main suspect now: a fixed delay inside the splitter or mixer (for example different LO and RF port delays to the mixer core), since the 2.75 ns stays with any arm cable.",
         "&minus;50 and &minus;57 dBm agree within about 2 mV; &minus;36 dBm departs on the shoulders (deepest compression; supply current rises to 0.39 A).",
         "Best so far: cable E, no pads, rising edge 1340&ndash;1480 MHz, about 80 MHz with error &le;2 MHz at &plusmn;0.5 mV (&minus;50/&minus;57 dBm). Pads give a smoother but 3&times; shallower curve."]),
     h("Open"),
-    ul(["Measure the amplifier chain output against frequency: SM200B through pads, 600&ndash;1600 MHz, at two input levels. A ~360 MHz ripple there confirms the suspect.",
-        "Or bypass the amplifiers (Pluto straight into the splitter at a level the mixer can use) and repeat the sweep.",
-        "Then: a high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers."]),
+    ul(["Add a known length (e.g. 15 cm, about 0.75 ns) to one arm: if the fitted delay moves by exactly that, the 2.75 ns is a fixed offset inside the parts; if not, something else sets it.",
+        "Swap the mixer's LO and RF inputs, then swap in another mixer or splitter, and see whether the delay changes sign or size.",
+        "A high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers (the 2nd harmonic is only 5&ndash;9 dB down below 800 MHz).",
+        "Power-cycle the SDS1104X-E: it is stuck on a VISA protocol error since 12:50 and must be reset by hand before the next detector run."]),
     h("Pitfalls"),
     ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped; the wrapper relaunches.",
         "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",

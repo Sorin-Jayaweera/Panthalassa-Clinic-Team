@@ -57,8 +57,10 @@ def delay(f, v, deg=1, taus=np.arange(0.3, 4.0, 0.002)):
     ph = 2 * np.pi * np.outer(x, taus)
     C, S, r = P(np.cos(ph)), P(np.sin(ph)), P(v)
     a, b, c, p, q = (C * C).sum(0), (C * S).sum(0), (S * S).sum(0), C.T @ r, S.T @ r
-    ac, asn = (c * p - b * q) / (a * c - b * b), (a * q - b * p) / (a * c - b * b)
-    k = np.argmax(ac * p + asn * q)   # largest explained variance = smallest residual
+    det = a * c - b * b
+    ac, asn = (c * p - b * q) / det, (a * q - b * p) / det
+    ok = det > 0.05 * (len(x) / 2) ** 2   # delays too slow to tell from the polynomial over this span are left out
+    k = np.argmax(np.where(ok, ac * p + asn * q, -np.inf))   # largest explained variance = smallest residual
     return taus[k], np.hypot(ac[k], asn[k])
 
 
