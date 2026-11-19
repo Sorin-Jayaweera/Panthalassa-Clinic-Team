@@ -696,3 +696,69 @@ ERROR: Unable to send command: Unknown error (10054)
 15:52:07 1160 MHz -86 dBm: tone -26.0 measured (amp out 3.0 = measured + 29 dB), peak -22.2 measured, 2f -41.8, 3f -55.4 (+29 dB)  (3240/27656)
 15:52:09 1160 MHz -81 dBm: tone -21.2 measured (amp out 7.8 = measured + 29 dB), peak -18.8 measured, 2f -32.7, 3f -40.5 (+29 dB)  (3245/27656)
 15:52:35 1200 MHz -81 dBm: tone -23.0 measured (amp out 6.0 = measured + 29 dB), peak -20.5 measured, 2f -40.6, 3f -45.4 (+29 dB)  (3300/27656)
+15:53:00 1250 MHz -81 dBm: tone -24.6 measured (amp out 4.4 = measured + 29 dB), peak -21.2 measured, 2f -33.0, 3f -48.7 (+29 dB)  (3355/27656)
+15:53:02 1250 MHz -76 dBm: tone -19.7 measured (amp out 9.3 = measured + 29 dB), peak -17.8 measured, 2f -23.9, 3f -33.7 (+29 dB)  (3360/27656)
+15:53:25 1300 MHz -81 dBm: tone -25.8 measured (amp out 3.2 = measured + 29 dB), peak -23.2 measured, 2f -31.5, 3f -53.9 (+29 dB)  (3410/27656)
+15:53:29 1300 MHz -71 dBm: tone -16.2 measured (amp out 12.8 = measured + 29 dB), peak -15.1 measured, 2f -13.8, 3f -24.4 (+29 dB)  (3420/27656)
+15:53:50 1340 MHz -81 dBm: tone -24.9 measured (amp out 4.1 = measured + 29 dB), peak -22.2 measured, 2f -30.8, 3f -53.2 (+29 dB)  (3465/27656)
+15:53:57 1340 MHz -66 dBm: tone -11.2 measured (amp out 17.8 = measured + 29 dB), peak -10.2 measured, 2f -9.3, 3f -9.9 (+29 dB)  (3480/27656)
+15:54:15 1350 MHz -81 dBm: tone -25.1 measured (amp out 3.9 = measured + 29 dB), peak -22.1 measured, 2f -31.9, 3f -54.9 (+29 dB)  (3520/27656)
+15:54:24 1350 MHz -61 dBm: tone -8.9 measured (amp out 20.1 = measured + 29 dB), peak -8.0 measured, 2f -8.2, 3f -3.6 (+29 dB)  (3540/27656)
+15:54:40 1400 MHz -81 dBm: tone -28.5 measured (amp out 0.5 = measured + 29 dB), peak -25.2 measured, 2f -37.4, 3f -58.7 (+29 dB)  (3575/27656)
+Error -6: b'Device connection lost' in sm_get_IQ()
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 105, in main
+    x, fs = iq(h, f * 1e6 - OFS, N if n == 1 else 4096)
+            ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 40, in iq
+    x = np.asarray(sm_get_IQ(h, n, 0, SM_TRUE)["iq_buf"], np.complex64)
+                   ~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\signal_hound\smdevice\sm_api.py", line 529, in print_status_if_error
+    exit()
+    ~~~~^^
+SystemExit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 56, in _attr_ctx
+    at.value = val
+    ^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 704, in <lambda>
+    lambda self, x: self._write(x),
+                    ~~~~~~~~~~~^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 736, in _write
+    _c_write_attr(self._channel, self._name_ascii, value.encode("ascii"))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 62, in _check_negative
+    raise OSError(-result, _strerror(-result))
+ConnectionResetError: [Errno 10054] Unknown error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 133, in <module>
+    main()
+    ~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_amp_chain_iq.py", line 127, in main
+    tone_off()
+    ~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 91, in tone_off
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 60, in _attr_ctx
+    raise RuntimeError(f"libiio {' '.join(a)} failed: {e}")
+RuntimeError: libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+=== amp ramp launch 2 16:04:55
+pad check: -21.3 dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm
+16:04:59 24079 points to go
+16:05:00 1400 MHz -79 dBm: tone -26.3 measured (amp out 2.7 = measured + 29 dB), peak -24.0 measured, 2f -33.3, 3f -53.0 (+29 dB)  (0/24079)
+16:05:26 1450 MHz -79 dBm: tone -25.8 measured (amp out 3.2 = measured + 29 dB), peak -20.3 measured, 2f -26.5, 3f -41.9 (+29 dB)  (55/24079)
+16:05:28 1450 MHz -74 dBm: tone -17.8 measured (amp out 11.2 = measured + 29 dB), peak -16.2 measured, 2f -17.9, 3f -26.7 (+29 dB)  (60/24079)
+16:05:52 1500 MHz -79 dBm: tone -25.8 measured (amp out 3.2 = measured + 29 dB), peak -23.0 measured, 2f -32.0, 3f -49.1 (+29 dB)  (110/24079)
+16:05:57 1500 MHz -69 dBm: tone -16.0 measured (amp out 13.0 = measured + 29 dB), peak -14.3 measured, 2f -13.6, 3f -20.7 (+29 dB)  (120/24079)
+16:06:18 1510 MHz -79 dBm: tone -26.6 measured (amp out 2.4 = measured + 29 dB), peak -22.4 measured, 2f -31.9, 3f -47.5 (+29 dB)  (165/24079)
+16:06:25 1510 MHz -64 dBm: tone -11.6 measured (amp out 17.4 = measured + 29 dB), peak -10.0 measured, 2f -9.1, 3f -7.8 (+29 dB)  (180/24079)
