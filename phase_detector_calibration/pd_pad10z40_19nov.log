@@ -117,3 +117,7 @@ tone off
 09:56:44 pad10zn_1mhz rep 1: 25%
 10:06:25 pad10zn_1mhz rep 1: 50%
 10:16:37 pad10zn_1mhz rep 1: 75%
+10:33:49 pad10zn_1mhz rep 1: 100%
+10:33:49 STAGE off rep 402: tone off after repeat 1, 12 points (from 0)
+10:34:02 off rep 402: 25%
+10:34:17 off rep 402: 50%
