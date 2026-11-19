@@ -19,3 +19,4 @@ tone off
 22:16:20 STAGE pad10z_4mhz rep 1: repeat 1: 600-1600 MHz, 125 new frequencies at 4 MHz spacing x 5 levels (-36.0, -45.0, -54.0, -63.0, -72.0), 625 points (from 0)
 22:23:21 pad10z_4mhz rep 1: 25%
 22:30:14 pad10z_4mhz rep 1: 50%
+22:37:46 pad10z_4mhz rep 1: 75%
