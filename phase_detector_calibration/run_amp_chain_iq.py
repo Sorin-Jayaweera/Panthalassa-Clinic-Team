@@ -27,8 +27,10 @@ LEVELS = (-36.0, -43.0, -50.0, -57.0, -64.0, -71.0)
 MODE = __import__("os").environ.get("AMP_MODE", "sweep")
 RAMP_F = sorted({*np.arange(700.0, 1600.1, 50.0), 770.0, 960.0, 1160.0, 1340.0, 1510.0})
 RAMP_W, REPS = np.arange(-90.0, TOP_DBM + 0.1, 1.0), 30
-NAME = {"sweep": "amp_chain", "ramp": "amp_ramp"}[MODE]
-OUT, RAW, STOP, DONE = HERE / f"{NAME}_18nov.csv", HERE / NAME, HERE / "STOP_AMP_RUN", HERE / ("AMP_RUN_DONE" if MODE == "sweep" else "AMP_RAMP_DONE")
+# AMP_MODE=arm (18 Nov evening): one splitter arm through the 29 dB pads into the SM200B instead of its mixer port; ARM=lo or rf names the arm probed
+ARM = __import__("os").environ.get("ARM", "lo")
+NAME = {"sweep": "amp_chain", "ramp": "amp_ramp", "arm": f"arm_probe_{ARM}"}[MODE]
+OUT, RAW, STOP, DONE = HERE / f"{NAME}_18nov.csv", HERE / NAME, HERE / "STOP_AMP_RUN", HERE / {"sweep": "AMP_RUN_DONE", "ramp": "AMP_RAMP_DONE", "arm": f"ARM_{ARM}_DONE"}[MODE]
 COLS = ["timestamp", "freq_mhz", "pluto_att_db", "pluto_want_dbm", "tone_dbm", "p_mean_dbm", "p01_dbm", "p50_dbm", "p99_dbm", "p_max_dbm", "h2_dbm", "h3_dbm", "sm_in_dbm"] + (["rep"] if MODE == "ramp" else [])
 assert max(LEVELS) <= TOP_DBM and max(RAMP_W) <= TOP_DBM
 
@@ -53,7 +55,7 @@ def line(x, fs, off):
 def plan():
     if MODE == "ramp":
         return [(n, f, round(float(w), 1)) for n in range(1, REPS + 1) for f in RAMP_F for w in RAMP_W]
-    return [(1, f, w) for step in (25.0, 5.0) for f in np.arange(600.0, 1600.1, step) for w in LEVELS]
+    return [(1, f, w) for step in (25.0, 5.0) for f in np.arange(600.0, 1600.1, step) for w in ((-36.0, -50.0, -57.0) if MODE == "arm" else LEVELS)]
 
 
 def key(r):
@@ -103,7 +105,7 @@ def main():
                 retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
                 time.sleep(0.3)
                 x, fs = iq(h, f * 1e6 - OFS, N if n == 1 else 4096)
-                np.save(RAW / (f"{f:.0f}_{want:.0f}.npy" if MODE == "sweep" else f"{n}_{f:.0f}_{want:.0f}.npy"), x)
+                np.save(RAW / (f"{f:.0f}_{want:.0f}.npy" if MODE != "ramp" else f"{n}_{f:.0f}_{want:.0f}.npy"), x)
                 p = 10 * np.log10(np.abs(x) ** 2 + 1e-20)
                 t = line(x, fs, OFS)
                 h2, h3 = (line(*iq(h, k * f * 1e6 - OFS, 8192), OFS) + PAD_DB for k in (2, 3))
