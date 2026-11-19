@@ -36,7 +36,7 @@ TOP_DBM = -36.0
 WORST_DBM = 11.0
 STOP_MV = 700.0
 STOP_IF_DBM = 5.0
-DEADLINE = dt.datetime(2099, 1, 1)   # runs until Sorin says stop
+DEADLINE = dt.datetime.fromisoformat(__import__("os").environ.get("PD_DEADLINE", "2099-01-01T00:00"))   # PD_DEADLINE: hard stop (18 Nov night: 07:55, Sorin: done by 8 a.m.)
 OUT = HERE / "pd_dither_14nov.csv"
 STOP_FILE = HERE / "STOP_PD_RUN"   # create this file to end the run cleanly between points
 VDIV = float(__import__("os").environ.get("PD_VDIV", "0.05"))  # 15 Nov night, no pads: 0.1 (the swing is about 430 mV)
@@ -70,15 +70,19 @@ def rng(a, b, s):
 def stages():
     """(stage, rep, list of (freq, want_dbm), kitty, label). Order = coarse first."""
     lo, hi = BAND
+    if __import__("os").environ.get("PD_PLAN") == "fine":   # 18 Nov night: 1 MHz over 600-1600 MHz at 5 levels, coarse to fine, repeated until the deadline
+        from pd_plan import fine_sweep
+        yield from fine_sweep("pad10", (-36.0, -45.0, -54.0, -63.0, -72.0), reps=3, base=261)
+        return
     if __import__("os").environ.get("HD_NIGHT"):   # 15 Nov night, no pads, 100 mV/div: dense where it matters, coarse to fine
         L3 = (-36.0, -50.0, -57.0)
         pri = lambda f: 900 <= f <= 1200 or 1300 <= f <= 1500
         done = set()
         tag = __import__("os").environ.get("HD_TAG", "hdr")   # "ifs" = 15 Nov 20:50, short IF cable (about 16 cm) straight to the scope
-        base = {"hdr": 81, "ifs": 91, "sc": 141}[tag]   # sc = 18 Nov: very short cables at every mixer connection, IF into the scope with a 50 ohm load
+        base = {"hdr": 81, "ifs": 91, "sc": 141, "eq": 201, "elo": 231, "pad10": 261}[tag]   # pad10 = 18 Nov night: 10 dB pad at each mixer port, cable B and cable D   # eq = 18 Nov evening: equal arms, cable B and D 15 cm each (zero delay difference), IF straight into 50 ohm at the scope   # sc = 18 Nov: very short cables at every mixer connection, IF into the scope with a 50 ohm load
         plan = [("hdr_pri", 1, 5.0, True), ("hdr_rest", 1, 10.0, False), ("hdr_pri", 2, 2.5, True), ("hdr_rest", 2, 5.0, False),
                 ("hdr_pri", 3, 1.25, True), ("hdr_rest", 3, 2.5, False), ("hdr_pri", 4, 0.625, True)]   # hdr = one reading per point (no dither)
-        plan = [(st.replace("hdr", tag), rp, stp, wp) for st, rp, stp, wp in plan]
+        plan = [(st.replace("hdr", tag), rp, stp, wp) for st, rp, stp, wp in plan if rp <= int(__import__("os").environ.get("HD_PASSES", 9))]   # HD_PASSES: stop after that pass (Sorin 18 Nov: no extra passes beyond what the fit needs)
         yield "off", base, [(0.0, -999.0)] * 12, False, f"tone off before the high-density run ({tag}: no pads, 100 mV/div, no dither)"
         for st, rep, step, want_pri in plan:
             fs = [f for f in rng(600, 1600, step) if pri(f) == want_pri and f not in done]
@@ -86,10 +90,10 @@ def stages():
             yield st, rep, [(1350.0, w) for w in L3] + [(f, w) for f in fs for w in L3], False, f"{'priority 900-1200 + 1300-1500' if want_pri else 'rest of 600-1600'} at {step:g} MHz: {len(fs)} new frequencies x 3 levels (-36, -50, -57 dBm)"
             if st.endswith("_rest"):
                 yield "off", base + rep, [(0.0, -999.0)] * 12, False, f"tone off after pass {rep}"
-        if tag == "sc":    # 18 Nov: then repeat the 5 MHz grid a few times (repeatability with the new cables)
+        if tag in ("sc", "eq", "elo", "pad10"):    # 18 Nov: then repeat the 5 MHz grid a few times (repeatability with the new cables)
             for n in range(1, 6):
                 yield f"{tag}_rep", n, [(f, w) for f in rng(600, 1600, 5) for w in L3], False, f"repeat {n}: 600-1600 MHz every 5 MHz x 3 levels"
-                yield "off", 160 + n, [(0.0, -999.0)] * 12, False, f"tone off after repeat {n}"
+                yield "off", base + 19 + n, [(0.0, -999.0)] * 12, False, f"tone off after repeat {n}"
         if tag == "ifs":   # Sorin 20:35: "take data for the rest of the night": then repeat the 5 MHz grid over 600-1600 MHz all night (drift)
             for n in range(1, 21):
                 yield f"{tag}_rep", n, [(f, w) for f in rng(600, 1600, 5) for w in L3], False, f"repeat {n}: 600-1600 MHz every 5 MHz x 3 levels (drift through the night)"

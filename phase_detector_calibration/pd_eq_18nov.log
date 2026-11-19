@@ -1,0 +1,58 @@
+=== equal-arms-50ohm launch 1 17:01:02
+17:01:04 STAGE off rep 201: tone off before the high-density run (eq: no pads, 100 mV/div, no dither), 12 points (from 0)
+17:01:22 off rep 201: 25%
+17:01:37 off rep 201: 50%
+17:01:51 off rep 201: 75%
+17:02:07 off rep 201: 100%
+17:02:08 STAGE eq_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+17:07:03 eq_pri rep 1: 25%
+17:11:32 eq_pri rep 1: 50%
+17:16:06 eq_pri rep 1: 75%
+17:20:25 eq_pri rep 1: 100%
+17:20:25 STAGE eq_rest rep 1: rest of 600-1600 at 10 MHz: 49 new frequencies x 3 levels (-36, -50, -57 dBm), 150 points (from 0)
+17:22:30 eq_rest rep 1: 25%
+17:24:37 eq_rest rep 1: 50%
+17:27:04 eq_rest rep 1: 75%
+17:29:25 eq_rest rep 1: 100%
+17:29:25 STAGE off rep 202: tone off after pass 1, 12 points (from 0)
+17:29:38 off rep 202: 25%
+17:29:54 off rep 202: 50%
+17:30:10 off rep 202: 75%
+17:30:26 off rep 202: 100%
+17:30:26 STAGE eq_pri rep 2: priority 900-1200 + 1300-1500 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
+17:35:41 eq_pri rep 2: 25%
+17:40:23 eq_pri rep 2: 50%
+17:44:52 eq_pri rep 2: 75%
+17:49:17 eq_pri rep 2: 100%
+17:49:17 STAGE eq_rest rep 2: rest of 600-1600 at 5 MHz: 50 new frequencies x 3 levels (-36, -50, -57 dBm), 153 points (from 0)
+17:51:32 eq_rest rep 2: 25%
+17:53:58 eq_rest rep 2: 50%
+17:56:31 eq_rest rep 2: 75%
+17:59:05 eq_rest rep 2: 100%
+17:59:05 STAGE off rep 203: tone off after pass 2, 12 points (from 0)
+17:59:19 off rep 203: 25%
+17:59:34 off rep 203: 50%
+17:59:50 off rep 203: 75%
+18:00:04 off rep 203: 100%
+18:00:05 STAGE eq_pri rep 3: priority 900-1200 + 1300-1500 at 1.25 MHz: 200 new frequencies x 3 levels (-36, -50, -57 dBm), 603 points (from 0)
+18:10:29 eq_pri rep 3: 25%
+18:19:43 eq_pri rep 3: 50%
+18:28:19 eq_pri rep 3: 75%
+18:37:18 eq_pri rep 3: 100%
+18:37:18 STAGE eq_rest rep 3: rest of 600-1600 at 2.5 MHz: 100 new frequencies x 3 levels (-36, -50, -57 dBm), 303 points (from 0)
+18:42:26 eq_rest rep 3: 25%
+18:47:07 eq_rest rep 3: 50%
+18:52:19 eq_rest rep 3: 75%
+18:57:26 eq_rest rep 3: 100%
+18:57:26 STAGE off rep 204: tone off after pass 3, 12 points (from 0)
+18:57:40 off rep 204: 25%
+18:57:55 off rep 204: 50%
+18:58:10 off rep 204: 75%
+18:58:26 off rep 204: 100%
+18:58:26 STAGE eq_pri rep 4: priority 900-1200 + 1300-1500 at 0.625 MHz: 400 new frequencies x 3 levels (-36, -50, -57 dBm), 1203 points (from 0)
+19:21:13 eq_pri rep 4: 25%
+19:41:16 eq_pri rep 4: 50%
+deadline reached or stop file
+19:43:58 ALL STAGES FINISHED
+tone off
+=== equal-arms-50ohm wrapper ended 19:43:58

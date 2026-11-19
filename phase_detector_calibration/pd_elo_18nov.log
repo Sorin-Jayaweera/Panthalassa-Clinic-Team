@@ -1,0 +1,13 @@
+=== E-on-LO launch 1 19:48:12
+19:48:13 STAGE off rep 231: tone off before the high-density run (elo: no pads, 100 mV/div, no dither), 12 points (from 0)
+19:48:29 off rep 231: 25%
+19:48:44 off rep 231: 50%
+19:48:59 off rep 231: 75%
+19:49:14 off rep 231: 100%
+19:49:16 STAGE elo_pri rep 1: priority 900-1200 + 1300-1500 at 5 MHz: 102 new frequencies x 3 levels (-36, -50, -57 dBm), 309 points (from 0)
+19:53:38 elo_pri rep 1: 25%
+19:57:45 elo_pri rep 1: 50%
+deadline reached or stop file
+19:57:45 ALL STAGES FINISHED
+tone off
+=== E-on-LO wrapper ended 19:57:45

@@ -275,7 +275,7 @@ PD_SC = item(
 )
 
 PD_AMP = item(
-    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov from 13:06): no, the pattern comes after them",
+    "pd-amp-chain", "Amplifier chain alone into the SM200B: is the ~360 MHz pattern already in the amplifiers? (18 Nov from 13:06): its amplitude ripple does not match, but that does not rule the amplifiers out (Sorin)",
     p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; every cable 7 cm) &rarr; 10 + 10 + 3 + 6 = 29 dB of pads &rarr; SM200B. No splitter, arms or mixer. "
       "Expected: the chain rails near +20 dBm (datasheet P1dB +19.9 dBm per stage at 1 GHz), so about &minus;9 dBm at the SM200B, nearly the same at every input level. "
       "If the amplifiers cause the detector pattern, the output level should ripple with a ~2.75 ns delay (peaks near 770, 1160, 1510 MHz)."),
@@ -288,7 +288,7 @@ PD_AMP = item(
       "and across 600&ndash;1600 MHz its ripple after a smooth trend is 0.5 dB rms with only 0.11 dB at a 2.75 ns delay (its strongest component is 1.4 ns, 0.22 dB). "
       "With the amplifiers railed that is attenuated further, so the Pluto itself is not the source."),
     fig("amp_chain_18nov.png", "Amplifier chain alone: output tone, instantaneous power, harmonics and ripple against frequency at six Pluto levels, raw IQ example, and the wiring"),
-    p("<b>Result (sweep 13:06&ndash;13:19, 1206 points): the amplifiers do not cause the detector's ~360 MHz pattern.</b> "
+    p("<b>Result (sweep 13:06&ndash;13:19, 1206 points): the amplifiers' output level does not carry the detector's ~360 MHz pattern.</b> (Sorin, 18 Nov: this does not rule the amplifiers out; it was measured into a matched pad, not into the splitter and mixer. Later the same day the SM200B arm probes traced the pattern to the mixer ports' reflections; see the 18 Nov section.) "
       "With &minus;57 dBm or more into the chain the output is railed at +20 to +22 dBm across 650&ndash;1600 MHz, with about &plusmn;0.5&ndash;0.8 dB of ripple whose strongest single delay is 4.4 ns (about 225 MHz period), "
       "not the detector's 2.75 ns; the ripple's correlation with the detector curve (18 Nov short-cable run, 800&ndash;1600 MHz, trends removed) is 0.08. "
       "Anything before the splitter is common to both arms, so the amplifiers' phase cancels in the detector; only their level could matter, and it does not match. "
@@ -325,21 +325,76 @@ PD_STATUS = item(
     ul(["<code>run_pd_overnight.py</code> (run from <code>signal_hound/</code>, system Python): stages written to <code>pd_dither_14nov.csv</code>, one row per reading; tone-off checks as stage <code>off</code>.",
         "High-density plan (<code>HD_NIGHT=1 HD_TAG=tag</code>): 600&ndash;1600 MHz at &minus;36/&minus;50/&minus;57 dBm, 900&ndash;1200 and 1300&ndash;1500 MHz first, coarse to fine, then repeats.",
         "Each bench configuration is one row in <code>pd_runs.py</code>. <code>make_plots.py</code> redraws every plot from the CSV, rebuilds this site and pushes (<code>--push</code>; <code>--watch</code> during a run)."]),
+    h("Expected delay from the arm lengths against the fitted delay (lengths corrected 18 Nov)"),
+    p("Sorin measured B 15.2 cm and D 16.6 cm on 18 Nov; every earlier figure took both as 15 cm. Expected delay = |RF arm &minus; LO arm| / (0.70 c) = 0.0477 ns/cm "
+      "(velocity factor 0.70 assumed: Amazon SMA cables with a pink jacket, type unknown). Fitted delay: <code>pdlib.delay(f, v, deg=2)</code>, 600&ndash;1600 MHz, &minus;50 dBm (spread over the three levels &plusmn;0.02 ns)."),
+    table(["Run", "RF &minus; LO (cm)", "Expected, old lengths (ns)", "Expected, corrected (ns)", "Fitted (ns)", "Fitted &minus; expected (ns)"],
+          [["Cable C, 1 Nov (C about 12 cm, not re-measured)", "15.2 + 12 &minus; 16.6 = 10.6", "0.57", "0.51", "3.00", "2.49"],
+           ["Cable E + adapter, 15 Nov (hdr, ifs)", "15.2 + 9 &minus; 16.6 = 7.6", "0.38", "0.36", "2.78&ndash;2.80", "2.43"],
+           ["B and D only, 18 Nov (eq)", "15.2 &minus; 16.6 = &minus;1.4", "0", "0.07", "2.28&ndash;2.31", "2.22"],
+           ["B and D + 10 dB pad at each mixer port, 18&ndash;19 Nov (pad10, first 600&ndash;1240 MHz only)", "&minus;1.4 (pads equal)", "0", "0.07", "1.63&ndash;1.65", "1.58"]]),
+    ul(["The 1.4 cm between B and D is 0.07 ns: over 600&ndash;1600 MHz it turns the phase by only 24&deg;, so it cannot make the ~360 MHz pattern. The error from the expectation is 2.2&ndash;2.5 ns in every run.",
+        "The fitted delay still tracks the arm difference: C &rarr; E &rarr; eq changes it by +0.22 and +0.50 ns where the lengths predict +0.14 and +0.43 ns. A straight line through the three runs gives 2.37 ns at zero difference plus 0.058 ns/cm "
+        "(velocity factor 0.57, residuals &le;0.03 ns): a fixed ~2.4 ns path plus the arm difference, or a slower cable than assumed, or C longer than 12 cm.",
+        "The fixed part is not in the arm cables: with the same B and D, 10 dB pads at the mixer ports move it from 2.28 to 1.65 ns. It depends on the reflections at the mixer ports.",
+        "Very short arm cables (sc, 18 Nov) gave 2.76&ndash;2.79 ns, the same as cable E; their lengths were not recorded, so that run cannot be placed on the line."]),
     h("What is known"),
-    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.36 ns the arm lengths give (RF arm longer by 7.6 cm). It shifted only slightly with the arm cable (C 3.00 ns, E 2.77 ns) and not at all with very short cables (2.74 ns, 18 Nov).",
-        "Not the long IF cable (15 Nov), not the Pluto's own level ripple (16 Nov), not the cables at the mixer or the IF termination, and not reflections through the arms (18 Nov).",
+    ul(["The curve is dominated by a single ~2.3&ndash;2.8 ns delay (one cycle per ~360&ndash;440 MHz), not the 0.07&ndash;0.51 ns the arm differences give (table above).",
+        "Not the long IF cable (15 Nov), not the Pluto's own level ripple (16 Nov), not the IF termination.",
+        "SM200B probe of each arm between the splitter and the mixer (18 Nov, 29 dB pads, one mixer port driven, the other terminated): the RF arm with the mixer on it shows 1.9&ndash;2.0 dB rms ripple whose strongest delay is 2.72 ns, the detector's delay. "
+        "With the mixer removed (cable D into an ANNE-50L+) the ripple drops to 0.6&ndash;0.8 dB and the 2.7 ns term is gone; with a 10 dB pad at the mixer RF port (19 dB pads to the SM200B) it is 0.56&ndash;0.76 dB with no clear delay. "
+        "So the pattern is the mixer ports' reflection (datasheet VSWR up to 3.5) coming back through the resistive splitter (5.94 dB isolation) into the other arm.",
+        "Unpadded, each arm carried +10 to +19 dBm (measured + 29 dB), which is what a mixer port receives; the ZX05-30W-S+ RF maximum is +17 dBm (50 mW). With 10 dB pads it is about +2 to +7 dBm.",
+        "The ZX10-2-1252-S+ (the other splitter on hand) covers 1800&ndash;12500 MHz only, so it cannot replace the ZFRSC-42-S+ in this band.",
         "Amplifier chain alone into 29 dB of pads (18 Nov, SM200B): railed at +20 to +22 dBm, amplitude ripple &plusmn;0.5&ndash;0.8 dB with its strongest delay at 4.4 ns, correlation 0.08 with the detector curve; rails over the whole band only with &minus;57 dBm or more in. This does <b>not</b> rule the amplifiers out (Sorin, 18 Nov): it measured amplitude only, into a matched pad, while the 2.75 ns pattern is seen with the amplifiers railed, driving the splitter and mixer, with a 50 &Omega; IF load. The amplifiers driving the real splitter/mixer load are untested.",
-        "Suspects now: a loop that does not pass through the arm cables (amplifier output &harr; splitter input, or inside the splitter or mixer), since the 2.75 ns stays with any arm cable.",
         "&minus;50 and &minus;57 dBm agree within about 2 mV; &minus;36 dBm departs on the shoulders (deepest compression; supply current rises to 0.39 A).",
         "Best so far: cable E, no pads, rising edge 1340&ndash;1480 MHz, about 80 MHz with error &le;2 MHz at &plusmn;0.5 mV (&minus;50/&minus;57 dBm). Pads give a smoother but 3&times; shallower curve."]),
     h("Open"),
-    ul(["Add a known length (e.g. 15 cm, about 0.75 ns) to one arm: if the fitted delay moves by exactly that, the 2.75 ns is a fixed offset inside the parts; if not, something else sets it.",
+    ul(["Overnight 18&ndash;19 Nov: detector curve with 10 dB pads at both mixer ports, 600&ndash;1600 MHz every 1 MHz, &minus;36/&minus;45/&minus;54/&minus;63/&minus;72 dBm (stages <code>pad10_*</code>), to see whether the pads remove the ripple from the detector output itself.",
+        "Cable C's length (about 12 cm) and the very short cables of the sc run were not measured; the cable velocity factor is unknown.",
+        "Add a known length (e.g. 15 cm, about 0.75 ns) to one arm: if the fitted delay moves by exactly that, the 2.75 ns is a fixed offset inside the parts; if not, something else sets it.",
         "Swap the mixer's LO and RF inputs, then swap in another mixer or splitter, and see whether the delay changes sign or size.",
-        "A high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers (the 2nd harmonic is only 5&ndash;9 dB down below 800 MHz).",
-        "Power-cycle the SDS1104X-E: it is stuck on a VISA protocol error since 12:50 and must be reset by hand before the next detector run."]),
+        "A high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers (the 2nd harmonic is only 5&ndash;9 dB down below 800 MHz)."]),
     h("Pitfalls"),
     ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped; the wrapper relaunches.",
         "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",
         "Never stash, reset or check out while a run writes the CSV (18 Nov: a stash caught the live file; no data lost, but the progress log was cut)."]),
     open_=True,
+)
+
+RAW = "C:&#92;ThatFamily Dropbox&#92;Sorin Jayaweera&#92;allSaves&#92;mudd&#92;senior&#92;clinic&#92;claude&#92;phase_detector_calibration&#92;"
+DAY18 = [  # (time, arrangement, instrument, data, what was seen)
+    ["10:40&ndash;12:40", "Very short cables at every mixer connection, 50 &Omega; IF load", "scope", "<code>pd_dither_14nov.csv</code> stages <code>sc_*</code>", "Same ~360 MHz pattern: 2.76&ndash;2.79 ns, ~125 mV. Cables at the mixer and the IF termination ruled out."],
+    ["13:06&ndash;13:19", "Amplifier chain alone &rarr; 29 dB &rarr; SM200B", "SM200B raw IQ", "<code>amp_chain_18nov.csv</code>, raw <code>amp_chain&#92;</code>", "Railed +20 to +22 dBm (measured + 29 dB); &plusmn;0.5&ndash;0.8 dB ripple, strongest delay 4.4 ns. Amplitude only, into a matched load: does not rule the amplifiers out (Sorin)."],
+    ["13:30&ndash;16:40", "Amplifier chain, Pluto level stepped &minus;90 to &minus;36 dBm", "SM200B raw IQ", "<code>amp_ramp_18nov.csv</code>, raw <code>amp_ramp&#92;</code>", "Rails within 1 dB from about &minus;70 dBm in below 1000 MHz, &minus;60 to &minus;63 dBm above 1200 MHz."],
+    ["17:02&ndash;19:43", "Cables B (15.2 cm, RF) and D (16.6 cm, LO) only, no E", "scope", "stages <code>eq_*</code>", "2.28&ndash;2.31 ns (peaks 945 and 1380 MHz); arm difference only &minus;1.4 cm (0.07 ns)."],
+    ["19:49&ndash;19:57", "Cable E moved to the LO arm", "scope", "stages <code>elo_*</code>", "Stopped by Sorin after 8 min (not useful); 900&ndash;1350 MHz only, too short for a fit."],
+    ["20:05", "SM200B in place of the mixer LO port (cable D); B drives mixer RF; LO terminated", "SM200B raw IQ", "<code>arm_probe_lo_18nov.csv</code>", "Arm tone +10 to +19 dBm (measured + 29 dB), strongest delay 1.9&ndash;2.0 ns."],
+    ["20:16", "SM200B in place of the mixer RF port (cable B); D drives mixer LO; RF terminated", "SM200B raw IQ", "<code>arm_probe_rf_18nov.csv</code>", "<b>1.9&ndash;2.0 dB rms ripple, strongest delay 2.72 ns: the detector's delay is already on the arm signal.</b>"],
+    ["evening", "As above, mixer removed (D &rarr; adapter &rarr; ANNE-50L+)", "SM200B raw IQ", "<code>arm_probe_rf_nomixer_18nov.csv</code>", "Ripple 0.6&ndash;0.8 dB, 2.7 ns gone: the pattern needs the mixer."],
+    ["evening", "10 dB pad at the mixer RF (D) and LO (to 50 &Omega;); B &rarr; 19 dB &rarr; SM200B", "SM200B raw IQ", "<code>arm_probe_rf_padded_18nov.csv</code>", "Ripple 0.56&ndash;0.76 dB, no clear delay: pads at the mixer suppress it."],
+    ["20:59 &rarr; 07:55", "B and D with a 10 dB pad at each mixer port, 50 &Omega; IF load; 600&ndash;1600 MHz every 1 MHz, 5 levels", "scope", "stages <code>pad10_*</code>", "Running overnight (coarse to fine: 8, 4, 2, 1 MHz, then repeats)."],
+]
+PD_DAY18 = item(
+    "pd-day-18nov", "18 Nov, every arrangement and what it showed: the ~360 MHz pattern is the mixer ports' reflections coming back through the resistive splitter",
+    p("One row per arrangement, in order. Scope rows: Pluto &rarr; 4 &times; ZX60-P162LN+ (4.03 V) &rarr; ZFRSC-42-S+ &rarr; two arms &rarr; ZX05-30W-S+ &rarr; IF &rarr; SDS1104X-E, "
+      "one reading per point, written to <code>pd_dither_14nov.csv</code> by <code>run_pd_overnight.py</code>. SM200B rows: one splitter output into the SM200B through pads in place of a mixer port, "
+      "16384 raw IQ samples per point (<code>run_amp_chain_iq.py</code>, <code>AMP_MODE=arm</code>, log <code>arm_probe_18nov.log</code>). SM200B levels are measured + the pads. "
+      "CSVs, logs and plots are on GitHub. Raw IQ folders (78&ndash;950 MB each) stay local in <code>" + RAW + "</code> and are copied to <code>D:&#92;Panthalassa Backup</code>."),
+    table(["Time", "Arrangement", "Instrument", "Data", "What was seen"], DAY18, left=(1, 3, 4)),
+    fig("pd_day_18nov_delays.png", "18 Nov: strongest single delay in every arrangement and level, detector and SM200B probes"),
+    fig("pd_day_18nov_detector.png", "18 Nov: detector voltage vs frequency for every scope arrangement, tone-off subtracted, stacked, with every wiring"),
+    fig("pd_day_18nov_probes.png", "18 Nov: SM200B tone ripple at each probe point, stacked, with every wiring"),
+    h("Each arrangement in full"),
+    fig("pd_short_cables_detail_18nov.png", "Very short cables, 50 ohm IF load: 600-1600 MHz at three levels with zooms, and the wiring"),
+    fig("amp_chain_18nov.png", "Amplifier chain alone into the SM200B, and the wiring"),
+    fig("amp_ramp_vs_freq_18nov.png", "Amplifier chain: output tone vs frequency, one line per Pluto level, and the wiring"),
+    fig("amp_ramp_waterfall_18nov.png", "Amplifier chain: each Pluto level's deviation from its own mean, and the wiring"),
+    fig("pd_equal_arms_detail_18nov.png", "Cables B and D only: 600-1600 MHz at three levels with zooms, and the wiring"),
+    fig("pd_cable_E_on_LO_detail_18nov.png", "Cable E on the LO arm (stopped after 8 min), and the wiring"),
+    fig("arm_probe_lo_18nov.png", "SM200B at the end of the LO arm (cable D), mixer RF driven, and the wiring"),
+    fig("arm_probe_rf_18nov.png", "SM200B at the end of the RF arm (cable B), mixer LO driven, and the wiring"),
+    fig("arm_probe_rf_nomixer_18nov.png", "SM200B at the end of the RF arm with the mixer removed, and the wiring"),
+    fig("arm_probe_rf_padded_18nov.png", "SM200B at the end of cable B with 10 dB pads at the mixer ports, and the wiring"),
+    fig("pd_pads_10dB_1MHz_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, 1 MHz steps, five levels (updates as data comes in), and the wiring"),
 )

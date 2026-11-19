@@ -1,0 +1,62 @@
+Error -2: b'Device not found' in sm_open_device()
+tone off: mean -11.2 dBm, max -1.6 dBm (referred to amp output)
+pad check: -28.2 dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm
+20:05:32 603 points to go
+20:05:33 600 MHz -36 dBm: tone -17.9 measured (amp out 11.1 = measured + 29 dB), peak -17.5 measured, 2f 7.8, 3f -10.0 (+29 dB)  (0/603)
+20:06:01 1100 MHz -36 dBm: tone -15.0 measured (amp out 14.0 = measured + 29 dB), peak -14.8 measured, 2f -5.4, 3f -7.1 (+29 dB)  (60/603)
+20:06:29 1600 MHz -36 dBm: tone -14.1 measured (amp out 14.9 = measured + 29 dB), peak -14.0 measured, 2f -5.1, 3f -8.2 (+29 dB)  (120/603)
+20:06:57 720 MHz -36 dBm: tone -10.7 measured (amp out 18.3 = measured + 29 dB), peak -10.0 measured, 2f -4.6, 3f -6.0 (+29 dB)  (180/603)
+20:07:25 845 MHz -36 dBm: tone -12.4 measured (amp out 16.6 = measured + 29 dB), peak -12.1 measured, 2f 3.9, 3f -0.1 (+29 dB)  (240/603)
+20:07:53 970 MHz -36 dBm: tone -15.8 measured (amp out 13.2 = measured + 29 dB), peak -15.1 measured, 2f -11.2, 3f 2.6 (+29 dB)  (300/603)
+20:08:21 1095 MHz -36 dBm: tone -15.3 measured (amp out 13.7 = measured + 29 dB), peak -15.1 measured, 2f -4.4, 3f -7.6 (+29 dB)  (360/603)
+20:08:49 1220 MHz -36 dBm: tone -12.7 measured (amp out 16.3 = measured + 29 dB), peak -11.8 measured, 2f -9.9, 3f -2.4 (+29 dB)  (420/603)
+20:09:18 1345 MHz -36 dBm: tone -11.1 measured (amp out 17.9 = measured + 29 dB), peak -11.0 measured, 2f -1.9, 3f 0.8 (+29 dB)  (480/603)
+20:09:46 1470 MHz -36 dBm: tone -18.1 measured (amp out 10.9 = measured + 29 dB), peak -16.9 measured, 2f -11.6, 3f -2.8 (+29 dB)  (540/603)
+20:10:14 1595 MHz -36 dBm: tone -14.3 measured (amp out 14.7 = measured + 29 dB), peak -14.2 measured, 2f -5.0, 3f -8.5 (+29 dB)  (600/603)
+20:10:15 tone off, SM200B closed
+tone off: mean -8.6 dBm, max 0.6 dBm (referred to amp output)
+pad check: -24.7 dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm
+20:16:30 603 points to go
+20:16:31 600 MHz -36 dBm: tone -14.8 measured (amp out 14.2 = measured + 29 dB), peak -14.3 measured, 2f 5.5, 3f -16.8 (+29 dB)  (0/603)
+Warning 3: b'Uncal data, potential USB data loss' in sm_get_IQ()
+20:16:59 1100 MHz -36 dBm: tone -12.0 measured (amp out 17.0 = measured + 29 dB), peak -11.8 measured, 2f -2.7, 3f -2.3 (+29 dB)  (60/603)
+20:17:27 1600 MHz -36 dBm: tone -17.1 measured (amp out 11.9 = measured + 29 dB), peak -17.0 measured, 2f -9.0, 3f -5.8 (+29 dB)  (120/603)
+20:17:54 720 MHz -36 dBm: tone -12.2 measured (amp out 16.8 = measured + 29 dB), peak -11.6 measured, 2f 1.8, 3f -5.9 (+29 dB)  (180/603)
+20:18:22 845 MHz -36 dBm: tone -15.8 measured (amp out 13.2 = measured + 29 dB), peak -15.4 measured, 2f -1.9, 3f 0.8 (+29 dB)  (240/603)
+20:18:50 970 MHz -36 dBm: tone -14.1 measured (amp out 14.9 = measured + 29 dB), peak -13.5 measured, 2f -3.1, 3f 1.2 (+29 dB)  (300/603)
+20:19:18 1095 MHz -36 dBm: tone -12.2 measured (amp out 16.8 = measured + 29 dB), peak -12.0 measured, 2f -2.3, 3f -2.6 (+29 dB)  (360/603)
+20:19:46 1220 MHz -36 dBm: tone -16.7 measured (amp out 12.3 = measured + 29 dB), peak -15.9 measured, 2f -8.7, 3f 1.8 (+29 dB)  (420/603)
+20:20:14 1345 MHz -36 dBm: tone -12.3 measured (amp out 16.7 = measured + 29 dB), peak -12.2 measured, 2f -4.0, 3f -4.2 (+29 dB)  (480/603)
+20:20:42 1470 MHz -36 dBm: tone -12.0 measured (amp out 17.0 = measured + 29 dB), peak -11.0 measured, 2f -5.1, 3f -1.4 (+29 dB)  (540/603)
+20:21:09 1595 MHz -36 dBm: tone -16.9 measured (amp out 12.1 = measured + 29 dB), peak -16.8 measured, 2f -9.6, 3f -5.5 (+29 dB)  (600/603)
+20:21:10 tone off, SM200B closed
+tone off: mean -9.4 dBm, max -0.5 dBm (referred to amp output)
+pad check: -25.0 dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm
+20:22:49 603 points to go
+20:22:49 600 MHz -36 dBm: tone -17.2 measured (amp out 11.8 = measured + 29 dB), peak -16.7 measured, 2f 6.5, 3f -21.2 (+29 dB)  (0/603)
+20:23:17 1100 MHz -36 dBm: tone -13.6 measured (amp out 15.4 = measured + 29 dB), peak -13.4 measured, 2f -6.2, 3f -5.3 (+29 dB)  (60/603)
+20:23:45 1600 MHz -36 dBm: tone -14.9 measured (amp out 14.1 = measured + 29 dB), peak -14.8 measured, 2f -7.9, 3f -6.8 (+29 dB)  (120/603)
+20:24:13 720 MHz -36 dBm: tone -13.1 measured (amp out 15.9 = measured + 29 dB), peak -12.5 measured, 2f -3.0, 3f -6.7 (+29 dB)  (180/603)
+20:24:41 845 MHz -36 dBm: tone -13.1 measured (amp out 15.9 = measured + 29 dB), peak -12.8 measured, 2f 0.9, 3f 1.1 (+29 dB)  (240/603)
+20:25:09 970 MHz -36 dBm: tone -14.3 measured (amp out 14.7 = measured + 29 dB), peak -13.7 measured, 2f -4.4, 3f 1.6 (+29 dB)  (300/603)
+20:25:36 1095 MHz -36 dBm: tone -13.8 measured (amp out 15.2 = measured + 29 dB), peak -13.6 measured, 2f -5.3, 3f -4.9 (+29 dB)  (360/603)
+20:26:04 1220 MHz -36 dBm: tone -14.0 measured (amp out 15.0 = measured + 29 dB), peak -13.1 measured, 2f -7.2, 3f 1.0 (+29 dB)  (420/603)
+20:26:31 1345 MHz -36 dBm: tone -12.7 measured (amp out 16.3 = measured + 29 dB), peak -12.5 measured, 2f -7.6, 3f -1.7 (+29 dB)  (480/603)
+20:27:04 1470 MHz -36 dBm: tone -14.4 measured (amp out 14.6 = measured + 29 dB), peak -13.3 measured, 2f -7.5, 3f -1.4 (+29 dB)  (540/603)
+20:27:35 1595 MHz -36 dBm: tone -14.8 measured (amp out 14.2 = measured + 29 dB), peak -14.7 measured, 2f -8.2, 3f -6.8 (+29 dB)  (600/603)
+20:27:36 tone off, SM200B closed
+tone off: mean -9.5 dBm, max -1.1 dBm (referred to amp output)
+pad check: -14.9 dBm measured at the SM200B input, 1000 MHz, Pluto -90 dBm
+20:50:53 603 points to go
+20:50:53 600 MHz -36 dBm: tone -7.0 measured (amp out 12.0 = measured + 19 dB), peak -6.6 measured, 2f 6.7, 3f -21.9 (+19 dB)  (0/603)
+20:51:21 1100 MHz -36 dBm: tone -3.5 measured (amp out 15.5 = measured + 19 dB), peak -3.4 measured, 2f -6.1, 3f -5.4 (+19 dB)  (60/603)
+20:51:49 1600 MHz -36 dBm: tone -4.7 measured (amp out 14.3 = measured + 19 dB), peak -4.7 measured, 2f -7.9, 3f -8.4 (+19 dB)  (120/603)
+20:52:16 720 MHz -36 dBm: tone -3.1 measured (amp out 15.9 = measured + 19 dB), peak -2.4 measured, 2f -2.5, 3f -6.5 (+19 dB)  (180/603)
+20:52:44 845 MHz -36 dBm: tone -3.3 measured (amp out 15.7 = measured + 19 dB), peak -2.9 measured, 2f 0.7, 3f 1.1 (+19 dB)  (240/603)
+20:53:11 970 MHz -36 dBm: tone -4.5 measured (amp out 14.5 = measured + 19 dB), peak -3.8 measured, 2f -4.4, 3f 1.8 (+19 dB)  (300/603)
+20:53:39 1095 MHz -36 dBm: tone -3.7 measured (amp out 15.3 = measured + 19 dB), peak -3.6 measured, 2f -5.2, 3f -5.0 (+19 dB)  (360/603)
+20:54:07 1220 MHz -36 dBm: tone -4.0 measured (amp out 15.0 = measured + 19 dB), peak -3.1 measured, 2f -6.8, 3f 0.4 (+19 dB)  (420/603)
+20:54:34 1345 MHz -36 dBm: tone -2.9 measured (amp out 16.1 = measured + 19 dB), peak -2.8 measured, 2f -7.9, 3f -2.0 (+19 dB)  (480/603)
+20:55:02 1470 MHz -36 dBm: tone -4.6 measured (amp out 14.4 = measured + 19 dB), peak -3.4 measured, 2f -7.6, 3f -1.6 (+19 dB)  (540/603)
+20:55:30 1595 MHz -36 dBm: tone -4.7 measured (amp out 14.3 = measured + 19 dB), peak -4.6 measured, 2f -8.3, 3f -8.4 (+19 dB)  (600/603)
+20:55:31 tone off, SM200B closed
