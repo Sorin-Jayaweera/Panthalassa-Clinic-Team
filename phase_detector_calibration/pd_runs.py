@@ -23,7 +23,7 @@ RUNS = [
          ifl="~16 cm SMA cable\n+ SMA-BNC adapter", inp="1 Mohm", off=(91, 141), ls="-", col="#d95f02", detail="pd_ifs_night_15nov.png", region=(1340, 1480)),
     dict(tag="sc", day="18 Nov", desc="very short cables at every mixer connection, 50 ohm IF load", arms=ARMS_SHORT,
          ifl="short cable\n+ 50 ohm load", inp="50 ohm load", off=(141, 200), ls="-", col="#1b9e77", detail="pd_short_cables_detail_18nov.png", region=None),
-    dict(tag="eq", day="18 Nov", desc="equal arms, cable B and cable D, 15 cm each (zero delay difference), IF as in the sc run (short cable + 50 ohm load at the scope); 7 cm from the last amplifier to the splitter", arms=ARMS_EQ,
+    dict(tag="eq", day="18 Nov", desc="equal arms (cable B, cable D, 15 cm each), 50 ohm IF load", arms=ARMS_EQ,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
 ]
 
