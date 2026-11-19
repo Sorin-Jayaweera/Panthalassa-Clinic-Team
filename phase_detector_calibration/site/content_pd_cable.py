@@ -402,4 +402,8 @@ PD_DAY18 = item(
     fig("pd_pads_10dB_1MHz_detail_18nov.png", "10 dB pads at both mixer ports, 100 mV/div, 20:59-21:40, five levels, and the wiring"),
     fig("pd_pads_10dB_zoomed_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, zoomed two-round readings, five levels (updates as data comes in), and the wiring"),
     fig("pd_pad10z_repeats_18_19nov.png", "Overnight zoomed run: each later repeat minus repeat 1 at every frequency and level, with the spread in mV and in MHz, and the wiring"),
+    fig("pd_power_uncertainty_900_1200MHz_19nov.png", "Unknown input power, 900-1200 MHz, every zoomed sweep with pads (18 Nov night + 19 Nov): calibrate with the median of the levels above -60 dBm or above -50 dBm, "
+        "read a voltage on one level's curve; deviation in mV, and frequency error (reading looked up in the median, minus the true frequency) per level and sweep, with the wiring. "
+        "Script plot_pd_power_uncertainty.py; data pd_dither_14nov.csv, stages pad10z_*, pad10z40n_*, pad10zn_*"),
+    fig("pd_power_uncertainty_600_1600MHz_18nov.png", "Same, 600-1600 MHz from the overnight run (levels -36/-45/-54/-63/-72 dBm, 3 sweeps each; above -50 dBm is only two levels, so their deviations mirror), with the wiring"),
 )
