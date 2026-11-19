@@ -58,7 +58,7 @@ def load(D, run, stages=("pri", "rest")):
         if r["stage"] in want:
             pts[float(r["pluto_want_dbm"])].setdefault(float(r["freq_mhz"]), float(r["detector_mean_v"]) * 1e3)
             ts.append(r["timestamp"][11:16])
-    return {w: np.array(sorted(p.items())).reshape(-1, 2) for w, p in pts.items()}, (min(ts), max(ts)) if ts else ("", "")
+    return {w: np.array(sorted(p.items())).reshape(-1, 2) for w, p in pts.items()}, (ts[0], ts[-1]) if ts else ("", "")   # first and last in file order (min/max broke across midnight)
 
 
 def tone_off(D, run):
