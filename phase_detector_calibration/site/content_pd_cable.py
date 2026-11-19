@@ -1,4 +1,7 @@
 """Phase detector tab: delay cable E and pads at the mixer, 13-14 Nov 2026."""
+import json
+from pathlib import Path
+
 from content import item, table, ul, p, h, fig
 
 PD_CABLE = item(
@@ -148,28 +151,23 @@ PD_IFS = item(
         "Remaining suspects for the 2.8 ns delay: standing waves between the splitter and the mixer ports, or reflections in the shared path before the splitter. The amplifier supply current rose to 0.39 A during this run (0.22 A idle earlier)."]),
 )
 
+XU = json.load(open(Path(__file__).resolve().parent.parent / "pd_x_uncertainty_table.json"))
 PD_RESOLUTION = item(
-    "pd-resolution", "Which setup gives 1&ndash;2 MHz with the power unknown? Cable C, cable E with pads, cable E without pads (long and short IF cable)",
-    p("Question (Sorin, 15 Nov): measure one detector voltage with a small reading error dV, and do not assume the power level (only that it is inside the measured range). What frequency error results? "
-      "Method: the calibration curve is the mean of the levels; for every true frequency, every level and a reading off by &plusmn;dV, invert the calibration curve and take the worst frequency error; "
-      "then find the longest contiguous stretch where that worst error stays &le;1 and &le;2 MHz. Linearity is the residual from a straight line, smoothness the residual from a 15 MHz running line, both in MHz. "
-      "Each setup is its own run; nothing is overlaid across runs. For the no-pads runs the steep rising edge 1340&ndash;1480 MHz is analysed (the automatic pick lands on the shallower 960&ndash;1135 MHz edge). "
-      "Script: <code>plot_pd_resolution.py</code>."),
-    fig("pd_resolution_compare.png", "Frequency error with the power unknown: cable C, cable E with pads, cable E without pads (long and short IF cable); each with every level, a zoom on the one-to-one region, worst error vs reading error, and linearity; with the wirings"),
-    table(["Setup (region)", "Slope, median (mV/MHz)", "Spread between levels, median (mV)", "Straight line off by (MHz rms)", "Smoothness (MHz rms)",
-           "Width with error &le;1 / &le;2 MHz, dV = 0.5 mV", "Same, dV = 1 mV", "Same, dV = 0.5 mV, &minus;36 dBm left out"],
-          [["C, no pads (900&ndash;1027 MHz), 4 levels &minus;36 to &minus;60", "1.12", "9.5", "8.8", "0.73", "0 / 19", "0 / 12", "1 / 17"],
-           ["E with pads (1236&ndash;1438 MHz), 4 levels &minus;36 to &minus;57", "0.83", "1.6", "5.7", "0.27", "0 / 55", "0 / 17", "3 / 61"],
-           ["E, no pads, long IF (1340&ndash;1480 MHz), 3 levels", "2.06", "7.8", "6.5", "0.40", "15 / 25", "15 / 25", "50 / 80"],
-           ["E, no pads, short IF (1340&ndash;1480 MHz), 3 levels", "1.90", "7.9", "7.3", "0.69", "21 / 30", "11 / 29", "54 / 80"]]),
-    ul(["Widths are contiguous MHz. None of the setups gives 1&ndash;2 MHz over 200 MHz with the power unknown from &minus;36 to &minus;57 dBm.",
-        "The limit is the spread between power levels, not the reading noise. &minus;36 dBm (the amplifiers&rsquo; hardest drive) is the level that breaks away; leaving it out triples the usable width without pads.",
-        "Cable E without pads, on the rising edge, gives the most: about 80 MHz with error &le;2 MHz and about 50 MHz with &le;1 MHz at dV = 0.5 mV when &minus;50 and &minus;57 dBm are compared; slope about 2&ndash;3 mV/MHz, about 3&times; the padded setup. "
-        "Sorin (16 Nov): the received power is not under our control, so a lower input is not a fix; the amplifiers are meant to saturate so every input level lands on the same curve. "
-        "&minus;50 and &minus;57 dBm do land on the same curve (spread about 2 mV); the &minus;36 dBm departure has to be fixed in hardware.",
-        "With pads the curve is the most linear and smoothest (spread 1.6 mV) but the slope is only 0.8 mV/MHz, so 1&ndash;2 mV of spread already costs 2 MHz.",
-        "Cable C is the worst: steep at 960&ndash;1015 MHz, then a flat shelf, and 9.5 mV between levels.",
-        "The short and long IF cables give the same answer, as expected from the unchanged ripple."]),
+    "pd-resolution", "Frequency uncertainty with the power unknown, every run, by one method (Sorin, 19 Nov): need 200 MHz continuous with a total width &le;4 MHz (&plusmn;2 MHz)",
+    p("Method (Sorin, 19 Nov). At each frequency take every reading of the run (every pass, every power level in the set) and its median; across frequency that gives one median curve of any shape. "
+      "The y bar at each frequency is the lowest to the highest reading there. Both ends of the y bar are read back through the median curve to a frequency; the x width is the distance between those two frequencies (total width, so &plusmn;2 MHz = 4 MHz). "
+      "The lookup must be single valued, so the median curve is split wherever it turns (increasing or decreasing both fine); a bar end that falls past a turn has no unique frequency and is marked with a red &times;. "
+      "Two level sets per run: every level (&lsquo;could be measuring anything&rsquo;) and only levels &ge;&minus;50 dBm (&lsquo;every pulse we respond to is at least &minus;50 dBm&rsquo;). "
+      "The one number is the longest continuous stretch with x width &le;4 MHz. Nothing else is computed. Script <code>plot_pd_x_uncertainty.py</code>; data <code>pd_dither_14nov.csv</code> (stages per run in <code>pd_runs.py</code>) and <code>p162x4_fine_1nov.csv</code> (cable C)."),
+    p("This replaces the earlier figures (15&ndash;19 Nov: <code>pd_resolution_compare.png</code>, <code>pd_power_freq_error_*</code>, <code>pd_power_uncertainty_*</code>). Those used a mean or a monotonic-forced curve, a reading error &plusmn;dV added on top, the worst one-sided error, "
+      "and made-up summaries (best window, % of frequencies, rms). Their numbers should not be used."),
+    fig("pd_x_uncertainty_all_runs.png", "Every run with at least two power levels: total x width against frequency, every level (black) and levels >= -50 dBm (orange); dashed = 4 MHz; the longest stretch under 4 MHz is in each legend"),
+    table(["Run", "Every level: longest stretch with width &le;4 MHz", "Levels &ge;&minus;50 dBm: longest stretch with width &le;4 MHz"], [r[:1] + r[2:] for r in XU], left=(0, 1, 2)),
+    ul(["Only pad10hf (10 dB pads, H on LO, B + F on RF, RF arm about 25 cm longer) meets 200 MHz, and only for levels &ge;&minus;50 dBm. It is from one 8 MHz pass per level so far; the finer passes are running.",
+        "With every level, no padded run has any stretch: &minus;63 and &minus;72 dBm fall off the saturated curve, so the y bar is too tall.",
+        "pad10z40 and pad10z40n have one level only, so their width is repeat scatter, not power uncertainty.",
+        "Gaps where the bar crosses a turn of the median curve (red &times;) include small reversals at the noise level in pad10, pad10z and sc."]),
+    *[fig(png, f"{name}: every reading, the median curves and y bars, then the x width for every level and for levels >= -50 dBm, with the wiring") for name, png, *_ in XU],
 )
 
 PD_DELAY = item(
@@ -408,12 +406,5 @@ PD_DAY18 = item(
         "each run's strongest level scaled to -1..+1, and the best single-cosine fit; last panel all theory curves together. Script plot_pd_theory.py"),
     fig("pd_pad10d_voltage_vs_level.png", "Pads + cable E: detector voltage against Pluto level, one line per frequency (colour = frequency), raw and relative to -36 dBm, with the wiring. Script plot_pd_level_response.py"),
     fig("pd_pad10z_voltage_vs_level.png", "Pads, cables B and D only (overnight): detector voltage against Pluto level, one line per frequency, for comparison, with the wiring"),
-    fig("pd_power_freq_error_cable_E_600_1600MHz_19nov.png", "Pads + cable E: frequency error against frequency with the power unknown, and the best 200 MHz window with its own lookup table (updates as data comes in), with the wiring"),
-    fig("pd_power_freq_error_900_1200MHz_19nov.png", "Frequency error against frequency with the input power unknown, 900-1200 MHz: calibration = median of the levels above -60 dBm (top) or above -50 dBm (bottom), "
-        "reading exactly on one level's curve; black = worst over every sweep, thin = each level's median; with the wiring. Script plot_pd_power_uncertainty.py"),
-    fig("pd_power_freq_error_600_1600MHz_18nov.png", "Same, 600-1600 MHz from the overnight run (stats above 720 MHz), with the wiring"),
-    fig("pd_power_uncertainty_900_1200MHz_19nov.png", "Unknown input power, 900-1200 MHz, every zoomed sweep with pads (18 Nov night + 19 Nov): calibrate with the median of the levels above -60 dBm or above -50 dBm, "
-        "read a voltage on one level's curve; deviation in mV, and frequency error (reading looked up in the median, minus the true frequency) per level and sweep, with the wiring. "
-        "Script plot_pd_power_uncertainty.py; data pd_dither_14nov.csv, stages pad10z_*, pad10z40n_*, pad10zn_*"),
-    fig("pd_power_uncertainty_600_1600MHz_18nov.png", "Same, 600-1600 MHz from the overnight run (levels -36/-45/-54/-63/-72 dBm, 3 sweeps each; above -50 dBm is only two levels, so their deviations mirror), with the wiring"),
+    p("Frequency uncertainty for this and every other run: see the first item in this tab, &lsquo;Frequency uncertainty with the power unknown, every run&rsquo;."),
 )

@@ -258,7 +258,7 @@ PHASEDET = part_tab(
     math(r"V_\text{out} \approx V_0 + A(P)\cos(2\pi f\tau) \qquad \tau = 0.55\ \text{ns}"),
     ol(["Output vs frequency with the Pluto at four power levels, by hand. Done in September.", "Output vs frequency with the VCO as source, by computer, 744 to 920 MHz. Done 10 Oct.",
         "Step response, noise and drift. Done 10 Oct.", "Not done: the same in 1.0&ndash;1.2 GHz, with fixed power, and with different delay cables. See " + link("#t-pd1", "Tests to run, PD1 to PD5") + "."]),
-    PDC.PD_DAY18 + PDC.PD_AMP + PDC.PD_SC + PDC.PD_DELAY + PDC.PD_PLUTO + PDC.PD_RESOLUTION + PDC.PD_IFS + PDC.PD_HD_NIGHT + PDC.PD_NOPADS + PDC.PD_FIVE + PDC.PD_LEVELS + PDC.PD_FRONTEND + PDC.PD_CABLE + PDC.PD_OLD + MIX_ITEMS +
+    PDC.PD_RESOLUTION + PDC.PD_DAY18 + PDC.PD_AMP + PDC.PD_SC + PDC.PD_DELAY + PDC.PD_PLUTO + PDC.PD_IFS + PDC.PD_HD_NIGHT + PDC.PD_NOPADS + PDC.PD_FIVE + PDC.PD_LEVELS + PDC.PD_FRONTEND + PDC.PD_CABLE + PDC.PD_OLD + MIX_ITEMS +
     item("pd-oct", "First results with the VCO as source, 744&ndash;920 MHz, no amplifiers (10 Oct)", table(["Quantity", "Value", "Date"],
           [["Output range, VCO source", "30.3 to 145.7 mV over 744&ndash;920 MHz", "10 Oct"], ["Range where one voltage = one frequency", "744 to 788 MHz", "10 Oct"],
            ["Slope in that range", "2.66 mV/MHz mean", "10 Oct"], ["Power at each input", "+0.6 dBm (wanted: +7 on LO)", "6 Oct"], ["Noise", "84 to 142 &micro;V rms = 38 to 66 kHz", "10 Oct"],

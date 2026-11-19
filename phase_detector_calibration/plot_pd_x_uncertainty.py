@@ -7,6 +7,7 @@ and is left blank. Two level sets per run: every level ('could be measuring anyt
 ('every pulse we respond to is at least -50 dBm'). The one number reported is Sorin's requirement: the longest
 continuous stretch where the total x width (f(high) - f(low)) is <= 4 MHz (Sorin: +/-2 MHz = 4 MHz total).
 Usage: python plot_pd_x_uncertainty.py [tag ...]. Saves pd_x_uncertainty_<tag>.png per run."""
+import json
 import sys
 from pathlib import Path
 
@@ -128,5 +129,7 @@ def runs(D):
 
 if __name__ == "__main__":
     D, tags = R.rows(), sys.argv[1:]
-    res = [(name, plot(name, rows, L, wst, col, out)) for name, rows, L, wst, col, out in runs(D) if not tags or any(name.startswith(t + " ") for t in tags)]
-    summary(res) if not tags else None
+    out = [(name, plot(name, rows, L, wst, col, png), png) for name, rows, L, wst, col, png in runs(D) if not tags or any(name.startswith(t + " ") for t in tags)]
+    if not tags:
+        summary([o[:2] for o in out])
+        json.dump([[name, png, *[f"{r[5].split(': ')[-1]} ({len(r[1])} levels, {r[2]} passes)" for r in res]] for name, res, png in out], open(HERE / "pd_x_uncertainty_table.json", "w"))
