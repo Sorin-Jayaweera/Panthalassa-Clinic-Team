@@ -3,8 +3,8 @@ At each frequency: median of every reading (every pass, every power level in the
 Y bar at each frequency: lowest to highest reading there. Each end is read back through the median curve to a frequency;
 the x bar is [f(low) - f, f(high) - f] (sorted). The lookup is only defined inside a monotonic stretch of the median curve
 (stretches split wherever the median curve turns); a bar end outside its stretch's voltage range has no unique frequency
-and is left blank. Two level sets per run: every level ('could be measuring anything') and levels >= -50 dBm
-('every pulse we respond to is at least -50 dBm'). The one number reported is Sorin's requirement: the longest
+and is left blank. Level sets per run (Sorin, 19 Nov): every level ('could be measuring anything'), then the highest level down to
+each of FLOORS (the lowest level where the amplifiers are railed, which is what matters (Sorin); and -50 dBm); each set has its own median curve (lookup) and y bar. The one number reported is Sorin's requirement: the longest
 continuous stretch where the total x width (f(high) - f(low)) is <= 4 MHz (Sorin: +/-2 MHz = 4 MHz total).
 Usage: python plot_pd_x_uncertainty.py [tag ...]. Saves pd_x_uncertainty_<tag>.png per run."""
 import json
@@ -21,7 +21,10 @@ import wiring
 from plot_pd_resolution import longest, rd, setup_wiring
 
 HERE = Path(__file__).resolve().parent
-LIMIT, FLOOR = 2.0, -50.0
+# Level sets: every level, then highest down to each floor. RAILED: lowest Pluto level where the 4 x ZX60-P162LN+ chain is within 1 dB of its
+# saturated output at every frequency 950-1600 MHz (amp_ramp_18nov.csv: -58 dBm within 0.7 dB, -60 dBm up to 1.1 dB down, -63 2-3 dB, -72 up to 10 dB)
+LIMIT, RAILED, COLS = 2.0, -58.0, ("k", "#7570b3", "#1b9e77", "#d95f02")
+FLOORS = {-60.0: "", RAILED: "amplifiers railed, ", -50.0: ""}
 
 
 def grid(rows, levels):
@@ -56,31 +59,31 @@ def xbar(f, X):
 
 
 def plot(name, rows, levels, wiring_stages, col, out):
-    sets = [("every level", tuple(levels)), (f"levels >= {FLOOR:.0f} dBm", tuple(w for w in levels if w >= FLOOR))]
-    fig, ax = wiring.figure(3, [wiring_stages], size=(20, 15), strip=0.3, titles=[f"Wiring: {name}"])
+    sets = [("every level", tuple(levels))] + [(f"{t}levels >= {c:.0f} dBm", tuple(w for w in levels if w >= c)) for c, t in FLOORS.items()]
+    fig, ax = wiring.figure(2, [wiring_stages], size=(20, 13), strip=0.3, titles=[f"Wiring: {name}"])
     print(name)
     res, short = [], name.split(":")[0]
+    for w in levels:                          # every reading taken, all levels and passes
+        p = np.array([(r[0], r[3]) for r in rows if r[1] == w])
+        ax[0].plot(*p.T, ".", ms=2, color=R.matplotlib.colormaps["viridis"](0.9 * sorted(levels, reverse=True).index(w) / max(len(levels) - 1, 1)), label=f"{w:.0f} dBm, every reading")
     for k, (lab, L) in enumerate(sets):
         f, X = grid(rows, L)
         med, lo, hi, xl, xu = xbar(f, X)
         width = xu - xl                       # total x bar width: Sorin's +/-2 MHz means width <= 4 MHz
         n, a, b = longest(f, width <= 2 * LIMIT)
-        txt = f"longest continuous stretch with x width <= {2 * LIMIT:g} MHz: " + (f"{a:g}-{b:g} MHz ({n:g} MHz wide)" if n > 0 else "none")
-        print(f"  {lab:22s} ({', '.join(f'{w:.0f}' for w in L)} dBm, {len(X)} passes): {txt}")
-        c = ("k", "#d95f02")[k]
-        if k == 0:
-            for w in levels:
-                fw, Xw = grid(rows, (w,))
-                ax[0].plot(np.tile(fw, len(Xw)), Xw.ravel(), ".", ms=2, color=R.matplotlib.colormaps["viridis"](0.9 * sorted(levels, reverse=True).index(w) / max(len(levels) - 1, 1)), label=f"{w:.0f} dBm, every pass")
-        ax[0].plot(f, med, "-", color=c, lw=1.4, label=f"median of every reading, {lab}")
-        ax[0].fill_between(f, lo, hi, color=c, alpha=0.15, label=f"y bar: lowest to highest reading, {lab}")
-        q = ax[1 + k]
-        q.plot(f, width, "-o", ms=2, color=c, lw=1.2, label=f"x width: lowest and highest reading read back through the median curve\n{txt}")
-        q.plot(f, np.where(np.isnan(width) & ~np.isnan(med), 0, np.nan), "x", color="r", ms=4, label="no unique frequency: a bar end lies past a turn of the median curve")
-        q.axhline(2 * LIMIT, color="#d95f02", ls="--", lw=1, label=f"{2 * LIMIT:g} MHz total (+/-{LIMIT:g} MHz)")
-        q.set(ylim=(0, 15), ylabel="x width (MHz)", title=f"{short}, {lab} ({', '.join(f'{w:.0f}' for w in L)} dBm, {len(X)} passes): total frequency width against frequency")
+        txt = f"longest stretch with x width <= {2 * LIMIT:g} MHz: " + (f"{a:g}-{b:g} MHz ({n:g} MHz wide)" if n > 0 else "none")
+        same = [l for l, LL in sets[:k] if LL == L]
+        tag = f"{lab} ({', '.join(f'{w:.0f}' for w in L)} dBm, {len(X)} passes)" + (f"\n= same levels as '{same[0]}' (curve on top of it)" if same else "")
+        print(f"  {tag}: {txt}")
+        c = COLS[k]
+        ax[0].plot(f, med, "-", color=c, lw=1.4, label=f"median, {lab}")
+        ax[0].plot(f, np.c_[lo, hi], ":", color=c, lw=0.9, label=[f"y bar ends (lowest, highest reading), {lab}", "_"])
+        ax[1].plot(f, width, "-o", ms=2, color=c, lw=1.2, label=f"{tag}\n{txt}")
+        ax[1].plot(f, np.where(np.isnan(width) & ~np.isnan(med), 0.3 * (k + 1), np.nan), "x", color=c, ms=4)
         res.append((lab, L, len(X), f, width, txt))
-    ax[0].set(ylabel="detector (mV)", title=f"{short}: every reading, the median curves and the y bars (wiring and description below)")
+    ax[1].axhline(2 * LIMIT, color="r", ls="--", lw=1, label=f"{2 * LIMIT:g} MHz total (+/-{LIMIT:g} MHz)\nx near 0 (set colour): no unique frequency,\na bar end lies past a turn of that set's median curve")
+    ax[1].set(ylim=(0, 15), ylabel="x width (MHz)", title=f"{short}: total frequency width against frequency, one curve per level set (median curve and y bar from that set only)")
+    ax[0].set(ylabel="detector (mV)", title=f"{short}: every reading taken, with each level set's median curve and y bar ends (wiring and description below)")
     for a in ax:
         a.set_xlim(min(r[3].min() for r in res) - 5, max(r[3].max() for r in res) + 5)
         a.grid(alpha=0.3)
@@ -97,7 +100,7 @@ def summary(results):
     fig, ax = wiring.figure(len(results), [["Pluto TX", "4 x ZX60-P162LN+", "ZFRSC-42-S+\nsplitter", ["LO arm (per row)", "RF arm (per row)"], "ZX05-30W-S+", "IF -> SDS1104X-E CH1"]],
                             size=(20, 2.6 * len(results) + 2), strip=0.25, titles=["Wiring common to every run; each run's arms and pads are in its row title and in its own detail figure"])
     for a, (name, res) in zip(ax, results):
-        for (lab, L, n, f, width, txt), c in zip(res, ("k", "#d95f02")):
+        for (lab, L, n, f, width, txt), c in zip(res, COLS):
             a.plot(f, width, "-", color=c, lw=1.1, label=f"{lab} ({', '.join(f'{w:.0f}' for w in L)} dBm, {n} passes): {txt.replace('longest continuous stretch with x width', 'longest stretch')}")
         a.axhline(2 * LIMIT, color="#d95f02", ls="--", lw=1)
         a.set(xlim=(600, 1600), ylim=(0, 15), ylabel="x width (MHz)")
