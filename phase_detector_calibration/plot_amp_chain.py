@@ -15,7 +15,7 @@ from pdlib import delay
 HERE = Path(__file__).resolve().parent
 OUT, RAW = HERE / "amp_chain_18nov.csv", HERE / "amp_chain"
 PD_PEAKS = (770, 1160, 1510)
-WIRING = ["Pluto TX\n-36 to -71 dBm", "7 cm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables between", "10 + 10 + 3 + 6 dB\npads (29 dB)",
+WIRING = ["Pluto TX\n-36 to -71 dBm", "7 cm", "4 x ZX60-P162LN+, 4.03-4.04 V\n7 cm cables between", "10 + 10 + 3 + 6 dB\npads (29 dB)",
           "SM200B, raw IQ\n50 MS/s, 16384 samples"]
 
 
@@ -110,12 +110,9 @@ def ramp():
     print("amp_ramp_18nov.png", len(F), "frequencies,", len(reps), "reps")
 
 
-def vs_freq():
-    """Amp output tone against frequency, one line per Pluto level (mean over the reps taken so far, band = min to max over reps)."""
-    src = HERE / "amp_ramp_18nov.csv"
-    if not src.exists():
-        return
-    d = np.genfromtxt(src, delimiter=",", names=True, dtype=None, encoding="utf-8")
+def grid():
+    """(ramp rows, frequencies, Pluto levels, T[mean|min|max, level, frequency] of the amp output tone over the reps taken so far)."""
+    d = np.genfromtxt(HERE / "amp_ramp_18nov.csv", delimiter=",", names=True, dtype=None, encoding="utf-8")
     F, W = np.unique(d["freq_mhz"]), np.unique(d["pluto_want_dbm"])
     T = np.full((3, len(W), len(F)), np.nan)
     for i, w in enumerate(W):
@@ -123,8 +120,46 @@ def vs_freq():
             t = d["tone_dbm"][(d["pluto_want_dbm"] == w) & (d["freq_mhz"] == f)]
             if len(t):
                 T[:, i, j] = t.mean(), t.min(), t.max()
-    fig, ax = wiring.figure(1, [[WIRING[0].replace("-36 to -71", "-90 to -36"), *WIRING[1:]]], size=(14, 9),
-                            titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B"])
+    return d, F, W, T
+
+
+RAMP_WIRING = [[WIRING[0].replace("-36 to -71", "-90 to -36 (set)"), *WIRING[1:]]]
+
+
+def waterfall(step=3.0):
+    """Every Pluto level on its own baseline: tone minus that level's mean over frequency, offset by step dB per 1 dB of level."""
+    if not (HERE / "amp_ramp_18nov.csv").exists():
+        return
+    d, F, W, T = grid()
+    dev = T - np.nanmean(T[0], axis=1)[None, :, None]
+    fig, ax = wiring.figure(1, RAMP_WIRING, size=(16, 44), titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B"])
+    a, cm = ax[0], matplotlib.colormaps["viridis"]
+    for i, w in enumerate(W):
+        c, y0 = cm((w - W.min()) / np.ptp(W)), i * step
+        a.axhline(y0, color=c, lw=0.4, alpha=0.6)
+        a.fill_between(F, y0 + dev[1, i], y0 + dev[2, i], color=c, alpha=0.2, lw=0)
+        a.plot(F, y0 + dev[0, i], "-o", ms=2.5, color=c, lw=1.1)
+        a.text(F[-1] + 8, y0, f"{w:.0f} dBm set, mean {np.nanmean(T[0, i]):+.1f} dBm out", va="center", fontsize=7, color=c)
+    a.plot([F[0] - 30] * 2, [-step, 0], "k-", lw=2)
+    a.text(F[0] - 34, -step / 2, f"{step:.0f} dB", ha="right", va="center", fontsize=8)
+    for pk in PD_PEAKS:
+        a.axvline(pk, color="#b30000", lw=0.8, ls=":")
+    a.set(xlim=(F[0] - 60, F[-1] + 190), ylim=(-2 * step, len(W) * step + step), yticks=[], xlabel="Pluto frequency (MHz)",
+          ylabel=f"tone at amp output minus that level's mean over frequency (dB, from measured + 29 dB); each level offset by {step:.0f} dB",
+          title=f"Waterfall: each Pluto level's deviation from its own mean, {len(W)} levels, mean over {len(np.unique(d['rep']))} reps so far\n"
+                f"line = mean, shaded band = min to max over reps; thin line = that level's zero; scale bar bottom left; red dotted = detector peaks")
+    a.grid(alpha=0.25, axis="x")
+    fig.tight_layout()
+    fig.savefig(HERE / "amp_ramp_waterfall_18nov.png", dpi=80)
+    print("amp_ramp_waterfall_18nov.png", len(W), "levels")
+
+
+def vs_freq():
+    """Amp output tone against frequency, one line per Pluto level (mean over the reps taken so far, band = min to max over reps)."""
+    if not (HERE / "amp_ramp_18nov.csv").exists():
+        return
+    d, F, W, T = grid()
+    fig, ax = wiring.figure(1, RAMP_WIRING, size=(14, 9), titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B"])
     a, cm = ax[0], matplotlib.colormaps["viridis"]
     for i, w in enumerate(W):
         c = cm((w - W.min()) / np.ptp(W))
@@ -146,3 +181,4 @@ if __name__ == "__main__":
     main()
     ramp()
     vs_freq()
+    waterfall()
