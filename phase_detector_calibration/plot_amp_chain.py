@@ -110,6 +110,39 @@ def ramp():
     print("amp_ramp_18nov.png", len(F), "frequencies,", len(reps), "reps")
 
 
+def vs_freq():
+    """Amp output tone against frequency, one line per Pluto level (mean over the reps taken so far, band = min to max over reps)."""
+    src = HERE / "amp_ramp_18nov.csv"
+    if not src.exists():
+        return
+    d = np.genfromtxt(src, delimiter=",", names=True, dtype=None, encoding="utf-8")
+    F, W = np.unique(d["freq_mhz"]), np.unique(d["pluto_want_dbm"])
+    T = np.full((3, len(W), len(F)), np.nan)
+    for i, w in enumerate(W):
+        for j, f in enumerate(F):
+            t = d["tone_dbm"][(d["pluto_want_dbm"] == w) & (d["freq_mhz"] == f)]
+            if len(t):
+                T[:, i, j] = t.mean(), t.min(), t.max()
+    fig, ax = wiring.figure(1, [[WIRING[0].replace("-36 to -71", "-90 to -36"), *WIRING[1:]]], size=(14, 9),
+                            titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B"])
+    a, cm = ax[0], matplotlib.colormaps["viridis"]
+    for i, w in enumerate(W):
+        c = cm((w - W.min()) / np.ptp(W))
+        a.fill_between(F, T[1, i], T[2, i], color=c, alpha=0.15, lw=0)
+        a.plot(F, T[0, i], "-", color=c, lw=0.9)
+    for pk in PD_PEAKS:
+        a.axvline(pk, color="#b30000", lw=0.8, ls=":")
+    sm = matplotlib.cm.ScalarMappable(cmap=cm, norm=matplotlib.colors.Normalize(W.min(), W.max()))
+    fig.colorbar(sm, ax=a, label="Pluto output level set (dBm), one line per 1 dB")
+    a.set(xlabel="Pluto frequency (MHz)", ylabel="tone at amp output (dBm, measured + 29 dB)",
+          title=f"Amplifier output tone against frequency, one line per Pluto level\nmean over {len(np.unique(d['rep']))} reps so far; shaded band = min to max over reps; red dotted = detector peaks")
+    a.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(HERE / "amp_ramp_vs_freq_18nov.png", dpi=90)
+    print("amp_ramp_vs_freq_18nov.png", len(W), "levels")
+
+
 if __name__ == "__main__":
     main()
     ramp()
+    vs_freq()
