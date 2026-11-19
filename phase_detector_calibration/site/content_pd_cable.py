@@ -402,6 +402,9 @@ PD_DAY18 = item(
     fig("pd_pads_10dB_1MHz_detail_18nov.png", "10 dB pads at both mixer ports, 100 mV/div, 20:59-21:40, five levels, and the wiring"),
     fig("pd_pads_10dB_zoomed_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, zoomed two-round readings, five levels (updates as data comes in), and the wiring"),
     fig("pd_pad10z_repeats_18_19nov.png", "Overnight zoomed run: each later repeat minus repeat 1 at every frequency and level, with the spread in mV and in MHz, and the wiring"),
+    fig("pd_pads_10dB_cable_E_on_RF_detail_19nov.png", "19 Nov afternoon: 10 dB pads at both mixer ports PLUS cable E on the RF arm (RF arm 7.6 cm longer), 600-1600 MHz, six levels, zoomed readings (updates as data comes in), and the wiring. "
+        "The overnight B/D runs had near-equal arms (0.07 ns), so they sat at the top of the detector's cosine and could not show frequency resolution"),
+    fig("pd_power_freq_error_cable_E_600_1600MHz_19nov.png", "Pads + cable E: frequency error against frequency with the power unknown, and the best 200 MHz window with its own lookup table (updates as data comes in), with the wiring"),
     fig("pd_power_freq_error_900_1200MHz_19nov.png", "Frequency error against frequency with the input power unknown, 900-1200 MHz: calibration = median of the levels above -60 dBm (top) or above -50 dBm (bottom), "
         "reading exactly on one level's curve; black = worst over every sweep, thin = each level's median; with the wiring. Script plot_pd_power_uncertainty.py"),
     fig("pd_power_freq_error_600_1600MHz_18nov.png", "Same, 600-1600 MHz from the overnight run (stats above 720 MHz), with the wiring"),

@@ -21,6 +21,7 @@ HERE = Path(__file__).resolve().parent
 CUTS = (-60.0, -50.0)       # reference = median over the levels above each cut (dBm)
 WIN = 200                   # Sorin's requirement: one continuous 200 MHz stretch read to within 2 MHz
 CASES = [dict(name="900_1200MHz_19nov", tags=("pad10z", "pad10z40n", "pad10zn"), lo=900, hi=1200, band=(900, 1200), title="900-1200 MHz, every zoomed sweep with pads (18 Nov night + 19 Nov)"),
+         dict(name="cable_E_600_1600MHz_19nov", tags=("pad10d",), lo=600, hi=1600, band=(600, 1600), title="600-1600 MHz, pads + cable E on the RF arm (19 Nov afternoon)"),
          dict(name="600_1600MHz_18nov", tags=("pad10z",), lo=600, hi=1600, band=(720, 1600), title="600-1600 MHz, overnight zoomed run with pads (18-19 Nov); stats above 720 MHz (the dip below is left out)")]
 
 
@@ -32,15 +33,31 @@ def sweeps(D, tags, lo, hi):
         f = float(r["freq_mhz"])
         if t in tags and r["stage"].endswith("mhz") and lo <= f <= hi:
             S.setdefault(float(r["pluto_want_dbm"]), {}).setdefault((t, r["rep"]), {}).setdefault(f, []).append(float(r["detector_mean_v"]) * 1e3)
-    f = np.arange(lo, hi + 1.0)
+    f = np.array(sorted(set.intersection(*[set().union(*d.values()) for d in S.values()])))    # frequencies every level has (grid grows as the sweep refines)
     return f, {w: np.array([[np.mean(s[x]) if x in s else np.nan for x in f] for s in d.values()]) for w, d in sorted(S.items(), reverse=True)}
+
+
+def lookup(f, ref, v, m):
+    """Frequency read from v through the lookup table ref on mask m (made monotonic in its overall direction), minus the true f; NaN off m."""
+    sg = np.sign(ref[m][-1] - ref[m][0]) or 1.0
+    cs = np.maximum.accumulate(sg * ref[m]) + 1e-9 * np.arange(m.sum())
+    return np.where(m, np.interp(sg * v, cs, f[m]) - f, np.nan)
 
 
 def errors(f, V, cut, inb):
     """Reference = median over the level medians above cut; per level, every sweep's deviation (mV) and lookup error (MHz, in band)."""
     ref = np.nanmedian([np.nanmedian(v, 0) for w, v in V.items() if w > cut], 0)
-    cs = np.maximum.accumulate(ref[inb]) + 1e-9 * np.arange(inb.sum())     # the lookup table, monotonic
-    return ref, {w: v - ref for w, v in V.items()}, {w: np.where(inb, np.interp(v, cs, f[inb]) - f, np.nan) for w, v in V.items()}
+    return ref, {w: v - ref for w, v in V.items()}, {w: lookup(f, ref, v, inb) for w, v in V.items()}
+
+
+def best_window(f, V, ref, cut, inb):
+    """Sorin's requirement: the WIN MHz stretch whose own lookup table gives the smallest worst error; returns (start, worst-error curve)."""
+    best = (np.inf, np.nan, np.full(len(f), np.nan))    # stays so until the data spans WIN MHz
+    for f0 in f[inb & (f + WIN <= f[inb].max())]:
+        m = inb & (f >= f0) & (f <= f0 + WIN)
+        e = np.nanmax(abs(np.concatenate([lookup(f, ref, v, m) for w, v in V.items() if w > cut])), 0)
+        best = min(best, (np.nanmax(e), f0, e), key=lambda t: t[0])
+    return best
 
 
 def plot(D, c):
@@ -48,11 +65,11 @@ def plot(D, c):
     run = dict(R.RUNS[[r["tag"] for r in R.RUNS].index(c["tags"][-1])], levels=tuple(V))
     col = lambda w: R.colour(run, w)
     inb = (f >= c["band"][0]) & (f <= c["band"][1])
-    fig, ax = wiring.figure(2 + 2 * len(CUTS), [R.wiring_for(run)], size=(22, 34), strip=0.35, titles=[f"Wiring (same for every sweep): cables B and D, {run['pads']}, short IF cable + 50 ohm load"])
+    fig, ax = wiring.figure(2 + 2 * len(CUTS), [R.wiring_for(run)], size=(22, 34), strip=0.35, titles=[f"Wiring (same for every sweep): {run['desc']}"])
     for w, v in V.items():
         ax[0].plot(f, v.T, color=col(w), lw=0.4, alpha=0.5)
         ax[0].plot([], [], color=col(w), label=f"{w:.0f} dBm: {len(v)} sweeps")
-    fig2, bx = wiring.figure(len(CUTS), [R.wiring_for(run)], size=(22, 7 * len(CUTS) + 2), strip=0.3, titles=[f"Wiring (same for every sweep): cables B and D, {run['pads']}, short IF cable + 50 ohm load"])
+    fig2, bx = wiring.figure(len(CUTS), [R.wiring_for(run)], size=(22, 7 * len(CUTS) + 2), strip=0.3, titles=[f"Wiring (same for every sweep): {run['desc']}"])
     print(f"\n{c['title']}")
     for k, cut in enumerate(CUTS):
         ref, dev, fe = errors(f, V, cut, inb)
@@ -68,14 +85,14 @@ def plot(D, c):
         env = np.nanmax(abs(np.concatenate([fe[w] for w in V if w > cut])), 0)    # worst over every sweep of the levels in the median
         L = [(lambda l: f"{l[1]:g}-{l[2]:g} MHz" if l[0] else "none")(longest(f, inb & (env <= e))) for e in (1, 2)]
         r, wst = st(env)
-        win = np.lib.stride_tricks.sliding_window_view(np.where(inb, env, np.inf), WIN + 1).max(1)    # worst error in every WIN MHz window (1 MHz grid)
-        b0 = np.argmin(win)
-        txt = f"rms {r:.2f}, worst {wst:.1f} MHz\n<= 1 MHz at {np.mean(env[inb] <= 1):.0%} of frequencies, longest {L[0]}\n<= 2 MHz at {np.mean(env[inb] <= 2):.0%}, longest {L[1]}\nbest {WIN} MHz window: {f[b0]:g}-{f[b0] + WIN:g} MHz, worst {win[b0]:.1f} MHz"
+        bw, f0, benv = best_window(f, V, ref, cut, inb)
+        txt = f"rms {r:.2f}, worst {wst:.1f} MHz\n<= 1 MHz at {np.mean(env[inb] <= 1):.0%} of frequencies, longest {L[0]}\n<= 2 MHz at {np.mean(env[inb] <= 2):.0%}, longest {L[1]}\nbest {WIN} MHz window (own lookup): {f0:g}-{f0 + WIN:g} MHz, worst {bw:.1f} MHz"
 
         print(f"  ref > {cut:.0f}: " + txt.replace("\n", "; "))
         ax[1].plot(f, env, "k" + "-:"[k], lw=1.3, label=f"power unknown, anywhere above {cut:.0f} dBm\n(calibration = median of those levels)\n" + txt)
         q = bx[k]
-        q.axvspan(f[b0], f[b0] + WIN, color="#7570b3", alpha=0.08, label=f"best {WIN} MHz window")
+        q.axvspan(f0, f0 + WIN, color="#7570b3", alpha=0.08)
+        q.plot(f, benv, color="#7570b3", lw=2.2, label=f"best {WIN} MHz window, its own lookup table:\nworst over every sweep {bw:.1f} MHz")
         for w in V:
             q.plot(f, abs(np.nanmedian(fe[w], 0)), color=col(w), lw=1.0, label=f"{w:.0f} dBm, level median") if w > cut else None
         q.plot(f, env, "k", lw=1.6, label="worst over every sweep\nof these levels\n" + txt)
