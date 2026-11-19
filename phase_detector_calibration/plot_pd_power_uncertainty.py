@@ -46,8 +46,9 @@ def lookup(f, ref, v, m):
 
 
 def errors(f, V, cut, inb):
-    """Reference = median over the level medians above cut; per level, every sweep's deviation (mV) and lookup error (MHz, in band)."""
-    ref = np.nanmedian([np.nanmedian(v, 0) for w, v in V.items() if w > cut], 0)
+    """Reference = median of every reading (all passes, all levels above cut) at each frequency (Sorin's definition);
+    per level, every sweep's deviation (mV) and lookup error (MHz, in band)."""
+    ref = np.nanmedian(np.concatenate([v for w, v in V.items() if w > cut]), 0)
     return ref, {w: v - ref for w, v in V.items()}, {w: lookup(f, ref, v, inb) for w, v in V.items()}
 
 
@@ -93,11 +94,17 @@ def plot(D, c):
         ax[1].plot(f, env, "k" + "-:"[k], lw=1.3, label=f"power unknown, anywhere above {cut:.0f} dBm\n(calibration = median of those levels)\n" + txt)
         q = bx[k]
         q.axvspan(f0, f0 + WIN, color="#7570b3", alpha=0.08)
-        q.plot(f, benv, color="#7570b3", lw=2.2, label=f"best {WIN} MHz window, its own lookup table:\nworst over every sweep {bw:.1f} MHz")
+        m = inb & (f >= f0) & (f <= f0 + WIN)      # the FPGA's lookup table covers only this window
+        E = np.concatenate([lookup(f, ref, V[w], m) for w in V if w > cut])     # every reading's voltage, read back through the median curve
+        lo, hi = np.nanmin(E, 0), np.nanmax(E, 0)                              # lowest and highest voltage -> frequency error bar
+        q.fill_between(f, lo, hi, color="0.6", alpha=0.45, label=f"error bar: lowest to highest reading at each frequency (all passes, all levels),\n"
+                       f"read back through the median curve; lookup table = {f0:g}-{f0 + WIN:g} MHz only (best {WIN} MHz window)\n"
+                       f"worst one side {bw:.1f} MHz, widest bar {np.nanmax((hi - lo)[m]):.1f} MHz; within +/-2 MHz at {np.mean(benv[m] <= 2):.0%} of the window")
         for w in V:
-            q.plot(f, abs(np.nanmedian(fe[w], 0)), color=col(w), lw=1.0, label=f"{w:.0f} dBm, level median") if w > cut else None
-        q.plot(f, env, "k", lw=1.6, label="worst over every sweep\nof these levels\n" + txt)
-        q.set(ylim=(0, 15), ylabel="frequency error (MHz)", title=f"Power unknown, anywhere from {max(V):.0f} dBm down to {min(w for w in V if w > cut):.0f} dBm (levels above {cut:.0f} dBm); calibration = median of those levels; reading exactly on one level's curve")
+            q.plot(f, np.nanmedian(lookup(f, ref, V[w], m), 0), color=col(w), lw=1.6, label=f"{w:.0f} dBm, median over its passes") if w > cut else None
+        q.axhline(2, color="#d95f02", ls="--", lw=1)
+        q.axhline(-2, color="#d95f02", ls="--", lw=1, label="+/-2 MHz requirement")
+        q.set(ylim=(-8, 8), ylabel="frequency error (MHz)", title=f"Power unknown, anywhere from {max(V):.0f} dBm down to {min(w for w in V if w > cut):.0f} dBm (levels above {cut:.0f} dBm); lookup = median of every reading of those levels at each frequency")
         a.set(ylabel="mV", title=f"Reading minus the median of the levels above {cut:.0f} dBm (thin: every sweep, thick: level median)")
         b.set(ylabel="MHz", ylim=(-12, 12), title=f"Frequency error, signed, per level (calibration = median of the levels above {cut:.0f} dBm; thin: every sweep, thick: level median)")
     for a in (ax[1], *bx):
