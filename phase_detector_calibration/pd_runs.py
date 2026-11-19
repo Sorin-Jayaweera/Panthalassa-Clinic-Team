@@ -37,6 +37,9 @@ RUNS = [
     dict(tag="pad10z", day="18-19 Nov", desc="as pad10, two-round zoomed readings (finest V/div per point)", arms=ARMS_PAD10, pads="10 dB at LO and RF",
          levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(271, 275), ls="-", col="#1f78b4", detail="pd_pads_10dB_zoomed_detail_18nov.png", region=None),
+    dict(tag="pad10z40", day="19 Nov", desc="as pad10z, one more level: -40 dBm, repeated until the scope is unplugged", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+         levels=(-40.0,), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(281, 301), ls="-", col="#a6cee3", detail="pd_pads_10dB_zoomed_minus40dBm_detail_19nov.png", region=None),
 ]
 
 

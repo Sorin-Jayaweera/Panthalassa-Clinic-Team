@@ -76,7 +76,9 @@ def stages():
     if __import__("os").environ.get("PD_PLAN") == "fine":   # 18 Nov night: 1 MHz over 600-1600 MHz at 5 levels, coarse to fine, repeated until the deadline
         from pd_plan import fine_sweep
         tag = __import__("os").environ.get("PD_FINE_TAG", "pad10")   # pad10z = same wiring, two-round zoomed readings (PD_ZOOM=1)
-        yield from fine_sweep(tag, (-36.0, -45.0, -54.0, -63.0, -72.0), reps=3, base={"pad10": 261, "pad10z": 271}[tag], level_major=ZOOM)
+        lv = tuple(float(x) for x in __import__("os").environ.get("PD_LEVELS", "-36,-45,-54,-63,-72").split(","))   # pad10z40 (19 Nov): -40 only
+        reps = int(__import__("os").environ.get("PD_REPS", "3"))
+        yield from fine_sweep(tag, lv, reps=reps, base={"pad10": 261, "pad10z": 271, "pad10z40": 281}[tag], level_major=ZOOM)
         return
     if __import__("os").environ.get("HD_NIGHT"):   # 15 Nov night, no pads, 100 mV/div: dense where it matters, coarse to fine
         L3 = (-36.0, -50.0, -57.0)
