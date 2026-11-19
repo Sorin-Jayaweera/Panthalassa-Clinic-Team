@@ -150,3 +150,5 @@ scope: try 1 failed, [Errno 13] Permission denied: 'C:\\ThatFamily Dropbox\\Sori
 12:07:03 off rep 403: 75%
 12:07:17 off rep 403: 100%
 12:07:19 STAGE pad10zn_8mhz rep 3: repeat 3: 900-1200 MHz, 38 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 228 points (from 0)
+12:09:53 pad10zn_8mhz rep 3: 25%
+12:12:21 pad10zn_8mhz rep 3: 50%
