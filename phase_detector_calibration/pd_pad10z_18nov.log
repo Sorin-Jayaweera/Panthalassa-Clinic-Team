@@ -1,0 +1,14 @@
+=== pads-10dB-zoom launch 1 21:39:58
+21:39:59 STAGE off rep 271: tone off before pad10z, 12 points (from 0)
+21:40:26 off rep 271: 25%
+21:40:47 off rep 271: 50%
+21:41:08 off rep 271: 75%
+21:41:29 off rep 271: 100%
+21:41:29 STAGE pad10z_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 5 levels (-36.0, -45.0, -54.0, -63.0, -72.0), 630 points (from 0)
+deadline reached or stop file
+21:43:27 ALL STAGES FINISHED
+tone off
+=== pads-10dB-zoom wrapper ended 21:43:27
+=== 21:44 restart: level-major order, offset tracking (scope_zoom.Tracker); 18 earlier rows renamed pad10z_switching_test
+=== pads-10dB-zoom launch 1 21:44:27
+21:44:28 STAGE pad10z_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 5 levels (-36.0, -45.0, -54.0, -63.0, -72.0), 630 points (from 0)

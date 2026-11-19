@@ -373,7 +373,10 @@ DAY18 = [  # (time, arrangement, instrument, data, what was seen)
     ["20:16", "SM200B in place of the mixer RF port (cable B); D drives mixer LO; RF terminated", "SM200B raw IQ", "<code>arm_probe_rf_18nov.csv</code>", "<b>1.9&ndash;2.0 dB rms ripple, strongest delay 2.72 ns: the detector's delay is already on the arm signal.</b>"],
     ["evening", "As above, mixer removed (D &rarr; adapter &rarr; ANNE-50L+)", "SM200B raw IQ", "<code>arm_probe_rf_nomixer_18nov.csv</code>", "Ripple 0.6&ndash;0.8 dB, 2.7 ns gone: the pattern needs the mixer."],
     ["evening", "10 dB pad at the mixer RF (D) and LO (to 50 &Omega;); B &rarr; 19 dB &rarr; SM200B", "SM200B raw IQ", "<code>arm_probe_rf_padded_18nov.csv</code>", "Ripple 0.56&ndash;0.76 dB, no clear delay: pads at the mixer suppress it."],
-    ["20:59 &rarr; 07:55", "B and D with a 10 dB pad at each mixer port, 50 &Omega; IF load; 600&ndash;1600 MHz every 1 MHz, 5 levels", "scope", "stages <code>pad10_*</code>", "Running overnight (coarse to fine: 8, 4, 2, 1 MHz, then repeats)."],
+    ["20:59 &rarr; 07:55", "B and D with a 10 dB pad at each mixer port, 50 &Omega; IF load; 600&ndash;1600 MHz every 1 MHz, 5 levels", "scope", "stages <code>pad10_*</code>", "Ramp from about 720 to 1460 MHz with the ripple about 10&times; smaller, but read at 100 mV/div (4 mV ADC steps). Stopped at 21:40 for the zoomed reading below."],
+    ["21:44 &rarr; 07:55", "Same wiring; each point read in two rounds: 100 mV/div for the level, then the finest V/div (0.5&ndash;20 mV/div) centred on it; "
+     "each level swept across the band in turn so only the offset moves (<code>scope_zoom.py</code>)", "scope", "stages <code>pad10z_*</code>; V/div per reading in <code>pd_zoom_readings_18nov.csv</code>",
+     "Running overnight (8, 4, 2, 1 MHz, then repeats). 18 readings taken while testing (V/div switched every point, 6.5 s each) are kept as stage <code>pad10z_switching_test</code>."],
 ]
 PD_DAY18 = item(
     "pd-day-18nov", "18 Nov, every arrangement and what it showed: the ~360 MHz pattern is the mixer ports' reflections coming back through the resistive splitter",
@@ -396,5 +399,6 @@ PD_DAY18 = item(
     fig("arm_probe_rf_18nov.png", "SM200B at the end of the RF arm (cable B), mixer LO driven, and the wiring"),
     fig("arm_probe_rf_nomixer_18nov.png", "SM200B at the end of the RF arm with the mixer removed, and the wiring"),
     fig("arm_probe_rf_padded_18nov.png", "SM200B at the end of cable B with 10 dB pads at the mixer ports, and the wiring"),
-    fig("pd_pads_10dB_1MHz_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, 1 MHz steps, five levels (updates as data comes in), and the wiring"),
+    fig("pd_pads_10dB_1MHz_detail_18nov.png", "10 dB pads at both mixer ports, 100 mV/div, 20:59-21:40, five levels, and the wiring"),
+    fig("pd_pads_10dB_zoomed_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, zoomed two-round readings, five levels (updates as data comes in), and the wiring"),
 )

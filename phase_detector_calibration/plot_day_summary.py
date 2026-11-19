@@ -27,7 +27,8 @@ DAY = [("det", "ifs", "15 Nov reference: cable E on RF arm, 1 Mohm", "15 Nov 20:
        ("sm", "arm_probe_rf", "SM200B: RF arm (B), mixer LO driven", "20:16", "2.72 ns, 1.9-2.0 dB rms: the detector's delay"),
        ("sm", "arm_probe_rf_nomixer", "SM200B: RF arm, mixer removed", "evening", "0.6-0.8 dB rms, 2.7 ns gone"),
        ("sm", "arm_probe_rf_padded", "SM200B: RF arm, 10 dB pads at mixer", "evening", "0.56-0.76 dB rms, no clear delay"),
-       ("det", "pad10", "10 dB pad at both mixer ports, 1 MHz", "from 20:59 (overnight)", "running; partial data, fit not settled")]
+       ("det", "pad10", "10 dB pads, 100 mV/div (stopped 21:40)", "20:59-21:40", "ramp, ripple ~10x smaller; 4 mV ADC steps"),
+       ("det", "pad10z", "10 dB pads, zoomed (finest V/div)", "from 21:44 (overnight)", "running; partial data, fit not settled")]
 RUNS = {r["tag"]: r for r in R.RUNS}
 MIN_SPAN = 700.0   # MHz; a shorter sweep cannot separate a 2-3 ns delay from the trend
 
