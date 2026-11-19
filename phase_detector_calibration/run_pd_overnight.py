@@ -186,8 +186,14 @@ class FineScope(full.Scope):
         if ZOOM:   # two rounds: coarse at VDIV/OFST, then the finest V/div centred on that level (scope_zoom.py)
             self.track = getattr(self, "track", None) or Tracker((self.vdiv, OFST))
             m, vd, m0, sd, tries = self.track.read(self.s, self.ch, self.key)
-            with open(ZOOM_LOG, "a") as fh:
-                fh.write(f"{dt.datetime.now().isoformat(timespec='seconds')},{m0:.6f},{vd:g},{m:.7f},{sd:.7f},{tries}\n")
+            line = f"{dt.datetime.now().isoformat(timespec='seconds')},{m0:.6f},{vd:g},{m:.7f},{sd:.7f},{tries}\n"
+            for _ in range(20):   # the backup copy or the site push can hold the side log for a moment: wait, never redo the reading
+                try:
+                    with open(ZOOM_LOG, "a") as fh:
+                        fh.write(line)
+                    break
+                except PermissionError:
+                    time.sleep(0.5)
             return m, 0.0, sd
         vals, rms = [], []
         for k in range(DITHER):
