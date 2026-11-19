@@ -13,6 +13,7 @@ LEVEL_COLOURS = dict(zip(LEVELS, ("#440154", "#21918c", "#5ec962")))
 
 ARMS_E = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm) + E (8 cm)\nno pad"]
 ARMS_EQ = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm), equal to D\nno pad"]
+ARMS_ELO = ["right arm (LO, splitter port 2): cable D (15 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15 cm)\nno pad"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
 # off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
@@ -25,6 +26,8 @@ RUNS = [
          ifl="short cable\n+ 50 ohm load", inp="50 ohm load", off=(141, 200), ls="-", col="#1b9e77", detail="pd_short_cables_detail_18nov.png", region=None),
     dict(tag="eq", day="18 Nov", desc="equal arms (cable B, cable D, 15 cm each), 50 ohm IF load", arms=ARMS_EQ,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
+    dict(tag="elo", day="18 Nov", desc="cable E (+ adapter, about 9 cm) moved to the LO arm, 50 ohm IF load", arms=ARMS_ELO,
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(231, 260), ls="-", col="#e7298a", detail="pd_cable_E_on_LO_detail_18nov.png", region=None),
 ]
 
 
