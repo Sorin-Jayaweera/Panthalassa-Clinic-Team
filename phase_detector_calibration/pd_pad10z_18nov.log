@@ -74,3 +74,4 @@ scope: try 1 failed, [Errno 13] Permission denied: 'C:\\ThatFamily Dropbox\\Sori
 07:06:36 pad10z_4mhz rep 3: 100%
 07:06:36 STAGE pad10z_2mhz rep 3: repeat 3: 600-1600 MHz, 250 new frequencies at 2 MHz spacing x 5 levels (-36.0, -45.0, -54.0, -63.0, -72.0), 1250 points (from 0)
 07:20:36 pad10z_2mhz rep 3: 25%
+scope: try 1 failed, [Errno 13] Permission denied: 'C:\\ThatFamily Dropbox\\Sorin Jayaweera\\allSaves\\mudd\\senior\\clin
