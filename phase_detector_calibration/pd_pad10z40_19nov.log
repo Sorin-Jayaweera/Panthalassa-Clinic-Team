@@ -104,3 +104,6 @@ tone off
 09:09:35 pad10zn_8mhz rep 1: 75%
 09:13:00 pad10zn_8mhz rep 1: 100%
 09:13:00 STAGE pad10zn_4mhz rep 1: repeat 1: 900-1200 MHz, 38 new frequencies at 4 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 228 points (from 0)
+09:15:40 pad10zn_4mhz rep 1: 25%
+09:18:12 pad10zn_4mhz rep 1: 50%
+09:20:52 pad10zn_4mhz rep 1: 75%
