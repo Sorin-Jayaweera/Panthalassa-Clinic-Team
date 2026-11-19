@@ -11,7 +11,7 @@ HERE = Path(__file__).resolve().parent
 ROOT, SITE = HERE.parent, HERE / "site"
 DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log", HERE / "amp_chain_18nov.csv", HERE / "amp_chain_18nov.log", HERE / "amp_ramp_18nov.csv",
         *HERE.glob("arm_probe_*_18nov.csv"), *HERE.glob("arm_probe_18nov.log"), *HERE.glob("pd_*_18nov.log"), *HERE.glob("pd_*_19nov.log"), HERE / "pd_zoom_readings_18nov.csv"]
-JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py", "plot_day_summary.py", "plot_pd_repeats.py", "plot_pd_x_uncertainty.py", "plot_pd_level_response.py", "plot_pd_theory.py"]
+JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py", "plot_day_summary.py", "plot_pd_repeats.py", "plot_pd_x_uncertainty.py", "plot_pd_design_limits.py", "plot_pd_level_response.py", "plot_pd_theory.py"]
 
 
 def run(*a, cwd=HERE):
