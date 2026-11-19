@@ -40,8 +40,9 @@ def plot(D, run, lo=720.0):
                    label=f"repeat {n} - repeat 1: {len(f)} freqs, mean {d.mean():+.2f} mV, sd {s.std():.2f} mV above {lo:g} MHz "
                          f"= {s.std() / abs(slope):.1f} MHz at {slope:.3f} mV/MHz")
         a.axhline(0, color="k", lw=0.6)
-        a.axvspan(600, lo, color="0.5", alpha=0.08)
-        a.set(xlim=(595, 1605), ylabel="mV", title=f"{w:.0f} dBm: difference between repeats (raw detector readings; grey = below {lo:g} MHz, the dip, left out of the sd)")
+        if f1[0] < lo:
+            a.axvspan(f1[0], lo, color="0.5", alpha=0.08)
+        a.set(xlim=(f1[0] - 5, f1[-1] + 5), ylabel="mV", title=f"{w:.0f} dBm: difference between repeats (raw detector readings; grey = below {lo:g} MHz, the dip, left out of the sd)")
         a.grid(alpha=0.3)
         a.legend(fontsize=8, loc="upper right")
     ax[-1].set_xlabel("Pluto frequency (MHz)")

@@ -82,3 +82,20 @@ tone off
 08:53:30 pad10z40n_2mhz rep 3: 75%
 08:54:15 pad10z40n_2mhz rep 3: 100%
 08:54:16 STAGE pad10z40n_1mhz rep 3: repeat 3: 900-1200 MHz, 150 new frequencies at 1 MHz spacing x 1 levels (-40.0,), 150 points (from 0)
+08:56:04 pad10z40n_1mhz rep 3: 25%
+08:57:41 pad10z40n_1mhz rep 3: 50%
+08:59:15 pad10z40n_1mhz rep 3: 75%
+09:00:44 pad10z40n_1mhz rep 3: 100%
+09:00:44 STAGE off rep 304: tone off after repeat 3, 12 points (from 0)
+deadline reached or stop file
+09:00:49 ALL STAGES FINISHED
+tone off
+=== pads-10dB-zoom -40 dBm 900-1200 wrapper ended 09:00:49
+=== 09:00:52 -40 dBm block done (3 sweeps); starting six levels
+=== pads-10dB-zoom six levels 900-1200 launch 09:00:52
+09:00:53 STAGE off rep 401: tone off before pad10zn, 12 points (from 0)
+09:01:12 off rep 401: 25%
+09:01:27 off rep 401: 50%
+09:01:42 off rep 401: 75%
+09:01:57 off rep 401: 100%
+09:01:59 STAGE pad10zn_8mhz rep 1: repeat 1: 900-1200 MHz, 38 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 228 points (from 0)
