@@ -401,4 +401,5 @@ PD_DAY18 = item(
     fig("arm_probe_rf_padded_18nov.png", "SM200B at the end of cable B with 10 dB pads at the mixer ports, and the wiring"),
     fig("pd_pads_10dB_1MHz_detail_18nov.png", "10 dB pads at both mixer ports, 100 mV/div, 20:59-21:40, five levels, and the wiring"),
     fig("pd_pads_10dB_zoomed_detail_18nov.png", "Overnight: 10 dB pads at both mixer ports, zoomed two-round readings, five levels (updates as data comes in), and the wiring"),
+    fig("pd_pad10z_repeats_18_19nov.png", "Overnight zoomed run: each later repeat minus repeat 1 at every frequency and level, with the spread in mV and in MHz, and the wiring"),
 )
