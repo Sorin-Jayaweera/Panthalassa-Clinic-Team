@@ -13,7 +13,7 @@ from pdlib import HERE, chain, colours, fv, mv, rows, zero
 
 R, EVE = rows("pd_overnight_13nov.csv"), rows("pd_cable_13nov_E_pads.csv")
 WIRING = [chain("-50 dBm unless noted")]
-WT = ["Wiring, 14 Nov (same as 13 Nov evening; D and B are the same length, so the length difference is cable E, about 8 cm)"]
+WT = ["Wiring, 14 Nov (same as 13 Nov evening; D 16.6 cm, B 15.2 cm, E with adapter ~9 cm: RF arm longer by 7.6 cm, about 0.36 ns at velocity factor 0.70)"]
 C = dict(wide10="#7570b3", wide5="#d95f02", eve="#999999")
 RISE = (1228, 1440)
 

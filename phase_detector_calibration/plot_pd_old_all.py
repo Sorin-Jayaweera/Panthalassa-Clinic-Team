@@ -16,7 +16,7 @@ MAP, FINE, KS, RAMP, BASE = map(rows, ("p162x4_map_1nov.csv", "p162x4_fine_1nov.
 WIRING = [["Pluto TX\nlevel per curve", "4 x ZX60-P162LN+\nabout 4 V (KUAIQU, then\nAgilent E3630A 3.94 V)", "ZFRSC-42-S+\nsplitter",
            ["right arm (LO): cable D", "left arm (RF): cable B + C\n(C about 12 cm), no pads"],
            "ZX05-30W-S+\nLO and RF in, IF out", ["SDS1104X-E CH1\n1 Mohm, reads the mV", "pads, then SM200B\n(SM200B run only)"]]]
-WT = ["Wiring, 1 Nov 2026 (the three-cable setup before cable E: D on the right, B + C on the left; D and B are the same length, so the length difference is cable C)"]
+WT = ["Wiring, 1 Nov 2026 (the three-cable setup before cable E: D on the right, B + C on the left; D 16.6 cm, B 15.2 cm, C about 12 cm: RF arm longer by about 10.6 cm)"]
 GROUPS = [("hold, 1054 MHz -60 dBm", ("hold",), "#d95f02"), ("tone off", ("off", "start_off"), "#1b9e77"),
           ("amplifiers unpowered: hold", ("bad_amps_off_hold",), "#b30000"), ("amplifiers unpowered: tone off", ("bad_amps_off_off",), "#e7298a")]
 

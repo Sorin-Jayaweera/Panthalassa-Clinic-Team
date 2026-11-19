@@ -12,9 +12,10 @@ DATA = HERE / "pd_dither_14nov.csv"
 LEVELS = (-36.0, -50.0, -57.0)
 LEVEL_COLOURS = dict(zip(LEVELS, ("#440154", "#21918c", "#5ec962")))
 
-ARMS_E = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm) + E (8 cm)\nno pad"]
-ARMS_EQ = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm), equal to D\nno pad"]
-ARMS_ELO = ["right arm (LO, splitter port 2): cable D (15 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15 cm)\nno pad"]
+# Lengths (Sorin, 18 Nov): B 15.2 cm, D 16.6 cm, E with its adapter about 9 cm (the adapter was on in every run)
+ARMS_E = ["right arm (LO): cable D (16.6 cm)\nno pad", "left arm (RF): cable B (15.2 cm) + E with adapter (~9 cm)\nRF - LO = 7.6 cm, no pad"]
+ARMS_EQ = ["right arm (LO): cable D (16.6 cm)\nno pad", "left arm (RF): cable B (15.2 cm)\nRF - LO = -1.4 cm, no pad"]
+ARMS_ELO = ["right arm (LO, splitter port 2): cable D (16.6 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15.2 cm)\nRF - LO = -10.4 cm, no pad"]
 ARMS_PAD10 = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm)\n+ 10 dB pad -> mixer RF"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
@@ -26,7 +27,7 @@ RUNS = [
          ifl="~16 cm SMA cable\n+ SMA-BNC adapter", inp="1 Mohm", off=(91, 141), ls="-", col="#d95f02", detail="pd_ifs_night_15nov.png", region=(1340, 1480)),
     dict(tag="sc", day="18 Nov", desc="very short cables at every mixer connection, 50 ohm IF load", arms=ARMS_SHORT,
          ifl="short cable\n+ 50 ohm load", inp="50 ohm load", off=(141, 200), ls="-", col="#1b9e77", detail="pd_short_cables_detail_18nov.png", region=None),
-    dict(tag="eq", day="18 Nov", desc="equal arms (cable B, cable D, 15 cm each), 50 ohm IF load", arms=ARMS_EQ,
+    dict(tag="eq", day="18 Nov", desc="near-equal arms (cable B 15.2 cm, cable D 16.6 cm), 50 ohm IF load", arms=ARMS_EQ,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
     dict(tag="elo", day="18 Nov", desc="cable E (+ adapter, about 9 cm) moved to the LO arm, 50 ohm IF load", arms=ARMS_ELO,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(231, 260), ls="-", col="#e7298a", detail="pd_cable_E_on_LO_detail_18nov.png", region=None),

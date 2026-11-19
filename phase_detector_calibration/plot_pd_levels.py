@@ -13,7 +13,7 @@ BREAK = "2026-11-14T15:00"       # run stopped 14:53, Pluto replugged, resumed 1
 R = [r for r in ALL if r["timestamp"] < BREAK]
 AFTER = [r for r in ALL if r["timestamp"] >= BREAK and r["stage"] == "levels"]
 WIRING = [chain("-60 to -36 dBm", scope=", 1 Mohm\n50 mV/div, 4 offsets 1 mV apart", sm="20 dB of pads\nthen SM200B (not read)")]
-WT = ["Wiring, 14 Nov (D and B are the same length, so the length difference is cable E, about 8 cm)"]
+WT = ["Wiring, 14 Nov (D 16.6 cm, B 15.2 cm, E with adapter ~9 cm: RF arm longer by 7.6 cm, about 0.36 ns at velocity factor 0.70)"]
 GOOD = (1240.0, 1430.0)          # the rise, away from its flat ends
 
 

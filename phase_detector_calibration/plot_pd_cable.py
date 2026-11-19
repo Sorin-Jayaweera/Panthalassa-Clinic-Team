@@ -27,7 +27,7 @@ def main():
         ("1 Nov, left B + C (C about 12 cm), 5 MHz steps", fv([r for r in map1 if r["pass"] == "map" and at50(r)]), "#7570b3", "-", z1),
         ("1 Nov, left B + C, 1 MHz steps", fv(filter(at50, fine1)), "#b3b0de", "-", z1),
         ("13 Nov, left B + C, before the scope jammed", fv([r for r in base if r["pass"] == "check" or (r["pass"] == "fine" and float(r["freq_mhz"]) > 0)]), "#7570b3", "none", zb),
-        ("13 Nov, left B + E (E about 8 cm), 25 MHz steps", fv([r for r in e if r["pass"] == "coarse"]), "#d95f02", "-", ze),
+        ("13 Nov, left B + E (E with adapter ~9 cm), 25 MHz steps", fv([r for r in e if r["pass"] == "coarse"]), "#d95f02", "-", ze),
         ("13 Nov, left B + E, repeat with the SM200B reading", fv(ek), "#1b9e77", "--", ze),
         ("13 Nov, left B + E, 3 dB pad on LO, 6 dB on RF, 25 MHz steps", fv([r for r in ep if float(r["freq_mhz"]) > 0]), "#e7298a", "-", zp)]
     fig, axes = wiring.figure(2, [WIRING], size=(14, 11), titles=["Wiring (right arm cable D throughout; left arm B + C on 1 Nov, B + E on 13 Nov)"])

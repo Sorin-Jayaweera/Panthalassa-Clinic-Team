@@ -2,10 +2,10 @@
 from content import item, table, ul, p, h, fig
 
 PD_CABLE = item(
-    "pd-cable-e", "Delay cable E (about 8 cm) with pads at the mixer ports, 13&ndash;14 Nov: voltage vs frequency, power levels, noise, drift",
+    "pd-cable-e", "Delay cable E (about 9 cm with its adapter) with pads at the mixer ports, 13&ndash;14 Nov: voltage vs frequency, power levels, noise, drift",
     p("Goal: one clean voltage per frequency over 200 MHz, read to &plusmn;2 MHz. The PLL can move the band anywhere, so the absolute frequency does not matter. "
       "Wiring (every plot shows it): Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V, 0.23 A) &rarr; ZFRSC-42-S+ &rarr; right arm cable D to the LO port, left arm cable B + E to the RF port "
-      "&rarr; ZX05-30W-S+ &rarr; IF to SDS1104X-E CH1 (1 M&Omega;) and, through pads, the SM200B. D and B are the same length, so the length difference is cable E. On 1 Nov it was cable C (about 12 cm)."),
+      "&rarr; ZX05-30W-S+ &rarr; IF to SDS1104X-E CH1 (1 M&Omega;) and, through pads, the SM200B. D is 16.6 cm and B 15.2 cm (Sorin, 18 Nov; earlier taken as equal), so the RF arm is longer by E + B &minus; D = 9 &minus; 1.4 = 7.6 cm. On 1 Nov it was cable C (about 12 cm), 10.6 cm."),
     h("Cable C against cable E, and pads at the mixer (13 Nov)"),
     p("With C and with E the output ripples about every 375 MHz, which a few-cm length difference cannot cause (it would give a period of a few GHz). "
       "The guess was reflections between the badly matched mixer ports and the splitter; the 31 Oct VNA data shows the RF port at &minus;6 dB return loss at 1.5 GHz and the LO port at &minus;13.7 dB. "
@@ -180,12 +180,12 @@ PD_DELAY = item(
            ["Cable C, 1 Nov, &minus;60 dBm", "700&ndash;1600", "3.00", "333", "69"],
            ["Cable E, no pads, 13 Nov", "600&ndash;1700", "2.68", "373", "125"],
            ["Cable E, no pads, short IF cable, 15 Nov, &minus;50 dBm", "600&ndash;1600", "2.77", "361", "153"]]),
-    ul(["The delay moves with the arm cable: C to E shortens it by 0.23&ndash;0.32 ns. C is about 12 cm and E about 8 cm, so 4 cm of coax is about 0.19 ns. The 2.75 ns is therefore the real difference between the two arms, not an outside reflection.",
+    ul(["The delay moves with the arm cable: C to E shortens it by 0.23&ndash;0.32 ns. C is about 12 cm and E about 9 cm with its adapter, so 3 cm of coax is about 0.14 ns at velocity factor 0.70. The 2.75 ns is therefore the real difference between the two arms, not an outside reflection.",
         "That also explains the usable width: half a cycle of 2.75 ns is about 180 MHz, the one-to-one width seen in every run. A 0.55 ns difference would give about 900 MHz.",
         "Ruled out: the long IF cable (same curve with a short one).",
-        "Cable lengths (Sorin, 16 Nov): B and D are both 15 cm, E about 8 cm, C about 12 cm. So the direct arm difference with E is only 8 cm, about 0.38 ns; it cannot give 2.75 ns.",
+        "Cable lengths (Sorin, 16 and 18 Nov): B 15.2 cm, D 16.6 cm (first given as 15 cm each), E about 9 cm with its adapter, C about 12 cm. So the direct arm difference with E is 7.6 cm, about 0.36 ns (velocity factor 0.70 assumed; cable type unknown); it cannot give 2.75 ns.",
         "Likely cause: the ZFRSC-42-S+ is a resistive splitter with only about 6 dB between its outputs. A reflection off one mixer port goes back up its arm, crosses the splitter 6 dB down and reaches the other mixer port. "
-        "Mixed against the direct signal, that path differs by the SUM of the two arms (D + B + E = 38 cm, about 1.8 ns of cable, plus the splitter, adapters and the paths inside the mixer to its diodes), not their difference. "
+        "Mixed against the direct signal, that path differs by the SUM of the two arms (D + B + E = 40.8 cm, about 1.9 ns of cable, plus the splitter, adapters and the paths inside the mixer to its diodes), not their difference. "
         "A sum of arms near 2.75 ns needs about 0.9 ns more than the cables alone, so this is likely but not yet proven.",
         "Test that separates the two with no new parts: lengthen arm D only. If the ~360 MHz pattern gets slower (longer cycle), it is the direct difference; if it gets faster, it is the reflection path through the splitter (sum of arms). "
         "Fix if it is the reflection path: a high-isolation (Wilkinson or hybrid) splitter in place of the resistive one, or attenuators right at the mixer ports (each dB of pad takes 2 dB off the reflected path)."]),
@@ -320,13 +320,13 @@ PD_STATUS = item(
     h("Chain as built"),
     p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; about 22.5 dB gain and P1dB +19.9 dBm each at 1 GHz, so the chain rails near +20 dBm at every level used) &rarr; ZFRSC-42-S+ resistive splitter (about 6 dB between outputs) &rarr; "
       "every cable from the Pluto through the amplifiers to the splitter is 7 cm (Sorin, 18 Nov) &rarr; "
-      "two arms (LO: cable D 15 cm; RF: cable B 15 cm + E 8 cm; on 18 Nov replaced by very short cables) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed since 15 Nov."),
+      "two arms (LO: cable D 16.6 cm; RF: cable B 15.2 cm + E with adapter ~9 cm; 18 Nov: very short cables, then B and D alone, then 10 dB pads at both mixer ports) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed since 15 Nov."),
     h("How data is taken and plotted"),
     ul(["<code>run_pd_overnight.py</code> (run from <code>signal_hound/</code>, system Python): stages written to <code>pd_dither_14nov.csv</code>, one row per reading; tone-off checks as stage <code>off</code>.",
         "High-density plan (<code>HD_NIGHT=1 HD_TAG=tag</code>): 600&ndash;1600 MHz at &minus;36/&minus;50/&minus;57 dBm, 900&ndash;1200 and 1300&ndash;1500 MHz first, coarse to fine, then repeats.",
         "Each bench configuration is one row in <code>pd_runs.py</code>. <code>make_plots.py</code> redraws every plot from the CSV, rebuilds this site and pushes (<code>--push</code>; <code>--watch</code> during a run)."]),
     h("What is known"),
-    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.38 ns the arm lengths give. It shifted only slightly with the arm cable (C 3.00 ns, E 2.77 ns) and not at all with very short cables (2.74 ns, 18 Nov).",
+    ul(["The curve is dominated by a single ~2.75 ns delay (one cycle per ~360 MHz), not the 0.36 ns the arm lengths give (RF arm longer by 7.6 cm). It shifted only slightly with the arm cable (C 3.00 ns, E 2.77 ns) and not at all with very short cables (2.74 ns, 18 Nov).",
         "Not the long IF cable (15 Nov), not the Pluto's own level ripple (16 Nov), not the cables at the mixer or the IF termination, and not reflections through the arms (18 Nov).",
         "Amplifier chain alone into 29 dB of pads (18 Nov, SM200B): railed at +20 to +22 dBm, amplitude ripple &plusmn;0.5&ndash;0.8 dB with its strongest delay at 4.4 ns, correlation 0.08 with the detector curve; rails over the whole band only with &minus;57 dBm or more in. This does <b>not</b> rule the amplifiers out (Sorin, 18 Nov): it measured amplitude only, into a matched pad, while the 2.75 ns pattern is seen with the amplifiers railed, driving the splitter and mixer, with a 50 &Omega; IF load. The amplifiers driving the real splitter/mixer load are untested.",
         "Suspects now: a loop that does not pass through the arm cables (amplifier output &harr; splitter input, or inside the splitter or mixer), since the 2.75 ns stays with any arm cable.",

@@ -15,7 +15,7 @@ USB = r"E:\Panthalassa_backup"
 sys.path[:0] = [str(CLINIC / "claude" / "radar_test" / "racon"), str(HERE.parent)]
 
 PD_CHAIN = ("Pluto TX &rarr; 7 cm &rarr; 4 &times; ZX60-P162LN+ (7 cm between, Agilent E3630A about 4.03 V, 0.23 A) &rarr; 7 cm &rarr; ZFRSC-42-S+ splitter &rarr; "
-            "right arm (LO) cable D 15 cm, left arm (RF) cable B 15 cm + C (about 12 cm) or E (about 8 cm) &rarr; ZX05-30W-S+ mixer &rarr; IF to SDS1104X-E CH1 (1 M&Omega;, DC) "
+            "right arm (LO) cable D 16.6 cm, left arm (RF) cable B 15.2 cm + C (about 12 cm) or E with adapter (about 9 cm) &rarr; ZX05-30W-S+ mixer &rarr; IF to SDS1104X-E CH1 (1 M&Omega;, DC) "
             "and, through 20 dB of pads, the SM200B.")
 SM_IQ = "SM200B I/Q streaming, 50 MS/s, 41.5 MHz bandwidth, complex64 with I&sup2;+Q&sup2; = mW at the SM200B input (measured)"
 

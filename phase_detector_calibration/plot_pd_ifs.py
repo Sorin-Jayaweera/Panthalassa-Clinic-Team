@@ -1,5 +1,5 @@
 """Pads removed: every high-density 600-1600 MHz run, one panel each, then their -50 dBm curves together.
-  hdr  15 Nov 20:03  cable E arm (B, D 15 cm), long IF cable to the scope (and SM200B), 1 Mohm
+  hdr  15 Nov 20:03  cable E arm (B 15.2 cm + E ~9 cm, D 16.6 cm), long IF cable to the scope (and SM200B), 1 Mohm
   ifs  15 Nov 20:33  same, short IF cable (~16 cm SMA + SMA-BNC), 1 Mohm
   sc   18 Nov 10:39  very short cables at every mixer connection, IF into the scope with a 50 ohm load
 Same sweep plan for all (run_pd_overnight.py HD_NIGHT, tag = HD_TAG): -36/-50/-57 dBm, one reading per point, 100 mV/div.

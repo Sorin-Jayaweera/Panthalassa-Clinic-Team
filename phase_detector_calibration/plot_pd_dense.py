@@ -20,7 +20,7 @@ def get(name):
 
 def main():
     fig, ax = wiring.figure(3, [chain("level per curve", sm="20 dB of pads\nthen SM200B")], size=(14, 13),
-                            titles=["Wiring, 13 Nov (D and B are the same length, so the length difference is cable E, about 8 cm)"])
+                            titles=["Wiring, 13 Nov (D 16.6 cm, B 15.2 cm, E with adapter ~9 cm: RF arm longer by 7.6 cm, about 0.36 ns at velocity factor 0.70)"])
     f, v = get("dense2")
     for name, lab, col in PASSES:
         d = get(name)
