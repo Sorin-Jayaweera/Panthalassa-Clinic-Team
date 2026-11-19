@@ -4,6 +4,7 @@ Data: pd_dither_14nov.csv, stages <tag>_pri, <tag>_rest, <tag>_rep; tone-off rea
 import csv
 from pathlib import Path
 
+import matplotlib
 import numpy as np
 
 HERE = Path(__file__).resolve().parent
@@ -14,6 +15,7 @@ LEVEL_COLOURS = dict(zip(LEVELS, ("#440154", "#21918c", "#5ec962")))
 ARMS_E = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm) + E (8 cm)\nno pad"]
 ARMS_EQ = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm), equal to D\nno pad"]
 ARMS_ELO = ["right arm (LO, splitter port 2): cable D (15 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15 cm)\nno pad"]
+ARMS_PAD10 = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm)\n+ 10 dB pad -> mixer RF"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
 # off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
@@ -28,6 +30,9 @@ RUNS = [
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
     dict(tag="elo", day="18 Nov", desc="cable E (+ adapter, about 9 cm) moved to the LO arm, 50 ohm IF load", arms=ARMS_ELO,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(231, 260), ls="-", col="#e7298a", detail="pd_cable_E_on_LO_detail_18nov.png", region=None),
+    dict(tag="pad10", day="18-19 Nov", desc="10 dB pad at each mixer port, cables B and D, 50 ohm IF load", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+         levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"),
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(261, 265), ls="-", col="#66a61e", detail="pd_pads_10dB_1MHz_detail_18nov.png", region=None),
 ]
 
 
@@ -36,14 +41,14 @@ def rows():
 
 
 def wiring_for(run):
-    return ["Pluto TX\n-36, -50, -57 dBm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter", "ZFRSC-42-S+\nsplitter", run["arms"],
+    return [f"Pluto TX\n{', '.join(f'{w:.0f}' for w in levels(run))} dBm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter", "ZFRSC-42-S+\nsplitter", run["arms"],
             "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {run['ifl']}", f"SDS1104X-E CH1, {run['inp']}\n100 mV/div, one reading per point"]
 
 
 def load(D, run, stages=("pri", "rest")):
     """{level: array of (MHz, mV)}, first reading per frequency, and (first, last) time."""
-    want = {f"{run['tag']}_{s}" for s in stages}
-    pts = {w: {} for w in LEVELS}
+    want = {f"{run['tag']}_{s}" for s in run.get("stages", stages)}
+    pts = {w: {} for w in levels(run)}
     ts = []
     for r in D:
         if r["stage"] in want:
@@ -60,4 +65,13 @@ def tone_off(D, run):
 
 def present(D):
     have = {r["stage"] for r in D}
-    return [r for r in RUNS if f"{r['tag']}_pri" in have]
+    return [r for r in RUNS if any(f"{r['tag']}_{s}" in have for s in r.get("stages", ("pri",)))]
+
+
+def levels(run):
+    return run.get("levels", LEVELS)
+
+
+def colour(run, w):
+    L = levels(run)
+    return LEVEL_COLOURS[w] if L == LEVELS else matplotlib.colormaps["viridis"](0.9 * L.index(w) / max(len(L) - 1, 1))

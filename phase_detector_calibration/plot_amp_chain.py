@@ -17,21 +17,43 @@ OUT, RAW = HERE / "amp_chain_18nov.csv", HERE / "amp_chain"
 PD_PEAKS = (770, 1160, 1510)
 WIRING = ["Pluto TX\n-36 to -71 dBm", "7 cm", "4 x ZX60-P162LN+, 4.03-4.04 V\n7 cm cables between", "10 + 10 + 3 + 6 dB\npads (29 dB)",
           "SM200B, raw IQ\n50 MS/s, 16384 samples"]
+ARM = ["Pluto TX\n-36, -50, -57 dBm", "4 x ZX60-P162LN+, 4.03-4.04 V\n7 cm cables, 7 cm to splitter", "ZFRSC-42-S+ splitter"]
+# One row per SM200B sweep (run_amp_chain_iq.py): a new probe point = a new row here
+SWEEPS = [
+    dict(csv="amp_chain_18nov.csv", raw="amp_chain", png="amp_chain_18nov.png", at="amp output", wiring=[WIRING],
+         title="Wiring, 18 Nov: amplifier chain alone into the SM200B (no splitter, arms or mixer)"),
+    dict(csv="arm_probe_lo_18nov.csv", raw="arm_probe_lo", png="arm_probe_lo_18nov.png", at="end of the LO arm (cable D)",
+         wiring=[ARM + ["port 2: cable D (16.6 cm)\n(LO arm)", "10 + 10 + 3 + 6 dB\npads (29 dB)", "SM200B, raw IQ\n50 MS/s, 16384 samples"],
+                 ["splitter port 1", "cable B (15.2 cm)\n(RF arm)", "ZX05-30W-S+ RF in\nLO: ANNE-50L+ 50 ohm", "IF: short cable\n+ 50 ohm load, scope"]],
+         title="Wiring, 18 Nov 20:05: LO arm (cable D) into the SM200B in place of the mixer LO port; RF arm (cable B) drives the mixer RF, LO port terminated"),
+    dict(csv="arm_probe_rf_18nov.csv", raw="arm_probe_rf", png="arm_probe_rf_18nov.png", at="end of the RF arm (cable B)",
+         wiring=[ARM + ["port 1: cable B (15.2 cm)\n(RF arm)", "10 + 10 + 3 + 6 dB\npads (29 dB)", "SM200B, raw IQ\n50 MS/s, 16384 samples"],
+                 ["splitter port 2", "cable D (16.6 cm)\n(LO arm)", "ZX05-30W-S+ LO in\nRF: ANNE-50L+ 50 ohm", "IF: short cable\n+ 50 ohm load, scope"]],
+         title="Wiring, 18 Nov 20:16: RF arm (cable B) into the SM200B in place of the mixer RF port; LO arm (cable D) drives the mixer LO, RF port terminated"),
+    dict(csv="arm_probe_rf_nomixer_18nov.csv", raw="arm_probe_rf_nomixer", png="arm_probe_rf_nomixer_18nov.png", at="end of the RF arm (cable B), mixer removed",
+         wiring=[ARM + ["port 1: cable B (15.2 cm)\n(RF arm)", "10 + 10 + 3 + 6 dB\npads (29 dB)", "SM200B, raw IQ\n50 MS/s, 16384 samples"],
+                 ["splitter port 2", "cable D (16.6 cm)\n(LO arm)", "SMA adapter +\nANNE-50L+ 50 ohm\n(no mixer)"]],
+         title="Wiring, 18 Nov: RF arm (cable B) into the SM200B; LO arm (cable D) into a 50 ohm load; mixer removed"),
+    dict(csv="arm_probe_rf_padded_18nov.csv", raw="arm_probe_rf_padded", png="arm_probe_rf_padded_18nov.png", pad=19.0, at="end of cable B, 10 dB pads at the mixer",
+         wiring=[ARM + ["port 1: cable B (15.2 cm)", "10 + 3 + 6 dB\npads (19 dB)", "SM200B, raw IQ\n50 MS/s, 16384 samples"],
+                 ["splitter port 2", "cable D (16.6 cm)", "10 dB pad", "ZX05-30W-S+ RF in", "LO: 10 dB pad\n+ ANNE-50L+ 50 ohm"]],
+         title="Wiring, 18 Nov: cable B into the SM200B through 19 dB; cable D through 10 dB into the mixer RF port; mixer LO through 10 dB into 50 ohm"),
+]
 
 
-def table():
-    D = list(csv.DictReader(open(OUT)))
+def table(path=OUT):
+    D = list(csv.DictReader(open(path)))
     lv = sorted({float(r["pluto_want_dbm"]) for r in D}, reverse=True)
     k = ["freq_mhz", "tone_dbm", "p01_dbm", "p50_dbm", "p99_dbm", "h2_dbm", "h3_dbm"]
     return {w: np.array(sorted({float(r["freq_mhz"]): [float(r[c]) for c in k] for r in D if float(r["pluto_want_dbm"]) == w}.values())) for w in lv}
 
 
-def main():
-    if not OUT.exists():
-        return print("no amp chain data yet")
-    T = table()
+def main(s=SWEEPS[0]):
+    if not (HERE / s["csv"]).exists():
+        return print("no data yet:", s["csv"])
+    T, at, RAW, pad = table(HERE / s["csv"]), s["at"], HERE / s["raw"], s.get("pad", 29.0)
     col = dict(zip(T, matplotlib.colormaps["viridis"](np.linspace(0, 0.9, len(T)))))
-    fig, ax = wiring.figure(5, [WIRING], size=(14, 24), titles=["Wiring, 18 Nov: amplifier chain alone into the SM200B (no splitter, arms or mixer)"])
+    fig, ax = wiring.figure(5, s["wiring"], size=(14, 24 + 2 * (len(s["wiring"]) - 1)), titles=[s["title"]] + [""] * (len(s["wiring"]) - 1))
     for w, a in T.items():
         f, c = a[:, 0], col[w]
         ax[0].plot(f, a[:, 1], "-o", ms=2, color=c, label=f"{w:.0f} dBm in ({len(f)} points)")
@@ -46,24 +68,24 @@ def main():
     x = sorted(RAW.glob("1160_-50.npy")) or sorted(RAW.glob("*_-50.npy"))[:1]
     if x:
         iq = np.load(x[0])
-        p = 10 * np.log10(np.abs(iq) ** 2 + 1e-20) + 29.0
+        p = 10 * np.log10(np.abs(iq) ** 2 + 1e-20) + pad
         ax[4].plot(np.arange(len(p)) / 50.0, p, lw=0.4, color="#21918c")
-        ax[4].set(xlabel="time (us)", ylabel="instantaneous power at amp output (dBm, measured + 29 dB)",
-                  title=f"Raw IQ, {x[0].stem.replace('_', ' MHz, ')} dBm in: every sample |I+jQ|^2 (+29 dB pads); mean {10 * np.log10(np.mean(np.abs(iq) ** 2)) + 29:.2f} dBm")
+        ax[4].set(xlabel="time (us)", ylabel=f"instantaneous power at {at} (dBm, measured + {pad:.0f} dB)",
+                  title=f"Raw IQ, {x[0].stem.replace('_', ' MHz, ')} dBm in: every sample |I+jQ|^2 (+{pad:.0f} dB pads); mean {10 * np.log10(np.mean(np.abs(iq) ** 2)) + pad:.2f} dBm")
     for a in ax[:4]:
         for pk in PD_PEAKS:
             a.axvline(pk, color="#b30000", lw=0.8, ls=":")
         a.set_xlabel("Pluto frequency (MHz)")
         a.grid(alpha=0.3)
-    ax[0].set(ylabel="tone at amp output (dBm, measured + 29 dB)", title="Tone at the amplifier output (FFT line, pads added back). Red dotted: phase detector peaks 770, 1160, 1510 MHz")
-    ax[1].set(ylabel="instantaneous power at amp output (dBm, measured + 29 dB)", title="Instantaneous power over each 328 us capture: median (line), 1st to 99th percentile (band)")
-    ax[2].set(ylabel="harmonic at amp output (dBm, measured + 29 dB)", title="2nd harmonic (solid) and 3rd harmonic (dashed) at the amplifier output")
-    ax[3].set(ylabel="tone minus quadratic trend (dB)", title="Ripple left after a smooth trend: a ~2.75 ns (~360 MHz) delay here would mean the amplifiers cause the detector pattern")
+    ax[0].set(ylabel=f"tone at {at} (dBm, measured + {pad:.0f} dB)", title=f"Tone at the {at} (FFT line, pads added back). Red dotted: phase detector peaks 770, 1160, 1510 MHz (cable E runs)")
+    ax[1].set(ylabel=f"instantaneous power at {at} (dBm, measured + {pad:.0f} dB)", title="Instantaneous power over each 328 us capture: median (line), 1st to 99th percentile (band)")
+    ax[2].set(ylabel=f"harmonic at {at} (dBm, measured + {pad:.0f} dB)", title=f"2nd harmonic (solid) and 3rd harmonic (dashed) at the {at}")
+    ax[3].set(ylabel="tone minus quadratic trend (dB)", title="Ripple left after a smooth trend: a ~2.3-2.75 ns (~360-440 MHz) delay here would mean the pattern is already on the signal here")
     for a in ax[:4:3]:
         a.legend(fontsize=7)
     fig.tight_layout()
-    fig.savefig(HERE / "amp_chain_18nov.png", dpi=90)
-    print("amp_chain_18nov.png", {w: len(a) for w, a in T.items()})
+    fig.savefig(HERE / s["png"], dpi=90)
+    print(s["png"], {w: len(a) for w, a in T.items()})
 
 
 def ramp():
@@ -178,7 +200,8 @@ def vs_freq():
 
 
 if __name__ == "__main__":
-    main()
+    for s in SWEEPS:
+        main(s)
     ramp()
     vs_freq()
     waterfall()

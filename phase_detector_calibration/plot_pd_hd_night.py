@@ -19,21 +19,21 @@ ZOOMS = ((595, 1605, "600-1600 MHz"), (895, 1205, "zoom 900-1200 MHz"), (1295, 1
 
 def detail(D, run):
     P, (t0, t1) = R.load(D, run)
-    fig, ax = wiring.figure(len(ZOOMS), [R.wiring_for(run)], size=(14, 16), titles=[f"Wiring, {run['day']}: {run['desc']}, no pads"])
+    fig, ax = wiring.figure(len(ZOOMS), [R.wiring_for(run)], size=(14, 16), titles=[f"Wiring, {run['day']}: {run['desc']}, {run.get('pads', 'no pads')}"])
     for k, (lo, hi, t) in enumerate(ZOOMS):
-        for w in R.LEVELS:
+        for w in R.levels(run):
             a = P[w]
             if not len(a):
                 continue
             m = (a[:, 0] >= lo) & (a[:, 0] <= hi)
-            ax[k].plot(a[m, 0], a[m, 1], "-o", ms=2.5 if k else 1.8, lw=1.1, color=R.LEVEL_COLOURS[w], label=f"{w:.0f} dBm ({m.sum()} points)")
+            ax[k].plot(a[m, 0], a[m, 1], "-o", ms=2.5 if k else 1.8, lw=1.1, color=R.colour(run, w), label=f"{w:.0f} dBm ({m.sum()} points)")
         if k == 0:
             for a_, b_ in ((900, 1200), (1300, 1500)):
                 ax[k].axvspan(a_, b_, color="#999999", alpha=0.08)
         ax[k].set(xlim=(lo, hi), xlabel="Pluto frequency (MHz)", ylabel="detector (mV, raw)", title=f"{run['day']}: {run['desc']}, {t}")
         ax[k].grid(alpha=0.3)
         ax[k].legend(fontsize=8)
-    ax[0].set_title(f"{run['day']} {t0}-{t1}: {run['desc']}, no pads, 600-1600 MHz, three Pluto levels, one reading per point "
+    ax[0].set_title(f"{run['day']} {t0}-{t1}: {run['desc']}, {run.get('pads', 'no pads')}, 600-1600 MHz, {len(R.levels(run))} Pluto levels, first reading per point "
                     f"(tone-off {R.tone_off(D, run):.1f} mV; grey = priority regions, filled first)")
     fig.tight_layout()
     fig.savefig(HERE / run["detail"], dpi=95)

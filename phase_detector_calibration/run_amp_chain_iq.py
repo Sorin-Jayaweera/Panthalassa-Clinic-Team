@@ -19,7 +19,7 @@ from run_p162_sm200b import att_for  # noqa: E402
 from run_pluto_full_range import ATT_MIN_DB, SCALE, retry, tone_off, tone_on  # noqa: E402
 from smdevice.sm_api import *  # noqa: E402,F403
 
-PAD_DB, TOP_DBM, N, OFS = 29.0, -36.0, 16384, 10e6
+PAD_DB, TOP_DBM, N, OFS = float(__import__("os").environ.get("PAD_DB", 29)), -36.0, 16384, 10e6   # PAD_DB: pads in front of the SM200B (19 dB from 18 Nov 20:40)
 # SM200B input, as measured (no pads added back): stop everything at +10 dBm; +15 dBm must never be reached (Sorin, 18 Nov)
 SM_STOP_DBM, PAD_CHECK_DBM = 10.0, -10.0
 LEVELS = (-36.0, -43.0, -50.0, -57.0, -64.0, -71.0)
@@ -110,7 +110,7 @@ def main():
                 t = line(x, fs, OFS)
                 h2, h3 = (line(*iq(h, k * f * 1e6 - OFS, 8192), OFS) + PAD_DB for k in (2, 3))
                 if want >= -60 and t + PAD_DB < 0:   # a working chain is railed near +20 dBm here; this means no signal (14:40 on 18 Nov)
-                    print(f"NO SIGNAL: amp out {t + PAD_DB:.1f} dBm (measured + 29 dB) at {f} MHz {want} dBm in; stopping, check amp supply and cables", flush=True)
+                    print(f"NO SIGNAL: amp out {t + PAD_DB:.1f} dBm (measured + {PAD_DB:.0f} dB) at {f} MHz {want} dBm in; stopping, check amp supply and cables", flush=True)
                     STOP.touch()
                     break
                 wr.writerow([dt.datetime.now().isoformat(timespec="seconds"), f, att, want, round(t + PAD_DB, 2), round(10 * np.log10(np.mean(np.abs(x) ** 2)) + PAD_DB, 2),
@@ -122,7 +122,7 @@ def main():
                     STOP.touch()
                     break
                 if i % 60 == 0 or (MODE == "ramp" and i % len(RAMP_W) == 0):
-                    print(f"{dt.datetime.now():%H:%M:%S} {f:.0f} MHz {want:.0f} dBm: tone {t:.1f} measured (amp out {t + PAD_DB:.1f} = measured + 29 dB), peak {p.max():.1f} measured, 2f {h2:.1f}, 3f {h3:.1f} (+29 dB)  ({i}/{len(todo)})", flush=True)
+                    print(f"{dt.datetime.now():%H:%M:%S} {f:.0f} MHz {want:.0f} dBm: tone {t:.1f} measured (amp out {t + PAD_DB:.1f} = measured + {PAD_DB:.0f} dB), peak {p.max():.1f} measured, 2f {h2:.1f}, 3f {h3:.1f} (+{PAD_DB:.0f} dB)  ({i}/{len(todo)})", flush=True)
             else:
                 DONE.touch()
     finally:
