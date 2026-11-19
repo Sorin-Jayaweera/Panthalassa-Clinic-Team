@@ -18,40 +18,40 @@ ARMS_EQ = ["right arm (LO): cable D (16.6 cm)\nno pad", "left arm (RF): cable B 
 ARMS_ELO = ["right arm (LO, splitter port 2): cable D (16.6 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15.2 cm)\nRF - LO = -10.4 cm, no pad"]
 ARMS_PAD10 = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm)\n+ 10 dB pad -> mixer RF"]
 ARMS_PAD10E = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm) + thin adapter + cable E\n(E with adapter ~9 cm) + 10 dB pad -> mixer RF\nRF - LO = 7.6 cm"]
-ARMS_PAD10HF = ["port 2: cable H (7 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm) + barrel + cable F (16.5 cm)\n+ 10 dB pad -> mixer RF\nRF - LO = 24.7 cm + barrel"]
+ARMS_PAD10HF = ["port 2: cable H (7 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm) + cable F (16.5 cm)\n+ 10 dB pad -> mixer RF\nRF - LO = 24.7 cm (+ joint)"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
-# off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
+# dl: RF arm minus LO arm length in cm (None = not measured); off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
 RUNS = [
-    dict(tag="hdr", day="15 Nov", desc="cable E arm, long IF cable to the scope (and SM200B)", arms=ARMS_E,
+    dict(tag="hdr", dl=7.6, day="15 Nov", desc="cable E arm, long IF cable to the scope (and SM200B)", arms=ARMS_E,
          ifl="long cable", inp="1 Mohm", off=(81, 91), ls="--", col="#555555", detail="pd_hd_night_15nov.png", region=(1340, 1480)),
-    dict(tag="ifs", day="15 Nov", desc="cable E arm, short IF cable (~16 cm SMA + SMA-BNC)", arms=ARMS_E,
+    dict(tag="ifs", dl=7.6, day="15 Nov", desc="cable E arm, short IF cable (~16 cm SMA + SMA-BNC)", arms=ARMS_E,
          ifl="~16 cm SMA cable\n+ SMA-BNC adapter", inp="1 Mohm", off=(91, 141), ls="-", col="#d95f02", detail="pd_ifs_night_15nov.png", region=(1340, 1480)),
-    dict(tag="sc", day="18 Nov", desc="very short cables at every mixer connection, 50 ohm IF load", arms=ARMS_SHORT,
+    dict(tag="sc", dl=None, day="18 Nov", desc="very short cables at every mixer connection, 50 ohm IF load", arms=ARMS_SHORT,
          ifl="short cable\n+ 50 ohm load", inp="50 ohm load", off=(141, 200), ls="-", col="#1b9e77", detail="pd_short_cables_detail_18nov.png", region=None),
-    dict(tag="eq", day="18 Nov", desc="near-equal arms (cable B 15.2 cm, cable D 16.6 cm), 50 ohm IF load", arms=ARMS_EQ,
+    dict(tag="eq", dl=-1.4, day="18 Nov", desc="near-equal arms (cable B 15.2 cm, cable D 16.6 cm), 50 ohm IF load", arms=ARMS_EQ,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
-    dict(tag="elo", day="18 Nov", desc="cable E (+ adapter, about 9 cm) moved to the LO arm, 50 ohm IF load", arms=ARMS_ELO,
+    dict(tag="elo", dl=-10.4, day="18 Nov", desc="cable E (+ adapter, about 9 cm) moved to the LO arm, 50 ohm IF load", arms=ARMS_ELO,
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(231, 260), ls="-", col="#e7298a", detail="pd_cable_E_on_LO_detail_18nov.png", region=None),
-    dict(tag="pad10", day="18-19 Nov", desc="10 dB pad at each mixer port, cables B and D, 50 ohm IF load", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+    dict(tag="pad10", dl=-1.4, day="18-19 Nov", desc="10 dB pad at each mixer port, cables B and D, 50 ohm IF load", arms=ARMS_PAD10, pads="10 dB at LO and RF",
          levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"),
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(261, 265), ls="-", col="#66a61e", detail="pd_pads_10dB_1MHz_detail_18nov.png", region=None),
-    dict(tag="pad10z", day="18-19 Nov", desc="as pad10, two-round zoomed readings (finest V/div per point)", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+    dict(tag="pad10z", dl=-1.4, day="18-19 Nov", desc="as pad10, two-round zoomed readings (finest V/div per point)", arms=ARMS_PAD10, pads="10 dB at LO and RF",
          levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(271, 275), ls="-", col="#1f78b4", detail="pd_pads_10dB_zoomed_detail_18nov.png", region=None),
-    dict(tag="pad10z40", day="19 Nov", desc="as pad10z, one more level: -40 dBm, repeated until the scope is unplugged", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+    dict(tag="pad10z40", dl=-1.4, day="19 Nov", desc="as pad10z, one more level: -40 dBm, repeated until the scope is unplugged", arms=ARMS_PAD10, pads="10 dB at LO and RF",
          levels=(-40.0,), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(281, 301), ls="-", col="#a6cee3", detail="pd_pads_10dB_zoomed_minus40dBm_detail_19nov.png", region=None),
-    dict(tag="pad10z40n", day="19 Nov", desc="as pad10z, -40 dBm, 900-1200 MHz only (Sorin: focus there), repeated until the scope is unplugged", arms=ARMS_PAD10,
+    dict(tag="pad10z40n", dl=-1.4, day="19 Nov", desc="as pad10z, -40 dBm, 900-1200 MHz only (Sorin: focus there), repeated until the scope is unplugged", arms=ARMS_PAD10,
          pads="10 dB at LO and RF", levels=(-40.0,), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(301, 400), ls="-", col="#e31a1c", detail="pd_pads_10dB_zoomed_minus40dBm_900_1200_detail_19nov.png", region=None),
-    dict(tag="pad10zn", day="19 Nov", desc="as pad10z, 900-1200 MHz, six levels cycled for repeats (after 3 sweeps at -40 dBm), until the scope is unplugged",
+    dict(tag="pad10zn", dl=-1.4, day="19 Nov", desc="as pad10z, 900-1200 MHz, six levels cycled for repeats (after 3 sweeps at -40 dBm), until the scope is unplugged",
          arms=ARMS_PAD10, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(401, 500), ls="-", col="#ff7f00", detail="pd_pads_10dB_zoomed_6levels_900_1200_detail_19nov.png", region=None),
-    dict(tag="pad10d", day="19 Nov", desc="10 dB pads as pad10z PLUS cable E on the RF arm (delay difference 7.6 cm), 600-1600 MHz, six levels cycled until the scope is unplugged",
+    dict(tag="pad10d", dl=7.6, day="19 Nov", desc="10 dB pads as pad10z PLUS cable E on the RF arm (delay difference 7.6 cm), 600-1600 MHz, six levels cycled until the scope is unplugged",
          arms=ARMS_PAD10E, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(501, 600), ls="-", col="#6a3d9a", detail="pd_pads_10dB_cable_E_on_RF_detail_19nov.png", region=None),
-    dict(tag="pad10hf", day="19 Nov", desc="10 dB pads, cable H on the LO arm, B + barrel + F on the RF arm (RF arm ~25 cm longer, aimed at 1.25-1.5 ns), 600-1600 MHz, six levels cycled",
+    dict(tag="pad10hf", dl=24.7, day="19 Nov", desc="10 dB pads, cable H on the LO arm, B + F on the RF arm (RF arm ~25 cm longer, aimed at 1.25-1.5 ns), 600-1600 MHz, six levels cycled",
          arms=ARMS_PAD10HF, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(601, 700), ls="-", col="#b15928", detail="pd_pads_10dB_cable_H_LO_BF_RF_detail_19nov.png", region=None),
 ]

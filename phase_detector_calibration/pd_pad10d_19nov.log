@@ -1,0 +1,16 @@
+=== pads-10dB-zoom six levels 600-1600 extra delay launch 12:49:41
+12:49:43 STAGE off rep 501: tone off before pad10d, 12 points (from 0)
+12:50:03 off rep 501: 25%
+12:50:18 off rep 501: 50%
+12:50:33 off rep 501: 75%
+12:50:48 off rep 501: 100%
+12:50:49 STAGE pad10d_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 756 points (from 0)
+12:59:58 pad10d_8mhz rep 1: 25%
+13:08:45 pad10d_8mhz rep 1: 50%
+13:18:12 pad10d_8mhz rep 1: 75%
+13:29:45 pad10d_8mhz rep 1: 100%
+13:29:45 STAGE pad10d_4mhz rep 1: repeat 1: 600-1600 MHz, 125 new frequencies at 4 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 750 points (from 0)
+deadline reached or stop file
+13:33:42 ALL STAGES FINISHED
+tone off
+=== pads-10dB-zoom six levels 600-1600 extra delay wrapper ended 13:33:42

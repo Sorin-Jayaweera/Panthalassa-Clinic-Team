@@ -1,0 +1,7 @@
+=== pads-10dB-zoom six levels 600-1600 H and B+F launch 13:36:06
+13:36:07 STAGE off rep 601: tone off before pad10hf, 12 points (from 0)
+13:36:26 off rep 601: 25%
+13:36:41 off rep 601: 50%
+13:36:56 off rep 601: 75%
+13:37:11 off rep 601: 100%
+13:37:13 STAGE pad10hf_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 756 points (from 0)
