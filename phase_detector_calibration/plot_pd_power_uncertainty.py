@@ -33,7 +33,7 @@ def sweeps(D, tags, lo, hi):
         f = float(r["freq_mhz"])
         if t in tags and r["stage"].endswith("mhz") and lo <= f <= hi:
             S.setdefault(float(r["pluto_want_dbm"]), {}).setdefault((t, r["rep"]), {}).setdefault(f, []).append(float(r["detector_mean_v"]) * 1e3)
-    f = np.array(sorted(set.intersection(*[set().union(*d.values()) for d in S.values()])))    # frequencies every level has (grid grows as the sweep refines)
+    f = np.array(sorted(set.intersection(*[set().union(*d.values()) for w, d in S.items() if w > min(CUTS)])))    # frequencies every calibration level has (grid grows as the sweep refines)
     return f, {w: np.array([[np.mean(s[x]) if x in s else np.nan for x in f] for s in d.values()]) for w, d in sorted(S.items(), reverse=True)}
 
 
