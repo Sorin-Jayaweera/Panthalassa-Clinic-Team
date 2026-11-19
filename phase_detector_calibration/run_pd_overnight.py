@@ -44,6 +44,9 @@ VDIV = float(__import__("os").environ.get("PD_VDIV", "0.05"))  # 15 Nov night, n
 OFST = float(__import__("os").environ.get("PD_OFST", "-0.06"))
 #OFST = -0.06                       # screen centre +60 mV, so the screen covers about -140 to +260 mV
 CLIP_MV = float(__import__("os").environ.get("PD_CLIP_MV", "250"))
+ZOOM = __import__("os").environ.get("PD_ZOOM") == "1"   # 18 Nov 21:40, Sorin: highest resolution always, no quantization
+ZOOM_LOG = HERE / "pd_zoom_readings_18nov.csv"   # one line per reading: time, coarse V, fine V/div, fine mean V, fine sd V, clip retries
+from scope_zoom import Tracker  # noqa: E402
 DITHER = int(__import__("os").environ.get("PD_DITHER", "4"))  # 15 Nov 20:05, Sorin: no dithering, one reading per point
 #DITHER = 4                         # read at 4 offsets 1 mV apart (half an ADC step) and average: smooths the 2 mV steps
 BAND = (1150.0, 1550.0)
@@ -72,7 +75,8 @@ def stages():
     lo, hi = BAND
     if __import__("os").environ.get("PD_PLAN") == "fine":   # 18 Nov night: 1 MHz over 600-1600 MHz at 5 levels, coarse to fine, repeated until the deadline
         from pd_plan import fine_sweep
-        yield from fine_sweep("pad10", (-36.0, -45.0, -54.0, -63.0, -72.0), reps=3, base=261)
+        tag = __import__("os").environ.get("PD_FINE_TAG", "pad10")   # pad10z = same wiring, two-round zoomed readings (PD_ZOOM=1)
+        yield from fine_sweep(tag, (-36.0, -45.0, -54.0, -63.0, -72.0), reps=3, base={"pad10": 261, "pad10z": 271}[tag], level_major=ZOOM)
         return
     if __import__("os").environ.get("HD_NIGHT"):   # 15 Nov night, no pads, 100 mV/div: dense where it matters, coarse to fine
         L3 = (-36.0, -50.0, -57.0)
@@ -176,7 +180,12 @@ class FineScope(full.Scope):
             self.s = full.SDS()
             full.setup_scope(self.s, self.ch, self.vdiv)
             time.sleep(0.5)
-        step = self.vdiv / 25.0
+        if ZOOM:   # two rounds: coarse at VDIV/OFST, then the finest V/div centred on that level (scope_zoom.py)
+            self.track = getattr(self, "track", None) or Tracker((self.vdiv, OFST))
+            m, vd, m0, sd, tries = self.track.read(self.s, self.ch, self.key)
+            with open(ZOOM_LOG, "a") as fh:
+                fh.write(f"{dt.datetime.now().isoformat(timespec='seconds')},{m0:.6f},{vd:g},{m:.7f},{sd:.7f},{tries}\n")
+            return m, 0.0, sd
         vals, rms = [], []
         for k in range(DITHER):
             self.s.write(f"C{self.ch}:OFST {OFST - k * 0.001:.4E}V")   # offset resolution is 1 mV (half a 2 mV step)
@@ -273,6 +282,7 @@ def main():
                         att, inside = att_for(f, want)
                         retry(lambda: tone_on(f * 1e6, att, SCALE), f"tone {f}")
                         time.sleep(0.3)
+                    scope.key = want   # zoomed reading tracks each Pluto level separately
                     m, sd, r = retry(rd, "scope")[0]
                     t1, t2, t3 = kitty.read(f) if (use_k and f > 0) else ("", "", "")
                     w.writerow([dt.datetime.now().isoformat(timespec="seconds"), name, rep, f, att, want, int(inside), m, sd, r, t1, t2, t3])

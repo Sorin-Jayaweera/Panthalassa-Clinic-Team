@@ -34,6 +34,9 @@ RUNS = [
     dict(tag="pad10", day="18-19 Nov", desc="10 dB pad at each mixer port, cables B and D, 50 ohm IF load", arms=ARMS_PAD10, pads="10 dB at LO and RF",
          levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"),
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(261, 265), ls="-", col="#66a61e", detail="pd_pads_10dB_1MHz_detail_18nov.png", region=None),
+    dict(tag="pad10z", day="18-19 Nov", desc="as pad10, two-round zoomed readings (finest V/div per point)", arms=ARMS_PAD10, pads="10 dB at LO and RF",
+         levels=(-36.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(271, 275), ls="-", col="#1f78b4", detail="pd_pads_10dB_zoomed_detail_18nov.png", region=None),
 ]
 
 
@@ -43,7 +46,7 @@ def rows():
 
 def wiring_for(run):
     return [f"Pluto TX\n{', '.join(f'{w:.0f}' for w in levels(run))} dBm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter", "ZFRSC-42-S+\nsplitter", run["arms"],
-            "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {run['ifl']}", f"SDS1104X-E CH1, {run['inp']}\n100 mV/div, one reading per point"]
+            "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {run['ifl']}", f"SDS1104X-E CH1, {run['inp']}\n" + ("100 mV/div, then finest V/div\ncentred on it (2 rounds per point)" if run.get("reading") == "zoom" else "100 mV/div, one reading per point")]
 
 
 def load(D, run, stages=("pri", "rest")):
