@@ -19,6 +19,7 @@ warnings.simplefilter("ignore", RuntimeWarning)   # all-NaN medians outside the 
 
 HERE = Path(__file__).resolve().parent
 CUTS = (-60.0, -50.0)       # reference = median over the levels above each cut (dBm)
+WIN = 200                   # Sorin's requirement: one continuous 200 MHz stretch read to within 2 MHz
 CASES = [dict(name="900_1200MHz_19nov", tags=("pad10z", "pad10z40n", "pad10zn"), lo=900, hi=1200, band=(900, 1200), title="900-1200 MHz, every zoomed sweep with pads (18 Nov night + 19 Nov)"),
          dict(name="600_1600MHz_18nov", tags=("pad10z",), lo=600, hi=1600, band=(720, 1600), title="600-1600 MHz, overnight zoomed run with pads (18-19 Nov); stats above 720 MHz (the dip below is left out)")]
 
@@ -67,10 +68,14 @@ def plot(D, c):
         env = np.nanmax(abs(np.concatenate([fe[w] for w in V if w > cut])), 0)    # worst over every sweep of the levels in the median
         L = [(lambda l: f"{l[1]:g}-{l[2]:g} MHz" if l[0] else "none")(longest(f, inb & (env <= e))) for e in (1, 2)]
         r, wst = st(env)
-        txt = f"rms {r:.2f}, worst {wst:.1f} MHz\n<= 1 MHz at {np.mean(env[inb] <= 1):.0%} of frequencies, longest {L[0]}\n<= 2 MHz at {np.mean(env[inb] <= 2):.0%}, longest {L[1]}"
+        win = np.lib.stride_tricks.sliding_window_view(np.where(inb, env, np.inf), WIN + 1).max(1)    # worst error in every WIN MHz window (1 MHz grid)
+        b0 = np.argmin(win)
+        txt = f"rms {r:.2f}, worst {wst:.1f} MHz\n<= 1 MHz at {np.mean(env[inb] <= 1):.0%} of frequencies, longest {L[0]}\n<= 2 MHz at {np.mean(env[inb] <= 2):.0%}, longest {L[1]}\nbest {WIN} MHz window: {f[b0]:g}-{f[b0] + WIN:g} MHz, worst {win[b0]:.1f} MHz"
+
         print(f"  ref > {cut:.0f}: " + txt.replace("\n", "; "))
         ax[1].plot(f, env, "k" + "-:"[k], lw=1.3, label=f"power unknown, anywhere above {cut:.0f} dBm\n(calibration = median of those levels)\n" + txt)
         q = bx[k]
+        q.axvspan(f[b0], f[b0] + WIN, color="#7570b3", alpha=0.08, label=f"best {WIN} MHz window")
         for w in V:
             q.plot(f, abs(np.nanmedian(fe[w], 0)), color=col(w), lw=1.0, label=f"{w:.0f} dBm, level median") if w > cut else None
         q.plot(f, env, "k", lw=1.6, label="worst over every sweep\nof these levels\n" + txt)
