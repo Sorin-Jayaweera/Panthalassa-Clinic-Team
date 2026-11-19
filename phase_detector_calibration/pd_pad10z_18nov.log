@@ -12,3 +12,4 @@ tone off
 === 21:44 restart: level-major order, offset tracking (scope_zoom.Tracker); 18 earlier rows renamed pad10z_switching_test
 === pads-10dB-zoom launch 1 21:44:27
 21:44:28 STAGE pad10z_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 5 levels (-36.0, -45.0, -54.0, -63.0, -72.0), 630 points (from 0)
+21:52:49 pad10z_8mhz rep 1: 25%
