@@ -12,6 +12,7 @@ LEVELS = (-36.0, -50.0, -57.0)
 LEVEL_COLOURS = dict(zip(LEVELS, ("#440154", "#21918c", "#5ec962")))
 
 ARMS_E = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm) + E (8 cm)\nno pad"]
+ARMS_EQ = ["right arm (LO): cable D (15 cm)\nno pad", "left arm (RF): cable B (15 cm), equal to D\nno pad"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
 # off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
@@ -22,6 +23,8 @@ RUNS = [
          ifl="~16 cm SMA cable\n+ SMA-BNC adapter", inp="1 Mohm", off=(91, 141), ls="-", col="#d95f02", detail="pd_ifs_night_15nov.png", region=(1340, 1480)),
     dict(tag="sc", day="18 Nov", desc="very short cables at every mixer connection, 50 ohm IF load", arms=ARMS_SHORT,
          ifl="short cable\n+ 50 ohm load", inp="50 ohm load", off=(141, 200), ls="-", col="#1b9e77", detail="pd_short_cables_detail_18nov.png", region=None),
+    dict(tag="eq", day="18 Nov", desc="equal arms, cable B and cable D, 15 cm each (zero delay difference), IF as in the sc run (short cable + 50 ohm load at the scope); 7 cm from the last amplifier to the splitter", arms=ARMS_EQ,
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(201, 230), ls="-", col="#7570b3", detail="pd_equal_arms_detail_18nov.png", region=None),
 ]
 
 
