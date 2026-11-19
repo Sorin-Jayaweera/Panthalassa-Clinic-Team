@@ -51,6 +51,7 @@ def plot(D, c):
     for w, v in V.items():
         ax[0].plot(f, v.T, color=col(w), lw=0.4, alpha=0.5)
         ax[0].plot([], [], color=col(w), label=f"{w:.0f} dBm: {len(v)} sweeps")
+    fig2, bx = wiring.figure(len(CUTS), [R.wiring_for(run)], size=(22, 7 * len(CUTS) + 2), strip=0.3, titles=[f"Wiring (same for every sweep): cables B and D, {run['pads']}, short IF cable + 50 ohm load"])
     print(f"\n{c['title']}")
     for k, cut in enumerate(CUTS):
         ref, dev, fe = errors(f, V, cut, inb)
@@ -69,21 +70,28 @@ def plot(D, c):
         txt = f"rms {r:.2f}, worst {wst:.1f} MHz\n<= 1 MHz at {np.mean(env[inb] <= 1):.0%} of frequencies, longest {L[0]}\n<= 2 MHz at {np.mean(env[inb] <= 2):.0%}, longest {L[1]}"
         print(f"  ref > {cut:.0f}: " + txt.replace("\n", "; "))
         ax[1].plot(f, env, "k" + "-:"[k], lw=1.3, label=f"power unknown, anywhere above {cut:.0f} dBm\n(calibration = median of those levels)\n" + txt)
+        q = bx[k]
+        for w in V:
+            q.plot(f, abs(np.nanmedian(fe[w], 0)), color=col(w), lw=1.0, label=f"{w:.0f} dBm, level median") if w > cut else None
+        q.plot(f, env, "k", lw=1.6, label="worst over every sweep\nof these levels\n" + txt)
+        q.set(ylim=(0, 15), ylabel="frequency error (MHz)", title=f"Power unknown, anywhere from {max(V):.0f} dBm down to {min(w for w in V if w > cut):.0f} dBm (levels above {cut:.0f} dBm); calibration = median of those levels; reading exactly on one level's curve")
         a.set(ylabel="mV", title=f"Reading minus the median of the levels above {cut:.0f} dBm (thin: every sweep, thick: level median)")
         b.set(ylabel="MHz", ylim=(-12, 12), title=f"Frequency error, signed, per level (calibration = median of the levels above {cut:.0f} dBm; thin: every sweep, thick: level median)")
-    ax[1].axhspan(0, 1, color="#1b9e77", alpha=0.12, label="<= 1 MHz")
-    ax[1].axhspan(1, 2, color="#e6ab02", alpha=0.12, label="1-2 MHz")
+    for a in (ax[1], *bx):
+        a.axhspan(0, 1, color="#1b9e77", alpha=0.12, label="<= 1 MHz")
+        a.axhspan(1, 2, color="#e6ab02", alpha=0.12, label="1-2 MHz")
     ax[1].set(ylim=(0, 15), ylabel="worst frequency error (MHz)", title="Worst frequency error across the span: reading exactly on one level's curve, looked up in the median curve, worst over every sweep of the levels in that median")
     ax[0].set(ylabel="detector mV", title=c["title"])
-    for a in ax:
+    for a in (*ax, *bx):
         a.axhline(0, color="k", lw=0.5) if a is not ax[0] else None
         a.axvspan(c["lo"], c["band"][0], color="0.5", alpha=0.1) if c["band"][0] > c["lo"] else None
         a.set_xlim(c["lo"], c["hi"])
         a.grid(alpha=0.3)
         a.legend(fontsize=8, loc="upper left", bbox_to_anchor=(1.005, 1), labelspacing=0.8)
-    ax[-1].set_xlabel("Pluto frequency (MHz)")
-    fig.tight_layout()
-    fig.savefig(HERE / f"pd_power_uncertainty_{c['name']}.png", dpi=80)
+    for g, a, name, dpi in ((fig, ax, "uncertainty", 80), (fig2, bx, "freq_error", 90)):
+        a[-1].set_xlabel("Pluto frequency (MHz)")
+        g.tight_layout()
+        g.savefig(HERE / f"pd_power_{name}_{c['name']}.png", dpi=dpi)
 
 
 if __name__ == "__main__":
