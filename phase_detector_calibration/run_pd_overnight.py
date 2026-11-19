@@ -79,7 +79,7 @@ def stages():
         lv = tuple(float(x) for x in __import__("os").environ.get("PD_LEVELS", "-36,-45,-54,-63,-72").split(","))   # pad10z40 (19 Nov): -40 only
         reps = int(__import__("os").environ.get("PD_REPS", "3"))
         lo, hi = (float(__import__("os").environ.get(k, d)) for k, d in (("PD_LO", "600"), ("PD_HI", "1600")))   # pad10z40n: 900-1200
-        yield from fine_sweep(tag, lv, lo=lo, hi=hi, reps=reps, base={"pad10": 261, "pad10z": 271, "pad10z40": 281, "pad10z40n": 301, "pad10zn": 401, "pad10d": 501}[tag], level_major=ZOOM)
+        yield from fine_sweep(tag, lv, lo=lo, hi=hi, reps=reps, base={"pad10": 261, "pad10z": 271, "pad10z40": 281, "pad10z40n": 301, "pad10zn": 401, "pad10d": 501, "pad10hf": 601}[tag], level_major=ZOOM)
         return
     if __import__("os").environ.get("HD_NIGHT"):   # 15 Nov night, no pads, 100 mV/div: dense where it matters, coarse to fine
         L3 = (-36.0, -50.0, -57.0)

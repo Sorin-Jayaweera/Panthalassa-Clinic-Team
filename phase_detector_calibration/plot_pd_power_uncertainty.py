@@ -22,6 +22,7 @@ CUTS = (-60.0, -50.0)       # reference = median over the levels above each cut 
 WIN = 200                   # Sorin's requirement: one continuous 200 MHz stretch read to within 2 MHz
 CASES = [dict(name="900_1200MHz_19nov", tags=("pad10z", "pad10z40n", "pad10zn"), lo=900, hi=1200, band=(900, 1200), title="900-1200 MHz, every zoomed sweep with pads (18 Nov night + 19 Nov)"),
          dict(name="cable_E_600_1600MHz_19nov", tags=("pad10d",), lo=600, hi=1600, band=(600, 1600), title="600-1600 MHz, pads + cable E on the RF arm (19 Nov afternoon)"),
+         dict(name="cable_H_LO_BF_RF_600_1600MHz_19nov", tags=("pad10hf",), lo=600, hi=1600, band=(600, 1600), title="600-1600 MHz, pads + H on LO, B + F on RF (19 Nov afternoon)"),
          dict(name="600_1600MHz_18nov", tags=("pad10z",), lo=600, hi=1600, band=(720, 1600), title="600-1600 MHz, overnight zoomed run with pads (18-19 Nov); stats above 720 MHz (the dip below is left out)")]
 
 
@@ -118,5 +119,6 @@ def plot(D, c):
 
 if __name__ == "__main__":
     D = R.rows()
+    have = {r["stage"].rsplit("_", 1)[0] for r in D}
     for c in CASES:
-        plot(D, c)
+        plot(D, c) if have & set(c["tags"]) else None

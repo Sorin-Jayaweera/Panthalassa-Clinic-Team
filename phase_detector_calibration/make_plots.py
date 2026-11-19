@@ -11,7 +11,7 @@ HERE = Path(__file__).resolve().parent
 ROOT, SITE = HERE.parent, HERE / "site"
 DATA = [HERE / "pd_dither_14nov.csv", HERE / "pd_overnight_13nov.log", HERE / "amp_chain_18nov.csv", HERE / "amp_chain_18nov.log", HERE / "amp_ramp_18nov.csv",
         *HERE.glob("arm_probe_*_18nov.csv"), *HERE.glob("arm_probe_18nov.log"), *HERE.glob("pd_*_18nov.log"), *HERE.glob("pd_*_19nov.log"), HERE / "pd_zoom_readings_18nov.csv"]
-JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py", "plot_day_summary.py", "plot_pd_repeats.py", "plot_pd_power_uncertainty.py"]
+JOBS = ["plot_amp_chain.py", "plot_pd_hd_night.py", "plot_pd_ifs.py", "plot_pd_resolution.py", "plot_pd_vs_pluto_level.py", "plot_pd_all_config.py", "plot_pd_key.py", "plot_day_summary.py", "plot_pd_repeats.py", "plot_pd_power_uncertainty.py", "plot_pd_level_response.py"]
 
 
 def run(*a, cwd=HERE):
@@ -31,7 +31,7 @@ def once(push):
     if push:
         paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html",
                  *HERE.glob("plot_pd_*.py"), *[HERE / n for n in ("plot_amp_chain.py", "run_amp_chain_iq.py", "amp_wrapper.sh", "amp_ramp_wrapper.sh", "amp_probe.py", "amp_resume.sh", "plot_day_summary.py", "pd_plan.py", "run_pd_overnight.py",
-                 "pad10_wrapper.sh", "pad10z_wrapper.sh", "pad10z40_wrapper.sh", "pad10z40n_wrapper.sh", "pad10zn_wrapper.sh", "after_minus40.sh", "scope_zoom.py", "eq_wrapper.sh", "elo_wrapper.sh", "sc_wrapper.sh")], HERE / "pdlib.py", HERE / "pd_runs.py", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
+                 "pad10_wrapper.sh", "pad10z_wrapper.sh", "pad10z40_wrapper.sh", "pad10z40n_wrapper.sh", "pad10zn_wrapper.sh", "pad10d_wrapper.sh", "pad10hf_wrapper.sh", "after_minus40.sh", "scope_zoom.py", "eq_wrapper.sh", "elo_wrapper.sh", "sc_wrapper.sh")], HERE / "pdlib.py", HERE / "pd_runs.py", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
         rel = [str(p.relative_to(ROOT)) for p in paths if p.exists()]
         g = lambda *a: run("git", *a, cwd=ROOT)
         # never stash, reset or rebase: a running sweep appends to the CSV; commit only these paths, then merge the remote

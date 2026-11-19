@@ -18,6 +18,7 @@ ARMS_EQ = ["right arm (LO): cable D (16.6 cm)\nno pad", "left arm (RF): cable B 
 ARMS_ELO = ["right arm (LO, splitter port 2): cable D (16.6 cm)\n+ cable E with adapter (about 9 cm), no pad", "left arm (RF, splitter port 1): cable B (15.2 cm)\nRF - LO = -10.4 cm, no pad"]
 ARMS_PAD10 = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm)\n+ 10 dB pad -> mixer RF"]
 ARMS_PAD10E = ["port 2: cable D (16.6 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm) + thin adapter + cable E\n(E with adapter ~9 cm) + 10 dB pad -> mixer RF\nRF - LO = 7.6 cm"]
+ARMS_PAD10HF = ["port 2: cable H (7 cm)\n+ 10 dB pad -> mixer LO", "port 1: cable B (15.2 cm) + barrel + cable F (16.5 cm)\n+ 10 dB pad -> mixer RF\nRF - LO = 24.7 cm + barrel"]
 ARMS_SHORT = ["right arm (LO): very short cable\nno pad", "left arm (RF): very short cable\nno pad"]
 
 # off: tone-off reps [lo, hi); region: one-to-one stretch for the resolution analysis (None = automatic)
@@ -50,6 +51,9 @@ RUNS = [
     dict(tag="pad10d", day="19 Nov", desc="10 dB pads as pad10z PLUS cable E on the RF arm (delay difference 7.6 cm), 600-1600 MHz, six levels cycled until the scope is unplugged",
          arms=ARMS_PAD10E, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(501, 600), ls="-", col="#6a3d9a", detail="pd_pads_10dB_cable_E_on_RF_detail_19nov.png", region=None),
+    dict(tag="pad10hf", day="19 Nov", desc="10 dB pads, cable H on the LO arm, B + barrel + F on the RF arm (RF arm ~25 cm longer, aimed at 1.25-1.5 ns), 600-1600 MHz, six levels cycled",
+         arms=ARMS_PAD10HF, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(601, 700), ls="-", col="#b15928", detail="pd_pads_10dB_cable_H_LO_BF_RF_detail_19nov.png", region=None),
 ]
 
 
