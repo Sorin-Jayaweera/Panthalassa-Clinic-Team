@@ -143,3 +143,10 @@ tone off
 scope: try 1 failed, [Errno 13] Permission denied: 'C:\\ThatFamily Dropbox\\Sorin Jayaweera\\allSaves\\mudd\\senior\\clin
 11:39:56 pad10zn_1mhz rep 2: 50%
 11:50:08 pad10zn_1mhz rep 2: 75%
+12:06:19 pad10zn_1mhz rep 2: 100%
+12:06:19 STAGE off rep 403: tone off after repeat 2, 12 points (from 0)
+12:06:33 off rep 403: 25%
+12:06:47 off rep 403: 50%
+12:07:03 off rep 403: 75%
+12:07:17 off rep 403: 100%
+12:07:19 STAGE pad10zn_8mhz rep 3: repeat 3: 900-1200 MHz, 38 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 228 points (from 0)
