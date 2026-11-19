@@ -952,3 +952,15 @@ tone 960.0: try 2 failed, libiio context ip:192.168.2.1 failed: [Errno 0] No err
 16:50:15 770 MHz -79 dBm: tone -12.8 measured (amp out 16.2 = measured + 29 dB), peak -9.8 measured, 2f -8.4, 3f -17.2 (+29 dB)  (5720/24079)
 16:50:34 770 MHz -39 dBm: tone -7.7 measured (amp out 21.3 = measured + 29 dB), peak -6.8 measured, 2f 5.2, 3f 5.1 (+29 dB)  (5760/24079)
 16:50:42 800 MHz -79 dBm: tone -12.1 measured (amp out 16.9 = measured + 29 dB), peak -9.9 measured, 2f -7.5, 3f -11.5 (+29 dB)  (5775/24079)
+16:51:03 850 MHz -89 dBm: tone -25.6 measured (amp out 3.4 = measured + 29 dB), peak -17.6 measured, 2f -33.9, 3f -49.6 (+29 dB)  (5820/24079)
+16:51:08 850 MHz -79 dBm: tone -15.4 measured (amp out 13.6 = measured + 29 dB), peak -12.1 measured, 2f -14.1, 3f -20.7 (+29 dB)  (5830/24079)
+16:51:32 900 MHz -84 dBm: tone -16.7 measured (amp out 12.3 = measured + 29 dB), peak -13.5 measured, 2f -16.3, 3f -27.2 (+29 dB)  (5880/24079)
+16:51:34 900 MHz -79 dBm: tone -12.5 measured (amp out 16.5 = measured + 29 dB), peak -10.3 measured, 2f -10.4, 3f -13.8 (+29 dB)  (5885/24079)
+16:52:01 950 MHz -79 dBm: tone -14.6 measured (amp out 14.4 = measured + 29 dB), peak -12.4 measured, 2f -12.0, 3f -22.2 (+29 dB)  (5940/24079)
+16:52:27 960 MHz -79 dBm: tone -14.4 measured (amp out 14.6 = measured + 29 dB), peak -12.4 measured, 2f -12.2, 3f -24.5 (+29 dB)  (5995/24079)
+16:52:30 960 MHz -74 dBm: tone -11.2 measured (amp out 17.8 = measured + 29 dB), peak -9.3 measured, 2f -6.5, 3f -8.4 (+29 dB)  (6000/24079)
+16:52:54 1000 MHz -79 dBm: tone -16.1 measured (amp out 12.9 = measured + 29 dB), peak -13.6 measured, 2f -11.5, 3f -23.2 (+29 dB)  (6050/24079)
+16:52:58 1000 MHz -69 dBm: tone -8.9 measured (amp out 20.1 = measured + 29 dB), peak -8.5 measured, 2f -4.8, 3f 0.3 (+29 dB)  (6060/24079)
+stop file
+16:53:13 tone off, SM200B closed
+=== amp ramp wrapper ended 16:53:34
