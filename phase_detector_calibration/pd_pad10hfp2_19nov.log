@@ -1,0 +1,9 @@
+=== pads-10dB-zoom H and B+F, 2 x P103 ahead, eight levels launch 19:24:48
+19:24:51 STAGE off rep 701: tone off before pad10hfp2, 12 points (from 0)
+19:25:13 off rep 701: 25%
+19:25:27 off rep 701: 50%
+19:25:43 off rep 701: 75%
+19:25:58 off rep 701: 100%
+19:25:59 STAGE pad10hfp2_8mhz rep 1: repeat 1: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 1008 points (from 0)
+19:37:08 pad10hfp2_8mhz rep 1: 25%
+19:48:21 pad10hfp2_8mhz rep 1: 50%
