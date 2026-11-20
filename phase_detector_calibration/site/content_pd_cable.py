@@ -433,7 +433,10 @@ DAY19 = [  # (time, arrangement, instrument, data, what was seen)
      "stages <code>pad10hfp2_*</code>, log <code>pd_pad10hfp2_19nov.log</code>, <code>pad10hfp2_wrapper.sh</code>, <code>pad10hfp2_relaunch_after_pluto_drop.sh</code>",
      "Oscillation check (Sorin): the first 43 &minus;36 dBm readings (600&ndash;936 MHz) are within 0.8 mV (median) of pad10hf's, worst 9.8 mV; noise within a reading 0.13 mV (pad10hf 0.22 mV). "
      "<b>Tone off is now +14.7 mV, steady to &plusmn;0.2 mV, rms 19.7 mV (pad10hf: &minus;1.7 mV, 6.6 mV).</b> Likely the extra gain saturating the chain on its own input noise (about &minus;82 dBm in 1 GHz &times; about 118 dB); not verified. "
-     "First pass, &minus;36 to &minus;54 dBm: 1032&ndash;1448 MHz (416 MHz) &le;4 MHz total width, one pass only. &minus;89, not &minus;90 dBm: below about 1 GHz &minus;90 dBm needs more than the 89.75 dB attenuator maximum."],
+     "First pass, &minus;36 to &minus;54 dBm: 1032&ndash;1448 MHz (416 MHz) &le;4 MHz total width, one pass only. &minus;89, not &minus;90 dBm: below about 1 GHz &minus;90 dBm needs more than the 89.75 dB attenuator maximum. "
+     "<b>First 8 MHz pass, all levels (20:13): the weak levels flatten toward the tone-off value (about 15 mV), not toward the curve.</b> rms departure from &minus;36 dBm, new chain (pad10hf in brackets): "
+     "&minus;54 dBm 1&ndash;5 mV (4&ndash;5); &minus;63 dBm 3&ndash;5 mV below 1250 MHz (3&ndash;11) but 41&ndash;45 mV above (26&ndash;27); &minus;72 dBm 16&ndash;37 mV at 750&ndash;1250 MHz, 124&ndash;149 mV above; &minus;81 and &minus;89 dBm nearly flat except 600&ndash;750 MHz. "
+     "So 31 dB more gain helped below 1250 MHz and not above: above 1250 MHz the weak-level limit is not gain but something of fixed level that the chain amplifies with the tone (its own noise, an oscillation, or pickup). A spectrum of the chain output with the tone off would tell which."],
 ]
 PD_DAY19 = item(
     "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
