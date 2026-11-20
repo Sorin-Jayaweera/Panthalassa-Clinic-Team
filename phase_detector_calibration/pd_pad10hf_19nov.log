@@ -38,3 +38,7 @@ tone off
 18:47:05 off rep 602: 75%
 18:47:20 off rep 602: 100%
 18:47:22 STAGE pad10hf_8mhz rep 2: repeat 2: 600-1600 MHz, 126 new frequencies at 8 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 756 points (from 0)
+deadline reached or stop file
+18:54:48 ALL STAGES FINISHED
+tone off
+=== pads-10dB-zoom six levels 600-1600 H and B+F wrapper ended 18:54:49
