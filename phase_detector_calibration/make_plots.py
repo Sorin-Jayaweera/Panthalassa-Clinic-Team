@@ -31,7 +31,7 @@ def once(push):
     if push:
         paths = [*DATA, *new, *[SITE / "img" / p.name for p in new], *[ROOT / "docs" / "img" / p.name for p in new], ROOT / "docs" / "index.html",
                  *HERE.glob("plot_pd_*.py"), *[HERE / n for n in ("plot_amp_chain.py", "run_amp_chain_iq.py", "amp_wrapper.sh", "amp_ramp_wrapper.sh", "amp_probe.py", "amp_resume.sh", "plot_day_summary.py", "pd_plan.py", "run_pd_overnight.py",
-                 "pad10_wrapper.sh", "pad10z_wrapper.sh", "pad10z40_wrapper.sh", "pad10z40n_wrapper.sh", "pad10zn_wrapper.sh", "pad10d_wrapper.sh", "pad10hf_wrapper.sh", "after_minus40.sh", "scope_zoom.py", "eq_wrapper.sh", "elo_wrapper.sh", "sc_wrapper.sh")], HERE / "pdlib.py", HERE / "pd_runs.py", HERE / "pd_x_uncertainty_table.json", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
+                 "pad10_wrapper.sh", "pad10z_wrapper.sh", "pad10z40_wrapper.sh", "pad10z40n_wrapper.sh", "pad10zn_wrapper.sh", "pad10d_wrapper.sh", "pad10hf_wrapper.sh", "pad10hfp2_wrapper.sh", "after_minus40.sh", "scope_zoom.py", "eq_wrapper.sh", "elo_wrapper.sh", "sc_wrapper.sh")], HERE / "pdlib.py", HERE / "pd_runs.py", HERE / "pd_x_uncertainty_table.json", HERE / "make_plots.py", *SITE.glob("content*.py"), SITE / "build_site.py", *SITE.glob("parts/*")]
         rel = [str(p.relative_to(ROOT)) for p in paths if p.exists()]
         g = lambda *a: run("git", *a, cwd=ROOT)
         # never stash, reset or rebase: a running sweep appends to the CSV; commit only these paths, then merge the remote

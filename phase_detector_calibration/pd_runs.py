@@ -54,6 +54,10 @@ RUNS = [
     dict(tag="pad10hf", dl=24.7, day="19 Nov", desc="10 dB pads, cable H on the LO arm, B + F on the RF arm (RF arm ~25 cm longer, aimed at 1.25-1.5 ns), 600-1600 MHz, six levels cycled",
          arms=ARMS_PAD10HF, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
          ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(601, 700), ls="-", col="#b15928", detail="pd_pads_10dB_cable_H_LO_BF_RF_detail_19nov.png", region=None),
+    dict(tag="pad10hfp2", dl=24.7, day="19-20 Nov", desc="as pad10hf (10 dB pads, H on LO, B + F on RF) with 2 x ZX60-P103LN+ ahead of the 4 x ZX60-P162LN+ (about +31 dB at 1 GHz), 600-1600 MHz, eight levels cycled",
+         arms=ARMS_PAD10HF, pads="10 dB at LO and RF", levels=(-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), stages=("8mhz", "4mhz", "2mhz", "1mhz"), reading="zoom",
+         amps="2 x ZX60-P103LN+, 5.00 V, 0.21 A\n+ 4 x ZX60-P162LN+, 4.04 V, 0.22 A\n7 cm cables Pluto-amps-splitter",
+         ifl="short cable\n+ 50 ohm load (as sc)", inp="50 ohm load", off=(701, 800), ls="-", col="#17becf", detail="pd_pads_10dB_H_LO_BF_RF_2xP103_ahead_detail_19nov.png", region=None),
 ]
 
 
@@ -62,7 +66,7 @@ def rows():
 
 
 def wiring_for(run):
-    return [f"Pluto TX\n{', '.join(f'{w:.0f}' for w in levels(run))} dBm", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter", "ZFRSC-42-S+\nsplitter", run["arms"],
+    return [f"Pluto TX\n{', '.join(f'{w:.0f}' for w in levels(run))} dBm", run.get("amps", "4 x ZX60-P162LN+, 4.03 V\n7 cm cables Pluto-amps-splitter"), "ZFRSC-42-S+\nsplitter", run["arms"],
             "ZX05-30W-S+\nLO and RF in, IF out", f"IF: {run['ifl']}", f"SDS1104X-E CH1, {run['inp']}\n" + ("100 mV/div, then finest V/div\ncentred on it (2 rounds per point)" if run.get("reading") == "zoom" else "100 mV/div, one reading per point")]
 
 
