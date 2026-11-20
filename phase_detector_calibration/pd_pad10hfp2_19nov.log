@@ -128,3 +128,4 @@ ERROR: Unable to send command: Unknown error (10054)
 21:58:52 STAGE pad10hfp2_2mhz rep 1: repeat 1: 600-1600 MHz, 250 new frequencies at 2 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 2000 points (from 558)
 21:59:03 pad10hfp2_2mhz rep 1: 25%
 22:19:50 pad10hfp2_2mhz rep 1: 50%
+22:47:39 pad10hfp2_2mhz rep 1: 75%
