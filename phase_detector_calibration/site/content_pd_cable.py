@@ -473,6 +473,13 @@ PD_DAY19 = item(
     ul(["Span (what set &lsquo;22&ndash;38 cm&rsquo;): with r = &tau;<sub>new</sub>/&tau;<sub>now</sub>, every error in frequency shrinks by r and the band compresses by r, so span(r) = (1/r) &times; longest stretch of pad10hf where the total width &le; 4r MHz. "
         "Assumes the level dependence stays the same in phase and the pads keep the reflections down.",
         "Centring (where the linear part sits): the steepest, most linear point is the crossing 2&pi;f<sub>0</sub>&tau; + &phi;<sub>0</sub> = (k + &frac12;)&pi;, so &tau;<sub>k</sub> = ((k + &frac12;)&pi; &minus; &phi;<sub>0</sub>) / (2&pi;f<sub>0</sub>). "
-        "pad10hf (&phi;<sub>0</sub> = &minus;2.97 rad) has its crossings at 714, 1208 and 1702 MHz. Assumes &phi;<sub>0</sub> stays when only the cable changes. The target centre frequency is still to be set (Sorin)."]),
+        "pad10hf (&phi;<sub>0</sub> = &minus;2.97 rad) has its crossings at 714, 1208 and 1702 MHz. Assumes &phi;<sub>0</sub> stays when only the cable changes.",
+        "Sorin (20 Nov): centre on 1.1 GHz if possible (his first estimate was about 4.5 in), but any 200 MHz span will do; the PLL then steps 9.4 GHz down to that span's centre. "
+        "For a 1.1 GHz centre the formula gives &tau; = 1.112 ns (k = 1), &Delta;L = 27.1 cm: about 2.4 cm more on the RF arm. Not verified: pad10z and pad10d cover less than half a cycle, so their fits (0.435 and 0.468 ns) cannot test whether &tau; scales with &Delta;L; "
+        "pad10hfp2 repeats pad10hf exactly (1.012 ns, &minus;2.96 rad). 4.5 in (11.4 cm) is &frac34; of a wavelength at 1.1 GHz for a velocity factor of about 0.56.",
+        "Without changing the cable: the measured stretch (&minus;36 to &minus;54 dBm, 1062&ndash;1431 MHz) holds a 200 MHz span centred at 1250 MHz (1150&ndash;1350 MHz, 88 and 81 MHz to spare), so the PLL would sit at 9400 &minus; 1250 = 8150 MHz (low-side; the Furuno&rsquo;s 9402.6 MHz lands at 1252.6 MHz). "
+        "Bands from <code>JACON_component_specs.xlsx</code>: ZX05-14LH-S+ RF and LO 3.7&ndash;10 GHz, IF DC&ndash;4 GHz (high-side LO, 10.5&ndash;10.65 GHz, is out of band); ZX60-14012L-S+ 0.3 MHz&ndash;14 GHz; ZX10-2-1252-S+ 1.8&ndash;12.5 GHz; ZX60-5123LN+ 5.5&ndash;12.5 GHz; "
+        "ZX60-P162LN+ 0.7&ndash;1.6 GHz; ZX60-P103LN+ 50&ndash;3000 MHz; ZFRSC-42-S+ DC&ndash;4.2 GHz; ZX05-30W-S+ RF and LO 0.3&ndash;4 GHz. Every one covers both an 8150 MHz and an 8300 MHz LO with their IF spans. "
+        "Candidates not in the workbook (VCO CVCO55BE-0800-1600, ADF5355, ADL5511, GALI-52+/ERA-33SM+, VHF-8400+, ZVE-143-S+) still need their datasheets checked."]),
 )
 
