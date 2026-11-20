@@ -13,3 +13,5 @@
 20:27:33 pad10hfp2_4mhz rep 1: 25%
 20:38:52 pad10hfp2_4mhz rep 1: 50%
 20:52:21 pad10hfp2_4mhz rep 1: 75%
+21:06:08 pad10hfp2_4mhz rep 1: 100%
+21:06:08 STAGE pad10hfp2_2mhz rep 1: repeat 1: 600-1600 MHz, 250 new frequencies at 2 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 2000 points (from 0)
