@@ -316,14 +316,14 @@ PD_AMP = item(
 )
 
 PD_STATUS = item(
-    "pd-status", "Status, methods and open issues (read this first when coming back to the phase detector; updated 18 Nov)",
+    "pd-status", "Status, methods and open issues (read this first when coming back to the phase detector; updated 19 Nov)",
     h("Goal"),
     p("One detector voltage per frequency over about 200 MHz, read to &plusmn;1&ndash;2 MHz after op-amp scaling into an FPGA ADC, "
-      "whatever the received power. The amplifiers are meant to rail, so every input level should land on the same curve. Absolute frequency does not matter (the PLL shifts it)."),
+      "whatever the received power. The amplifiers are meant to rail, so every input level should land on the same curve. Absolute frequency does not matter (the PLL shifts it). Requirement (Sorin, 19 Nov): a continuous 200 MHz stretch read to &plusmn;2 MHz (total width &le;4 MHz) with the power unknown, measured as in the frequency uncertainty item."),
     h("Chain as built"),
     p("Pluto TX &rarr; 4 &times; ZX60-P162LN+ (4.03 V; about 22.5 dB gain and P1dB +19.9 dBm each at 1 GHz, so the chain rails near +20 dBm at every level used) &rarr; ZFRSC-42-S+ resistive splitter (about 6 dB between outputs) &rarr; "
       "every cable from the Pluto through the amplifiers to the splitter is 7 cm (Sorin, 18 Nov) &rarr; "
-      "two arms (LO: cable D 16.6 cm; RF: cable B 15.2 cm + E with adapter ~9 cm; 18 Nov: very short cables, then B and D alone, then 10 dB pads at both mixer ports) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed since 15 Nov."),
+      "two arms (LO: cable D 16.6 cm; RF: cable B 15.2 cm + E with adapter ~9 cm; 18 Nov: very short cables, then B and D alone, then 10 dB pads at both mixer ports) &rarr; ZX05-30W-S+ LO and RF &rarr; IF &rarr; SDS1104X-E. Pads at the mixer ports: removed 15 Nov, back since 18 Nov (10 dB at LO and RF). <b>Since 19 Nov 19:24:</b> Pluto &rarr; 2 &times; ZX60-P103LN+ (5.00 V, 0.21 A) &rarr; 4 &times; ZX60-P162LN+ (4.04 V, 0.22 A) &rarr; ZFRSC-42-S+ &rarr; LO arm cable H (7 cm) and RF arm B (15.2 cm) + F (16.5 cm), RF &minus; LO 24.7 cm &rarr; 10 dB pad at each mixer port &rarr; ZX05-30W-S+ &rarr; short IF cable + 50 &Omega; &rarr; SDS1104X-E (run pad10hfp2)."),
     h("How data is taken and plotted"),
     ul(["<code>run_pd_overnight.py</code> (run from <code>signal_hound/</code>, system Python): stages written to <code>pd_dither_14nov.csv</code>, one row per reading; tone-off checks as stage <code>off</code>.",
         "High-density plan (<code>HD_NIGHT=1 HD_TAG=tag</code>): 600&ndash;1600 MHz at &minus;36/&minus;50/&minus;57 dBm, 900&ndash;1200 and 1300&ndash;1500 MHz first, coarse to fine, then repeats.",
@@ -353,13 +353,15 @@ PD_STATUS = item(
         "&minus;50 and &minus;57 dBm agree within about 2 mV; &minus;36 dBm departs on the shoulders (deepest compression; supply current rises to 0.39 A).",
         "Best so far: cable E, no pads, rising edge 1340&ndash;1480 MHz, about 80 MHz with error &le;2 MHz at &plusmn;0.5 mV (&minus;50/&minus;57 dBm). Pads give a smoother but 3&times; shallower curve."]),
     h("Open"),
-    ul(["Overnight 18&ndash;19 Nov: detector curve with 10 dB pads at both mixer ports, 600&ndash;1600 MHz every 1 MHz, &minus;36/&minus;45/&minus;54/&minus;63/&minus;72 dBm (stages <code>pad10_*</code>), to see whether the pads remove the ripple from the detector output itself.",
+    ul(["Night 19&ndash;20 Nov (pad10hfp2, two P103s ahead): do the weak levels now land on the railed curve, and how far down? Where is the new railed edge? Is the +14.7 mV tone-off the chain saturating on its own noise or an oscillation (a spectrum of the chain output through pads would tell; SM200B &le;+10 dBm measured)?",
+        "Questions for Sorin (19 Nov): the lookup is split wherever the median curve turns, and on the 1 MHz grid noise-level reversals cut it; should small reversals be ignored? Is &lsquo;within 1 dB of saturation&rsquo; the right railed criterion? Antenna heights (4 m and 2 m assumed)? Is the Pluto level the RX mixer output, and is the IF splitter for the envelope detector before or after the chain? What joins B to F? Which centre frequency should the linear part sit on?",
         "Cable C's length (about 12 cm) and the very short cables of the sc run were not measured; the cable velocity factor is unknown.",
         "Add a known length (e.g. 15 cm, about 0.75 ns) to one arm: if the fitted delay moves by exactly that, the 2.75 ns is a fixed offset inside the parts; if not, something else sets it.",
         "Swap the mixer's LO and RF inputs, then swap in another mixer or splitter, and see whether the delay changes sign or size.",
         "A high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers (the 2nd harmonic is only 5&ndash;9 dB down below 800 MHz)."]),
     h("Pitfalls"),
-    ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped; the wrapper relaunches.",
+    ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped. A drop mid-run is retried for 180 s; a Pluto missing at launch stops the run within 10 s (19 Nov 19:19). Overnight 19&ndash;20 Nov <code>pad10hfp2_relaunch_after_pluto_drop.sh</code> waits for the Pluto and relaunches (up to 6 times).",
+        "The tone-off reading depends on the chain: &minus;1.7 mV with the 4 &times; P162 chain (pad10hf), +14.7 mV with two P103s ahead (pad10hfp2). Subtract each run&rsquo;s own tone-off, never another run&rsquo;s.",
         "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",
         "Never stash, reset or check out while a run writes the CSV (18 Nov: a stash caught the live file; no data lost, but the progress log was cut)."]),
     open_=True,
@@ -413,3 +415,45 @@ PD_DAY18 = item(
     fig("pd_pad10z_voltage_vs_level.png", "Pads, cables B and D only (overnight): detector voltage against Pluto level, one line per frequency, for comparison, with the wiring"),
     p("Frequency uncertainty for this and every other run: see the first item in this tab, &lsquo;Frequency uncertainty with the power unknown, every run&rsquo;."),
 )
+
+DAY19 = [  # (time, arrangement, instrument, data, what was seen)
+    ["08:14&ndash;08:18", "As pad10z (B and D, 10 dB pad at each mixer port, zoomed readings), one more level: &minus;40 dBm, 600&ndash;1600 MHz", "scope", "stages <code>pad10z40_*</code>, log <code>pd_pad10z40_19nov.log</code>", "62 points; stopped when Sorin asked to focus on 900&ndash;1200 MHz."],
+    ["08:19&ndash;09:00", "Same, &minus;40 dBm, 900&ndash;1200 MHz only", "scope", "stages <code>pad10z40n_*</code>", "903 points, 3 sweeps. One level, so no power range."],
+    ["09:01&ndash;12:45", "Same, 900&ndash;1200 MHz, six levels &minus;36 to &minus;72 dBm cycled", "scope", "stages <code>pad10zn_*</code>",
+     "4411 points. Longest stretch with total width &le;4 MHz: &minus;36 to &minus;54 dBm 1097&ndash;1199 MHz (102 MHz, cut by the band edge); &ge;&minus;50 dBm 1127&ndash;1199 MHz."],
+    ["12:49&ndash;13:33", "10 dB pads as pad10z plus cable E on the RF arm (RF &minus; LO 7.6 cm), 600&ndash;1600 MHz, six levels", "scope", "stages <code>pad10d_*</code>, log <code>pd_pad10d_19nov.log</code>",
+     "843 points. &minus;36 to &minus;54 dBm 1256&ndash;1384 MHz (128 MHz); &ge;&minus;50 dBm 1232&ndash;1416 MHz (184 MHz). Its median curve has noise-level reversals."],
+    ["13:36&ndash;18:54", "10 dB pads, cable H (7 cm) on LO, B (15.2 cm) + F (16.5 cm) on RF: RF &minus; LO 24.7 cm plus the joint; 600&ndash;1600 MHz, six levels", "scope",
+     "stages <code>pad10hf_*</code>, log <code>pd_pad10hf_19nov.log</code>, <code>pad10hf_wrapper.sh</code>",
+     "<b>6170 points: 8 and 4 MHz grids, then part of a second repeat. &ge;&minus;50 dBm 1138&ndash;1391 MHz (253 MHz) meets 200 MHz; &minus;36 to &minus;54 dBm (railed) 1219&ndash;1367 MHz (148 MHz); every level 733&ndash;782 MHz (49 MHz).</b> "
+     "Cosine fit to the railed median, 720&ndash;1600 MHz: A 183 mV, &tau; 1.013 ns, &phi;<sub>0</sub> &minus;2.97 rad, C 5.6 mV, 13.9 mV rms residual; rising crossing 1208 MHz. Stopped at 18:54 with the stop file so Sorin could add the P103s."],
+    ["19:19", "2 &times; ZX60-P103LN+ (5.00 V on the E3630A +6 V output, 0.21 A) between the Pluto and the 4 &times; ZX60-P162LN+ (4.04 V, 0.22 A); arms and pads as pad10hf", "scope",
+     "log <code>pd_pad10hfp2_19nov_first_launch_pluto_off_usb_1919.log</code>", "No data: the Pluto was off USB at launch (192.168.2.1 not answering, not listed by Windows) and the run stopped after 10 s. It answered again at 19:24."],
+    ["19:24 &rarr; overnight", "Same (2 &times; P103 ahead), 600&ndash;1600 MHz, eight levels &minus;36, &minus;40, &minus;45, &minus;54, &minus;63, &minus;72, &minus;81, &minus;89 dBm, coarse to fine, repeated", "scope",
+     "stages <code>pad10hfp2_*</code>, log <code>pd_pad10hfp2_19nov.log</code>, <code>pad10hfp2_wrapper.sh</code>, <code>pad10hfp2_relaunch_after_pluto_drop.sh</code>",
+     "Oscillation check (Sorin): the first 43 &minus;36 dBm readings (600&ndash;936 MHz) are within 0.8 mV (median) of pad10hf's, worst 9.8 mV; noise within a reading 0.13 mV (pad10hf 0.22 mV). "
+     "<b>Tone off is now +14.7 mV, steady to &plusmn;0.2 mV, rms 19.7 mV (pad10hf: &minus;1.7 mV, 6.6 mV).</b> Likely the extra gain saturating the chain on its own input noise (about &minus;82 dBm in 1 GHz &times; about 118 dB); not verified. "
+     "First pass, &minus;36 to &minus;54 dBm: 1032&ndash;1448 MHz (416 MHz) &le;4 MHz total width, one pass only. &minus;89, not &minus;90 dBm: below about 1 GHz &minus;90 dBm needs more than the 89.75 dB attenuator maximum."],
+]
+PD_DAY19 = item(
+    "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
+    p("One row per arrangement, in order. Wiring for every scope row: Pluto &rarr; amplifiers &rarr; ZFRSC-42-S+ &rarr; two arms &rarr; 10 dB pad at each mixer port &rarr; ZX05-30W-S+ &rarr; short IF cable + 50 &Omega; load &rarr; SDS1104X-E CH1, "
+      "each point read in two rounds (100 mV/div, then the finest V/div centred on it, <code>scope_zoom.py</code>), each level swept across the band in turn. Data: <code>pd_dither_14nov.csv</code>, written by <code>run_pd_overnight.py</code> "
+      "(<code>PD_PLAN=fine</code>, one row per configuration in <code>pd_runs.py</code>). Widths use Sorin's method (item above). Every run's own figure with its wiring is in the frequency uncertainty item."),
+    table(["Time", "Arrangement", "Instrument", "Data", "What was seen"], DAY19, left=(1, 3, 4)),
+    h("Analysis added on 19 Nov"),
+    ul(["Frequency uncertainty, Sorin's definition: level set = top level down to a threshold; lookup = median of every reading of every level in the set; at each true frequency the top and the threshold level's readings are looked up on it; total width = the distance between the two frequencies read. Replaces every earlier resolution figure.",
+        "Furuno link budget: the main beam stays above &minus;50 dBm Pluto-equivalent out to the 14 km radio horizon (two-ray over the sea; antenna heights 4 m and 2 m assumed).",
+        "Design limits (<code>plot_pd_design_limits.py</code>): every pass fitted against the railed median as gain change, shift along frequency and offset. Passes at one level agree to about 0.1 MHz, so the level dependence is systematic, not drift; below about &minus;58 dBm the gain falls 10% at &minus;63 dBm and 30&ndash;60% at &minus;72 dBm.",
+        "Amplifiers on hand (datasheets in <code>JACON_component_specs.xlsx</code>): ZX60-P103LN+ (50&ndash;3000 MHz, 15.6 dB at 1 GHz, P1dB +22.4 dBm, 5 V), ZX60-2534MA-S+ (43.5 dB, input damage &minus;15 dBm), ZX60-14012L-S+ (12 dB, 12 V). "
+        "The P103, 2534MA and 14012L may only go before the P162s (their input limits). Two P103s add about 31 dB at 1 GHz, so the chain input is about &minus;5 to &minus;58 dBm at 1 GHz for &minus;36 to &minus;89 dBm from the Pluto.",
+        "The &lsquo;railed, &ge;&minus;58 dBm&rsquo; set comes from the 18 Nov ramp of the 4 &times; P162 chain. With the two P103s ahead the railed edge should be about 31 dB lower (not yet measured), so for pad10hfp2 that column only means &ge;&minus;58 dBm."]),
+    h("Choosing the arm length"),
+    p("Model: V(f) = A cos(2&pi;f&tau; + &phi;<sub>0</sub>) + C, with &tau; = &Delta;L / (v<sub>f</sub> c). Measured: pad10hf's 24.7 cm gives &tau; = 1.013 ns, where v<sub>f</sub> = 0.70 would give 1.18 ns, so new lengths are scaled from the measurement, not from v<sub>f</sub>: "
+      "&Delta;L<sub>new</sub> = 24.7 cm &times; &tau;<sub>new</sub> / 1.013 ns."),
+    ul(["Span (what set &lsquo;22&ndash;38 cm&rsquo;): with r = &tau;<sub>new</sub>/&tau;<sub>now</sub>, every error in frequency shrinks by r and the band compresses by r, so span(r) = (1/r) &times; longest stretch of pad10hf where the total width &le; 4r MHz. "
+        "Assumes the level dependence stays the same in phase and the pads keep the reflections down.",
+        "Centring (where the linear part sits): the steepest, most linear point is the crossing 2&pi;f<sub>0</sub>&tau; + &phi;<sub>0</sub> = (k + &frac12;)&pi;, so &tau;<sub>k</sub> = ((k + &frac12;)&pi; &minus; &phi;<sub>0</sub>) / (2&pi;f<sub>0</sub>). "
+        "pad10hf (&phi;<sub>0</sub> = &minus;2.97 rad) has its crossings at 714, 1208 and 1702 MHz. Assumes &phi;<sub>0</sub> stays when only the cable changes. The target centre frequency is still to be set (Sorin)."]),
+)
+
