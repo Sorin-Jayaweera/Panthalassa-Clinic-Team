@@ -445,7 +445,9 @@ DAY19 = [  # (time, arrangement, instrument, data, what was seen)
      "This is the lookup being cut, not the detector: the median curve on the full 1 MHz grid has about 210 monotonic pieces against 17&ndash;41 on either half, because the odd frequencies (1 MHz pass, 23:15&ndash;03:06) sit 0.1&ndash;0.3 mV (0.1&ndash;0.35 MHz) below the even ones (19:26&ndash;23:15). "
      "Repeat 1 on the 2 MHz grid alone: 410 MHz (&minus;54) and 404 MHz (&minus;45); on the odd 1 MHz frequencies alone: 420 and 334 MHz. Whether reversals this small should split the lookup is Sorin&rsquo;s open question. "
      "Repeat 2, 8 MHz grid (03:07&ndash;03:57) minus repeat 1 (19:26&ndash;20:16), per point: &minus;36 to &minus;54 dBm median within &plusmn;0.15 mV, sd 0.6&ndash;0.7 mV over 600&ndash;1600 MHz and 0.3&ndash;0.4 mV over 1040&ndash;1440 MHz; &minus;63 and &minus;72 dBm sd 0.6&ndash;1.0 mV. "
-     "So the weak levels&rsquo; departure from the curve repeats from pass to pass: it is systematic, not noise."],
+     "So the weak levels&rsquo; departure from the curve repeats from pass to pass: it is systematic, not noise. "
+     "After repeat 2&rsquo;s 4 MHz pass (04:53): &minus;36 to &minus;54 dBm 1174&ndash;1367 MHz (193 MHz), &minus;36 to &minus;45 dBm 1092&ndash;1366 MHz (274 MHz). Of the 76 frequencies in 1000&ndash;1450 MHz that fail for &minus;36 to &minus;54 dBm, "
+     "72 fail as &lsquo;no unique frequency&rsquo; (e.g. median &minus;34.15 mV at 1164 MHz, &minus;34.25 mV at 1165 MHz: a 0.1 mV reversal on a 0.8 mV/MHz slope) and only 4 have a total width over 4 MHz; where a width is computed it is mostly under 2.5 MHz."],
 ]
 PD_DAY19 = item(
     "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
