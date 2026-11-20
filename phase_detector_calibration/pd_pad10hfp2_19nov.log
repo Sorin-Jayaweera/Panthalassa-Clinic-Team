@@ -15,3 +15,115 @@
 20:52:21 pad10hfp2_4mhz rep 1: 75%
 21:06:08 pad10hfp2_4mhz rep 1: 100%
 21:06:08 STAGE pad10hfp2_2mhz rep 1: repeat 1: 600-1600 MHz, 250 new frequencies at 2 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 2000 points (from 0)
+21:27:57 pad10hfp2_2mhz rep 1: 25%
+scope: gave up after 1 tries: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 295, in main
+    m, sd, r = retry(rd, "scope")[0]
+               ~~~~~^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 260, in rd
+    return scope.read()
+           ~~~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 188, in read
+    m, vd, m0, sd, tries = self.track.read(self.s, self.ch, self.key)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\scope_zoom.py", line 50, in read
+    v, clip = grab(s, ch, d, -m_prev, settle=0.25 if d != self.vdiv else 0.15)
+              ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\scope_zoom.py", line 18, in grab
+    codes, vd, of, _, _ = s.waveform_raw(ch)
+                          ~~~~~~~~~~~~~~^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 74, in waveform_raw
+    raw = self.inst.read_raw()
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 430, in read_raw
+    return bytes(self._read_raw(size))
+                 ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 475, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\functions.py", line 2339, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\highlevel.py", line 227, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\highlevel.py", line 252, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 295, in main
+    m, sd, r = retry(rd, "scope")[0]
+               ~~~~~^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pluto_full_range.py", line 94, in retry
+    return fn(), tries
+           ~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 260, in rd
+    return scope.read()
+           ~~~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 188, in read
+    m, vd, m0, sd, tries = self.track.read(self.s, self.ch, self.key)
+                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\scope_zoom.py", line 50, in read
+    v, clip = grab(s, ch, d, -m_prev, settle=0.25 if d != self.vdiv else 0.15)
+              ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\scope_zoom.py", line 18, in grab
+    codes, vd, of, _, _ = s.waveform_raw(ch)
+                          ~~~~~~~~~~~~~~^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\vco_rise_time\sds.py", line 74, in waveform_raw
+    raw = self.inst.read_raw()
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 430, in read_raw
+    return bytes(self._read_raw(size))
+                 ~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\resources\messagebased.py", line 475, in _read_raw
+    chunk, status = self.visalib.read(self.session, size)
+                    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\functions.py", line 2339, in read
+    ret = library.viRead(session, buffer, count, byref(return_count))
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\ctwrapper\highlevel.py", line 227, in _return_handler
+    return self.handle_return_value(session, ret_value)  # type: ignore
+           ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\AppData\Roaming\Python\Python314\site-packages\pyvisa\highlevel.py", line 252, in handle_return_value
+    raise errors.VisaIOError(rv)
+pyvisa.errors.VisaIOError: VI_ERROR_SYSTEM_ERROR (-1073807360): Unknown system error (miscellaneous error).
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 56, in _attr_ctx
+    at.value = val
+    ^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 704, in <lambda>
+    lambda self, x: self._write(x),
+                    ~~~~~~~~~~~^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 736, in _write
+    _c_write_attr(self._channel, self._name_ascii, value.encode("ascii"))
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sorin\radioconda\Lib\site-packages\iio.py", line 62, in _check_negative
+    raise OSError(-result, _strerror(-result))
+ConnectionResetError: [Errno 10054] Unknown error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 321, in <module>
+    main()
+    ~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\phase_detector_calibration\run_pd_overnight.py", line 315, in main
+    tone_off()
+    ~~~~~~~~^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 91, in tone_off
+    _attr("-c", "-o", "ad9361-phy", "voltage0", "hardwaregain", "-89.75")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 67, in _attr
+    return _attr_ctx(args)
+  File "C:\ThatFamily Dropbox\Sorin Jayaweera\allSaves\mudd\senior\clinic\claude\sdr\pluto_cw.py", line 60, in _attr_ctx
+    raise RuntimeError(f"libiio {' '.join(a)} failed: {e}")
+RuntimeError: libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
+ERROR: Unable to send command: Unknown error (10054)
+=== pads-10dB-zoom H and B+F, 2 x P103 ahead, eight levels wrapper ended 21:58:12
+=== relaunch 1: run ended early 21:58:30, waiting for the Pluto
+=== pads-10dB-zoom H and B+F, 2 x P103 ahead, eight levels launch 21:58:51
+21:58:52 STAGE pad10hfp2_2mhz rep 1: repeat 1: 600-1600 MHz, 250 new frequencies at 2 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 2000 points (from 558)
+21:59:03 pad10hfp2_2mhz rep 1: 25%
