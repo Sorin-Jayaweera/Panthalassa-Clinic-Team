@@ -439,7 +439,8 @@ DAY19 = [  # (time, arrangement, instrument, data, what was seen)
      "So 31 dB more gain helped below 1250 MHz and not above: above 1250 MHz the weak-level limit is not gain but something of fixed level that the chain amplifies with the tone (its own noise, an oscillation, or pickup). A spectrum of the chain output with the tone off would tell which. "
      "<b>After the 8 and 4 MHz passes (21:11): &minus;36 to &minus;54 dBm is within 4 MHz total width over 1036&ndash;1448 MHz (412 MHz; pad10hf 148 MHz), &minus;36 to &minus;45 dBm 1040&ndash;1448 MHz (408 MHz); every level to &minus;89 dBm only 4 MHz.</b> One pass so far. "
      "21:29 the laptop entered Modern Standby (Windows Kernel-Power 506; it left at 21:58 with reason &lsquo;Lid&rsquo;), and at 21:31:49 Windows removed the scope (VID F4EC) and the Pluto (VID 0456) from USB as &lsquo;draining power when idle&rsquo;: "
-     "last reading 21:30:44 (2 MHz pass, 558 of 2000 points), scope VISA error, run ended 21:58:12. The relauncher restarted it at 21:58:51 from point 558; nothing was lost. The run&rsquo;s own keep-awake request does not stop a closed lid."],
+     "last reading 21:30:44 (2 MHz pass, 558 of 2000 points), scope VISA error, run ended 21:58:12. The relauncher restarted it at 21:58:51 from point 558; nothing was lost. The run&rsquo;s own keep-awake request does not stop a closed lid. "
+     "20 Nov 01:04:57&ndash;01:26:46 the lid was closed again (Kernel-Power 506/507, reason &lsquo;Lid&rsquo;): the run paused for 22 min in the 1 MHz pass at 1135 MHz, &minus;63 dBm, then went on by itself after one Pluto retry; the reading taken across the pause (1135 MHz) fits its neighbours (&minus;58.0, &minus;56.5, &minus;54.8 mV)."],
 ]
 PD_DAY19 = item(
     "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
