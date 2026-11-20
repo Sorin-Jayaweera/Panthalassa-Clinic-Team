@@ -26,3 +26,5 @@ tone off
 15:33:02 pad10hf_2mhz rep 1: 25%
 15:49:13 pad10hf_2mhz rep 1: 50%
 16:06:17 pad10hf_2mhz rep 1: 75%
+16:25:43 pad10hf_2mhz rep 1: 100%
+16:25:43 STAGE pad10hf_1mhz rep 1: repeat 1: 600-1600 MHz, 500 new frequencies at 1 MHz spacing x 6 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0), 3000 points (from 0)
