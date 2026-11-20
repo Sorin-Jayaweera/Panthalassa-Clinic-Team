@@ -275,3 +275,7 @@ ERROR: Unable to send command: Unknown error (10054)
 === pads-10dB-zoom H and B+F, 2 x P103 ahead, eight levels launch 12:24:04
 12:24:15 STAGE pad10hfp2_1mhz rep 2: repeat 2: 600-1600 MHz, 500 new frequencies at 1 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 4000 points (from 2242)
 12:24:33 pad10hfp2_1mhz rep 2: 50%
+deadline reached or stop file
+12:58:11 ALL STAGES FINISHED
+tone off
+=== pads-10dB-zoom H and B+F, 2 x P103 ahead, eight levels wrapper ended 12:58:11
