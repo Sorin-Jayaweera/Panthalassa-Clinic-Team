@@ -163,3 +163,4 @@ ERROR: Unable to send command: Unknown error (10054)
 tone 953.0: try 1 failed, libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
 ERROR: Unable to send command: Unknown error (10054)
 10:33:12 pad10hfp2_1mhz rep 2: 25%
+11:20:26 pad10hfp2_1mhz rep 2: 50%
