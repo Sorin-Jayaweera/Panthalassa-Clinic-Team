@@ -162,3 +162,4 @@ ERROR: Unable to send command: Unknown error (10054)
 09:37:57 STAGE pad10hfp2_1mhz rep 2: repeat 2: 600-1600 MHz, 500 new frequencies at 1 MHz spacing x 8 levels (-36.0, -40.0, -45.0, -54.0, -63.0, -72.0, -81.0, -89.0), 4000 points (from 0)
 tone 953.0: try 1 failed, libiio ad9361-phy voltage0 hardwaregain -89.75 failed: [Errno 10054] Unknown error
 ERROR: Unable to send command: Unknown error (10054)
+10:33:12 pad10hfp2_1mhz rep 2: 25%
