@@ -360,7 +360,7 @@ PD_STATUS = item(
         "Swap the mixer's LO and RF inputs, then swap in another mixer or splitter, and see whether the delay changes sign or size.",
         "A high-isolation (Wilkinson) splitter; a low-pass filter after the amplifiers (the 2nd harmonic is only 5&ndash;9 dB down below 800 MHz)."]),
     h("Pitfalls"),
-    ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped. A drop mid-run is retried for 180 s; a Pluto missing at launch stops the run within 10 s (19 Nov 19:19). Overnight 19&ndash;20 Nov <code>pad10hfp2_relaunch_after_pluto_drop.sh</code> waits for the Pluto and relaunches (up to 6 times).",
+    ul(["Pluto drops off USB about hourly (Windows logs a bus removal). The scripts resume where they stopped. A drop mid-run is retried for 180 s; a Pluto missing at launch stops the run within 10 s (19 Nov 19:19). Overnight 19&ndash;20 Nov <code>pad10hfp2_relaunch_after_pluto_drop.sh</code> waits for the Pluto and relaunches (up to 6 times). Keep the laptop lid open during runs: a closed lid sends it into Modern Standby, which drops the scope and the Pluto from USB (19 Nov 21:29&ndash;21:58).",
         "The tone-off reading depends on the chain: &minus;1.7 mV with the 4 &times; P162 chain (pad10hf), +14.7 mV with two P103s ahead (pad10hfp2). Subtract each run&rsquo;s own tone-off, never another run&rsquo;s.",
         "<code>sm_api.dll</code> needs the working folder <code>signal_hound/</code>. Use system Python (radioconda has no pyvisa).",
         "Never stash, reset or check out while a run writes the CSV (18 Nov: a stash caught the live file; no data lost, but the progress log was cut)."]),
@@ -437,7 +437,9 @@ DAY19 = [  # (time, arrangement, instrument, data, what was seen)
      "<b>First 8 MHz pass, all levels (20:13): the weak levels flatten toward the tone-off value (about 15 mV), not toward the curve.</b> rms departure from &minus;36 dBm, new chain (pad10hf in brackets): "
      "&minus;54 dBm 1&ndash;5 mV (4&ndash;5); &minus;63 dBm 3&ndash;5 mV below 1250 MHz (3&ndash;11) but 41&ndash;45 mV above (26&ndash;27); &minus;72 dBm 16&ndash;37 mV at 750&ndash;1250 MHz, 124&ndash;149 mV above; &minus;81 and &minus;89 dBm nearly flat except 600&ndash;750 MHz. "
      "So 31 dB more gain helped below 1250 MHz and not above: above 1250 MHz the weak-level limit is not gain but something of fixed level that the chain amplifies with the tone (its own noise, an oscillation, or pickup). A spectrum of the chain output with the tone off would tell which. "
-     "<b>After the 8 and 4 MHz passes (21:11): &minus;36 to &minus;54 dBm is within 4 MHz total width over 1036&ndash;1448 MHz (412 MHz; pad10hf 148 MHz), &minus;36 to &minus;45 dBm 1040&ndash;1448 MHz (408 MHz); every level to &minus;89 dBm only 4 MHz.</b> One pass so far."],
+     "<b>After the 8 and 4 MHz passes (21:11): &minus;36 to &minus;54 dBm is within 4 MHz total width over 1036&ndash;1448 MHz (412 MHz; pad10hf 148 MHz), &minus;36 to &minus;45 dBm 1040&ndash;1448 MHz (408 MHz); every level to &minus;89 dBm only 4 MHz.</b> One pass so far. "
+     "21:29 the laptop entered Modern Standby (Windows Kernel-Power 506; it left at 21:58 with reason &lsquo;Lid&rsquo;), and at 21:31:49 Windows removed the scope (VID F4EC) and the Pluto (VID 0456) from USB as &lsquo;draining power when idle&rsquo;: "
+     "last reading 21:30:44 (2 MHz pass, 558 of 2000 points), scope VISA error, run ended 21:58:12. The relauncher restarted it at 21:58:51 from point 558; nothing was lost. The run&rsquo;s own keep-awake request does not stop a closed lid."],
 ]
 PD_DAY19 = item(
     "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
