@@ -443,7 +443,9 @@ DAY19 = [  # (time, arrangement, instrument, data, what was seen)
      "20 Nov 01:04:57&ndash;01:26:46 the lid was closed again (Kernel-Power 506/507, reason &lsquo;Lid&rsquo;): the run paused for 22 min in the 1 MHz pass at 1135 MHz, &minus;63 dBm, then went on by itself after one Pluto retry; the reading taken across the pause (1135 MHz) fits its neighbours (&minus;58.0, &minus;56.5, &minus;54.8 mV). "
      "<b>Repeat 1 complete at 03:06 (8, 4, 2 and 1 MHz grids); tone off 14.25 mV (14.74 at the start).</b> With the 1 MHz grid in, &minus;36 to &minus;54 dBm drops to 1129&ndash;1367 MHz (238 MHz) and &minus;36 to &minus;45 dBm to 1061&ndash;1366 MHz (305 MHz). "
      "This is the lookup being cut, not the detector: the median curve on the full 1 MHz grid has about 210 monotonic pieces against 17&ndash;41 on either half, because the odd frequencies (1 MHz pass, 23:15&ndash;03:06) sit 0.1&ndash;0.3 mV (0.1&ndash;0.35 MHz) below the even ones (19:26&ndash;23:15). "
-     "Repeat 1 on the 2 MHz grid alone: 410 MHz (&minus;54) and 404 MHz (&minus;45); on the odd 1 MHz frequencies alone: 420 and 334 MHz. Whether reversals this small should split the lookup is Sorin&rsquo;s open question."],
+     "Repeat 1 on the 2 MHz grid alone: 410 MHz (&minus;54) and 404 MHz (&minus;45); on the odd 1 MHz frequencies alone: 420 and 334 MHz. Whether reversals this small should split the lookup is Sorin&rsquo;s open question. "
+     "Repeat 2, 8 MHz grid (03:07&ndash;03:57) minus repeat 1 (19:26&ndash;20:16), per point: &minus;36 to &minus;54 dBm median within &plusmn;0.15 mV, sd 0.6&ndash;0.7 mV over 600&ndash;1600 MHz and 0.3&ndash;0.4 mV over 1040&ndash;1440 MHz; &minus;63 and &minus;72 dBm sd 0.6&ndash;1.0 mV. "
+     "So the weak levels&rsquo; departure from the curve repeats from pass to pass: it is systematic, not noise."],
 ]
 PD_DAY19 = item(
     "pd-day-19nov", "19 Nov, every arrangement and what it showed: a longer RF arm (24.7 cm) meets 200 MHz at &ge;&minus;50 dBm; two ZX60-P103LN+ added ahead of the chain for the night",
