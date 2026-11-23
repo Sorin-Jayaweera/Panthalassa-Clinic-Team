@@ -170,3 +170,8 @@ button.star { position: absolute; top: 0.25rem; right: 0.25rem; font-size: 1.15r
   background: var(--surface); color: var(--muted); border: 1px solid var(--rule); }
 button.star.on { color: #c98a00; border-color: #c98a00; }
 button.star:focus-visible { outline: 2px solid var(--accent); }
+/* Emmy's comparator section (content_comp_emmy.py): her text rendered from Markdown */
+.emmy-section { border-left: 4px solid var(--accent); padding-left: 0.9rem; margin: 0.5rem 0 1rem; }
+.emmy-section .note.emmy { border-left-color: var(--accent); }
+.emmy-section > p { max-width: 52rem; }
+.tablewrap.md td, .tablewrap.md th { vertical-align: top; }
