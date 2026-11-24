@@ -211,22 +211,36 @@ def section():
               "Everything in this section, from here down to the end of &ldquo;Emmy&rsquo;s test procedure&rdquo;, is her own text and plots. "
               "Source files: <code>envelope_detector/COMPARATOR-TEST-RESULTS.md</code>, <code>COMPARATOR-TEST-PROCEDURE.md</code>, <code>cmp_cgr.py</code>, "
               "<code>cmp_scope.py</code>, <code>plot_cmp.py</code>, <code>plots_cmp/</code>. "
+              "<b>Update 24 Nov:</b> the IN+ input she suspected was faulty was later shown not to be (see the note under her warning). "
               "Her raw data (<code>data/cmp_trip_*</code>, <code>data/cmp_scope_*</code>) stayed on the loaner Mac and is not on GitHub.</div>")
     plots = "".join(fig(n, c) for n, c in _copy_plots())
     body = banner
     if plots:
         body += "<h3>Emmy&rsquo;s plots (made by <code>plot_cmp.py</code>)</h3>" + plots
-    body += md(res, hard_breaks=True) if res else p("COMPARATOR-TEST-RESULTS.md not found.")
+    if res:
+        r = md(res, hard_breaks=True)
+        i = r.find("faulty IN+ input")                                  # put the 24 Nov update right after her warning box
+        j = r.find("</div>", i) if i >= 0 else -1
+        body += (r[:j + 6] + UPDATE + r[j + 6:]) if j >= 0 else (UPDATE + r)
+    else:
+        body += p("COMPARATOR-TEST-RESULTS.md not found.")
     if proc:
         body += item("cmp-emmy-proc", "Emmy&rsquo;s test procedure (COMPARATOR-TEST-PROCEDURE.md, started 1 Nov 2026)", md(proc, skip_title=True))
     return '<div class="emmy-section">' + body + "</div>"
 
 
+# Correction added 24 Nov 2026: the chip was suspected faulty on 2-9 Nov; Sofia's Test B on the same chip shows it is not.
+LATER = ("Later tests on the same chip (Sofia, Test B, 23 Nov) show it is not faulty: the same leak test (1 k&Omega; from J1 to AGND, board powered) "
+         "gave 3.7 mV, about 3.7 &micro;A, which is normal, and output levels, switching both ways and supply current were all normal.")
+UPDATE = ('<div class="note"><b>Update, 24 Nov 2026 (not part of Emmy&rsquo;s text):</b> the warning above, and the &ldquo;faulty IN+&rdquo; '
+          "conclusions further down, describe what the chip looked like on 2&ndash;9 Nov: it <i>might</i> have been faulty. " + LATER +
+          " Emmy&rsquo;s log below is kept as she wrote it.</div>")
+
 # Key findings shown at the top of the tab. Each line is her own wording from the results file;
 # only the selection is ours.
 TOP = ('<div class="note"><b>Emmy, 2&ndash;9 Nov 2026 (key points from her results, her wording):</b><ul>'
-       "<li><b>⚠️ Warning: this board&rsquo;s ADCMP604 has a faulty IN+ input.</b> IN+ sources &asymp; 40 &micro;A when powered (datasheet limit &plusmn;5 &micro;A, Table 1). "
-       "Results here are for scale only and are not typical ADCMP604 numbers.</li>"
+       "<li><b>IN+ input: possibly faulty on 2&ndash;9 Nov, but later tests show it is not.</b> Emmy measured IN+ sourcing &asymp; 40 &micro;A when powered "
+       "(datasheet limit &plusmn;5 &micro;A) and treated her numbers as for scale only. " + LATER + "</li>"
        "<li>Test 1 (supply and output levels): &#9989; (2 Nov 2026, evening).</li>"
        "<li><b>So the steady 27.6 MHz appears only with IN+ near IN&minus;: it is the comparator oscillating</b>, as Test 2 suggested.</li>"
        "<li>Summary: approached from above, RF-off is reliably quiet at &asymp; 300 mV and above, and oscillates at &asymp; 120&ndash;150 mV and below.</li>"
