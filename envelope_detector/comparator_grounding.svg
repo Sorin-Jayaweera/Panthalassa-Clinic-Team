@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1080" width="1500" height="1080" font-family="Helvetica, Arial, sans-serif" fill="#0b0b0b">
+<rect width="1500" height="1080" fill="#fcfcfb"/>
+<text x="30" y="34" font-size="20" fill="#0b0b0b" text-anchor="start" font-weight="bold">Test B grounding: one ground return per cable, tied locally in three groups</text>
+<text x="30" y="57" font-size="13" fill="#52514e" text-anchor="start">Grey tube = coax shield (ground). Inside it, the signal wire. At the far end each BNC-to-grabber cable splits into a red (signal) and a black (shield) grabber.</text>
+<rect x="560" y="230" width="380" height="470" rx="10" fill="#dfe9df" stroke="#8a8985" stroke-width="1.8"/>
+<text x="750.0" y="443.0" font-size="15" fill="#0b0b0b" text-anchor="middle" font-weight="bold">EVAL-ADCMP604BKSZ</text>
+<text x="750.0" y="462.0" font-size="12" fill="#52514e" text-anchor="middle">green = the board's ground plane:</text>
+<text x="750.0" y="478.0" font-size="12" fill="#52514e" text-anchor="middle">every SMA's outer shell is soldered to it</text>
+<rect x="728.0" y="495.0" width="44" height="30" rx="3" fill="#333"/>
+<text x="750.0" y="515.0" font-size="11" fill="#fff" text-anchor="middle" font-weight="bold">chip</text>
+<rect x="546" y="326" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="560" cy="340" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="560" y="318" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J1 IN+</text>
+<rect x="546" y="576" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="560" cy="590" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="560" y="622" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J3 IN−</text>
+<rect x="926" y="326" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="940" cy="340" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="940" y="318" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J7 OUT+</text>
+<rect x="926" y="576" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="940" cy="590" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="940" y="622" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J8 OUT−</text>
+<rect x="676" y="216" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="690" cy="230" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="690" y="262" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J2 IN+FB</text>
+<text x="716" y="274" font-size="11" fill="#52514e" text-anchor="start">(same node as J1): nothing attached</text>
+<circle cx="630" cy="660" r="11" fill="#d43c3c" stroke="#0b0b0b" stroke-width="1.4"/>
+<text x="630" y="642" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">VCC</text>
+<circle cx="710" cy="660" r="11" fill="#444" stroke="#0b0b0b" stroke-width="1.4"/>
+<text x="710" y="642" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">AGND</text>
+<circle cx="810" cy="660" r="11" fill="#444" stroke="#0b0b0b" stroke-width="1.4"/>
+<text x="810" y="642" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">CGND/VEE</text>
+<polyline points="710,678 710,690 810,690 810,678" fill="none" stroke="#111111" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="760" y="616" font-size="11" fill="#0b0b0b" text-anchor="middle">AGND–CGND/VEE joined by the TP15–TP13 link (keep)</text>
+<rect x="876" y="686" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<circle cx="890" cy="700" r="4" fill="#fff" stroke="#0b0b0b"/>
+<text x="890" y="678" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J4 IN−FB</text>
+<text x="926" y="682" font-size="11" fill="#52514e" text-anchor="start">(same node as J3)</text>
+<polyline points="890,714 890,728" fill="none" stroke="#b23a1e" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="878" y1="728" x2="902" y2="728" stroke="#0b0b0b" stroke-width="2.6"/><line x1="878" y1="735" x2="902" y2="735" stroke="#0b0b0b" stroke-width="2.6"/>
+<text x="906" y="736" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="bold"></text>
+<polyline points="890,735 890,745 912,745 912,710" fill="none" stroke="#111111" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="920" y="732" font-size="11.5" fill="#b23a1e" text-anchor="start" font-weight="bold">1–10 nF: centre socket</text>
+<text x="920" y="747" font-size="11.5" fill="#b23a1e" text-anchor="start" font-weight="bold">to J4's own shell</text>
+<rect x="860" y="648" width="200" height="114" rx="8" fill="none" stroke="#b23a1e" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="864" y="778" font-size="11.5" fill="#b23a1e" text-anchor="start" font-weight="bold">NEXT CHANGE (recommended)</text>
+<rect x="560" y="810" width="380" height="70" rx="8" fill="#f4f3ef" stroke="#8a8985" stroke-width="1.6"/>
+<text x="750" y="834" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="bold">Bench supply 3.30 V, limit 30 mA</text>
+<polyline points="630,671 630,810" fill="none" stroke="#d43c3c" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="638" y="798" font-size="14" fill="#d43c3c" text-anchor="start" font-weight="bold">+</text>
+<polyline points="810,671 810,810" fill="none" stroke="#111111" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="818" y="798" font-size="12" fill="#111111" text-anchor="start" font-weight="bold">COM</text>
+<text x="750" y="866" font-size="11.5" fill="#52514e" text-anchor="middle">On board ground pins: only COM and the TP link.</text>
+<polyline points="546,340 400,340 400,340" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="546,340 400,340 400,340" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="546,340 400,340 400,340" fill="none" stroke="#2a78d6" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="470" y="368" font-size="11" fill="#52514e" text-anchor="middle">J1 cable</text>
+<polyline points="400,340 386,340 376,327.0 360,327.0" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="400,340 386,340 376,353.0 360,353.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="344" y="322.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="344" y="348.0" width="16" height="10" rx="3" fill="#222"/>
+<rect x="30" y="190" width="190" height="64" rx="8" fill="#f4f3ef" stroke="#8a8985" stroke-width="1.6"/>
+<text x="125" y="218" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="bold">CGR-201 C2BJ0VL</text>
+<text x="125" y="236" font-size="11" fill="#52514e" text-anchor="middle">Output BNC (its shell = CGR ground)</text>
+<polyline points="220,222 240,222 240,268 40,268 40,340 90,340" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="220,222 240,222 240,268 40,268 40,340 90,340" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="220,222 240,222 240,268 40,268 40,340 90,340" fill="none" stroke="#2a78d6" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="90,340 104,340 114,327.0 130,327.0" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="90,340 104,340 114,353.0 130,353.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="130" y="322.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="130" y="348.0" width="16" height="10" rx="3" fill="#222"/>
+<rect x="200.0" y="319.0" width="40" height="16" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="220.0" y="314.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="bold">100 Ω</text>
+<polyline points="146,327.0 200.0,327.0" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="240.0,327.0 344,327.0" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146,353.0 344,353.0" fill="none" stroke="#111111" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="324" cy="327.0" r="4.5" fill="#2a78d6"/>
+<polyline points="324,327.0 324,283.0" fill="none" stroke="#7b4fc4" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<rect x="294" y="261.0" width="60" height="22" rx="11" fill="#7b4fc4"/>
+<text x="324" y="276.0" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="bold">CH1 ×10</text>
+<polyline points="354,272.0 374,272.0 374,353.0" fill="none" stroke="#111111" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<circle cx="324" cy="327.0" r="4" fill="#7b4fc4"/>
+<circle cx="374" cy="353.0" r="4" fill="#111111"/>
+<rect x="60" y="278" width="330" height="102" rx="10" fill="none" stroke="#2a78d6" stroke-width="1.6" stroke-dasharray="7 4"/>
+<text x="70" y="400" font-size="12" fill="#2a78d6" text-anchor="start" font-weight="bold">Group 2 (IN+): both black grabbers + CH1 ground together.</text>
+<text x="70" y="416" font-size="12" fill="#2a78d6" text-anchor="start" font-weight="bold">CH1 tip on the J1 cable's red grabber (board side of the 100 Ω).</text>
+<text x="70" y="434" font-size="11" fill="#b23a1e" text-anchor="start">As built, the 100 Ω is at the FAR end of the J1 cable, so the</text>
+<text x="70" y="448" font-size="11" fill="#b23a1e" text-anchor="start">cable (~100 pF/m) hangs directly on IN+. Note it in results.</text>
+<polyline points="546,590 400,590 400,600" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="546,590 400,590 400,600" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="546,590 400,590 400,600" fill="none" stroke="#eb6834" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="470" y="618" font-size="11" fill="#52514e" text-anchor="middle">J3 cable</text>
+<polyline points="400,600 386,600 376,568.0 360,568.0" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="400,600 386,600 376,632.0 360,632.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="344" y="563.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="344" y="627.0" width="16" height="10" rx="3" fill="#222"/>
+<rect x="30" y="780" width="190" height="64" rx="8" fill="#f4f3ef" stroke="#8a8985" stroke-width="1.6"/>
+<text x="125" y="808" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="bold">CGR-201 C2BKNPC</text>
+<text x="125" y="826" font-size="11" fill="#52514e" text-anchor="middle">Output BNC</text>
+<polyline points="220,812 250,812 250,762 40,762 40,600 90,600" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="220,812 250,812 250,762 40,762 40,600 90,600" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="220,812 250,812 250,762 40,762 40,600 90,600" fill="none" stroke="#eb6834" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="90,600 104,600 114,568.0 130,568.0" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="90,600 104,600 114,632.0 130,632.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="130" y="563.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="130" y="627.0" width="16" height="10" rx="3" fill="#222"/>
+<rect x="210.0" y="560.0" width="40" height="16" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="230.0" y="555.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="bold">1 kΩ</text>
+<polyline points="146,568.0 210.0,568.0" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="250.0,568.0 344,568.0" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="285.0" cy="568.0" r="4.5" fill="#eb6834"/>
+<polyline points="285.0,568.0 285.0,588.0" fill="none" stroke="#eb6834" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="273.0" y1="588.0" x2="297.0" y2="588.0" stroke="#0b0b0b" stroke-width="2.6"/><line x1="273.0" y1="595.0" x2="297.0" y2="595.0" stroke="#0b0b0b" stroke-width="2.6"/>
+<text x="269.0" y="596.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="bold">100 nF</text>
+<polyline points="285.0,595.0 285.0,632.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="146,632.0 344,632.0" fill="none" stroke="#111111" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="285.0" cy="632.0" r="5" fill="#111111"/>
+<polyline points="285.0,568.0 285.0,524.0" fill="none" stroke="#7b4fc4" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<rect x="255.0" y="502.0" width="60" height="22" rx="11" fill="#7b4fc4"/>
+<text x="285.0" y="517.0" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="bold">CH2 ×10</text>
+<polyline points="315.0,513.0 335.0,513.0 335.0,632.0" fill="none" stroke="#111111" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<circle cx="285.0" cy="568.0" r="4" fill="#7b4fc4"/>
+<circle cx="335.0" cy="632.0" r="4" fill="#111111"/>
+<rect x="60" y="538" width="330" height="124" rx="10" fill="none" stroke="#eb6834" stroke-width="1.6" stroke-dasharray="7 4"/>
+<text x="70" y="682" font-size="12" fill="#eb6834" text-anchor="start" font-weight="bold">Group 1 (IN−): both black grabbers + capacitor ground</text>
+<text x="70" y="698" font-size="12" fill="#eb6834" text-anchor="start" font-weight="bold">+ CH2 ground, all clipped together.</text>
+<text x="70" y="716" font-size="11" fill="#b23a1e" text-anchor="start">As built, the 100 nF is at the FAR end of the J3 cable. A cable</text>
+<text x="70" y="730" font-size="11" fill="#b23a1e" text-anchor="start">shorted at one end can ring (quarter-wave stub; ~27 MHz for ~1.9 m).</text>
+<text x="70" y="744" font-size="11" fill="#b23a1e" text-anchor="start">The capacitor in J4 holds IN− at the board instead.</text>
+<polyline points="954,340 1100,340 1100,400" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="954,340 1100,340 1100,400" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="954,340 1100,340 1100,400" fill="none" stroke="#1f9d6b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="954,590 1100,590 1100,520" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="954,590 1100,590 1100,520" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="954,590 1100,590 1100,520" fill="none" stroke="#1f9d6b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="1040" y="324" font-size="11" fill="#52514e" text-anchor="middle">J7 cable</text>
+<text x="1040" y="618" font-size="11" fill="#52514e" text-anchor="middle">J8 cable</text>
+<polyline points="1100,400 1114,400 1124,387.0 1140,387.0" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1100,400 1114,400 1124,413.0 1140,413.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1140" y="382.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="1140" y="408.0" width="16" height="10" rx="3" fill="#222"/>
+<polyline points="1100,520 1114,520 1124,507.0 1140,507.0" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1100,520 1114,520 1124,533.0 1140,533.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1140" y="502.0" width="16" height="10" rx="3" fill="#d43c3c"/>
+<rect x="1140" y="528.0" width="16" height="10" rx="3" fill="#222"/>
+<polyline points="1156,387.0 1200,387.0 1200,440" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1156,507.0 1200,507.0 1200,480" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1192" y="440" width="16" height="40" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="1213" y="465" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="bold">100 Ω</text>
+<polyline points="1156,413.0 1210,413.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1156,533.0 1210,533.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1210,413.0 1210,533.0" fill="none" stroke="#111111" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="1210" cy="473.0" r="5" fill="#111111"/>
+<text x="1218" y="505.0" font-size="11" fill="#0b0b0b" text-anchor="start">short link</text>
+<polyline points="1200,387.0 1200,343.0" fill="none" stroke="#7b4fc4" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<rect x="1170" y="321.0" width="60" height="22" rx="11" fill="#7b4fc4"/>
+<text x="1200" y="336.0" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="bold">CH3 ×10</text>
+<polyline points="1230,332.0 1270,332.0 1270,413.0" fill="none" stroke="#111111" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<circle cx="1200" cy="387.0" r="4" fill="#7b4fc4"/>
+<circle cx="1270" cy="413.0" r="4" fill="#111111"/>
+<polyline points="1200,507.0 1200,551.0" fill="none" stroke="#7b4fc4" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/>
+<rect x="1170" y="551.0" width="60" height="22" rx="11" fill="#7b4fc4"/>
+<text x="1200" y="566.0" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="bold">CH4 ×10</text>
+<polyline points="1230,562.0 1270,562.0 1270,533.0" fill="none" stroke="#111111" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="2 3"/>
+<circle cx="1200" cy="507.0" r="4" fill="#7b4fc4"/>
+<circle cx="1270" cy="533.0" r="4" fill="#111111"/>
+<polyline points="1210,413.0 1270,413.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="1210,533.0 1270,533.0" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1130" y="320" width="300" height="290" rx="10" fill="none" stroke="#1f9d6b" stroke-width="1.6" stroke-dasharray="7 4"/>
+<text x="1140" y="640" font-size="12" fill="#1f9d6b" text-anchor="start" font-weight="bold">Group 3 (outputs): J7 + J8 black grabbers joined;</text>
+<text x="1140" y="656" font-size="12" fill="#1f9d6b" text-anchor="start" font-weight="bold">CH3 and CH4 grounds on that link.</text>
+<text x="1140" y="676" font-size="11" fill="#52514e" text-anchor="start">100 Ω at the FAR end is correct here: it stands</text>
+<text x="1140" y="690" font-size="11" fill="#52514e" text-anchor="start">in for the receiver at the end of the line.</text>
+<text x="1140" y="708" font-size="11" fill="#52514e" text-anchor="start">If J7 has a plain BNC cable: its shell, via a</text>
+<text x="1140" y="722" font-size="11" fill="#52514e" text-anchor="start">BNC-to-grabber adapter, to the same link.</text>
+<rect x="980" y="92" width="490" height="190" rx="10" fill="#fff" stroke="#8a8985" stroke-width="1.4"/>
+<text x="994" y="116" font-size="13.5" fill="#0b0b0b" text-anchor="start" font-weight="bold">Why a black grabber already IS board ground</text>
+<text x="1000" y="140" font-size="12" fill="#0b0b0b" text-anchor="start">   board ground plane</text>
+<text x="1000" y="161" font-size="12" fill="#0b0b0b" text-anchor="start">→ SMA connector's outer shell (soldered to it)</text>
+<text x="1000" y="182" font-size="12" fill="#0b0b0b" text-anchor="start">→ SMA-to-BNC adapter body (metal, screwed on)</text>
+<text x="1000" y="203" font-size="12" fill="#0b0b0b" text-anchor="start">→ BNC plug shell</text>
+<text x="1000" y="224" font-size="12" fill="#0b0b0b" text-anchor="start">→ coax shield (the grey tube)</text>
+<text x="1000" y="245" font-size="12" fill="#0b0b0b" text-anchor="start">→ black grabber at the far end</text>
+<text x="994" y="272" font-size="11.5" fill="#52514e" text-anchor="start">Metal touching metal the whole way: no extra wire needed. DMM check ≈ 0 Ω.</text>
+<text x="30" y="1018" font-size="12.5" fill="#d43c3c" text-anchor="start" font-weight="bold">Don't: clip any black grabber or probe ground to a board pin too (a second path = a loop).</text>
+<text x="30" y="1038" font-size="12.5" fill="#d43c3c" text-anchor="start" font-weight="bold">Don't: add wires between the three groups (they already meet through the board).</text>
+<text x="1470" y="1060" font-size="11" fill="#52514e" text-anchor="end">Revised 23 Nov 2026: CH1 added; part positions as built; J4 capacitor recommended</text>
+</svg>

@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 660" width="1180" height="660" font-family="Helvetica, Arial, sans-serif" fill="#0b0b0b">
+<rect width="1180" height="660" fill="#fcfcfb"/>
+<text x="30" y="36" font-size="20" fill="#0b0b0b" text-anchor="start" font-weight="bold">Comparator outputs to the CGR-201, no soldering</text>
+<text x="30" y="58" font-size="13" fill="#52514e" text-anchor="start">Resistor legs and wire ends are clamped under the screws. “+” is the cable's centre conductor, “−” is its shield (ground).</text>
+<rect x="30" y="110" width="150" height="400" rx="8" fill="#f4f3ef" stroke="#8a8985" stroke-width="1.5"/>
+<text x="105" y="300" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="bold">Comparator</text>
+<text x="105" y="318" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="bold">board</text>
+<rect x="172" y="179" width="30" height="22" rx="3" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.3"/>
+<text x="164" y="195" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="bold">J7  OUT+</text>
+<rect x="172" y="419" width="30" height="22" rx="3" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.3"/>
+<text x="164" y="435" font-size="13" fill="#0b0b0b" text-anchor="end" font-weight="bold">J8  OUT−</text>
+<polyline points="202,190 384,190" fill="none" stroke="#0b0b0b" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="202,190 384,190" fill="none" stroke="#777" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="202,430 384,430" fill="none" stroke="#0b0b0b" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="202,430 384,430" fill="none" stroke="#777" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="293" y="172" font-size="12" fill="#52514e" text-anchor="middle">SMA-to-BNC cable</text>
+<text x="293" y="456" font-size="12" fill="#52514e" text-anchor="middle">SMA-to-BNC cable</text>
+<text x="293" y="310" font-size="12" fill="#52514e" text-anchor="middle">same type and</text>
+<text x="293" y="326" font-size="12" fill="#52514e" text-anchor="middle">same length,</text>
+<text x="293" y="342" font-size="12" fill="#52514e" text-anchor="middle">as short as you have</text>
+<rect x="384" y="177" width="46" height="26" rx="4" fill="#cfcfcf" stroke="#0b0b0b" stroke-width="1.4"/>
+<rect x="430" y="160" width="74" height="60" rx="6" fill="#f4f3ef" stroke="#0b0b0b" stroke-width="1.6"/>
+<circle cx="482" cy="176" r="9" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/><line x1="476" y1="176" x2="488" y2="176" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="452" y="182" font-size="18" fill="#d43c3c" text-anchor="middle" font-weight="bold">+</text>
+<circle cx="482" cy="204" r="9" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/><line x1="476" y1="204" x2="488" y2="204" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="452" y="210" font-size="18" fill="#333333" text-anchor="middle" font-weight="bold">−</text>
+<text x="467" y="150" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="bold">Terminal adapter 1</text>
+<rect x="384" y="417" width="46" height="26" rx="4" fill="#cfcfcf" stroke="#0b0b0b" stroke-width="1.4"/>
+<rect x="430" y="400" width="74" height="60" rx="6" fill="#f4f3ef" stroke="#0b0b0b" stroke-width="1.6"/>
+<circle cx="482" cy="416" r="9" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/><line x1="476" y1="416" x2="488" y2="416" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="452" y="422" font-size="18" fill="#d43c3c" text-anchor="middle" font-weight="bold">+</text>
+<circle cx="482" cy="444" r="9" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/><line x1="476" y1="444" x2="488" y2="444" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="452" y="450" font-size="18" fill="#333333" text-anchor="middle" font-weight="bold">−</text>
+<text x="467" y="390" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="bold">Terminal adapter 2</text>
+<polyline points="491,176 600,176 600,280" fill="none" stroke="#1f9d6b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="600,340 600,416 491,416" fill="none" stroke="#1f9d6b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="589" y="280" width="22" height="60" rx="6" fill="#e9d9b5" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="620" y="315" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="bold">100 Ω</text>
+<text x="620" y="334" font-size="12" fill="#52514e" text-anchor="start">between the two + screws</text>
+<polyline points="491,204 545,204 545,444 491,444" fill="none" stroke="#333333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="537" y="318" font-size="12" fill="#52514e" text-anchor="end">short wire</text>
+<text x="537" y="334" font-size="12" fill="#52514e" text-anchor="end">joining the</text>
+<text x="537" y="350" font-size="12" fill="#52514e" text-anchor="end">two − screws</text>
+<polyline points="491,176 600,176 700,176" fill="none" stroke="#1f9d6b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="600" cy="176" r="5" fill="#1f9d6b"/>
+<rect x="700" y="165" width="60" height="22" rx="6" fill="#e9d9b5" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="730" y="158" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="bold">1 kΩ</text>
+<polyline points="760,176 800,176" fill="none" stroke="#1f9d6b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="730" y="210" font-size="12" fill="#52514e" text-anchor="middle">second leg under the</text>
+<text x="730" y="226" font-size="12" fill="#52514e" text-anchor="middle">same + screw</text>
+<path d="M800,167 l34,0 l10,9 l-10,9 l-34,0 z" fill="#d43c3c" stroke="#0b0b0b" stroke-width="1.2"/>
+<text x="822" y="158" font-size="12" fill="#d43c3c" text-anchor="middle" font-weight="bold">red grabber</text>
+<polyline points="844,176 930,176 960,300" fill="none" stroke="#d43c3c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="491,444 760,444" fill="none" stroke="#333333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="545" cy="444" r="5" fill="#333333"/>
+<path d="M760,435 l34,0 l10,9 l-10,9 l-34,0 z" fill="#333333" stroke="#0b0b0b" stroke-width="1.2"/>
+<text x="782" y="472" font-size="12" fill="#333333" text-anchor="middle" font-weight="bold">black grabber on the − wire</text>
+<polyline points="804,444 930,444 960,300" fill="none" stroke="#333333" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="960,300 1010,300" fill="none" stroke="#0b0b0b" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="960,300 1010,300" fill="none" stroke="#777" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1010" y="240" width="140" height="120" rx="8" fill="#f4f3ef" stroke="#8a8985" stroke-width="1.5"/>
+<text x="1080" y="290" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="bold">CGR-201</text>
+<text x="1080" y="310" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="bold">Input B</text>
+<text x="1080" y="384" font-size="12" fill="#52514e" text-anchor="middle">BNC-to-grabber lead,</text>
+<text x="1080" y="400" font-size="12" fill="#52514e" text-anchor="middle">any length</text>
+<text x="430" y="500" font-size="12.5" fill="#52514e" text-anchor="start">Test B: nothing else on the OUT− side.   Test C: add a second 1 kΩ from the + screw of adapter 2 to Input A, wired the same way.</text>
+<line x1="30" y1="526" x2="1150" y2="526" stroke="#d8d7d2" stroke-width="1.5"/>
+<text x="30" y="548" font-size="13" fill="#0b0b0b" text-anchor="start">Keep the resistor legs and the − wire short (about 1–2 cm). The two adapters should sit side by side.</text>
+<text x="30" y="570" font-size="13" fill="#0b0b0b" text-anchor="start">Grabbers are fine after the 1 kΩ, because the resistor hides them from the chip. Never clip a grabber straight onto a + screw.</text>
+<text x="30" y="592" font-size="13" fill="#0b0b0b" text-anchor="start">Check with power off: about 100 Ω between the two + screws (about 86 Ω once the cables are on J7 and J8, as Emmy measured).</text>
+<text x="30" y="614" font-size="13" fill="#0b0b0b" text-anchor="start">No screw-terminal adapters? BNC-to-binding-post (banana) adapters work the same way: clamp the legs under the posts.</text>
+<text x="30" y="638" font-size="12" fill="#52514e" text-anchor="start">Draft sketch, 16 Nov 2026. Not built or tested.</text>
+</svg>

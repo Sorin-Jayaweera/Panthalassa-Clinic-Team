@@ -115,7 +115,7 @@ STATUS = {
     "phasedet": ("Voltage vs frequency alone and after the amps, step response, noise, drift, VNA of the ports", "Different delay cables, 4 x P162 chain with the radar, one sweep on its own from 900 to 1200 MHz", "tab-mixer"),
     "sh": ("Nothing", "Not on hand", "pi-sh"),
     "env": ("Voltage vs input power at 1.0, 1.1 and 1.2 GHz (flat within 0.1 dB). Pulse height at 10 and 100 us equals CW within 1-3 %", "Its 4 ns rise and 50 ns-1.2 us pulses (needs the scope). Absolute power check of the Pluto on the spectrum analyzer", "tab-env"),
-    "comp": ("Emmy, 2-9 Nov: Test 1 passed; Tests 2 and 4 for scale only (this board's IN+ input is faulty); output oscillates about 27 MHz near the threshold", "Tests 2-4 on a good chip with the 100 ohm soldered at J7/J8; Test 3; Tests 5-6", "tab-comp"),
+    "comp": ("Emmy, 2-9 Nov: Tests 1, 2, 4. Sofia, 18-23 Nov: Test B sweeps; chip works, IN+ leakage normal now; output oscillates 44-94 MHz near the threshold, zone 40 to 160 mV wide depending on the bench wiring", "Hysteresis; parts soldered at the board or a PCB; Tests 3, 5, 6", "tab-comp"),
     "dac": ("Nothing", "Not on hand. CGR-201 output for now", "pi-dac"),
     "fpga": ("Nothing", "All of it", "pi-fpga"),
     "losplit": ("In the LO path for the radar mix-down, tests 35 to 42", "Its own loss", "tab-radar"),

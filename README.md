@@ -49,7 +49,7 @@ Because the Action commits to `main`, run `git pull --rebase` before you push.
 | `phase_detector_calibration/` | VCO tuning curve, splitter and mixer (phase detector) calibration, step response, noise, drift, deconvolution. Data, scripts, plots, and the website source in `site/`. |
 | `vco_rise_time/` | VCO step response with the Syscomp CGR-201 and the oscilloscope. Drivers `cgr201.py` and `sds.py`. Raw captures in `data/`. |
 | `lo_buffer_test/` | LO buffer amp ZX60-14012L-S+: gain, compression, output with no input. |
-| `envelope_detector/` | Envelope detector ADL5511 (and comparator ADCMP604) bench test: `ed_sweep.py` steps the Pluto and reads VENV on the CGR-201 scope, `plot_ed_sweep.py`, data in `data/`, part limits, procedure, results and wiring drawings. |
+| `envelope_detector/` | Envelope detector ADL5511 (and comparator ADCMP604) bench test: `ed_sweep.py` steps the Pluto and reads VENV on the CGR-201 scope, `plot_ed_sweep.py`, data in `data/`, part limits, procedure, results and wiring drawings. Comparator: Emmy's tests (`COMPARATOR-TEST-RESULTS.md`, 2–9 Nov) and Sofia's Test B (`COMPARATOR-TEST-B-SOFIA.md`, 18–23 Nov; `cmp_sweep.py` steps IN+ with a CGR-201 through `cgr_guard.py` and reads the Siglent). |
 | `pluto_characterization/` | ADALM-Pluto TX output measured straight into the spectrum analyzer: level against attenuation setting, frequency, tone scale; spectra; drift. `pluto_tx_calibration.csv` is the setting-to-dBm table. |
 | `sdr/` | `pluto_cw.py`: Pluto tone control with a hard power limit. `pluto_safe_tx.grc`: GNU Radio flowgraph with the same limit. |
 | `signal_hound/` | Python wrapper for the Signal Hound SM200B. |

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" width="1400" height="860" font-family="Helvetica, Arial, sans-serif" fill="#0b0b0b">
+<rect width="1400" height="860" fill="#fcfcfb"/>
+<text x="30" y="34" font-size="20" fill="#0b0b0b" text-anchor="start" font-weight="bold">Test B with hysteresis: ONE extra resistor, between two red grabbers that already exist</text>
+<text x="30" y="57" font-size="13" fill="#52514e" text-anchor="start">Nothing goes on the board, nothing into J2, no new ground wires. Everything else stays exactly as in comparator_grounding.svg.</text>
+<rect x="520" y="140" width="360" height="360" rx="10" fill="#dfe9df" stroke="#8a8985" stroke-width="1.8"/>
+<text x="700.0" y="310.0" font-size="15" fill="#0b0b0b" text-anchor="middle" font-weight="bold">EVAL-ADCMP604BKSZ</text>
+<text x="700.0" y="330.0" font-size="11.5" fill="#52514e" text-anchor="middle">(J3, J8, supply, J2, J4: unchanged)</text>
+<rect x="506" y="216" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<text x="520" y="208" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J1 IN+</text>
+<rect x="866" y="216" width="28" height="28" rx="4" fill="#d9b24a" stroke="#0b0b0b" stroke-width="1.4"/>
+<text x="880" y="208" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">J7 OUT+</text>
+<polyline points="506,230 440,230 440,330" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="506,230 440,230 440,330" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="506,230 440,230 440,330" fill="none" stroke="#2a78d6" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="470" y="256" font-size="11" fill="#52514e" text-anchor="middle">J1 cable</text>
+<polyline points="440,330 430,330 420,316 405,316" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="389" y="311" width="16" height="10" rx="3" fill="#d43c3c"/>
+<polyline points="440,330 430,330 420,344 405,344" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="389" y="339" width="16" height="10" rx="3" fill="#222"/>
+<polyline points="60,330 160,330" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="60,330 160,330" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="60,330 160,330" fill="none" stroke="#2a78d6" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="110" y="310" font-size="11" fill="#52514e" text-anchor="middle">from CGR-201 C2BJ0VL</text>
+<polyline points="160,330 170,330 180,316 195,316" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="195" y="311" width="16" height="10" rx="3" fill="#d43c3c"/>
+<polyline points="160,330 170,330 180,344 195,344" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="195" y="339" width="16" height="10" rx="3" fill="#222"/>
+<rect x="278.0" y="307" width="44" height="18" fill="#fff" stroke="#0b0b0b" stroke-width="1.8"/>
+<text x="300" y="301" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="bold">100 Ω (existing)</text>
+<polyline points="211,316 278,316" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="322,316 389,316" fill="none" stroke="#2a78d6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="211,344 389,344" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="389" cy="316" r="6" fill="#b23a1e"/>
+<text x="389" y="376" font-size="12" fill="#b23a1e" text-anchor="middle" font-weight="bold">IN+ point</text>
+<text x="389" y="392" font-size="11" fill="#b23a1e" text-anchor="middle">(J1 cable's red grabber)</text>
+<rect x="40" y="270" width="430" height="140" rx="10" fill="none" stroke="#2a78d6" stroke-width="1.6" stroke-dasharray="7 4"/>
+<text x="50" y="430" font-size="12" fill="#2a78d6" text-anchor="start" font-weight="bold">Group 2 (IN+), as now</text>
+<polyline points="894,230 960,230 960,330" fill="none" stroke="#8e8e8e" stroke-width="11" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="894,230 960,230 960,330" fill="none" stroke="#ffffff" stroke-width="6" stroke-linejoin="round" stroke-linecap="butt"/>
+<polyline points="894,230 960,230 960,330" fill="none" stroke="#1f9d6b" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="butt"/>
+<text x="930" y="256" font-size="11" fill="#52514e" text-anchor="middle">J7 cable</text>
+<polyline points="960,330 970,330 980,316 995,316" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="995" y="311" width="16" height="10" rx="3" fill="#d43c3c"/>
+<polyline points="960,330 970,330 980,344 995,344" fill="none" stroke="#111111" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="995" y="339" width="16" height="10" rx="3" fill="#222"/>
+<polyline points="1011,316 1110,316 1110,360" fill="none" stroke="#1f9d6b" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="1102" y="360" width="16" height="40" fill="#fff" stroke="#0b0b0b" stroke-width="1.6"/>
+<text x="1126" y="385" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="bold">100 Ω to the J8 red grabber (existing)</text>
+<polyline points="1011,344 1060,344" fill="none" stroke="#111111" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="1066" y="348" font-size="11" fill="#52514e" text-anchor="start">to J8 black + CH3/CH4 grounds</text>
+<circle cx="1011" cy="316" r="6" fill="#b23a1e"/>
+<text x="1080" y="290" font-size="12" fill="#b23a1e" text-anchor="start" font-weight="bold">OUT+ point</text>
+<text x="1080" y="306" font-size="11" fill="#b23a1e" text-anchor="start">(J7 cable's red grabber)</text>
+<rect x="930" y="250" width="440" height="170" rx="10" fill="none" stroke="#1f9d6b" stroke-width="1.6" stroke-dasharray="7 4"/>
+<text x="940" y="440" font-size="12" fill="#1f9d6b" text-anchor="start" font-weight="bold">Group 3 (outputs), as now</text>
+<polyline points="389,316 389,600 660,600" fill="none" stroke="#b23a1e" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="740,600 1011,600 1011,316" fill="none" stroke="#b23a1e" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="660.0" y="591" width="80" height="18" fill="#fff" stroke="#b23a1e" stroke-width="1.8"/>
+<text x="700" y="585" font-size="12.5" fill="#b23a1e" text-anchor="middle" font-weight="bold">Rf ≈ 3.9–4.7 kΩ  (NEW)</text>
+<text x="700" y="634" font-size="12" fill="#b23a1e" text-anchor="middle" font-weight="bold">one resistor, two clips: one leg on each red grabber above</text>
+<text x="700" y="652" font-size="12" fill="#b23a1e" text-anchor="middle">keep its leads as short as the bench allows; no other wire, no ground</text>
+<rect x="40" y="690" width="1320" height="150" rx="10" fill="#fff" stroke="#8a8985" stroke-width="1.4"/>
+<text x="56" y="716" font-size="13.5" fill="#0b0b0b" text-anchor="start" font-weight="bold">How it works</text>
+<text x="56" y="742" font-size="12" fill="#0b0b0b" text-anchor="start">When OUT+ goes high (+0.39 V relative to low), a small current flows through Rf into the IN+ point and lifts IN+ a little: the output holds itself high.</text>
+<text x="56" y="764" font-size="12" fill="#0b0b0b" text-anchor="start">To switch back, IN+ must fall below the threshold by that extra lift. Hysteresis ≈ 0.39 V × Rs / (Rs + Rf), with Rs = 100 Ω + the CGR-201's own 50 Ω = 150 Ω.</text>
+<text x="56" y="786" font-size="12" fill="#0b0b0b" text-anchor="start">Rf 5.6 kΩ → about 10 mV;  4.7 kΩ → about 12 mV;  3.9 kΩ → about 14 mV;  2 kΩ → about 27 mV.  Rs sets how far IN+ can be lifted.</text>
+<text x="56" y="808" font-size="12" fill="#0b0b0b" text-anchor="start">Why not J2: J2 is the same node as J1, but reaching it needs another cable, which adds a long loop. The J1 red grabber is the same node and already exposed.</text>
+<text x="1370" y="852" font-size="11" fill="#52514e" text-anchor="end">Draft, 23 Nov 2026</text>
+</svg>

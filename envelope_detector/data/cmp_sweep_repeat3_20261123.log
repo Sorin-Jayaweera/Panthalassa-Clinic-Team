@@ -1,0 +1,14 @@
+147 steps, codes 2750..2868..2750 (1.100 to 1.320 V setting)
+  0 up   code 2750 set 1.0995  IN+-IN-  -100.6 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    6.3 mV  f  83.86 MHz
+  1 up   code 2754 set 1.1070  IN+-IN-   -93.4 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    6.1 mV  f  84.07 MHz
+  2 up   code 2758 set 1.1145  IN+-IN-   -87.2 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   14.1 mV  f  64.29 MHz
+  3 up   code 2762 set 1.1220  IN+-IN-   -76.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   16.9 mV  f  64.00 MHz
+  4 up   code 2766 set 1.1294  IN+-IN-   -70.7 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   15.4 mV  f  63.21 MHz
+  5 up   code 2770 set 1.1369  IN+-IN-   -63.3 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   18.7 mV  f  63.29 MHz
+  6 up   code 2774 set 1.1444  IN+-IN-   -56.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   23.4 mV  f  60.93 MHz
+  7 up   code 2778 set 1.1518  IN+-IN-   -47.8 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   31.8 mV  f  60.00 MHz
+  8 up   code 2779 set 1.1537  IN+-IN-   -46.3 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   28.7 mV  f  60.21 MHz
+  9 up   code 2780 set 1.1556  IN+-IN-   -44.6 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   30.2 mV  f  60.71 MHz
+ 10 up   code 2781 set 1.1574  IN+-IN-   -42.3 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   32.0 mV  f  60.36 MHz
+ 11 up   code 2782 set 1.1593  IN+-IN-   -41.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   36.2 mV  f  60.29 MHz
+ 12 up   code 2783 set 1.1612  IN+-IN-   -40.2 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms   37.1 mV  f  60.14 MHz

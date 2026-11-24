@@ -1,0 +1,149 @@
+147 steps, codes 2750..2868..2750 (1.100 to 1.320 V setting)
+  0 up   code 2750 set 1.0995  IN+-IN-   -97.0 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.0 mV  f 250.00 MHz
+  1 up   code 2754 set 1.1070  IN+-IN-   -92.1 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.9 mV  f 250.00 MHz
+  2 up   code 2758 set 1.1145  IN+-IN-   -83.8 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.4 mV  f  60.14 MHz
+  3 up   code 2762 set 1.1220  IN+-IN-   -76.2 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 125.00 MHz
+  4 up   code 2766 set 1.1294  IN+-IN-   -69.6 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.1 mV  f 250.00 MHz
+  5 up   code 2770 set 1.1369  IN+-IN-   -61.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 250.00 MHz
+  6 up   code 2774 set 1.1444  IN+-IN-   -54.8 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.7 mV  f 120.00 MHz
+  7 up   code 2778 set 1.1518  IN+-IN-   -48.6 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.9 mV  f 250.00 MHz
+  8 up   code 2779 set 1.1537  IN+-IN-   -43.7 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.3 mV  f 120.00 MHz
+  9 up   code 2780 set 1.1556  IN+-IN-   -42.8 mV (scope)  TOGGLING low 0.48 mid 0.17 high 0.36  rms  545.1 mV  f  93.29 MHz
+ 10 up   code 2781 set 1.1574  IN+-IN-   -41.2 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.36  rms  566.0 mV  f  93.71 MHz
+ 11 up   code 2782 set 1.1593  IN+-IN-   -40.2 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.36  rms  558.0 mV  f  93.29 MHz
+ 12 up   code 2783 set 1.1612  IN+-IN-   -37.1 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.37  rms  568.1 mV  f  93.50 MHz
+ 13 up   code 2784 set 1.1630  IN+-IN-   -35.2 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.37  rms  576.4 mV  f  93.50 MHz
+ 14 up   code 2785 set 1.1649  IN+-IN-   -33.4 mV (scope)  TOGGLING low 0.46 mid 0.16 high 0.38  rms  581.8 mV  f  93.57 MHz
+ 15 up   code 2786 set 1.1668  IN+-IN-   -30.8 mV (scope)  TOGGLING low 0.46 mid 0.16 high 0.38  rms  589.5 mV  f  93.64 MHz
+ 16 up   code 2787 set 1.1687  IN+-IN-   -30.0 mV (scope)  TOGGLING low 0.46 mid 0.15 high 0.39  rms  592.9 mV  f  93.64 MHz
+ 17 up   code 2788 set 1.1705  IN+-IN-   -27.9 mV (scope)  TOGGLING low 0.46 mid 0.15 high 0.39  rms  596.4 mV  f  93.64 MHz
+ 18 up   code 2789 set 1.1724  IN+-IN-   -26.6 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.39  rms  606.1 mV  f  93.86 MHz
+ 19 up   code 2790 set 1.1743  IN+-IN-   -24.7 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  609.5 mV  f  94.00 MHz
+ 20 up   code 2791 set 1.1761  IN+-IN-   -22.3 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  606.1 mV  f  93.50 MHz
+ 21 up   code 2792 set 1.1780  IN+-IN-   -22.5 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  614.0 mV  f  94.00 MHz
+ 22 up   code 2793 set 1.1799  IN+-IN-   -18.6 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  608.6 mV  f  93.93 MHz
+ 23 up   code 2794 set 1.1817  IN+-IN-   -18.2 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  616.7 mV  f  93.43 MHz
+ 24 up   code 2795 set 1.1836  IN+-IN-   -14.8 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.0 mV  f  93.43 MHz
+ 25 up   code 2796 set 1.1855  IN+-IN-   -13.3 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.1 mV  f  93.36 MHz
+ 26 up   code 2797 set 1.1873  IN+-IN-   -11.7 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.0 mV  f  93.43 MHz
+ 27 up   code 2798 set 1.1892  IN+-IN-    -9.4 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.7 mV  f  93.93 MHz
+ 28 up   code 2799 set 1.1911  IN+-IN-    -7.1 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  615.7 mV  f  93.93 MHz
+ 29 up   code 2800 set 1.1929  IN+-IN-    -8.1 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.42  rms  620.6 mV  f  93.50 MHz
+ 30 up   code 2801 set 1.1948  IN+-IN-    -4.5 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  616.0 mV  f  93.36 MHz
+ 31 up   code 2802 set 1.1967  IN+-IN-    -3.5 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  617.4 mV  f  93.36 MHz
+ 32 up   code 2803 set 1.1985  IN+-IN-    -1.0 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  623.9 mV  f  93.57 MHz
+ 33 up   code 2804 set 1.2004  IN+-IN-    +1.5 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  624.8 mV  f  93.79 MHz
+ 34 up   code 2805 set 1.2023  IN+-IN-    +4.3 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.43  rms  625.5 mV  f  93.86 MHz
+ 35 up   code 2806 set 1.2041  IN+-IN-    +3.7 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.43  rms  618.1 mV  f  93.86 MHz
+ 36 up   code 2807 set 1.2060  IN+-IN-    +5.7 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  613.0 mV  f  93.43 MHz
+ 37 up   code 2808 set 1.2079  IN+-IN-    +9.0 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.43  rms  625.1 mV  f  93.86 MHz
+ 38 up   code 2809 set 1.2097  IN+-IN-   +11.0 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  616.5 mV  f  93.93 MHz
+ 39 up   code 2810 set 1.2116  IN+-IN-   +12.8 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  623.8 mV  f  93.86 MHz
+ 40 up   code 2811 set 1.2135  IN+-IN-   +15.4 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  615.1 mV  f  93.36 MHz
+ 41 up   code 2812 set 1.2153  IN+-IN-   +15.6 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  623.8 mV  f  93.86 MHz
+ 42 up   code 2813 set 1.2172  IN+-IN-   +18.4 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  613.6 mV  f  93.36 MHz
+ 43 up   code 2814 set 1.2191  IN+-IN-   +18.5 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  614.7 mV  f  93.93 MHz
+ 44 up   code 2815 set 1.2210  IN+-IN-   +22.5 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  621.3 mV  f  93.93 MHz
+ 45 up   code 2816 set 1.2228  IN+-IN-   +23.7 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  619.8 mV  f  93.93 MHz
+ 46 up   code 2817 set 1.2247  IN+-IN-   +25.6 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  617.6 mV  f  93.43 MHz
+ 47 up   code 2818 set 1.2266  IN+-IN-   +27.8 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  617.7 mV  f  93.86 MHz
+ 48 up   code 2819 set 1.2284  IN+-IN-   +29.2 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  607.6 mV  f  94.00 MHz
+ 49 up   code 2820 set 1.2303  IN+-IN-   +31.1 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  605.5 mV  f  94.00 MHz
+ 50 up   code 2821 set 1.2322  IN+-IN-   +31.9 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  605.2 mV  f  94.00 MHz
+ 51 up   code 2822 set 1.2340  IN+-IN-   +33.9 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  600.7 mV  f  93.36 MHz
+ 52 up   code 2823 set 1.2359  IN+-IN-   +36.6 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  605.5 mV  f  93.86 MHz
+ 53 up   code 2824 set 1.2378  IN+-IN-   +38.4 mV (scope)  TOGGLING low 0.39 mid 0.15 high 0.46  rms  587.6 mV  f  93.29 MHz
+ 54 up   code 2825 set 1.2396  IN+-IN-   +39.8 mV (scope)  TOGGLING low 0.38 mid 0.16 high 0.46  rms  584.8 mV  f  93.36 MHz
+ 55 up   code 2826 set 1.2415  IN+-IN-   +42.6 mV (scope)  TOGGLING low 0.38 mid 0.17 high 0.45  rms  582.9 mV  f  93.79 MHz
+ 56 up   code 2827 set 1.2434  IN+-IN-   +44.4 mV (scope)  TOGGLING low 0.38 mid 0.16 high 0.47  rms  574.7 mV  f  93.29 MHz
+ 57 up   code 2828 set 1.2452  IN+-IN-   +45.9 mV (scope)  TOGGLING low 0.37 mid 0.16 high 0.46  rms  575.2 mV  f  93.79 MHz
+ 58 up   code 2829 set 1.2471  IN+-IN-   +47.0 mV (scope)  TOGGLING low 0.38 mid 0.16 high 0.47  rms  579.8 mV  f  93.71 MHz
+ 59 up   code 2830 set 1.2490  IN+-IN-   +48.7 mV (scope)  TOGGLING low 0.37 mid 0.15 high 0.47  rms  575.8 mV  f  93.71 MHz
+ 60 up   code 2831 set 1.2508  IN+-IN-   +49.5 mV (scope)  TOGGLING low 0.36 mid 0.16 high 0.47  rms  557.1 mV  f  93.21 MHz
+ 61 up   code 2832 set 1.2527  IN+-IN-   +52.6 mV (scope)  TOGGLING low 0.36 mid 0.16 high 0.48  rms  555.9 mV  f  93.71 MHz
+ 62 up   code 2833 set 1.2546  IN+-IN-   +54.8 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   33.3 mV  f  94.79 MHz
+ 63 up   code 2834 set 1.2564  IN+-IN-   +55.3 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   25.8 mV  f  96.00 MHz
+ 64 up   code 2835 set 1.2583  IN+-IN-   +58.7 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   22.5 mV  f  96.79 MHz
+ 65 up   code 2836 set 1.2602  IN+-IN-   +58.9 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   26.1 mV  f  96.57 MHz
+ 66 up   code 2840 set 1.2677  IN+-IN-   +67.4 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.6 mV  f 125.00 MHz
+ 67 up   code 2844 set 1.2751  IN+-IN-   +74.6 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.6 mV  f 125.00 MHz
+ 68 up   code 2848 set 1.2826  IN+-IN-   +82.2 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.5 mV  f 125.00 MHz
+ 69 up   code 2852 set 1.2901  IN+-IN-   +89.0 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    3.0 mV  f 125.00 MHz
+ 70 up   code 2856 set 1.2975  IN+-IN-   +98.0 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.5 mV  f  62.50 MHz
+ 71 up   code 2860 set 1.3050  IN+-IN-  +104.4 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    3.0 mV  f  60.00 MHz
+ 72 up   code 2864 set 1.3125  IN+-IN-  +112.3 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.5 mV  f 125.00 MHz
+ 73 up   code 2868 set 1.3200  IN+-IN-  +117.1 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.7 mV  f 125.00 MHz
+ 74 down code 2864 set 1.3125  IN+-IN-  +110.9 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.8 mV  f 125.00 MHz
+ 75 down code 2860 set 1.3050  IN+-IN-  +104.4 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    3.2 mV  f  72.00 MHz
+ 76 down code 2856 set 1.2975  IN+-IN-   +97.7 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.5 mV  f 125.00 MHz
+ 77 down code 2852 set 1.2901  IN+-IN-   +88.7 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    3.2 mV  f  60.00 MHz
+ 78 down code 2848 set 1.2826  IN+-IN-   +81.4 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   23.9 mV  f  58.57 MHz
+ 79 down code 2844 set 1.2751  IN+-IN-   +74.1 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms    2.7 mV  f 125.00 MHz
+ 80 down code 2840 set 1.2677  IN+-IN-   +66.2 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   19.6 mV  f  97.79 MHz
+ 81 down code 2836 set 1.2602  IN+-IN-   +58.7 mV (scope)  HIGH     low 0.00 mid 0.00 high 0.99  rms   43.9 mV  f   0.64 MHz
+ 82 down code 2835 set 1.2583  IN+-IN-   +57.6 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   26.4 mV  f  94.07 MHz
+ 83 down code 2834 set 1.2564  IN+-IN-   +55.4 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   23.0 mV  f  93.43 MHz
+ 84 down code 2833 set 1.2546  IN+-IN-   +52.3 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   25.1 mV  f  93.57 MHz
+ 85 down code 2832 set 1.2527  IN+-IN-   +52.3 mV (scope)  HIGH     low 0.00 mid 0.00 high 1.00  rms   34.2 mV  f  95.71 MHz
+ 86 down code 2831 set 1.2508  IN+-IN-   +50.2 mV (scope)  TOGGLING low 0.37 mid 0.16 high 0.47  rms  567.0 mV  f  93.64 MHz
+ 87 down code 2830 set 1.2490  IN+-IN-   +47.5 mV (scope)  TOGGLING low 0.37 mid 0.16 high 0.47  rms  564.9 mV  f  93.29 MHz
+ 88 down code 2829 set 1.2471  IN+-IN-   +45.2 mV (scope)  TOGGLING low 0.37 mid 0.16 high 0.47  rms  575.1 mV  f  93.50 MHz
+ 89 down code 2828 set 1.2452  IN+-IN-   +43.3 mV (scope)  TOGGLING low 0.38 mid 0.16 high 0.46  rms  576.9 mV  f  93.29 MHz
+ 90 down code 2827 set 1.2434  IN+-IN-   +42.3 mV (scope)  TOGGLING low 0.38 mid 0.16 high 0.46  rms  588.6 mV  f  93.86 MHz
+ 91 down code 2826 set 1.2415  IN+-IN-   +41.3 mV (scope)  TOGGLING low 0.39 mid 0.15 high 0.46  rms  589.5 mV  f  93.86 MHz
+ 92 down code 2825 set 1.2396  IN+-IN-   +38.9 mV (scope)  TOGGLING low 0.39 mid 0.15 high 0.46  rms  600.8 mV  f  93.86 MHz
+ 93 down code 2824 set 1.2378  IN+-IN-   +38.4 mV (scope)  TOGGLING low 0.39 mid 0.15 high 0.46  rms  602.9 mV  f  93.86 MHz
+ 94 down code 2823 set 1.2359  IN+-IN-   +33.8 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  610.6 mV  f  93.93 MHz
+ 95 down code 2822 set 1.2340  IN+-IN-   +32.8 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  611.1 mV  f  93.71 MHz
+ 96 down code 2821 set 1.2322  IN+-IN-   +30.8 mV (scope)  TOGGLING low 0.40 mid 0.15 high 0.45  rms  607.3 mV  f  94.00 MHz
+ 97 down code 2820 set 1.2303  IN+-IN-   +30.1 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.45  rms  616.1 mV  f  94.00 MHz
+ 98 down code 2819 set 1.2284  IN+-IN-   +28.5 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  610.3 mV  f  94.00 MHz
+ 99 down code 2818 set 1.2266  IN+-IN-   +26.7 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  612.0 mV  f  93.36 MHz
+100 down code 2817 set 1.2247  IN+-IN-   +24.6 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  619.0 mV  f  93.50 MHz
+101 down code 2816 set 1.2228  IN+-IN-   +22.9 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  622.4 mV  f  93.93 MHz
+102 down code 2815 set 1.2210  IN+-IN-   +19.4 mV (scope)  TOGGLING low 0.41 mid 0.15 high 0.44  rms  618.9 mV  f  93.43 MHz
+103 down code 2814 set 1.2191  IN+-IN-   +19.3 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  613.2 mV  f  93.36 MHz
+104 down code 2813 set 1.2172  IN+-IN-   +15.7 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  617.8 mV  f  93.36 MHz
+105 down code 2812 set 1.2153  IN+-IN-   +15.9 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  625.0 mV  f  93.86 MHz
+106 down code 2811 set 1.2135  IN+-IN-   +12.3 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  625.9 mV  f  93.86 MHz
+107 down code 2810 set 1.2116  IN+-IN-   +11.1 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  620.4 mV  f  93.36 MHz
+108 down code 2809 set 1.2097  IN+-IN-    +8.6 mV (scope)  TOGGLING low 0.42 mid 0.15 high 0.43  rms  626.4 mV  f  93.93 MHz
+109 down code 2808 set 1.2079  IN+-IN-    +6.1 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.43  rms  621.4 mV  f  93.43 MHz
+110 down code 2807 set 1.2060  IN+-IN-    +6.4 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.43  rms  623.9 mV  f  93.57 MHz
+111 down code 2806 set 1.2041  IN+-IN-    +3.9 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  619.4 mV  f  93.93 MHz
+112 down code 2805 set 1.2023  IN+-IN-    +1.5 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  619.1 mV  f  93.93 MHz
+113 down code 2804 set 1.2004  IN+-IN-    +0.6 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  618.6 mV  f  93.93 MHz
+114 down code 2803 set 1.1985  IN+-IN-    -1.8 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  619.8 mV  f  93.79 MHz
+115 down code 2802 set 1.1967  IN+-IN-    -5.2 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  619.5 mV  f  93.86 MHz
+116 down code 2801 set 1.1948  IN+-IN-    -4.9 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.42  rms  618.9 mV  f  93.36 MHz
+117 down code 2800 set 1.1929  IN+-IN-    -7.3 mV (scope)  TOGGLING low 0.43 mid 0.15 high 0.41  rms  616.8 mV  f  93.43 MHz
+118 down code 2799 set 1.1911  IN+-IN-    -9.5 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.42  rms  617.5 mV  f  93.86 MHz
+119 down code 2798 set 1.1892  IN+-IN-   -11.2 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.7 mV  f  93.93 MHz
+120 down code 2797 set 1.1873  IN+-IN-   -13.6 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  621.6 mV  f  93.86 MHz
+121 down code 2796 set 1.1855  IN+-IN-   -13.8 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  622.3 mV  f  94.00 MHz
+122 down code 2795 set 1.1836  IN+-IN-   -17.2 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  620.5 mV  f  94.00 MHz
+123 down code 2794 set 1.1817  IN+-IN-   -17.6 mV (scope)  TOGGLING low 0.44 mid 0.15 high 0.41  rms  614.0 mV  f  93.50 MHz
+124 down code 2793 set 1.1799  IN+-IN-   -20.0 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  608.9 mV  f  93.43 MHz
+125 down code 2792 set 1.1780  IN+-IN-   -21.1 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  616.5 mV  f  94.00 MHz
+126 down code 2791 set 1.1761  IN+-IN-   -22.8 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.40  rms  605.0 mV  f  93.86 MHz
+127 down code 2790 set 1.1743  IN+-IN-   -25.6 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.39  rms  600.4 mV  f  93.36 MHz
+128 down code 2789 set 1.1724  IN+-IN-   -26.9 mV (scope)  TOGGLING low 0.46 mid 0.15 high 0.39  rms  601.4 mV  f  93.64 MHz
+129 down code 2788 set 1.1705  IN+-IN-   -29.6 mV (scope)  TOGGLING low 0.46 mid 0.15 high 0.39  rms  592.1 mV  f  93.43 MHz
+130 down code 2787 set 1.1687  IN+-IN-   -31.1 mV (scope)  TOGGLING low 0.45 mid 0.15 high 0.39  rms  594.4 mV  f  93.71 MHz
+131 down code 2786 set 1.1668  IN+-IN-   -34.1 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.38  rms  583.5 mV  f  93.57 MHz
+132 down code 2785 set 1.1649  IN+-IN-   -34.4 mV (scope)  TOGGLING low 0.47 mid 0.15 high 0.38  rms  587.6 mV  f  93.79 MHz
+133 down code 2784 set 1.1630  IN+-IN-   -36.3 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.37  rms  573.4 mV  f  93.50 MHz
+134 down code 2783 set 1.1612  IN+-IN-   -37.5 mV (scope)  TOGGLING low 0.47 mid 0.16 high 0.37  rms  578.8 mV  f  93.86 MHz
+135 down code 2782 set 1.1593  IN+-IN-   -39.6 mV (scope)  TOGGLING low 0.48 mid 0.16 high 0.36  rms  562.0 mV  f  93.50 MHz
+136 down code 2781 set 1.1574  IN+-IN-   -42.2 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    9.2 mV  f 250.00 MHz
+137 down code 2780 set 1.1556  IN+-IN-   -43.5 mV (scope)  TOGGLING low 0.48 mid 0.17 high 0.35  rms  544.8 mV  f  93.29 MHz
+138 down code 2779 set 1.1537  IN+-IN-   -44.7 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.7 mV  f 120.00 MHz
+139 down code 2778 set 1.1518  IN+-IN-   -46.4 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 250.00 MHz
+140 down code 2774 set 1.1444  IN+-IN-   -52.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.6 mV  f 250.00 MHz
+141 down code 2770 set 1.1369  IN+-IN-   -61.5 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 120.00 MHz
+142 down code 2766 set 1.1294  IN+-IN-   -69.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.7 mV  f 120.00 MHz
+143 down code 2762 set 1.1220  IN+-IN-   -77.2 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.1 mV  f 250.00 MHz
+144 down code 2758 set 1.1145  IN+-IN-   -83.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 120.00 MHz
+145 down code 2754 set 1.1070  IN+-IN-   -91.9 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    2.8 mV  f 250.00 MHz
+146 down code 2750 set 1.0995  IN+-IN-   -98.6 mV (scope)  LOW      low 1.00 mid 0.00 high 0.00  rms    3.1 mV  f 250.00 MHz
+saved /Users/sgfx/Desktop/HMC/Clinic/envelope detector/data/cmp_sweep_20261119_122720.csv

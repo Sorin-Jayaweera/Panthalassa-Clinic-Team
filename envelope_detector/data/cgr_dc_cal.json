@@ -1,0 +1,15 @@
+{
+ "_note": "Per-unit map from generator offset code to volts at the Output BNC (DMM, centre pin to shell, nothing else connected). Two-point fit per unit, 19 Nov 2026.",
+ "C2BKNPC": {
+  "zero_code": 2229.51,
+  "mv_per_code": 1.9862,
+  "measured": "2026-11-19, DMM at the Output BNC: code 2156 -> -0.146 V, code 2882 -> 1.296 V (two-point)",
+  "role": "J3 IN-"
+ },
+ "C2BJ0VL": {
+  "zero_code": 2161.35,
+  "mv_per_code": 1.8679,
+  "measured": "2026-11-19, DMM at the Output BNC: code 2156 -> -0.010 V, code 2754 -> 1.107 V (two-point)",
+  "role": "J1 IN+"
+ }
+}

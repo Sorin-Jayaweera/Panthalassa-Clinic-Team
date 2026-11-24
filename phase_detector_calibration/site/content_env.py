@@ -2,6 +2,7 @@
 from content import table, ul, ol, p, h, link, math, fig, D
 from content_parts import part_tab, steps_table, NOT_RUN
 import content_comp_emmy as EMMY
+import content_comp_sofia as SOFIA
 
 ADI = "https://www.analog.com/media/en/technical-documentation/data-sheets/"
 
@@ -176,4 +177,4 @@ COMP = part_tab(
     'below about &minus;15 dBm it is under the CGR-201&rsquo;s 5 mV steps).</mark> Step 5 at two levels checks it. '
     'Moving the Pluto tone offset from 100 kHz to 1 MHz should move the ripple to 4 MHz, which would confirm the source.</div>' +
     '<div class="note">Set the CGR-201 output to DC before connecting it: it can swing to &minus;3 V and the comparator input limit is &minus;0.5 V. The 1 k&Omega; limits the current if it does.</div>',
-    EMMY.section(), top=EMMY.TOP)
+    SOFIA.section() + EMMY.section(), top=SOFIA.TOP + EMMY.TOP)
